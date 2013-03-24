@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="intervals">
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>30 minutes</item>
+        <item>60 minutes</item>
+    </string-array>
+    <string-array name="intervalValues">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="currencies">
+        <item>USD</item>
+        <item>AUD</item>
+        <item>CAD</item>
+        <item>CHF</item>
+        <item>CNY</item>
+        <item>DKK</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>HKD</item>
+        <item>JPY</item>
+        <item>NZD</item>
+        <item>PLN</item>
+        <item>RUB</item>
+        <item>SEK</item>
+        <item>SGD</item>
+        <item>THB</item>
+    </string-array>
+</resources>

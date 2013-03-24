@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="bitcoinwidget"
+     >
+    <ListPreference
+        android:defaultValue="@string/default_refresh_interval"
+        android:persistent="false"
+        android:dialogTitle="@string/title_refresh_interval"
+        android:entries="@array/intervals"
+        android:entryValues="@array/intervalValues"
+        android:key="@string/key_refresh_interval"
+        android:title="@string/title_refresh_interval" />
+    <ListPreference
+        android:defaultValue="@string/default_currency"
+        android:persistent="false"
+        android:dialogTitle="@string/title_currency"
+        android:entries="@array/currencies"
+        android:entryValues="@array/currencies"
+        android:key="@string/key_currency"
+        android:title="@string/title_currency" />
+</PreferenceScreen>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_refresh_interval">update_interval</string>
+    <string name="key_currency">currency</string>
+    <string name="key_last_update">last_update</string>
+    <string name="key_prefs">bitcoinwidget</string>
+    <string name="default_refresh_interval">10</string>
+    <string name="default_currency">USD</string>
+</resources>
