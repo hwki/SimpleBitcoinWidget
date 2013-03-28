@@ -20,7 +20,7 @@ public class CurrencySizeMapper {
 		SMALL_SPLIT(R.id.bitcoinValueSmall) {
 			@Override
 			String loadText(String text) {
-				text = text.replaceFirst("\\$", "$ ");
+				text = text.replaceFirst("\\$", " \\$");
 				return text.replace("\u00a0", " ");
 			}
 		};
@@ -39,8 +39,8 @@ public class CurrencySizeMapper {
 	@SuppressWarnings("serial")
 	private static final Map<String, Size> sizeMap = new HashMap<String, Size>() {{
 		put("USD", Size.LARGE);
-		put("AUD", Size.SMALL);
-		put("CAD", Size.SMALL);
+		put("AUD", Size.SMALL_SPLIT);
+		put("CAD", Size.SMALL_SPLIT);
 		put("CHF", Size.SMALL_SPLIT);
 		put("CNY", Size.SMALL);
 		put("DKK", Size.SMALL);
