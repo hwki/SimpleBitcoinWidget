@@ -7,6 +7,8 @@
         <item>20 minutes</item>
         <item>30 minutes</item>
         <item>60 minutes</item>
+        <item>6 hours</item>
+        <item>Once a day</item>
     </string-array>
     <string-array name="intervalValues">
         <item>1</item>
@@ -15,6 +17,8 @@
         <item>20</item>
         <item>30</item>
         <item>60</item>
+        <item>360</item>
+        <item>1440</item>
     </string-array>
     <string-array name="currencies">
         <item>USD</item>

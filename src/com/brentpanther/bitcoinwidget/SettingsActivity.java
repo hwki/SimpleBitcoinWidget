@@ -52,7 +52,16 @@ public class SettingsActivity extends PreferenceActivity {
     
     private void setRefresh(int rate) {
     	refreshValue = rate;
-		refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval, rate, rate));
+    	
+    	if (rate == 1){
+    		refresh.setSummary(getString(R.string.summary_refresh_interval_minute));
+    	}else if (rate < 61){
+    		refresh.setSummary(getString(R.string.summary_refresh_interval_minutes, rate));
+    	}else if (rate < 1440){
+    		refresh.setSummary(getString(R.string.summary_refresh_interval_hours, rate  / 60));
+    	}else{
+    		refresh.setSummary(getString(R.string.summary_refresh_interval_day, rate / 1440));
+    	}
 	}
     
     @Override
