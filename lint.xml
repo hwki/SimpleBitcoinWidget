@@ -3,6 +3,9 @@
     <issue id="ContentDescription">
         <ignore path="res\layout\widget_layout.xml" />
     </issue>
+    <issue id="SpUsage">
+        <ignore path="res\layout\widget_layout.xml" />
+    </issue>
     <issue id="TypographyEllipsis">
         <ignore path="res\values\strings.xml" />
     </issue>
