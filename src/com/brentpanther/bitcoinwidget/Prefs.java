@@ -40,9 +40,17 @@ public class Prefs {
 		return Integer.valueOf(string.split(SEPARATOR)[1]);
 	}
 	
-	static void setValues(Context context, int widgetId, String currency, int refreshValue) {
+	static int getProvider(Context context, int widgetId) {
+		String string = getPrefs(context).getString("" + widgetId, SEPARATOR + " " + SEPARATOR + context.getString(R.string.default_provider));
+		//handle old versions
+		String[] split = string.split(SEPARATOR);
+		if(split.length == 2) return 0;
+		return Integer.valueOf(split[2]);
+	}
+	
+	static void setValues(Context context, int widgetId, String currency, int refreshValue, int provider) {
 		getPrefs(context).edit()
-			.putString("" + widgetId, currency + SEPARATOR + refreshValue)
+			.putString("" + widgetId, currency + SEPARATOR + refreshValue + SEPARATOR + provider)
 			.commit();
 	}
 	
@@ -51,5 +59,6 @@ public class Prefs {
 			.remove("" + widgetId)
 			.commit();
 	}
+
 
 }

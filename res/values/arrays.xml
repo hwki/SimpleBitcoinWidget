@@ -40,4 +40,12 @@
         <item>SGD</item>
         <item>THB</item>
     </string-array>
+    <string-array name="providerValues">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="providers">
+        <item>MtGox</item>
+        <item>Coinbase</item>
+    </string-array>
 </resources>

@@ -3,17 +3,18 @@ package com.brentpanther.bitcoinwidget;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 
 public class SettingsActivity extends PreferenceActivity {
 	
-    private Preference refresh;
-	private Preference currency;
+    private ListPreference refresh;
+	private ListPreference currency;
+	private ListPreference provider;
 	private int appWidgetId;
 	private int refreshValue;
-	private String currencyValue;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -23,9 +24,10 @@ public class SettingsActivity extends PreferenceActivity {
 		appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 		if(extras != null) appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         addPreferencesFromResource(R.xml.preferences);
-        refresh = findPreference(getString(R.string.key_refresh_interval));
-        currency = findPreference(getString(R.string.key_currency));
-
+        refresh = (ListPreference) findPreference(getString(R.string.key_refresh_interval));
+        currency = (ListPreference) findPreference(getString(R.string.key_currency));
+        provider = (ListPreference) findPreference(getString(R.string.key_provider));
+        
         setRefresh(Prefs.getInterval(this, appWidgetId));
         refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			
@@ -37,14 +39,27 @@ public class SettingsActivity extends PreferenceActivity {
 
 			
 		});
-        currencyValue = Prefs.getCurrency(this, appWidgetId);
-        currency.setSummary(getString(R.string.summary_currency, currencyValue));
+        currency.setSummary(getString(R.string.summary_currency, currency.getEntry()));
         currency.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			
 			@Override
 			public boolean onPreferenceChange(Preference p, Object value) {
-				currencyValue = value.toString();
-				p.setSummary(getString(R.string.summary_currency, currencyValue));
+				p.setSummary(getString(R.string.summary_currency, value));
+				return true;
+			}
+		});
+        provider.setSummary(getString(R.string.summary_provider, provider.getEntry()));
+        provider.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object value) {
+				ListPreference p = (ListPreference)preference;
+				CharSequence[] entryValues = p.getEntryValues();
+				for (int i=0; i<entryValues.length; i++) {
+					if(entryValues[i].equals(value)) {
+						preference.setSummary(getString(R.string.summary_provider, p.getEntries()[i]));
+					}
+				}
 				return true;
 			}
 		});
@@ -65,7 +80,7 @@ public class SettingsActivity extends PreferenceActivity {
     	broadcast.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
     	broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
     	sendBroadcast(broadcast);
-    	Prefs.setValues(this, appWidgetId, currencyValue, refreshValue);
+    	Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()));
     	Intent result = new Intent();
 		result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
     	setResult(RESULT_OK, result);

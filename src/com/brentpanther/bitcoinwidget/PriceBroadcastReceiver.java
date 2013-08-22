@@ -15,7 +15,8 @@ import android.widget.RemoteViews;
 
 public class PriceBroadcastReceiver extends BroadcastReceiver {
 
-	private static final String MTGOX = "https://data.mtgox.com/api/2/BTC%s/money/ticker";
+	private static final String MTGOX = "https://data.mtgox.com/api/2/BTC%s/money/ticker_fast";
+	private static final String COINBASE = "https://coinbase.com/api/v1/prices/spot_rate?currency=%s";
 
 	@Override
 	public void onReceive(final Context context, final Intent intent) {
@@ -25,25 +26,22 @@ public class PriceBroadcastReceiver extends BroadcastReceiver {
 				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 				int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-				String currency = Prefs.getCurrency(context, appWidgetId);
-				
-				CurrencySizeMapper.setLoading(views);
+				WidgetViews.setLoading(views);
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 				
-				String url = String.format(MTGOX, currency);
-				HttpGet get = new HttpGet(url);
-				HttpClient client = new DefaultHttpClient();
+				String currencyCode = Prefs.getCurrency(context, appWidgetId);
+				Currency currency = Currency.valueOf(currencyCode);
+				
 				try {
-					String result = client.execute(get, new BasicResponseHandler());
-					JSONObject obj = new JSONObject(result);
-					String amount = obj.getJSONObject("data").getJSONObject("last").getString("display_short");
-					CurrencySizeMapper.setText(views, currency, amount);
+					String amount = getValue(context, appWidgetId, currencyCode);
+					WidgetViews.setText(views, currency, amount, true);
 					Prefs.setLastUpdate(context);
 				} catch (Exception e) {
+					e.printStackTrace();
 					long lastUpdate = Prefs.getLastUpdate(context);
-					//if its been "a while" since the last successful update, show N/A instead of last value.
-					boolean showNA = (System.currentTimeMillis() - lastUpdate > 1000 * 60 * 3);
-					CurrencySizeMapper.setText(views, currency, showNA ? "N/A" : null);
+					//if its been "a while" since the last successful update, gray out the icon.
+					boolean isOld = ((System.currentTimeMillis() - lastUpdate) > 1000 * 60 * 5);
+					WidgetViews.setText(views, currency, null, !isOld);
 				}
 				Intent priceUpdate = new Intent(context, PriceBroadcastReceiver.class);
 				priceUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -52,6 +50,25 @@ public class PriceBroadcastReceiver extends BroadcastReceiver {
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 			}
 		}).start();
+	}
+	
+	private String getValue(Context context, int widgetId, String currencyCode) throws Exception {
+		int provider = Prefs.getProvider(context, widgetId);
+		if(provider == 0) { 
+			JSONObject obj = getAmount(String.format(MTGOX, currencyCode));
+			return obj.getJSONObject("data").getJSONObject("last").getString("value");
+		} else if (provider == 1) {
+			JSONObject obj = getAmount(String.format(COINBASE, currencyCode));
+			return obj.getString("amount");
+		}
+		return null;
+	}
+
+	private JSONObject getAmount(String url) throws Exception {
+		HttpGet get = new HttpGet(url);
+		HttpClient client = new DefaultHttpClient();
+		String result = client.execute(get, new BasicResponseHandler());
+		return new JSONObject(result);
 	}
 
 }

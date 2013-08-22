@@ -29,7 +29,7 @@ public class WidgetProvider extends AppWidgetProvider {
 		int oldInterval = Prefs.getOldInterval(context);
 		if(oldInterval != -1) {
 			for (int widgetId : appWidgetIds) {
-				Prefs.setValues(context, widgetId, "USD", oldInterval);
+				Prefs.setValues(context, widgetId, "USD", oldInterval, 0);
 			}
 			Prefs.deleteOldInterval(context);
 			onDeleted(context, new int[]{-1000});

@@ -18,4 +18,12 @@
         android:entryValues="@array/currencies"
         android:key="@string/key_currency"
         android:title="@string/title_currency" />
+    <ListPreference
+        android:defaultValue="@string/default_provider"
+        android:persistent="false"
+        android:dialogTitle="@string/title_provider"
+        android:entries="@array/providers"
+        android:entryValues="@array/providerValues"
+        android:key="@string/key_provider"
+        android:title="@string/title_provider" />
 </PreferenceScreen>
