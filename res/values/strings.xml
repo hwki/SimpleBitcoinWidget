@@ -5,6 +5,7 @@
     <string name="title_refresh_interval">Refresh Interval</string>
     <string name="title_currency">Currency</string>
     <string name="title_provider">Provider</string>
+    <string name="title_label">Show exchange label</string>
     <plurals name="summary_refresh_interval_minute">
         <item quantity="one">Refresh every minute</item>
         <item quantity="other">Refresh every %d minutes</item>
@@ -14,5 +15,6 @@
         <item quantity="other">Refresh every %d hours</item>
     </plurals> 
     <string name="summary_currency">Use %s as currency</string>
+    <string name="blank_currency">Select a currency</string>
     <string name="summary_provider">Get data from %s</string>
 </resources>

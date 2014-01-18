@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="11dp"
-    android:paddingLeft="@dimen/widget_margin"
-    android:paddingRight="@dimen/widget_margin"
-    android:paddingTop="11dp" >
+    android:paddingBottom="@dimen/widget_margin_vertical"
+    android:paddingLeft="@dimen/widget_margin_horizontal"
+    android:paddingRight="@dimen/widget_margin_horizontal"
+    android:paddingTop="@dimen/widget_margin_vertical" >
 
     <LinearLayout
         android:id="@+id/bitcoinParent"
@@ -35,54 +35,22 @@
                 android:textSize="25dp"
                 android:typeface="sans" />
 
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/bitcoinImage"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/icon_bitcoin" />
-            
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/bitcoinImageBW"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/icon_bitcoin_bw" />
+            <include layout="@layout/image"/>
+
+            <include layout="@layout/prices"/>
 
             <TextView
                 android:visibility="gone"
-                android:id="@+id/bitcoinValue"
+                android:id="@+id/priceJB"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+                android:gravity="center"
                 android:layout_marginRight="3dp"
                 android:textColor="#888"
                 android:textIsSelectable="false"
-                android:textSize="24dp"
                 android:typeface="sans" />
-            
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/bitcoinValueSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:layout_marginRight="5dp"
-                android:textColor="#888"
-                android:textIsSelectable="false"
-                android:textSize="20dp"
-                android:typeface="sans" />
+
         </LinearLayout>
     </LinearLayout>
 

@@ -6,37 +6,39 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
-	
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-		//used to upgrade old apps to new way of saving data...
-		doWidgetUpdate(context, appWidgetIds);
-		for (int widgetId : appWidgetIds) {
+        for (int widgetId : appWidgetIds) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ) {
+                Bundle options = appWidgetManager.getAppWidgetOptions(widgetId);
+                int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                Prefs.setWidth(context, widgetId, width-56);
+            }
 			setAlarm(context, widgetId);
 			Intent i = new Intent(context, PriceBroadcastReceiver.class);
 			i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 			PendingIntent pi = PendingIntent.getBroadcast(context, widgetId, i, 0);
 			views.setOnClickPendingIntent(R.id.bitcoinParent, pi);
-			appWidgetManager.updateAppWidget(widgetId, views);
+            appWidgetManager.updateAppWidget(widgetId, views);
 		}
 	}
 
-	private void doWidgetUpdate(Context context, int[] appWidgetIds) {
-		int oldInterval = Prefs.getOldInterval(context);
-		if(oldInterval != -1) {
-			for (int widgetId : appWidgetIds) {
-				Prefs.setValues(context, widgetId, "USD", oldInterval, 0);
-			}
-			Prefs.deleteOldInterval(context);
-			onDeleted(context, new int[]{-1000});
-		}
-	}
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        int min = appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        Prefs.setWidth(context, appWidgetId, min-56);
+    }
 
-	@Override
+    @Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		for (int widgetId : appWidgetIds) {
 			Prefs.delete(context, widgetId);

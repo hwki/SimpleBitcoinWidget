@@ -11,14 +11,6 @@
         android:key="@string/key_refresh_interval"
         android:title="@string/title_refresh_interval" />
     <ListPreference
-        android:defaultValue="@string/default_currency"
-        android:persistent="false"
-        android:dialogTitle="@string/title_currency"
-        android:entries="@array/currencies"
-        android:entryValues="@array/currencies"
-        android:key="@string/key_currency"
-        android:title="@string/title_currency" />
-    <ListPreference
         android:defaultValue="@string/default_provider"
         android:persistent="false"
         android:dialogTitle="@string/title_provider"
@@ -26,4 +18,18 @@
         android:entryValues="@array/providerValues"
         android:key="@string/key_provider"
         android:title="@string/title_provider" />
+    <ListPreference
+        android:defaultValue="@string/default_currency"
+        android:persistent="false"
+        android:dialogTitle="@string/title_currency"
+        android:entries="@array/currencies_mtgox"
+        android:entryValues="@array/currencies_mtgox"
+        android:key="@string/key_currency"
+        android:title="@string/title_currency" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:persistent="false"
+        android:dialogTitle="@string/title_label"
+        android:title="@string/title_label"
+        android:key="@string/key_label"/>
 </PreferenceScreen>

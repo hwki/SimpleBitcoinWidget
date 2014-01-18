@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/imageLayout"
+              android:visibility="gone"
+              android:orientation="vertical"
+              android:layout_width="28dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="3dp"
+              android:layout_height="match_parent"
+              android:gravity="center">
+
+    <ImageView
+            android:visibility="gone"
+            android:id="@+id/bitcoinImage"
+            android:layout_width="28dp"
+            android:layout_marginTop="3dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_bitcoin"/>
+
+    <ImageView
+            android:visibility="gone"
+            android:id="@+id/bitcoinImageBW"
+            android:layout_height="0dp"
+            android:layout_width="28dp"
+            android:layout_weight="1"
+            android:layout_marginTop="3dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_bitcoin_bw"/>
+
+    <TextView
+            android:id="@+id/space"
+            android:visibility="visible"
+            android:layout_height="3dp"
+            android:layout_width="match_parent"/>
+    <TextView
+            android:id="@+id/provider1"
+            android:visibility="gone"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9dp"
+            android:layout_marginBottom="1dp"/>
+
+    <TextView
+            android:id="@+id/provider2"
+            android:visibility="gone"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:layout_marginBottom="1dp"/>
+
+    <TextView
+            android:id="@+id/provider3"
+            android:visibility="gone"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11dp"
+            android:layout_marginBottom="1dp"/>
+
+</LinearLayout>
