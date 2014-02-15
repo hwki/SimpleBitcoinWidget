@@ -159,6 +159,9 @@
         <item>USD</item>
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_btcturk">
+        <item>TRY</item>
+    </string-array>
     <string-array name="providerValues">
         <item>0</item>
         <item>1</item>
@@ -175,6 +178,7 @@
         <item>12</item>
         <item>13</item>
         <item>14</item>
+        <item>15</item>
     </string-array>
     <string-array name="providers">
         <item>MtGox</item>
@@ -192,5 +196,6 @@
         <item>Bit2C</item>
         <item>BitPay</item>
         <item>Kraken</item>
+        <item>BTCTurk</item>
     </string-array>
 </resources>
