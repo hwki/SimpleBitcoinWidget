@@ -25,11 +25,12 @@ public class SettingsActivity extends PreferenceActivity {
     private ListPreference refresh;
 	private ListPreference currency;
 	private ListPreference provider;
+    private ListPreference theme;
     private CheckBoxPreference label;
-	private int appWidgetId;
-	private int refreshValue;
+    private int appWidgetId;
+    private int refreshValue;
 
-	@SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class SettingsActivity extends PreferenceActivity {
         currency = (ListPreference) findPreference(getString(R.string.key_currency));
         provider = (ListPreference) findPreference(getString(R.string.key_provider));
         label = (CheckBoxPreference) findPreference(getString(R.string.key_label));
+        theme = (ListPreference) findPreference(getString(R.string.key_theme));
         
         setRefresh(Prefs.getInterval(this, appWidgetId));
         refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -84,6 +86,14 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+        theme.setSummary(getString(R.string.summary_theme, theme.getEntry()));
+        theme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object value) {
+                preference.setSummary(getString(R.string.summary_theme, value));
+                return true;
+            }
+        });
     }
 
     @Override
@@ -106,7 +116,7 @@ public class SettingsActivity extends PreferenceActivity {
         broadcast.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
         sendBroadcast(broadcast);
-        Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()), label.isChecked());
+        Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()), label.isChecked(), theme.getValue());
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, result);

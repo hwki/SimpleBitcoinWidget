@@ -18,7 +18,8 @@ public class PriceBroadcastReceiver extends BroadcastReceiver {
 			public void run() {
 				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 				int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-				RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+                int layout = Prefs.getThemeLayout(context, appWidgetId);
+				RemoteViews views = new RemoteViews(context.getPackageName(), layout);
 				WidgetViews.setLoading(views);
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 				

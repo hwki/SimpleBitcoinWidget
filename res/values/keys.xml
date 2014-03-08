@@ -6,7 +6,9 @@
     <string name="key_prefs">bitcoinwidget</string>
     <string name="key_provider">provider</string>
     <string name="key_label">label</string>
+    <string name="key_theme">theme</string>
     <string name="default_refresh_interval">10</string>
     <string name="default_currency">USD</string>
-    <string name="default_provider">12</string>
+    <string name="default_provider">2</string>
+    <string name="default_theme">Light</string>
 </resources>

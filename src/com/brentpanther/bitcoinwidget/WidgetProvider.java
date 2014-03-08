@@ -16,8 +16,9 @@ public class WidgetProvider extends AppWidgetProvider {
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         for (int widgetId : appWidgetIds) {
+            int layout = Prefs.getThemeLayout(context, widgetId);
+            RemoteViews views = new RemoteViews(context.getPackageName(), layout);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ) {
                 Bundle options = appWidgetManager.getAppWidgetOptions(widgetId);
                 int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);

@@ -22,8 +22,8 @@
         android:defaultValue="@string/default_currency"
         android:persistent="false"
         android:dialogTitle="@string/title_currency"
-        android:entries="@array/currencies_mtgox"
-        android:entryValues="@array/currencies_mtgox"
+        android:entries="@array/currencies_bitstamp"
+        android:entryValues="@array/currencies_bitstamp"
         android:key="@string/key_currency"
         android:title="@string/title_currency" />
     <CheckBoxPreference
@@ -32,4 +32,12 @@
         android:dialogTitle="@string/title_label"
         android:title="@string/title_label"
         android:key="@string/key_label"/>
+    <ListPreference
+        android:defaultValue="@string/default_theme"
+        android:persistent="false"
+        android:dialogTitle="@string/title_theme"
+        android:entries="@array/themes"
+        android:entryValues="@array/themes"
+        android:title="@string/title_theme"
+        android:key="@string/key_theme"/>
 </PreferenceScreen>

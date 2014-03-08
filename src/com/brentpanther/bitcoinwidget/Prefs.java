@@ -15,8 +15,9 @@ public class Prefs {
     public static final String PROVIDER = "provider";
     public static final String SHOW_LABEL = "show_label";
     public static final String WIDTH = "width";
+    public static final String THEME = "theme";
 
-	private static SharedPreferences getPrefs(Context context) {
+    private static SharedPreferences getPrefs(Context context) {
 		return context.getSharedPreferences(context.getString(R.string.key_prefs), Context.MODE_PRIVATE);
 	}
 
@@ -73,6 +74,12 @@ public class Prefs {
         return Integer.valueOf(value);
     }
 
+    static int getThemeLayout(Context context, int widgetId) {
+        String value = getValue(context, widgetId, THEME);
+        if(value == null || "Light".equals(value)) return R.layout.widget_layout;
+        return R.layout.widget_layout_dark;
+    }
+
     static void setValue(Context context, int widgetId, String key, String value) {
         String string = getPrefs(context).getString("" + widgetId, null);
         JSONObject obj = null;
@@ -91,13 +98,14 @@ public class Prefs {
         }
     }
 	
-	static void setValues(Context context, int widgetId, String currency, int refreshValue, int provider, boolean checked) {
+	static void setValues(Context context, int widgetId, String currency, int refreshValue, int provider, boolean checked, String theme) {
         JSONObject obj = new JSONObject();
         try {
             obj.put(CURRENCY, currency);
             obj.put(REFRESH, "" + refreshValue);
             obj.put(PROVIDER, "" + provider);
             obj.put(SHOW_LABEL, "" + checked);
+            obj.put(THEME, theme);
             getPrefs(context).edit().putString("" + widgetId, obj.toString()).commit();
         } catch (JSONException e) {
             e.printStackTrace();
