@@ -134,17 +134,17 @@ public enum BTCProvider {
             return (String)obj2.getJSONArray("c").get(0);
         }
     },
-    VIRTEX(R.array.currencies_virtex, "vrtx") {
-        @Override
-        public String getValue(String currencyCode) throws Exception {
-            return getFromBitcoinCharts("virtexCAD");
-        }
-    },
     BTCTURK(R.array.currencies_btcturk, "turk") {
         @Override
         public String getValue(String currencyCode) throws Exception {
             JSONObject obj = getJSONObject("https://www.btcturk.com/api/ticker");
             return obj.getString("last");
+        }
+    },
+    VIRTEX(R.array.currencies_virtex, "vrtx") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getFromBitcoinCharts("virtexCAD");
         }
     };
 
