@@ -159,38 +159,42 @@
         <item>USD</item>
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_virtex">
+        <item>CAD</item>
+    </string-array>
     <string-array name="providerValues">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+        <item>12</item>
         <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
+        <item>10</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
         <item>13</item>
+        <item>2</item>
+        <item>11</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1</item>
         <item>14</item>
+        <item>6</item>
+        <item>15</item>
     </string-array>
     <string-array name="providers">
-        <item>MtGox</item>
-        <item>Coinbase</item>
-        <item>Bitstamp</item>
+        <item>Bit2C</item>
         <item>Bitcoin Average</item>
-        <item>Camp BX</item>
-        <item>BTC-e</item>
-        <item>Mercado Bitcoin</item>
+        <item>Bitcoin Average (global)</item>
         <item>Bitcoin.de</item>
         <item>Bitcurex</item>
         <item>Bitfinex</item>
-        <item>Bitcoin Average (global)</item>
-        <item>BTC China</item>
-        <item>Bit2C</item>
         <item>BitPay</item>
+        <item>Bitstamp</item>
+        <item>BTC China</item>
+        <item>BTC-e</item>
+        <item>Camp BX</item>
+        <item>Coinbase</item>
         <item>Kraken</item>
+        <item>Mercado Bitcoin</item>
+        <item>Virtex</item>
     </string-array>
+
 </resources>

@@ -66,7 +66,8 @@ public class SettingsActivity extends PreferenceActivity {
                     if (entryValues[i].equals(value)) v=i;
                 }
                 preference.setSummary(getString(R.string.summary_provider, p.getEntries()[v]));
-                BTCProvider provider = BTCProvider.values()[v];
+                int index = Integer.valueOf((String)value);
+                BTCProvider provider = BTCProvider.values()[index];
                 currency.setEntries(provider.getCurrencies());
                 currency.setEntryValues(provider.getCurrencies());
                 currency.setValueIndex(0);

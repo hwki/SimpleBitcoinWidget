@@ -8,5 +8,5 @@
     <string name="key_label">label</string>
     <string name="default_refresh_interval">10</string>
     <string name="default_currency">USD</string>
-    <string name="default_provider">0</string>
+    <string name="default_provider">12</string>
 </resources>

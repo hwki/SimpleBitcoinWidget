@@ -25,8 +25,7 @@ public enum BTCProvider {
     MTGOX(R.array.currencies_mtgox, "mtgx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("http://data.mtgox.com/api/2/BTC%s/money/ticker_fast", currencyCode));
-            return obj.getJSONObject("data").getJSONObject("last").getString("value");
+            return null;
         }
     },
     COINBASE(R.array.currencies_coinbase, "cb") {
@@ -74,14 +73,7 @@ public enum BTCProvider {
     BITCOINDE(R.array.currencies_bitcoinde, "bt.de") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONArray array = getJSONArray("http://api.bitcoincharts.com/v1/markets.json");
-            //loop through each element in the array until symbol == btcdeEUR
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                if(!"btcdeEUR".equals(obj.getString("symbol"))) continue;
-                return obj.getString("bid");
-            }
-            return null;
+            return getFromBitcoinCharts("btcdeEUR");
         }
     },
     BITCUREX(R.array.currencies_bitcurex, "btcrx") {
@@ -108,14 +100,7 @@ public enum BTCProvider {
     BTC_CHINA(R.array.currencies_btcchina, "btchn") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONArray array = getJSONArray("http://api.bitcoincharts.com/v1/markets.json");
-            //loop through each element in the array until symbol == btcnCNY
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                if(!"btcnCNY".equals(obj.getString("symbol"))) continue;
-                return obj.getString("bid");
-            }
-            return null;
+           return getFromBitcoinCharts("btcnCNY");
         }
     },
     BIT2C(R.array.currencies_bit2c, "bit2c") {
@@ -148,6 +133,12 @@ public enum BTCProvider {
             JSONObject obj2 = obj.getJSONObject("result").getJSONObject("XXBTZ" + currencyCode);
             return (String)obj2.getJSONArray("c").get(0);
         }
+    },
+    VIRTEX(R.array.currencies_virtex, "vrtx") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getFromBitcoinCharts("virtexCAD");
+        }
     };
 
     private final int currencyArrayID;
@@ -166,6 +157,16 @@ public enum BTCProvider {
 
     public String getLabel() {
         return label;
+    }
+
+    private static String getFromBitcoinCharts(String symbol) throws Exception {
+        JSONArray array = getJSONArray("http://api.bitcoincharts.com/v1/markets.json");
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
+            if(!symbol.equals(obj.getString("symbol"))) continue;
+            return obj.getString("bid");
+        }
+        return null;
     }
 
     private static JSONObject getJSONObject(String url) throws Exception {
