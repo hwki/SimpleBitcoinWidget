@@ -23,7 +23,8 @@ public enum Currency {
     CZK("#,###.00\nKč", "#,###.00 Kč", "#,###\nKč"),
     BRL("R$#,###.00", "R$#,###.00", "R$#,###"),
     ILS("₪#,###.00", "₪#,###"),
-    ZAR("R #,###.00", "R #,###");
+    ZAR("R #,###.00", "R #,###"),
+    TRY("#,### TL", "#,### TL");
 
 	String format;
     String thousandFormat;

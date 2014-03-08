@@ -159,6 +159,9 @@
         <item>USD</item>
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_btcturk">
+        <item>TRY</item>
+    </string-array>
     <string-array name="currencies_virtex">
         <item>CAD</item>
     </string-array>
@@ -173,11 +176,12 @@
         <item>2</item>
         <item>11</item>
         <item>5</item>
+        <item>15</item>
         <item>4</item>
         <item>1</item>
         <item>14</item>
         <item>6</item>
-        <item>15</item>
+        <item>16</item>
     </string-array>
     <string-array name="providers">
         <item>Bit2C</item>
@@ -190,6 +194,7 @@
         <item>Bitstamp</item>
         <item>BTC China</item>
         <item>BTC-e</item>
+        <item>BTCTurk</item>
         <item>Camp BX</item>
         <item>Coinbase</item>
         <item>Kraken</item>

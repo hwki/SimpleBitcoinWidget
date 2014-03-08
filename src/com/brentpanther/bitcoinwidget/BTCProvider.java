@@ -139,6 +139,13 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             return getFromBitcoinCharts("virtexCAD");
         }
+    },
+    BTCTURK(R.array.currencies_btcturk, "turk") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            JSONObject obj = getJSONObject("https://www.btcturk.com/api/ticker");
+            return obj.getString("last");
+        }
     };
 
     private final int currencyArrayID;
