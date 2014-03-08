@@ -40,4 +40,14 @@
         android:entryValues="@array/themes"
         android:title="@string/title_theme"
         android:key="@string/key_theme"/>
+    <Preference
+        android:key="@string/key_donate"
+        android:title="@string/title_donate"
+        android:summary="@string/summary_donate"
+        android:persistent="false"/>
+    <Preference
+        android:key="@string/key_rate"
+        android:title="@string/title_rate"
+        android:summary="@string/summary_rate"
+        android:persistent="false"/>
 </PreferenceScreen>

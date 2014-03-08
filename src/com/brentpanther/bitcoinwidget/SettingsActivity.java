@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget;
 
 import android.appwidget.AppWidgetManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -91,6 +92,30 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object value) {
                 preference.setSummary(getString(R.string.summary_theme, value));
+                return true;
+            }
+        });
+        findPreference(getString(R.string.key_donate)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent btc = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.btc_address)));
+                try {
+                    startActivity(btc);
+                } catch (ActivityNotFoundException anfe) {
+                    Toast.makeText(SettingsActivity.this, getString(R.string.donate_error), Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
+        findPreference(getString(R.string.key_rate)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
                 return true;
             }
         });

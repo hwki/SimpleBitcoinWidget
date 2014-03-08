@@ -7,6 +7,8 @@
     <string name="title_provider">Exchange</string>
     <string name="title_label">Show exchange label</string>
     <string name="title_theme">Theme</string>
+    <string name="title_donate">Donate</string>
+    <string name="title_rate">Rate</string>
     <plurals name="summary_refresh_interval_minute">
         <item quantity="one">Every minute</item>
         <item quantity="other">Every %d minutes</item>
@@ -19,4 +21,9 @@
     <string name="blank_currency">Select a currency</string>
     <string name="summary_provider">Get data from %s</string>
     <string name="summary_theme">%s</string>
+    <string name="summary_donate">Support the developer</string>
+    <string name="summary_rate">Rate on Google Play</string>
+    <string name="btc_address">bitcoin:15SHnY7HC5bTxzErHDPe7wHXj1HhtDKV7z</string>
+    <string name="donate_error">Compatible bitcoin wallet not found.</string>
+
 </resources>
