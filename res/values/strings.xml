@@ -8,15 +8,15 @@
     <string name="title_label">Show exchange label</string>
     <string name="title_theme">Theme</string>
     <plurals name="summary_refresh_interval_minute">
-        <item quantity="one">Refresh every minute</item>
-        <item quantity="other">Refresh every %d minutes</item>
+        <item quantity="one">Every minute</item>
+        <item quantity="other">Every %d minutes</item>
     </plurals> 
     <plurals name="summary_refresh_interval_hour">
-        <item quantity="one">Refresh every hour</item>
-        <item quantity="other">Refresh every %d hours</item>
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
     </plurals> 
     <string name="summary_currency">Use %s as currency</string>
     <string name="blank_currency">Select a currency</string>
     <string name="summary_provider">Get data from %s</string>
-    <string name="summary_theme">Theme: %s</string>
+    <string name="summary_theme">%s</string>
 </resources>
