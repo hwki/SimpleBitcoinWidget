@@ -165,6 +165,11 @@
     <string-array name="currencies_virtex">
         <item>CAD</item>
     </string-array>
+    <string-array name="currencies_justcoin">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>NOK</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>3</item>
@@ -179,6 +184,7 @@
         <item>15</item>
         <item>4</item>
         <item>1</item>
+        <item>17</item>
         <item>14</item>
         <item>6</item>
         <item>16</item>
@@ -197,6 +203,7 @@
         <item>BTCTurk</item>
         <item>Camp BX</item>
         <item>Coinbase</item>
+        <item>Justcoin</item>
         <item>Kraken</item>
         <item>Mercado Bitcoin</item>
         <item>Virtex</item>
@@ -204,6 +211,7 @@
     <string-array name="themes">
         <item>Light</item>
         <item>Dark</item>
+        <item>Transparent</item>
     </string-array>
 
 </resources>

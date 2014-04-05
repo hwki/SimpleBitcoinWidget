@@ -77,12 +77,13 @@ public class Prefs {
     static int getThemeLayout(Context context, int widgetId) {
         String value = getValue(context, widgetId, THEME);
         if(value == null || "Light".equals(value)) return R.layout.widget_layout;
-        return R.layout.widget_layout_dark;
+        if("Dark".equals(value)) return R.layout.widget_layout_dark;
+        return R.layout.widget_layout_transparent;
     }
 
     static void setValue(Context context, int widgetId, String key, String value) {
         String string = getPrefs(context).getString("" + widgetId, null);
-        JSONObject obj = null;
+        JSONObject obj;
         try {
             if(string==null) {
                 obj = new JSONObject();
@@ -119,7 +120,7 @@ public class Prefs {
     static String getValue(Context context, int widgetId, String key) {
         String string = getPrefs(context).getString("" + widgetId, null);
         if(string==null) return null;
-        JSONObject obj = null;
+        JSONObject obj;
         try {
             if(!string.startsWith("{")) {
                 obj = convert(context, widgetId, string);

@@ -146,6 +146,20 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             return getFromBitcoinCharts("virtexCAD");
         }
+    },
+    JUSTCOIN(R.array.currencies_justcoin, "jstcn") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            JSONArray array = getJSONArray("https://justcoin.com/api/v1/markets");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                String symbol = obj.getString("id");
+                if(symbol.equals("BTC" + currencyCode)) {
+                    return obj.getString("last");
+                }
+            }
+            return null;
+        }
     };
 
     private final int currencyArrayID;
@@ -171,7 +185,7 @@ public enum BTCProvider {
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
             if(!symbol.equals(obj.getString("symbol"))) continue;
-            return obj.getString("bid");
+            return obj.getString("avg");
         }
         return null;
     }
