@@ -11,6 +11,6 @@
     <string name="key_rate">rate</string>
     <string name="default_refresh_interval">10</string>
     <string name="default_currency">USD</string>
-    <string name="default_provider">2</string>
+    <string name="default_provider">1</string>
     <string name="default_theme">Light</string>
 </resources>

@@ -170,6 +170,9 @@
         <item>EUR</item>
         <item>NOK</item>
     </string-array>
+    <string-array name="currencies_kuna">
+        <item>UAH</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>3</item>
@@ -186,6 +189,7 @@
         <item>1</item>
         <item>17</item>
         <item>14</item>
+        <item>18</item>
         <item>6</item>
         <item>16</item>
     </string-array>
@@ -205,6 +209,7 @@
         <item>Coinbase</item>
         <item>Justcoin</item>
         <item>Kraken</item>
+        <item>KunaBTC</item>
         <item>Mercado Bitcoin</item>
         <item>Virtex</item>
     </string-array>

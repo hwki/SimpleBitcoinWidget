@@ -22,8 +22,8 @@
         android:defaultValue="@string/default_currency"
         android:persistent="false"
         android:dialogTitle="@string/title_currency"
-        android:entries="@array/currencies_bitstamp"
-        android:entryValues="@array/currencies_bitstamp"
+        android:entries="@array/currencies_coinbase"
+        android:entryValues="@array/currencies_coinbase"
         android:key="@string/key_currency"
         android:title="@string/title_currency" />
     <CheckBoxPreference

@@ -160,6 +160,12 @@ public enum BTCProvider {
             }
             return null;
         }
+    },
+    KUNA(R.array.currencies_kuna, "kuna") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getString("http://kuna.com.ua/index/kunabtc.index.php");
+        }
     };
 
     private final int currencyArrayID;

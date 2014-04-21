@@ -24,7 +24,8 @@ public enum Currency {
     BRL("R$#,###.00", "R$#,###.00", "R$#,###"),
     ILS("₪#,###.00", "₪#,###"),
     ZAR("R #,###.00", "R #,###"),
-    TRY("#,### TL", "#,### TL");
+    TRY("#,### TL", "#,### TL"),
+    UAH("₴#,###", "₴#,###");
 
 	String format;
     String thousandFormat;

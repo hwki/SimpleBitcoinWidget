@@ -54,7 +54,6 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
 
-
         });
 
         provider.setSummary(getString(R.string.summary_provider, provider.getEntry()));
