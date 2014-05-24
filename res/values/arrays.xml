@@ -93,18 +93,22 @@
         <item>AUD</item>
         <item>BRL</item>
         <item>CAD</item>
+        <item>CHF</item>
         <item>CNY</item>
-        <item>CZK</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>HKD</item>
         <item>ILS</item>
         <item>JPY</item>
+        <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
+        <item>RON</item>
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
+        <item>TRY</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_bitcoinaverage_global">
@@ -112,18 +116,22 @@
         <item>AUD</item>
         <item>BRL</item>
         <item>CAD</item>
+        <item>CHF</item>
         <item>CNY</item>
-        <item>CZK</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>HKD</item>
         <item>ILS</item>
         <item>JPY</item>
+        <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
+        <item>RON</item>
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
+        <item>TRY</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_btcchina">
@@ -146,13 +154,16 @@
         <item>HKD</item>
         <item>ILS</item>
         <item>JPY</item>
+        <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
+        <item>RON</item>
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
         <item>THB</item>
+        <item>TRY</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_kraken">
