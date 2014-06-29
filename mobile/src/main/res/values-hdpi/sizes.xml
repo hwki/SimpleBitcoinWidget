@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="provider_text">10dp</dimen>
+    <bool name="strip_newline">false</bool>
+    <dimen name="widget_margin_vertical">10dp</dimen>
+    <dimen name="widget_margin_horizontal">10dp</dimen>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:updatePeriodMillis="0"
+    android:minWidth="110dp"
+    android:minHeight="40dp"
+    android:initialLayout="@layout/widget_layout"
+    android:widgetCategory="home_screen|keyguard"
+    android:initialKeyguardLayout="@layout/widget_layout"
+    android:resizeMode="vertical|horizontal"
+    android:previewImage="@drawable/widget_preview"
+    android:configure="com.brentpanther.bitcoinwidget.SettingsActivity"
+  />
