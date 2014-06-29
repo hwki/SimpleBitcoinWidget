@@ -144,7 +144,8 @@ public enum BTCProvider {
     VIRTEX(R.array.currencies_virtex, "vrtx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getFromBitcoinCharts("virtexCAD");
+            JSONObject obj = getJSONObject("https://cavirtex.com/api2/ticker.json");
+            return obj.getJSONObject("ticker").getJSONObject("BTCCAD").getString("last");
         }
     },
     JUSTCOIN(R.array.currencies_justcoin, "jstcn") {
