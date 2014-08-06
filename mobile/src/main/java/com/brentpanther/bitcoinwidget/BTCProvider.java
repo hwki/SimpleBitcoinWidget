@@ -230,6 +230,7 @@ public enum BTCProvider {
         HttpParams params = new BasicHttpParams();
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+        HttpProtocolParams.setUserAgent(params, "SimpleBitcoinWidget/1.0");
 
         SchemeRegistry registry = new SchemeRegistry();
         registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
