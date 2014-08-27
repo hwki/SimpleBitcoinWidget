@@ -73,7 +73,10 @@ public enum BTCProvider {
     BITCOINDE(R.array.currencies_bitcoinde, "bt.de") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getFromBitcoinCharts("btcdeEUR");
+            JSONObject obj = getJSONObject("https://bitcoinapi.de/widget/current-btc-price/rate.json");
+            String price = obj.getString("price_eur");
+            String[] amount = price.split("\\s");
+            return amount[0].replaceAll(",", ".");
         }
     },
     BITCUREX(R.array.currencies_bitcurex, "btcrx") {
@@ -100,7 +103,8 @@ public enum BTCProvider {
     BTC_CHINA(R.array.currencies_btcchina, "btchn") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-           return getFromBitcoinCharts("btcnCNY");
+            JSONObject obj = getJSONObject("https://data.btcchina.com/data/ticker?market=btccny");
+            return obj.getJSONObject("ticker").getString("last");
         }
     },
     BIT2C(R.array.currencies_bit2c, "bit2c") {
@@ -180,6 +184,31 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             JSONArray arr = getJSONArray("https://cryptonit.net/apiv2/rest/public/ccorder.json?bid_currency=USD&ask_currency=BTC&rate=");
             return arr.getString(0);
+        }
+    },
+    COINTREE(R.array.currencies_cointree, "tree") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://www.cointree.com.au/api/price/btc/aud").getString("Spot");
+        }
+    },
+    BTCMARKETS(R.array.currencies_btcmarkets, "bmkts") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://api.btcmarkets.net/market/BTC/AUD/tick").getString("lastPrice");
+        }
+    },
+    HUOBI(R.array.currencies_huobi, "huobi") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            JSONObject obj = getJSONObject("http://market.huobi.com/staticmarket/ticker_btc_json.js");
+            return obj.getJSONObject("ticker").getString("last");
+        }
+    },
+    KORBIT(R.array.currencies_korbit, "krbt") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://api.korbit.co.kr/v1/ticker/detailed").getString("last");
         }
     };
 

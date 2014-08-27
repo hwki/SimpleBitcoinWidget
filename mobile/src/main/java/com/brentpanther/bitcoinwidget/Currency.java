@@ -27,7 +27,8 @@ public enum Currency {
     TRY("#,### TL", "#,### TL"),
     UAH("₴#,###", "₴#,###"),
     MXN("MX$#,###", "MX$#,####"),
-    RON("#,### lei", "#,### lei");
+    RON("#,### lei", "#,### lei"),
+    KRW("₩ #,###", "₩ #,###");
 
 	String format;
     String thousandFormat;

@@ -191,6 +191,18 @@
     <string-array name="currencies_cryptonit">
         <item>USD</item>
     </string-array>
+    <string-array name="currencies_cointree">
+        <item>AUD</item>
+    </string-array>
+    <string-array name="currencies_btcmarkets">
+        <item>AUD</item>
+    </string-array>
+    <string-array name="currencies_huobi">
+        <item>CNY</item>
+    </string-array>
+    <string-array name="currencies_korbit">
+        <item>KRW</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>3</item>
@@ -202,11 +214,15 @@
         <item>2</item>
         <item>11</item>
         <item>5</item>
+        <item>22</item>
         <item>15</item>
         <item>4</item>
         <item>20</item>
         <item>1</item>
+        <item>21</item>
+        <item>23</item>
         <item>17</item>
+        <item>24</item>
         <item>14</item>
         <item>18</item>
         <item>19</item>
@@ -224,11 +240,15 @@
         <item>Bitstamp</item>
         <item>BTC China</item>
         <item>BTC-e</item>
+        <item>BTC Markets</item>
         <item>BTCTurk</item>
         <item>Camp BX</item>
         <item>Cryptonit</item>
         <item>Coinbase</item>
+        <item>Cointree</item>
+        <item>Huobi</item>
         <item>Justcoin</item>
+        <item>Korbit</item>
         <item>Kraken</item>
         <item>KunaBTC</item>
         <item>LakeBTC</item>
