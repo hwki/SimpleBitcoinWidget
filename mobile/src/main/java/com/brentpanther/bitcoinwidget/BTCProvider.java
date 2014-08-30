@@ -210,6 +210,18 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("https://api.korbit.co.kr/v1/ticker/detailed").getString("last");
         }
+    },
+    PAYMIUM(R.array.currencies_paymium, "paym") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://paymium.com/api/v1/data/eur/ticker").getString("price");
+        }
+    },
+    BITSO(R.array.currencies_bitso, "bitso") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://api.bitso.com/public/info").getJSONObject("btc_mxn").getString("rate");
+        }
     };
 
     private final int currencyArrayID;

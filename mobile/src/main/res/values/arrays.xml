@@ -24,23 +24,6 @@
     </string-array>
     <string-array name="currencies_mtgox">
         <item>USD</item>
-        <item>AUD</item>
-        <item>CAD</item>
-        <item>CHF</item>
-        <item>CNY</item>
-        <item>CZK</item>
-        <item>DKK</item>
-        <item>EUR</item>
-        <item>GBP</item>
-        <item>HKD</item>
-        <item>JPY</item>
-        <item>NOK</item>
-        <item>NZD</item>
-        <item>PLN</item>
-        <item>RUB</item>
-        <item>SEK</item>
-        <item>SGD</item>
-        <item>THB</item>
     </string-array>
     <string-array name="currencies_coinbase">
         <item>USD</item>
@@ -56,6 +39,7 @@
         <item>HKD</item>
         <item>ILS</item>
         <item>JPY</item>
+        <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
@@ -203,6 +187,12 @@
     <string-array name="currencies_korbit">
         <item>KRW</item>
     </string-array>
+    <string-array name="currencies_paymium">
+        <item>EUR</item>
+    </string-array>
+    <string-array name="currencies_bitso">
+        <item>MXN</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>3</item>
@@ -211,6 +201,7 @@
         <item>8</item>
         <item>9</item>
         <item>13</item>
+        <item>26</item>
         <item>2</item>
         <item>11</item>
         <item>5</item>
@@ -227,6 +218,7 @@
         <item>18</item>
         <item>19</item>
         <item>6</item>
+        <item>25</item>
         <item>16</item>
     </string-array>
     <string-array name="providers">
@@ -237,6 +229,7 @@
         <item>Bitcurex</item>
         <item>Bitfinex</item>
         <item>BitPay</item>
+        <item>Bitso</item>
         <item>Bitstamp</item>
         <item>BTC China</item>
         <item>BTC-e</item>
@@ -253,6 +246,7 @@
         <item>KunaBTC</item>
         <item>LakeBTC</item>
         <item>Mercado Bitcoin</item>
+        <item>Paymium</item>
         <item>Virtex</item>
     </string-array>
     <string-array name="themes">
