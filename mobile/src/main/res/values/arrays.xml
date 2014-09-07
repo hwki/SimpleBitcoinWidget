@@ -70,6 +70,7 @@
         <item>EUR</item>
     </string-array>
     <string-array name="currencies_bitcurex">
+        <item>EUR</item>
         <item>PLN</item>
     </string-array>
     <string-array name="currencies_bitcoinaverage">
@@ -193,6 +194,9 @@
     <string-array name="currencies_bitso">
         <item>MXN</item>
     </string-array>
+    <string-array name="currencies_zyado">
+        <item>EUR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>3</item>
@@ -220,6 +224,7 @@
         <item>6</item>
         <item>25</item>
         <item>16</item>
+        <item>27</item>
     </string-array>
     <string-array name="providers">
         <item>Bit2C</item>
@@ -248,6 +253,7 @@
         <item>Mercado Bitcoin</item>
         <item>Paymium</item>
         <item>Virtex</item>
+        <item>Zyado</item>
     </string-array>
     <string-array name="themes">
         <item>Light</item>

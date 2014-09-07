@@ -82,8 +82,9 @@ public enum BTCProvider {
     BITCUREX(R.array.currencies_bitcurex, "btcrx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("https://pln.bitcurex.com/data/ticker.json");
-            return obj.getString("last");
+            JSONObject obj = getJSONObject(String.format("https://bitcurex.com/api/%s/ticker.json", currencyCode));
+            StringBuilder sb = new StringBuilder(obj.getString("last_tx_price"));
+            return sb.insert(sb.length()-4, ".").toString();
         }
     },
     BITFINEX(R.array.currencies_bitfinex, "btfnx") {
@@ -182,7 +183,7 @@ public enum BTCProvider {
     CRYPTONIT(R.array.currencies_cryptonit, "crypt") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONArray arr = getJSONArray("https://cryptonit.net/apiv2/rest/public/ccorder.json?bid_currency=USD&ask_currency=BTC&rate=");
+            JSONArray arr = getJSONArray("https://cryptonit.net/apiv2/rest/public/ccorder?bid_currency=usd&ask_currency=btc&ticker");
             return arr.getString(0);
         }
     },
@@ -221,6 +222,12 @@ public enum BTCProvider {
         @Override
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("https://api.bitso.com/public/info").getJSONObject("btc_mxn").getString("rate");
+        }
+    },
+    ZYADO(R.array.currencies_zyado, "zyd") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("http://chart.zyado.com/ticker.json").getString("last");
         }
     };
 
