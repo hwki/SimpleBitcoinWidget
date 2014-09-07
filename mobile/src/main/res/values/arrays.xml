@@ -197,6 +197,9 @@
     <string-array name="currencies_zyado">
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_cryptsy">
+        <item>USD</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>3</item>
@@ -212,9 +215,10 @@
         <item>22</item>
         <item>15</item>
         <item>4</item>
-        <item>20</item>
         <item>1</item>
         <item>21</item>
+        <item>20</item>
+        <item>28</item>
         <item>23</item>
         <item>17</item>
         <item>24</item>
@@ -241,9 +245,10 @@
         <item>BTC Markets</item>
         <item>BTCTurk</item>
         <item>Camp BX</item>
-        <item>Cryptonit</item>
         <item>Coinbase</item>
         <item>Cointree</item>
+        <item>Cryptonit</item>
+        <item>Cryptsy</item>
         <item>Huobi</item>
         <item>Justcoin</item>
         <item>Korbit</item>

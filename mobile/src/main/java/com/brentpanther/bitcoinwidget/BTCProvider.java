@@ -229,6 +229,12 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("http://chart.zyado.com/ticker.json").getString("last");
         }
+    },
+    CRYPTSY(R.array.currencies_cryptsy, "crpsy") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://www.cryptsy.com/trades/ajaxlasttrades").getString("2");
+        }
     };
 
     private final int currencyArrayID;
