@@ -183,8 +183,8 @@ public enum BTCProvider {
     CRYPTONIT(R.array.currencies_cryptonit, "crypt") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONArray arr = getJSONArray("https://cryptonit.net/apiv2/rest/public/ccorder?bid_currency=usd&ask_currency=btc&ticker");
-            return arr.getString(0);
+            JSONObject obj = getJSONObject("http://cryptonit.net/apiv2/rest/public/ccorder.json?bid_currency=usd&ask_currency=btc&ticker");
+            return obj.getJSONObject("rate").getString("last");
         }
     },
     COINTREE(R.array.currencies_cointree, "tree") {
@@ -234,6 +234,13 @@ public enum BTCProvider {
         @Override
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("https://www.cryptsy.com/trades/ajaxlasttrades").getString("2");
+        }
+    },
+    BITBAY(R.array.currencies_bitbay, "btbay") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://market.bitbay.pl/API/Public/BTC%s/ticker.json", currencyCode);
+            return getJSONObject(url).getString("last");
         }
     };
 
