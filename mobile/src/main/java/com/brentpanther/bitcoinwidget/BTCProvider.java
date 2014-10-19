@@ -242,6 +242,29 @@ public enum BTCProvider {
             String url = String.format("https://market.bitbay.pl/API/Public/BTC%s/ticker.json", currencyCode);
             return getJSONObject(url).getString("last");
         }
+    },
+    CEXIO(R.array.currencies_cexio, "cexio") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject(String.format("https://cex.io/api/last_price/BTC/%s", currencyCode)).getString("lprice");
+        }
+    },
+    BTCXCHANGE(R.array.currencies_btcxchange, "btxch") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject(String.format("https://api.btcxchange.ro/ticker/%s", currencyCode)).getString("last");
+        }
+    },
+    OKCOIN(R.array.currencies_okcoin, "ok") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            if("USD".equals(currencyCode)) {
+                return getJSONObject("https://www.okcoin.com/api/ticker.do?ok=1").getJSONObject("ticker").getString("last");
+            } else if("CNY".equals(currencyCode)) {
+                return getJSONObject("https://www.okcoin.cn/api/ticker.do?ok=1").getJSONObject("ticker").getString("last");
+            }
+            return null;
+        }
     };
 
     private final int currencyArrayID;

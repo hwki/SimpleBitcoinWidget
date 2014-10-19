@@ -204,6 +204,18 @@
         <item>USD</item>
         <item>PLN</item>
     </string-array>
+    <string-array name="currencies_cexio">
+        <item>USD</item>
+    </string-array>
+    <string-array name="currencies_btcxchange">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>RON</item>
+    </string-array>
+    <string-array name="currencies_okcoin">
+        <item>USD</item>
+        <item>CNY</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -219,7 +231,9 @@
         <item>5</item>
         <item>22</item>
         <item>15</item>
+        <item>31</item>
         <item>4</item>
+        <item>30</item>
         <item>1</item>
         <item>21</item>
         <item>20</item>
@@ -231,6 +245,7 @@
         <item>18</item>
         <item>19</item>
         <item>6</item>
+        <item>32</item>
         <item>25</item>
         <item>16</item>
         <item>27</item>
@@ -250,7 +265,9 @@
         <item>BTC-e</item>
         <item>BTC Markets</item>
         <item>BTCTurk</item>
+        <item>BTCXchange</item>
         <item>Camp BX</item>
+        <item>Cex.io</item>
         <item>Coinbase</item>
         <item>Cointree</item>
         <item>Cryptonit</item>
@@ -262,6 +279,7 @@
         <item>KunaBTC</item>
         <item>LakeBTC</item>
         <item>Mercado Bitcoin</item>
+        <item>OK Coin</item>
         <item>Paymium</item>
         <item>Virtex</item>
         <item>Zyado</item>
