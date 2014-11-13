@@ -8,6 +8,7 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
@@ -143,7 +144,7 @@ public enum BTCProvider {
         @Override
         public String getValue(String currencyCode) throws Exception {
             JSONObject obj = getJSONObject("https://www.btcturk.com/api/ticker");
-            return obj.getString("last");
+            return obj.getString("Last");
         }
     },
     VIRTEX(R.array.currencies_virtex, "vrtx") {
@@ -265,7 +266,27 @@ public enum BTCProvider {
             }
             return null;
         }
+    },
+    HITBTC(R.array.currencies_hitbtc, "hit") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject(String.format("https://api.hitbtc.com/api/1/public/BTC%s/ticker", currencyCode)).getString("last");
+        }
+    },
+    ITBIT(R.array.currencies_itbit, "itbit") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject(String.format("https://api.itbit.com/v1/markets/XBT%s/ticker", currencyCode)).getString("lastPrice");
+        }
+    },
+    BITCOINCOID(R.array.currencies_bitcoincoid, "coid") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://vip.bitcoin.co.id/api/BTC_IDR/ticker/").getJSONObject("ticker").getString("last");
+        }
     };
+
+
 
     private final int currencyArrayID;
     private String label;
@@ -321,7 +342,8 @@ public enum BTCProvider {
         registry.register(new Scheme("https", sf, 443));
 
         ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-        HttpClient client = new DefaultHttpClient(ccm, params);
+        DefaultHttpClient client = new DefaultHttpClient(ccm, params);
+        client.setCookieStore(new BasicCookieStore());
 
         return client.execute(get, new BasicResponseHandler());
     }

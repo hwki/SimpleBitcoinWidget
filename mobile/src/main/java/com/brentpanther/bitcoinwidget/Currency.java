@@ -28,7 +28,8 @@ public enum Currency {
     UAH("₴#,###", "₴#,###"),
     MXN("MX$#,###", "MX$#,####"),
     RON("#,### lei", "#,### lei"),
-    KRW("₩ #,###", "₩ #,###");
+    KRW("₩ #,###", "₩ #,###"),
+    IDR("LP#,###,###", "LP#,###,###");
 
 	String format;
     String thousandFormat;

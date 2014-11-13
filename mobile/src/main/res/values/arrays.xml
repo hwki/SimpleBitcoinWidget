@@ -208,19 +208,32 @@
         <item>USD</item>
     </string-array>
     <string-array name="currencies_btcxchange">
-        <item>EUR</item>
         <item>USD</item>
+        <item>EUR</item>
         <item>RON</item>
     </string-array>
     <string-array name="currencies_okcoin">
         <item>USD</item>
         <item>CNY</item>
     </string-array>
+    <string-array name="currencies_hitbtc">
+        <item>USD</item>
+        <item>EUR</item>
+    </string-array>
+    <string-array name="currencies_itbit">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>SGD</item>
+    </string-array>
+    <string-array name="currencies_bitcoincoid">
+        <item>IDR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
         <item>3</item>
         <item>10</item>
+        <item>35</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>
@@ -238,7 +251,9 @@
         <item>21</item>
         <item>20</item>
         <item>28</item>
+        <item>33</item>
         <item>23</item>
+        <item>34</item>
         <item>17</item>
         <item>24</item>
         <item>14</item>
@@ -255,6 +270,7 @@
         <item>BitBay</item>
         <item>Bitcoin Average</item>
         <item>Bitcoin Average (global)</item>
+        <item>Bitcoin.co.id</item>
         <item>Bitcoin.de</item>
         <item>Bitcurex</item>
         <item>Bitfinex</item>
@@ -272,7 +288,9 @@
         <item>Cointree</item>
         <item>Cryptonit</item>
         <item>Cryptsy</item>
+        <item>HitBTC</item>
         <item>Huobi</item>
+        <item>ItBit</item>
         <item>Justcoin</item>
         <item>Korbit</item>
         <item>Kraken</item>
