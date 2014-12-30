@@ -163,8 +163,15 @@
     </string-array>
     <string-array name="currencies_justcoin">
         <item>USD</item>
+        <item>AUD</item>
+        <item>CAD</item>
+        <item>CHF</item>
         <item>EUR</item>
-        <item>NOK</item>
+        <item>GBP</item>
+        <item>HKD</item>
+        <item>JPY</item>
+        <item>NZD</item>
+        <item>SGD</item>
     </string-array>
     <string-array name="currencies_kuna">
         <item>UAH</item>
@@ -228,6 +235,9 @@
     <string-array name="currencies_bitcoincoid">
         <item>IDR</item>
     </string-array>
+    <string-array name="currencies_foxbit">
+        <item>BRL</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -239,6 +249,7 @@
         <item>9</item>
         <item>13</item>
         <item>26</item>
+
         <item>2</item>
         <item>11</item>
         <item>5</item>
@@ -249,8 +260,10 @@
         <item>30</item>
         <item>1</item>
         <item>21</item>
+
         <item>20</item>
         <item>28</item>
+        <item>36</item>
         <item>33</item>
         <item>23</item>
         <item>34</item>
@@ -258,6 +271,7 @@
         <item>24</item>
         <item>14</item>
         <item>18</item>
+
         <item>19</item>
         <item>6</item>
         <item>32</item>
@@ -276,6 +290,7 @@
         <item>Bitfinex</item>
         <item>BitPay</item>
         <item>Bitso</item>
+
         <item>Bitstamp</item>
         <item>BTC China</item>
         <item>BTC-e</item>
@@ -286,8 +301,10 @@
         <item>Cex.io</item>
         <item>Coinbase</item>
         <item>Cointree</item>
+
         <item>Cryptonit</item>
         <item>Cryptsy</item>
+        <item>FoxBit</item>
         <item>HitBTC</item>
         <item>Huobi</item>
         <item>ItBit</item>
@@ -295,6 +312,7 @@
         <item>Korbit</item>
         <item>Kraken</item>
         <item>KunaBTC</item>
+
         <item>LakeBTC</item>
         <item>Mercado Bitcoin</item>
         <item>OK Coin</item>

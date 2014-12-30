@@ -144,7 +144,7 @@ public enum BTCProvider {
         @Override
         public String getValue(String currencyCode) throws Exception {
             JSONObject obj = getJSONObject("https://www.btcturk.com/api/ticker");
-            return obj.getString("Last");
+            return obj.getString("last");
         }
     },
     VIRTEX(R.array.currencies_virtex, "vrtx") {
@@ -157,15 +157,9 @@ public enum BTCProvider {
     JUSTCOIN(R.array.currencies_justcoin, "jstcn") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONArray array = getJSONArray("https://justcoin.com/api/v1/markets");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                String symbol = obj.getString("id");
-                if(symbol.equals("BTC" + currencyCode)) {
-                    return obj.getString("last");
-                }
-            }
-            return null;
+            String url = String.format("https://justcoin.com/api/2/BTC%s/money/ticker", currencyCode);
+            JSONObject obj = getJSONObject(url);
+            return obj.getJSONObject("data").getJSONObject("last").getString("value");
         }
     },
     KUNA(R.array.currencies_kuna, "kuna") {
@@ -283,6 +277,12 @@ public enum BTCProvider {
         @Override
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("https://vip.bitcoin.co.id/api/BTC_IDR/ticker/").getJSONObject("ticker").getString("last");
+        }
+    },
+    FOXBIT(R.array.currencies_foxbit, "fxbt") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC").getString("last");
         }
     };
 
