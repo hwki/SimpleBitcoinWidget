@@ -3,7 +3,7 @@ package com.brentpanther.bitcoinwidget;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,7 +18,7 @@ import java.text.NumberFormat;
  */
 public class TextSizer {
 
-    public static SparseArray<Integer> priceMap = new SparseArray<Integer>() {{
+    public static SparseIntArray priceMap = new SparseIntArray() {{
         put(10, R.id.price1);
         put(12, R.id.price2);
         put(14, R.id.price3);
@@ -32,7 +32,7 @@ public class TextSizer {
         put(30, R.id.price11);
     }};
 
-    public static SparseArray<Integer> priceSplitMap = new SparseArray<Integer>() {{
+    public static SparseIntArray priceSplitMap = new SparseIntArray() {{
         put(10, R.id.price1s);
         put(12, R.id.price2s);
         put(14, R.id.price3s);
@@ -46,7 +46,7 @@ public class TextSizer {
         put(30, R.id.price11s);
     }};
 
-    public static SparseArray<Integer> providerMap = new SparseArray<Integer>() {{
+    public static SparseIntArray providerMap = new SparseIntArray() {{
         put(9, R.id.provider1);
         put(10, R.id.provider2);
         put(11, R.id.provider3);

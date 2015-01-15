@@ -234,7 +234,7 @@ public enum BTCProvider {
     BITBAY(R.array.currencies_bitbay, "btbay") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = String.format("https://market.bitbay.pl/API/Public/BTC%s/ticker.json", currencyCode);
+            String url = String.format("https://bitbay.net/API/Public/BTC%s/ticker.json", currencyCode);
             return getJSONObject(url).getString("last");
         }
     },
@@ -284,9 +284,14 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("https://api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC").getString("last");
         }
+    },
+    INDEPENDENT_RESERVER(R.array.currencies_independentreserve, "ir") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=xbt&secondaryCurrencyCode=%s";
+            return getJSONObject(String.format(url, currencyCode)).getString("LastPrice");
+        }
     };
-
-
 
     private final int currencyArrayID;
     private String label;
