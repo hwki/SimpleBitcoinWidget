@@ -14,32 +14,32 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
-	
+
     private ListPreference refresh;
-	private ListPreference currency;
-	private ListPreference provider;
+    private ListPreference currency;
+    private ListPreference provider;
     private ListPreference theme;
     private CheckBoxPreference label;
     private int appWidgetId;
     private int refreshValue;
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-		appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-		if(extras != null) appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        if (extras != null)
+            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         addPreferencesFromResource(R.xml.preferences);
         refresh = (ListPreference) findPreference(getString(R.string.key_refresh_interval));
         currency = (ListPreference) findPreference(getString(R.string.key_currency));
         provider = (ListPreference) findPreference(getString(R.string.key_provider));
         label = (CheckBoxPreference) findPreference(getString(R.string.key_label));
         theme = (ListPreference) findPreference(getString(R.string.key_theme));
-        
+
         setRefresh(Prefs.getInterval(this, appWidgetId));
         refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
@@ -60,10 +60,10 @@ public class SettingsActivity extends PreferenceActivity {
                 CharSequence[] entryValues = p.getEntryValues();
                 int v = 0;
                 for (int i = 0; i < entryValues.length; i++) {
-                    if (entryValues[i].equals(value)) v=i;
+                    if (entryValues[i].equals(value)) v = i;
                 }
                 preference.setSummary(getString(R.string.summary_provider, p.getEntries()[v]));
-                int index = Integer.valueOf((String)value);
+                int index = Integer.valueOf((String) value);
                 BTCProvider provider = BTCProvider.values()[index];
                 currency.setEntries(provider.getCurrencies());
                 currency.setEntryValues(provider.getCurrencies());
@@ -89,18 +89,6 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
-        findPreference(getString(R.string.key_donate)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent btc = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.btc_address)));
-                try {
-                    startActivity(btc);
-                } catch (ActivityNotFoundException anfe) {
-                    Toast.makeText(SettingsActivity.this, getString(R.string.donate_error), Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            }
-        });
         findPreference(getString(R.string.key_rate)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -119,7 +107,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.add(0, 0, 0, "Save");
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
         return true;
@@ -144,17 +132,17 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     private void setRefresh(int rate) {
-    	refreshValue = rate;
-    	if(rate < 60) {
-    		refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_minute, rate, rate));
-    	} else {
-    		refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_hour, rate/60, rate/60));
-    	}
-	}
-    
+        refreshValue = rate;
+        if (rate < 60) {
+            refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_minute, rate, rate));
+        } else {
+            refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_hour, rate / 60, rate / 60));
+        }
+    }
+
     @Override
     public void onBackPressed() {
-    	save();
+        save();
     }
 
 }

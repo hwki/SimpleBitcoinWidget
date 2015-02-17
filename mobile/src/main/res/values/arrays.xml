@@ -243,6 +243,19 @@
         <item>USD</item>
         <item>AUD</item>
     </string-array>
+    <string-array name="currencies_buttercoin">
+        <item>USD</item>
+    </string-array>
+    <string-array name="currencies_clevercoin">
+        <item>EUR</item>
+    </string-array>
+    <string-array name="currencies_bitmarket24">
+        <item>PLN</item>
+    </string-array>
+    <string-array name="currencies_quadriga">
+        <item>USD</item>
+        <item>CAD</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -252,20 +265,23 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>40</item>
         <item>13</item>
-        <item>26</item>
 
+        <item>26</item>
         <item>2</item>
         <item>11</item>
         <item>5</item>
         <item>22</item>
         <item>15</item>
         <item>31</item>
+        <item>38</item>
         <item>4</item>
         <item>30</item>
+
+        <item>39</item>
         <item>1</item>
         <item>21</item>
-
         <item>20</item>
         <item>28</item>
         <item>36</item>
@@ -273,16 +289,18 @@
         <item>23</item>
         <item>37</item>
         <item>34</item>
+
         <item>17</item>
         <item>24</item>
         <item>14</item>
-
         <item>18</item>
         <item>19</item>
         <item>6</item>
         <item>32</item>
         <item>25</item>
+        <item>41</item>
         <item>16</item>
+
         <item>27</item>
     </string-array>
     <string-array name="providers">
@@ -294,20 +312,23 @@
         <item>Bitcoin.de</item>
         <item>Bitcurex</item>
         <item>Bitfinex</item>
+        <item>BitMarket24</item>
         <item>BitPay</item>
-        <item>Bitso</item>
 
+        <item>Bitso</item>
         <item>Bitstamp</item>
         <item>BTC China</item>
         <item>BTC-e</item>
         <item>BTC Markets</item>
         <item>BTCTurk</item>
         <item>BTCXchange</item>
+        <item>Buttercoin</item>
         <item>Camp BX</item>
         <item>Cex.io</item>
+
+        <item>Clevercoin</item>
         <item>Coinbase</item>
         <item>Cointree</item>
-
         <item>Cryptonit</item>
         <item>Cryptsy</item>
         <item>FoxBit</item>
@@ -315,16 +336,18 @@
         <item>Huobi</item>
         <item>Independent Reserve</item>
         <item>ItBit</item>
+
         <item>Justcoin</item>
         <item>Korbit</item>
         <item>Kraken</item>
-
         <item>KunaBTC</item>
         <item>LakeBTC</item>
         <item>Mercado Bitcoin</item>
         <item>OK Coin</item>
         <item>Paymium</item>
+        <item>QuadrigaCX</item>
         <item>Virtex</item>
+
         <item>Zyado</item>
     </string-array>
     <string-array name="themes">

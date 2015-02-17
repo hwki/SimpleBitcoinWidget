@@ -291,6 +291,31 @@ public enum BTCProvider {
             String url = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=xbt&secondaryCurrencyCode=%s";
             return getJSONObject(String.format(url, currencyCode)).getString("LastPrice");
         }
+    },
+    BUTTERCOIN(R.array.currencies_buttercoin, "btrcn") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://api.buttercoin.com/v1/ticker").getString("last");
+        }
+    },
+    CLEVERCOIN(R.array.currencies_clevercoin, "clvr") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://api.clevercoin.com/v1/ticker").getString("last");
+        }
+    },
+    BITMARKET24(R.array.currencies_bitmarket24, "bm24") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://bitmarket24.pl/api/BTC_PLN/status.json").getString("last");
+        }
+    },
+    QUADRIGA(R.array.currencies_quadriga, "qdrga") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.quadrigacx.com/v2/ticker?book=BTC_%s";
+            return getJSONObject(String.format(url, currencyCode)).getString("last");
+        }
     };
 
     private final int currencyArrayID;
@@ -301,21 +326,11 @@ public enum BTCProvider {
         this.label = label;
     }
 
-    public abstract String getValue(String currencyCode) throws Exception;
-
-    public int getCurrencies() {
-        return currencyArrayID;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
     private static String getFromBitcoinCharts(String symbol) throws Exception {
         JSONArray array = getJSONArray("http://api.bitcoincharts.com/v1/markets.json");
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
-            if(!symbol.equals(obj.getString("symbol"))) continue;
+            if (!symbol.equals(obj.getString("symbol"))) continue;
             return obj.getString("avg");
         }
         return null;
@@ -351,6 +366,16 @@ public enum BTCProvider {
         client.setCookieStore(new BasicCookieStore());
 
         return client.execute(get, new BasicResponseHandler());
+    }
+
+    public abstract String getValue(String currencyCode) throws Exception;
+
+    public int getCurrencies() {
+        return currencyArrayID;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
 }
