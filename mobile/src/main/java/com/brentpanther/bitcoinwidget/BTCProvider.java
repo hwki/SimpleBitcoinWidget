@@ -316,6 +316,13 @@ public enum BTCProvider {
             String url = "https://api.quadrigacx.com/v2/ticker?book=BTC_%s";
             return getJSONObject(String.format(url, currencyCode)).getString("last");
         }
+    },
+    GATECOIN(R.array.currencies_gatecoin, "gate") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://www.gatecoin.com/api/Public/LiveTicker/BTC%s";
+            return getJSONObject(String.format(url, currencyCode)).getJSONObject("ticker").getString("last");
+        }
     };
 
     private final int currencyArrayID;
@@ -344,6 +351,7 @@ public enum BTCProvider {
         return new JSONArray(getString(url));
     }
 
+    @SuppressWarnings("deprecation")
     private static String getString(String url) throws Exception {
         HttpGet get = new HttpGet(url);
 
