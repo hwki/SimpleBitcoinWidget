@@ -1,7 +1,6 @@
 package com.brentpanther.bitcoinwidget;
 
 import org.apache.http.HttpVersion;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -119,10 +118,7 @@ public enum BTCProvider {
     BITPAY(R.array.currencies_bitpay, "btpay") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            HttpGet get = new HttpGet("https://bitpay.com/api/rates");
-            HttpClient client = new DefaultHttpClient();
-            String result = client.execute(get, new BasicResponseHandler());
-            JSONArray array = new JSONArray(result);
+            JSONArray array = getJSONArray("https://bitpay.com/api/rates");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
                 if(currencyCode.equals(obj.getString("code"))) {
@@ -247,7 +243,7 @@ public enum BTCProvider {
     BTCXCHANGE(R.array.currencies_btcxchange, "btxch") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject(String.format("https://api.btcxchange.ro/ticker/%s", currencyCode)).getString("last");
+            return null;
         }
     },
     OKCOIN(R.array.currencies_okcoin, "ok") {
@@ -295,7 +291,7 @@ public enum BTCProvider {
     BUTTERCOIN(R.array.currencies_buttercoin, "btrcn") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://api.buttercoin.com/v1/ticker").getString("last");
+            return null;
         }
     },
     CLEVERCOIN(R.array.currencies_clevercoin, "clvr") {
@@ -322,6 +318,13 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             String url = "https://www.gatecoin.com/api/Public/LiveTicker/BTC%s";
             return getJSONObject(String.format(url, currencyCode)).getJSONObject("ticker").getString("last");
+        }
+    },
+    MEXBT(R.array.currencies_mexbt, "mexbt") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://data.mexbt.com/ticker/btc%s";
+            return getJSONObject(String.format(url, currencyCode)).getString("last");
         }
     };
 

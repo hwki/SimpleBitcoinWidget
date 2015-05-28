@@ -261,6 +261,10 @@
         <item>EUR</item>
         <item>HKD</item>
     </string-array>
+    <string-array name="currencies_mexbt">
+        <item>USD</item>
+        <item>MXN</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -279,8 +283,6 @@
         <item>5</item>
         <item>22</item>
         <item>15</item>
-        <item>31</item>
-        <item>38</item>
         <item>4</item>
         <item>30</item>
 
@@ -302,11 +304,12 @@
         <item>18</item>
         <item>19</item>
         <item>6</item>
+        <item>43</item>
         <item>32</item>
         <item>25</item>
         <item>41</item>
-        <item>16</item>
 
+        <item>16</item>
         <item>27</item>
     </string-array>
     <string-array name="providers">
@@ -315,6 +318,7 @@
         <item>Bitcoin Average</item>
         <item>Bitcoin Average (global)</item>
         <item>Bitcoin.co.id</item>
+
         <item>Bitcoin.de</item>
         <item>Bitcurex</item>
         <item>Bitfinex</item>
@@ -326,18 +330,19 @@
         <item>BTC China</item>
         <item>BTC-e</item>
         <item>BTC Markets</item>
+
         <item>BTCTurk</item>
-        <item>BTCXchange</item>
-        <item>Buttercoin</item>
+
         <item>Camp BX</item>
         <item>Cex.io</item>
-
         <item>Clevercoin</item>
+
         <item>Coinbase</item>
         <item>Cointree</item>
         <item>Cryptonit</item>
         <item>Cryptsy</item>
         <item>FoxBit</item>
+
         <item>Gatecoin</item>
         <item>HitBTC</item>
         <item>Huobi</item>
@@ -349,12 +354,14 @@
         <item>Kraken</item>
         <item>KunaBTC</item>
         <item>LakeBTC</item>
+
         <item>Mercado Bitcoin</item>
+        <item>Mexbt</item>
         <item>OK Coin</item>
         <item>Paymium</item>
         <item>QuadrigaCX</item>
-        <item>Virtex</item>
 
+        <item>Virtex</item>
         <item>Zyado</item>
     </string-array>
     <string-array name="themes">
