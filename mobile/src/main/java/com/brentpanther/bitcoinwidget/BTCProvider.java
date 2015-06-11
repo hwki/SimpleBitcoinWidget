@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.security.KeyStore;
+import java.util.Locale;
 
 public enum BTCProvider {
 
@@ -324,7 +325,7 @@ public enum BTCProvider {
         @Override
         public String getValue(String currencyCode) throws Exception {
             String url = "https://data.mexbt.com/ticker/btc%s";
-            return getJSONObject(String.format(url, currencyCode)).getString("last");
+            return getJSONObject(String.format(url, currencyCode.toLowerCase(Locale.US))).getString("last");
         }
     };
 
