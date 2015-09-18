@@ -8,8 +8,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 48
-        versionName "3.3.3"
+        versionCode 49
+        versionName "3.3.4"
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -18,5 +18,7 @@ android {
 }
 
 dependencies {
-
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.0'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
 }

@@ -1,24 +1,13 @@
 package com.brentpanther.bitcoinwidget;
 
-import org.apache.http.HttpVersion;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.security.KeyStore;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 import java.util.Locale;
 
 public enum BTCProvider {
@@ -46,7 +35,7 @@ public enum BTCProvider {
     BITCOIN_AVERAGE(R.array.currencies_bitcoinaverage, "btavg") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://api.bitcoinaverage.com/ticker/%s", currencyCode));
+            JSONObject obj = getJSONObject(String.format("https://api.bitcoinaverage.com/ticker/%s/", currencyCode));
             return obj.getString("last");
         }
     },
@@ -98,7 +87,7 @@ public enum BTCProvider {
     BITCOIN_AVERAGE_GLOBAL(R.array.currencies_bitcoinaverage_global, "gbtav") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://api.bitcoinaverage.com/ticker/global/%s", currencyCode));
+            JSONObject obj = getJSONObject(String.format("https://api.bitcoinaverage.com/ticker/global/%s/", currencyCode));
             return obj.getString("last");
         }
     },
@@ -327,7 +316,29 @@ public enum BTCProvider {
             String url = "https://data.mexbt.com/ticker/btc%s";
             return getJSONObject(String.format(url, currencyCode.toLowerCase(Locale.US))).getString("last");
         }
+    },
+    BITX(R.array.currencies_bitx, "bitx") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://bit-x.com/api/public/ticker?pair=BTC%s";
+            return getJSONObject(String.format(url, currencyCode)).getJSONObject("data").getString("last");
+        }
+    },
+    BTCBOX(R.array.currencies_btcbox, "box") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://www.btcbox.co.jp/api/v1/ticker/";
+            return getJSONObject(url).getString("last");
+        }
+    },
+    BTCXINDIA(R.array.currencies_btcxindia, "india") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.btcxindia.com/ticker/";
+            return getJSONObject(url).getString("last_traded_price");
+        }
     };
+
 
     private final int currencyArrayID;
     private String label;
@@ -357,27 +368,21 @@ public enum BTCProvider {
 
     @SuppressWarnings("deprecation")
     private static String getString(String url) throws Exception {
-        HttpGet get = new HttpGet(url);
+        OkHttpClient client = new OkHttpClient();
+        client.setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+        client.setFollowRedirects(true);
+        Request request = new Request.Builder()
+                .addHeader("User-Agent", "curl/7.43.0")
+                .url(url)
+                .build();
 
-        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        trustStore.load(null, null);
-        MySSLSocketFactory sf = new MySSLSocketFactory(trustStore);
-        sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
-        HttpParams params = new BasicHttpParams();
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-        HttpProtocolParams.setUserAgent(params, "SimpleBitcoinWidget/1.0");
-
-        SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        registry.register(new Scheme("https", sf, 443));
-
-        ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-        DefaultHttpClient client = new DefaultHttpClient(ccm, params);
-        client.setCookieStore(new BasicCookieStore());
-
-        return client.execute(get, new BasicResponseHandler());
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 
     public abstract String getValue(String currencyCode) throws Exception;

@@ -29,6 +29,7 @@ public enum Currency {
     MXN("MX$#,###", "MX$#,####"),
     RON("#,### lei", "#,### lei"),
     KRW("₩ #,###", "₩ #,###"),
+    INR("\u20B9#,###", "\u20B9#,###"),
     IDR("LP#,###,###", "LP#,###,###");
 
 	String format;

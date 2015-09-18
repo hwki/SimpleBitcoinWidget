@@ -82,9 +82,8 @@
         <item>CNY</item>
         <item>EUR</item>
         <item>GBP</item>
-        <item>HKD</item>
+        <item>IDR</item>
         <item>ILS</item>
-        <item>JPY</item>
         <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
@@ -93,7 +92,6 @@
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
-        <item>TRY</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_bitcoinaverage_global">
@@ -265,12 +263,24 @@
         <item>USD</item>
         <item>MXN</item>
     </string-array>
+    <string-array name="currencies_bitx">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+    </string-array>
+    <string-array name="currencies_btcbox">
+        <item>JPY</item>
+    </string-array>
+    <string-array name="currencies_btcxindia">
+        <item>INR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
         <item>3</item>
         <item>10</item>
         <item>35</item>
+
         <item>7</item>
         <item>8</item>
         <item>9</item>
@@ -279,37 +289,43 @@
 
         <item>26</item>
         <item>2</item>
+        <item>44</item>
+        <item>45</item>
         <item>11</item>
         <item>5</item>
         <item>22</item>
+
         <item>15</item>
+        <item>46</item>
         <item>4</item>
         <item>30</item>
-
         <item>39</item>
         <item>1</item>
+
         <item>21</item>
         <item>20</item>
         <item>28</item>
         <item>36</item>
         <item>42</item>
+
         <item>33</item>
         <item>23</item>
         <item>37</item>
         <item>34</item>
-
         <item>17</item>
+
         <item>24</item>
         <item>14</item>
         <item>18</item>
         <item>19</item>
         <item>6</item>
+
         <item>43</item>
         <item>32</item>
         <item>25</item>
         <item>41</item>
-
         <item>16</item>
+
         <item>27</item>
     </string-array>
     <string-array name="providers">
@@ -327,41 +343,43 @@
 
         <item>Bitso</item>
         <item>Bitstamp</item>
+        <item>Bit-X</item>
+        <item>BTC Box</item>
         <item>BTC China</item>
         <item>BTC-e</item>
         <item>BTC Markets</item>
 
         <item>BTCTurk</item>
-
+        <item>BTCXIndia</item>
         <item>Camp BX</item>
         <item>Cex.io</item>
         <item>Clevercoin</item>
-
         <item>Coinbase</item>
+
         <item>Cointree</item>
         <item>Cryptonit</item>
         <item>Cryptsy</item>
         <item>FoxBit</item>
-
         <item>Gatecoin</item>
+
         <item>HitBTC</item>
         <item>Huobi</item>
         <item>Independent Reserve</item>
         <item>ItBit</item>
-
         <item>Justcoin</item>
+
         <item>Korbit</item>
         <item>Kraken</item>
         <item>KunaBTC</item>
         <item>LakeBTC</item>
-
         <item>Mercado Bitcoin</item>
+
         <item>Mexbt</item>
         <item>OK Coin</item>
         <item>Paymium</item>
         <item>QuadrigaCX</item>
-
         <item>Virtex</item>
+
         <item>Zyado</item>
     </string-array>
     <string-array name="themes">
