@@ -3,15 +3,18 @@ package com.brentpanther.bitcoinwidget;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
-import java.util.Locale;
 
 public enum BTCProvider {
 
+    //NO LONGER EXISTS
     MTGOX(R.array.currencies_mtgox, "mtgx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -21,8 +24,8 @@ public enum BTCProvider {
     COINBASE(R.array.currencies_coinbase, "cb") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://coinbase.com/api/v1/prices/spot_rate?currency=%s", currencyCode));
-            return obj.getString("amount");
+            JSONObject obj = getJSONObject(String.format("https://api.coinbase.com/v2/prices/spot?currency=%s", currencyCode));
+            return obj.getJSONObject("data").getString("amount");
         }
     },
     BITSTAMP(R.array.currencies_bitstamp, "btsmp") {
@@ -230,6 +233,7 @@ public enum BTCProvider {
             return getJSONObject(String.format("https://cex.io/api/last_price/BTC/%s", currencyCode)).getString("lprice");
         }
     },
+    //NO LONGER EXISTS
     BTCXCHANGE(R.array.currencies_btcxchange, "btxch") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -278,6 +282,7 @@ public enum BTCProvider {
             return getJSONObject(String.format(url, currencyCode)).getString("LastPrice");
         }
     },
+    //NO LONGER EXISTS
     BUTTERCOIN(R.array.currencies_buttercoin, "btrcn") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -336,6 +341,16 @@ public enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             String url = "https://api.btcxindia.com/ticker/";
             return getJSONObject(url).getString("last_traded_price");
+        }
+    },
+    UPHOLD(R.array.currencies_uphold, "uphld") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.uphold.com/v0/ticker/BTC%s";
+            JSONObject obj = getJSONObject(String.format(url, currencyCode));
+            String bid = obj.getString("bid");
+            String ask = obj.getString("ask");
+            return Double.toString((Double.valueOf(bid) + Double.valueOf(ask)) / 2);
         }
     };
 

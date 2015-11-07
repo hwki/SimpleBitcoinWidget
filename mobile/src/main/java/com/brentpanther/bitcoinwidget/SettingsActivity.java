@@ -21,6 +21,7 @@ public class SettingsActivity extends PreferenceActivity {
     private ListPreference currency;
     private ListPreference provider;
     private ListPreference theme;
+    private CheckBoxPreference icon;
     private CheckBoxPreference label;
     private int appWidgetId;
     private int refreshValue;
@@ -39,6 +40,7 @@ public class SettingsActivity extends PreferenceActivity {
         provider = (ListPreference) findPreference(getString(R.string.key_provider));
         label = (CheckBoxPreference) findPreference(getString(R.string.key_label));
         theme = (ListPreference) findPreference(getString(R.string.key_theme));
+        icon = (CheckBoxPreference) findPreference(getString(R.string.key_icon));
 
         setRefresh(Prefs.getInterval(this, appWidgetId));
         refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -124,7 +126,8 @@ public class SettingsActivity extends PreferenceActivity {
         broadcast.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
         sendBroadcast(broadcast);
-        Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()), label.isChecked(), theme.getValue());
+        Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()),
+                label.isChecked(), theme.getValue(), icon.isChecked());
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, result);

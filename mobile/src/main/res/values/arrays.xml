@@ -37,16 +37,22 @@
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
+        <item>IDR</item>
         <item>ILS</item>
+        <item>INR</item>
         <item>JPY</item>
+        <item>KRW</item>
         <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
+        <item>RON</item>
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
         <item>THB</item>
+        <item>TRY</item>
+        <item>UAH</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_bitstamp">
@@ -70,6 +76,7 @@
         <item>EUR</item>
     </string-array>
     <string-array name="currencies_bitcurex">
+        <item>USD</item>
         <item>EUR</item>
         <item>PLN</item>
     </string-array>
@@ -82,8 +89,10 @@
         <item>CNY</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>HKD</item>
         <item>IDR</item>
         <item>ILS</item>
+        <item>JPY</item>
         <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
@@ -101,11 +110,13 @@
         <item>CAD</item>
         <item>CHF</item>
         <item>CNY</item>
+        <item>DKK</item>
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
         <item>ILS</item>
         <item>JPY</item>
+        <item>KRW</item>
         <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
@@ -115,6 +126,7 @@
         <item>SEK</item>
         <item>SGD</item>
         <item>TRY</item>
+        <item>UAH</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_btcchina">
@@ -135,8 +147,11 @@
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
+        <item>IDR</item>
         <item>ILS</item>
+        <item>INR</item>
         <item>JPY</item>
+        <item>KRW</item>
         <item>MXN</item>
         <item>NOK</item>
         <item>NZD</item>
@@ -147,11 +162,15 @@
         <item>SGD</item>
         <item>THB</item>
         <item>TRY</item>
+        <item>UAH</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_kraken">
         <item>USD</item>
+        <item>CAD</item>
         <item>EUR</item>
+        <item>GBP</item>
+        <item>JPY</item>
     </string-array>
     <string-array name="currencies_btcturk">
         <item>TRY</item>
@@ -164,6 +183,7 @@
         <item>AUD</item>
         <item>CAD</item>
         <item>CHF</item>
+        <item>CNY</item>
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
@@ -177,6 +197,8 @@
     <string-array name="currencies_lake">
         <item>USD</item>
         <item>CNY</item>
+        <item>EUR</item>
+        <item>GBP</item>
     </string-array>
     <string-array name="currencies_cryptonit">
         <item>USD</item>
@@ -212,6 +234,8 @@
     </string-array>
     <string-array name="currencies_cexio">
         <item>USD</item>
+        <item>EUR</item>
+        <item>RUB</item>
     </string-array>
     <string-array name="currencies_btcxchange">
         <item>USD</item>
@@ -240,6 +264,7 @@
     <string-array name="currencies_independentreserve">
         <item>USD</item>
         <item>AUD</item>
+        <item>NZD</item>
     </string-array>
     <string-array name="currencies_buttercoin">
         <item>USD</item>
@@ -261,18 +286,24 @@
     </string-array>
     <string-array name="currencies_mexbt">
         <item>USD</item>
+        <item>BRL</item>
         <item>MXN</item>
+        <item>SGD</item>
     </string-array>
     <string-array name="currencies_bitx">
         <item>USD</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>RUB</item>
     </string-array>
     <string-array name="currencies_btcbox">
         <item>JPY</item>
     </string-array>
     <string-array name="currencies_btcxindia">
         <item>INR</item>
+    </string-array>
+    <string-array name="currencies_uphold">
+        <item>USD</item>
     </string-array>
     <string-array name="providerValues">
         <item>12</item>
@@ -324,6 +355,7 @@
         <item>32</item>
         <item>25</item>
         <item>41</item>
+        <item>47</item>
         <item>16</item>
 
         <item>27</item>
@@ -378,6 +410,7 @@
         <item>OK Coin</item>
         <item>Paymium</item>
         <item>QuadrigaCX</item>
+        <item>Uphold</item>
         <item>Virtex</item>
 
         <item>Zyado</item>

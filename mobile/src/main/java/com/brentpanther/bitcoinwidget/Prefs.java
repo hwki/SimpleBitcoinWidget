@@ -16,6 +16,7 @@ public class Prefs {
     public static final String SHOW_LABEL = "show_label";
     public static final String WIDTH = "width";
     public static final String THEME = "theme";
+    public static final String HIDE_ICON = "icon";
 
     private static SharedPreferences getPrefs(Context context) {
 		return context.getSharedPreferences(context.getString(R.string.key_prefs), Context.MODE_PRIVATE);
@@ -26,7 +27,7 @@ public class Prefs {
         if(value==null) return 0;
         return Long.valueOf(value);
 	}
-	
+
 	static void setLastUpdate(Context context, int widgetId) {
         setValue(context, widgetId, LAST_UPDATE, "" + System.currentTimeMillis());
 	}
@@ -50,13 +51,13 @@ public class Prefs {
         if(value == null) return context.getString(R.string.default_currency);
         return value;
 	}
-	
+
 	static int getInterval(Context context, int widgetId) {
         String value = getValue(context, widgetId, REFRESH);
         if(value == null) value = context.getString(R.string.default_refresh_interval);
 		return Integer.valueOf(value);
 	}
-	
+
 	static int getProvider(Context context, int widgetId) {
         String value = getValue(context, widgetId, PROVIDER);
         if(value == null) value = context.getString(R.string.default_provider);
@@ -65,6 +66,11 @@ public class Prefs {
 
     static boolean getLabel(Context context, int widgetId) {
         String value = getValue(context, widgetId, SHOW_LABEL);
+        return Boolean.valueOf(value);
+    }
+
+    static boolean getIcon(Context context, int widgetId) {
+        String value = getValue(context, widgetId, HIDE_ICON);
         return Boolean.valueOf(value);
     }
 
@@ -98,8 +104,8 @@ public class Prefs {
             e.printStackTrace();
         }
     }
-	
-	static void setValues(Context context, int widgetId, String currency, int refreshValue, int provider, boolean checked, String theme) {
+
+	static void setValues(Context context, int widgetId, String currency, int refreshValue, int provider, boolean checked, String theme, boolean iconChecked) {
         JSONObject obj = new JSONObject();
         try {
             obj.put(CURRENCY, currency);
@@ -107,12 +113,13 @@ public class Prefs {
             obj.put(PROVIDER, "" + provider);
             obj.put(SHOW_LABEL, "" + checked);
             obj.put(THEME, theme);
+            obj.put(HIDE_ICON, "" + !iconChecked);
             getPrefs(context).edit().putString("" + widgetId, obj.toString()).commit();
         } catch (JSONException e) {
             e.printStackTrace();
         }
 	}
-	
+
 	static void delete(Context context, int widgetId) {
 		getPrefs(context).edit().remove("" + widgetId).commit();
 	}
@@ -141,6 +148,7 @@ public class Prefs {
             if(strings.length > 1) obj.put(REFRESH, strings[1]);
             if(strings.length > 2) obj.put(PROVIDER, strings[2]);
             if(strings.length > 3) obj.put(SHOW_LABEL, strings[3]);
+            if(strings.length > 4) obj.put(HIDE_ICON, strings[4]);
         } catch (JSONException e) {
             e.printStackTrace();
         }

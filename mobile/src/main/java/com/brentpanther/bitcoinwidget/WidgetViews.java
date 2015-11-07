@@ -29,13 +29,7 @@ public class WidgetViews {
         for(int i=0; i< TextSizer.providerMap.size(); i++) {
             hide(views, TextSizer.providerMap.valueAt(i));
         }
-        if(color) {
-            hide(views, R.id.bitcoinImageBW);
-            show(views, R.id.bitcoinImage);
-		} else {
-            hide(views, R.id.bitcoinImage);
-            show(views, R.id.bitcoinImageBW);
-		}
+
         boolean showLabel = Prefs.getLabel(context, widgetId);
         if(showLabel) {
             show(views, providerID);
@@ -45,6 +39,7 @@ public class WidgetViews {
             show(views, R.id.space);
             hide(views, providerID);
         }
+
         if(group == null) {
             Double amount = Prefs.getLastAmount(context, widgetId);
             group = TextSizer.getPriceID(context, currency, amount, width);
@@ -54,9 +49,23 @@ public class WidgetViews {
         } else {
             show(views, R.id.priceJB, R.id.imageLayout);
         }
+        boolean hideIcon = Prefs.getIcon(context, widgetId);
+        if (hideIcon) {
+            hide(views, R.id.bitcoinImageBW);
+            hide(views, R.id.bitcoinImage);
+        } else if(color) {
+            hide(views, R.id.bitcoinImageBW);
+            show(views, R.id.bitcoinImage);
+        } else {
+            hide(views, R.id.bitcoinImage);
+            show(views, R.id.bitcoinImageBW);
+        }
+        if(hideIcon && !showLabel) {
+            hide(views, R.id.imageLayout);
+        }
         hide(views, R.id.loading);
 	}
-	
+
 	public static void setLoading(RemoteViews views) {
         show(views, R.id.loading);
         hide(views, R.id.imageLayout, R.id.priceJB);
