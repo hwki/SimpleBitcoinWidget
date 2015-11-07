@@ -26,6 +26,11 @@
         android:persistent="false"
         android:title="@string/title_currency" />
     <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/key_icon"
+        android:persistent="false"
+        android:title="@string/title_icon"/>
+    <CheckBoxPreference
         android:defaultValue="false"
         android:dialogTitle="@string/title_label"
         android:key="@string/key_label"
