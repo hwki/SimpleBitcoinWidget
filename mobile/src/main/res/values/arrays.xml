@@ -92,6 +92,7 @@
         <item>HKD</item>
         <item>IDR</item>
         <item>ILS</item>
+        <item>INR</item>
         <item>JPY</item>
         <item>MXN</item>
         <item>NOK</item>
@@ -199,6 +200,7 @@
         <item>CNY</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>JPY</item>
     </string-array>
     <string-array name="currencies_cryptonit">
         <item>USD</item>
@@ -356,7 +358,6 @@
         <item>25</item>
         <item>41</item>
         <item>47</item>
-        <item>16</item>
 
         <item>27</item>
     </string-array>
@@ -411,7 +412,6 @@
         <item>Paymium</item>
         <item>QuadrigaCX</item>
         <item>Uphold</item>
-        <item>Virtex</item>
 
         <item>Zyado</item>
     </string-array>

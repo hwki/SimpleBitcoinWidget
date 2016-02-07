@@ -136,11 +136,11 @@ public enum BTCProvider {
             return obj.getString("last");
         }
     },
+    //NO LONGER EXISTS
     VIRTEX(R.array.currencies_virtex, "vrtx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("https://cavirtex.com/api2/ticker.json");
-            return obj.getJSONObject("ticker").getJSONObject("BTCCAD").getString("last");
+            return null;
         }
     },
     JUSTCOIN(R.array.currencies_justcoin, "jstcn") {
