@@ -1,8 +1,6 @@
 package com.brentpanther.bitcoinwidget;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,6 +9,10 @@ import java.util.Locale;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public enum BTCProvider {
 
@@ -146,9 +148,7 @@ public enum BTCProvider {
     JUSTCOIN(R.array.currencies_justcoin, "jstcn") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = String.format("https://justcoin.com/api/2/BTC%s/money/ticker", currencyCode);
-            JSONObject obj = getJSONObject(url);
-            return obj.getJSONObject("data").getJSONObject("last").getString("value");
+            return null;
         }
     },
     KUNA(R.array.currencies_kuna, "kuna") {
@@ -214,10 +214,11 @@ public enum BTCProvider {
             return getJSONObject("http://chart.zyado.com/ticker.json").getString("last");
         }
     },
+    //GONE
     CRYPTSY(R.array.currencies_cryptsy, "crpsy") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://www.cryptsy.com/trades/ajaxlasttrades").getString("2");
+            return null;
         }
     },
     BITBAY(R.array.currencies_bitbay, "btbay") {
@@ -308,11 +309,11 @@ public enum BTCProvider {
             return getJSONObject(String.format(url, currencyCode)).getString("last");
         }
     },
+    //OFFLINE
     GATECOIN(R.array.currencies_gatecoin, "gate") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = "https://www.gatecoin.com/api/Public/LiveTicker/BTC%s";
-            return getJSONObject(String.format(url, currencyCode)).getJSONObject("ticker").getString("last");
+            return null;
         }
     },
     MEXBT(R.array.currencies_mexbt, "mexbt") {
@@ -325,7 +326,7 @@ public enum BTCProvider {
     BITX(R.array.currencies_bitx, "bitx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = "https://bit-x.com/api/public/ticker?pair=BTC%s";
+            String url = "https://coinsbank.com/api/public/ticker?pair=BTC%s";
             return getJSONObject(String.format(url, currencyCode)).getJSONObject("data").getString("last");
         }
     },
@@ -383,14 +384,14 @@ public enum BTCProvider {
 
     @SuppressWarnings("deprecation")
     private static String getString(String url) throws Exception {
-        OkHttpClient client = new OkHttpClient();
-        client.setHostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;
-            }
-        });
-        client.setFollowRedirects(true);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .followRedirects(true)
+                .hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                }).build();
         Request request = new Request.Builder()
                 .addHeader("User-Agent", "curl/7.43.0")
                 .url(url)

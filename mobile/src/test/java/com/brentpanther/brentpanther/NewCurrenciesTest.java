@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.brentpanther.bitcoinwidget.BTCProvider.*;
+
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class NewCurrenciesTest extends TestCase {
@@ -37,7 +39,8 @@ public class NewCurrenciesTest extends TestCase {
         for (BTCProvider btc : values) {
             List<String> added = new ArrayList<>();
             List<String> removed = new ArrayList<>();
-            if (btc == BTCProvider.MTGOX || btc == BTCProvider.BTCXCHANGE || btc == BTCProvider.BUTTERCOIN) continue;
+            Set<BTCProvider> skip = new HashSet<>(Arrays.asList(MTGOX, BTCXCHANGE, BUTTERCOIN, GATECOIN, CRYPTSY, VIRTEX));
+            if (skip.contains(btc)) continue;
             Set<String> existingCurrencies = new HashSet<>(Arrays.asList(resources.getStringArray(btc.getCurrencies())));
             for (String currency : currencies) {
                 try {
@@ -52,7 +55,7 @@ public class NewCurrenciesTest extends TestCase {
                     }
                 }
             }
-            if (added.size() + existingCurrencies.size() == currencies.size()) continue;;
+            if (added.size() + existingCurrencies.size() == currencies.size()) continue;
             if (!added.isEmpty()) {
                 Collections.sort(added);
                 System.out.println(btc.name() + " has new currencies: " + TextUtils.join(", ", added));

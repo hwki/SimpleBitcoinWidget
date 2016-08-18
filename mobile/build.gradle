@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.brentpanther.bitcoinwidget"
-        minSdkVersion 9
-        targetSdkVersion 23
-        versionCode 52
-        versionName "3.4.2"
+        minSdkVersion 16
+        targetSdkVersion 24
+        versionCode 55
+        versionName "3.5"
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -20,5 +20,5 @@ android {
 dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
 }

@@ -87,6 +87,7 @@
         <item>CAD</item>
         <item>CHF</item>
         <item>CNY</item>
+        <item>CZK</item>
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
@@ -102,6 +103,7 @@
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
+        <item>THB</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_bitcoinaverage_global">
@@ -111,11 +113,14 @@
         <item>CAD</item>
         <item>CHF</item>
         <item>CNY</item>
+        <item>CZK</item>
         <item>DKK</item>
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
+        <item>IDR</item>
         <item>ILS</item>
+        <item>INR</item>
         <item>JPY</item>
         <item>KRW</item>
         <item>MXN</item>
@@ -126,6 +131,7 @@
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
+        <item>THB</item>
         <item>TRY</item>
         <item>UAH</item>
         <item>ZAR</item>
@@ -337,15 +343,12 @@
 
         <item>21</item>
         <item>20</item>
-        <item>28</item>
         <item>36</item>
-        <item>42</item>
 
         <item>33</item>
         <item>23</item>
         <item>37</item>
         <item>34</item>
-        <item>17</item>
 
         <item>24</item>
         <item>14</item>
@@ -391,15 +394,12 @@
 
         <item>Cointree</item>
         <item>Cryptonit</item>
-        <item>Cryptsy</item>
         <item>FoxBit</item>
-        <item>Gatecoin</item>
 
         <item>HitBTC</item>
         <item>Huobi</item>
         <item>Independent Reserve</item>
         <item>ItBit</item>
-        <item>Justcoin</item>
 
         <item>Korbit</item>
         <item>Kraken</item>

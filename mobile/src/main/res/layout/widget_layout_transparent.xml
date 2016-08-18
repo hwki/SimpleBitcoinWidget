@@ -37,19 +37,17 @@
 
             <include layout="@layout/image_transparent"/>
 
-            <include layout="@layout/prices_transparent"/>
-
             <TextView
-                android:visibility="gone"
-                android:id="@+id/priceJB"
+                android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
-                android:gravity="center"
                 android:layout_marginRight="3dp"
+                android:gravity="center"
                 android:textColor="#fff"
                 android:textIsSelectable="false"
-                android:typeface="sans" />
+                android:typeface="sans"
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>

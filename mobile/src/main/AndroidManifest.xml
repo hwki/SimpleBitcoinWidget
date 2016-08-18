@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.brentpanther.bitcoinwidget" >
+    package="com.brentpanther.bitcoinwidget">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.software.app_widgets" />
 
     <application
-            android:allowBackup="false"
-            android:icon="@drawable/bitcoinwidgeticon"
-            android:label="@string/app_name" >
-        <receiver android:name=".WidgetProvider" >
+        android:allowBackup="false"
+        android:icon="@drawable/bitcoinwidgeticon"
+        android:label="@string/app_name">
+        <receiver android:name=".WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/widgetinfo" />
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetinfo" />
         </receiver>
         <receiver android:name=".PriceBroadcastReceiver" />
 
         <activity
-                android:theme="@style/app_theme"
-                android:name=".SettingsActivity" >
+            android:name=".SettingsActivity"
+            android:theme="@style/app_theme">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

@@ -1,11 +1,9 @@
 package com.brentpanther.bitcoinwidget;
 
-import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -105,13 +103,10 @@ public class SettingsActivity extends PreferenceActivity {
         });
     }
 
-    @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.add(0, 0, 0, "Save");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        }
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
