@@ -40,8 +40,9 @@ public enum BTCProvider {
     BITCOIN_AVERAGE(R.array.currencies_bitcoinaverage, "btavg") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://api.bitcoinaverage.com/ticker/%s/", currencyCode));
-            return obj.getString("last");
+            String url = String.format("https://apiv2.bitcoinaverage.com/indices/local/ticker/short?crypto=BTC&fiats=%s", currencyCode);
+            JSONObject obj = getJSONObject(url);
+            return obj.getJSONObject(String.format("BTC%s", currencyCode)).getString("last");
         }
     },
     CAMPBX(R.array.currencies_campbx, "cmpbx") {
@@ -92,8 +93,9 @@ public enum BTCProvider {
     BITCOIN_AVERAGE_GLOBAL(R.array.currencies_bitcoinaverage_global, "gbtav") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://api.bitcoinaverage.com/ticker/global/%s/", currencyCode));
-            return obj.getString("last");
+            String url = String.format("https://apiv2.bitcoinaverage.com/indices/global/ticker/short?crypto=BTC&fiats=%s", currencyCode);
+            JSONObject obj = getJSONObject(url);
+            return obj.getJSONObject(String.format("BTC%s", currencyCode)).getString("last");
         }
     },
     BTC_CHINA(R.array.currencies_btcchina, "btchn") {
