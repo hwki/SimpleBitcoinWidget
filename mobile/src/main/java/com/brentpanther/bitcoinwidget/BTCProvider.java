@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -26,7 +27,7 @@ public enum BTCProvider {
     COINBASE(R.array.currencies_coinbase, "cb") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://api.coinbase.com/v2/prices/spot?currency=%s", currencyCode));
+            JSONObject obj = getJSONObject(String.format("https://api.coinbase.com/v2/prices/BTC-%s/spot", currencyCode));
             return obj.getJSONObject("data").getString("amount");
         }
     },
@@ -72,7 +73,7 @@ public enum BTCProvider {
             JSONObject obj = getJSONObject("https://bitcoinapi.de/widget/current-btc-price/rate.json");
             String price = obj.getString("price_eur");
             String[] amount = price.split("\\s");
-            return amount[0].replaceAll(",", ".");
+            return amount[0].replaceAll("\\.", "").replaceAll(",", ".");
         }
     },
     BITCUREX(R.array.currencies_bitcurex, "btcrx") {
@@ -188,7 +189,7 @@ public enum BTCProvider {
     HUOBI(R.array.currencies_huobi, "huobi") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("http://market.huobi.com/staticmarket/ticker_btc_json.js");
+            JSONObject obj = getJSONObject("http://api.huobi.com/staticmarket/ticker_btc_json.js");
             return obj.getJSONObject("ticker").getString("last");
         }
     },
@@ -292,6 +293,7 @@ public enum BTCProvider {
             return null;
         }
     },
+    //NO LONGER EXISTS
     CLEVERCOIN(R.array.currencies_clevercoin, "clvr") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -318,6 +320,7 @@ public enum BTCProvider {
             return null;
         }
     },
+    //OFFLINE
     MEXBT(R.array.currencies_mexbt, "mexbt") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -388,6 +391,7 @@ public enum BTCProvider {
     private static String getString(String url) throws Exception {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
+                .readTimeout(15, TimeUnit.SECONDS)
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {

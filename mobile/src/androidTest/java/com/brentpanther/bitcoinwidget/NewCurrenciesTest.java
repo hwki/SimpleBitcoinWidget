@@ -1,19 +1,15 @@
-package com.brentpanther.brentpanther;
+package com.brentpanther.bitcoinwidget;
 
 import android.content.res.Resources;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.text.TextUtils;
-
-import com.brentpanther.bitcoinwidget.BTCProvider;
-import com.brentpanther.bitcoinwidget.BuildConfig;
-import com.brentpanther.bitcoinwidget.Currency;
+import android.util.Log;
 
 import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,13 +20,12 @@ import java.util.Set;
 
 import static com.brentpanther.bitcoinwidget.BTCProvider.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(AndroidJUnit4.class)
 public class NewCurrenciesTest extends TestCase {
 
     @Test
     public void testProviders() {
-        Resources resources = RuntimeEnvironment.application.getResources();
+        Resources resources = InstrumentationRegistry.getTargetContext().getResources();
         BTCProvider[] values = BTCProvider.values();
         List<String> currencies = new ArrayList<>();
         for (Currency c : Currency.values()) {
@@ -58,11 +53,11 @@ public class NewCurrenciesTest extends TestCase {
             if (added.size() + existingCurrencies.size() == currencies.size()) continue;
             if (!added.isEmpty()) {
                 Collections.sort(added);
-                System.out.println(btc.name() + " has new currencies: " + TextUtils.join(", ", added));
+                Log.e("TEST", btc.name() + " has new currencies: " + TextUtils.join(", ", added));
             }
             if (!removed.isEmpty()) {
                 Collections.sort(removed);
-                System.err.println(btc.name() + " removed currencies: " + TextUtils.join(", ", removed));
+                Log.e("TEST", btc.name() + " removed currencies: " + TextUtils.join(", ", removed));
             }
         }
     }

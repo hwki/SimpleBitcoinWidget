@@ -1,30 +1,30 @@
-package com.brentpanther.brentpanther;
+package com.brentpanther.bitcoinwidget;
 
 import android.content.res.Resources;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.SmallTest;
+import android.support.test.runner.AndroidJUnit4;
 import android.text.TextUtils;
-import com.brentpanther.bitcoinwidget.BTCProvider;
-import com.brentpanther.bitcoinwidget.BuildConfig;
-import junit.framework.TestCase;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.fail;
 
 /**
  * User: Brent
  * Date: 3/25/15
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
-public class BTCProviderTest extends TestCase {
+@RunWith(AndroidJUnit4.class)
+@SmallTest
+public class BTCProviderTest {
 
     @Test
     public void testProviders() {
-        Resources resources = RuntimeEnvironment.application.getResources();
+        Resources resources = InstrumentationRegistry.getTargetContext().getResources();
         List<String> list = new ArrayList<>();
         BTCProvider[] values = BTCProvider.values();
         for (BTCProvider btc : values) {

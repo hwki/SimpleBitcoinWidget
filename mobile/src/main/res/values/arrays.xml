@@ -312,6 +312,24 @@
     </string-array>
     <string-array name="currencies_uphold">
         <item>USD</item>
+        <item>EUR</item>
+        <item>AUD</item>
+        <item>BRL</item>
+        <item>CAD</item>
+        <item>CHF</item>
+        <item>CNY</item>
+        <item>DKK</item>
+        <item>GBP</item>
+        <item>HKD</item>
+        <item>ILS</item>
+        <item>INR</item>
+        <item>JPY</item>
+        <item>MXN</item>
+        <item>NOK</item>
+        <item>NZD</item>
+        <item>PLN</item>
+        <item>SEK</item>
+        <item>SGD</item>
     </string-array>
     <string-array name="providerValues">
         <item>12</item>
@@ -338,7 +356,6 @@
         <item>46</item>
         <item>4</item>
         <item>30</item>
-        <item>39</item>
         <item>1</item>
 
         <item>21</item>
@@ -356,12 +373,10 @@
         <item>19</item>
         <item>6</item>
 
-        <item>43</item>
         <item>32</item>
         <item>25</item>
         <item>41</item>
         <item>47</item>
-
         <item>27</item>
     </string-array>
     <string-array name="providers">
@@ -389,7 +404,6 @@
         <item>BTCXIndia</item>
         <item>Camp BX</item>
         <item>Cex.io</item>
-        <item>Clevercoin</item>
         <item>Coinbase</item>
 
         <item>Cointree</item>
@@ -407,12 +421,10 @@
         <item>LakeBTC</item>
         <item>Mercado Bitcoin</item>
 
-        <item>Mexbt</item>
         <item>OK Coin</item>
         <item>Paymium</item>
         <item>QuadrigaCX</item>
         <item>Uphold</item>
-
         <item>Zyado</item>
     </string-array>
     <string-array name="themes">
