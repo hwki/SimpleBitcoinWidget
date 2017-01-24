@@ -21,6 +21,7 @@ public class SettingsActivity extends PreferenceActivity {
     private ListPreference theme;
     private CheckBoxPreference icon;
     private CheckBoxPreference label;
+    private CheckBoxPreference decimals;
     private int appWidgetId;
     private int refreshValue;
 
@@ -28,6 +29,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setResult(RESULT_CANCELED);
         Bundle extras = getIntent().getExtras();
         appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         if (extras != null)
@@ -39,6 +41,7 @@ public class SettingsActivity extends PreferenceActivity {
         label = (CheckBoxPreference) findPreference(getString(R.string.key_label));
         theme = (ListPreference) findPreference(getString(R.string.key_theme));
         icon = (CheckBoxPreference) findPreference(getString(R.string.key_icon));
+        decimals = (CheckBoxPreference) findPreference(getString(R.string.key_decimals)) ;
 
         setRefresh(Prefs.getInterval(this, appWidgetId));
         refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -122,7 +125,7 @@ public class SettingsActivity extends PreferenceActivity {
         broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
         sendBroadcast(broadcast);
         Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()),
-                label.isChecked(), theme.getValue(), icon.isChecked());
+                label.isChecked(), theme.getValue(), icon.isChecked(), decimals.isChecked());
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, result);
@@ -138,9 +141,5 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        save();
-    }
 
 }

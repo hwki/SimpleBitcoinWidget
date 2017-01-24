@@ -1,6 +1,0 @@
-<resources>
-    <dimen name="provider_text">11dp</dimen>
-    <bool name="strip_newline">true</bool>
-    <dimen name="widget_margin_horizontal">8dp</dimen>
-    <dimen name="widget_margin_vertical">4dp</dimen>
-</resources>

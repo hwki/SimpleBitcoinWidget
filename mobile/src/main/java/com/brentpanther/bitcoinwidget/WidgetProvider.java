@@ -14,24 +14,31 @@ public class WidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int widgetId : appWidgetIds) {
+            saveSize(context, appWidgetManager, widgetId);
             int layout = Prefs.getThemeLayout(context, widgetId);
             RemoteViews views = new RemoteViews(context.getPackageName(), layout);
-			Bundle options = appWidgetManager.getAppWidgetOptions(widgetId);
-			int width = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-			Prefs.setWidth(context, widgetId, width - 56);
-			setAlarm(context, widgetId);
+            appWidgetManager.updateAppWidget(widgetId, views);
 			Intent i = new Intent(context, PriceBroadcastReceiver.class);
 			i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 			PendingIntent pi = PendingIntent.getBroadcast(context, widgetId, i, 0);
 			views.setOnClickPendingIntent(R.id.bitcoinParent, pi);
-            appWidgetManager.updateAppWidget(widgetId, views);
+            setAlarm(context, widgetId);
 		}
 	}
 
+	private void saveSize(Context context, AppWidgetManager appWidgetManager, int widgetId) {
+        int width = appWidgetManager.getAppWidgetOptions(widgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int height = appWidgetManager.getAppWidgetOptions(widgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        Prefs.setWidgetSize(context, widgetId, width, height);
+    }
+
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        int min = appWidgetManager.getAppWidgetOptions(appWidgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        Prefs.setWidth(context, appWidgetId, min - 56);
+        saveSize(context, appWidgetManager, appWidgetId);
+        int layout = Prefs.getThemeLayout(context, appWidgetId);
+        RemoteViews views = new RemoteViews(context.getPackageName(), layout);
+        WidgetViews.resize(context, views, appWidgetId);
+        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override

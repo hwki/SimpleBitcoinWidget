@@ -2,20 +2,19 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.brentpanther.bitcoinwidget"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
-        versionCode 60
-        versionName "3.6"
+        versionCode 70
+        versionName "4.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
 }
 
 dependencies {

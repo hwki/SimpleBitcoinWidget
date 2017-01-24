@@ -32,7 +32,11 @@
         android:title="@string/title_icon"/>
     <CheckBoxPreference
         android:defaultValue="false"
-        android:dialogTitle="@string/title_label"
+        android:key="@string/key_decimals"
+        android:persistent="false"
+        android:title="@string/title_decimals" />
+    <CheckBoxPreference
+        android:defaultValue="false"
         android:key="@string/key_label"
         android:persistent="false"
         android:title="@string/title_label" />

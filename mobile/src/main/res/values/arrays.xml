@@ -57,6 +57,7 @@
     </string-array>
     <string-array name="currencies_bitstamp">
         <item>USD</item>
+        <item>EUR</item>
     </string-array>
     <string-array name="currencies_bitfinex">
         <item>USD</item>
@@ -85,25 +86,23 @@
         <item>AUD</item>
         <item>BRL</item>
         <item>CAD</item>
-        <item>CHF</item>
         <item>CNY</item>
-        <item>CZK</item>
         <item>EUR</item>
         <item>GBP</item>
-        <item>HKD</item>
         <item>IDR</item>
         <item>ILS</item>
         <item>INR</item>
         <item>JPY</item>
+        <item>KRW</item>
         <item>MXN</item>
-        <item>NOK</item>
+        <item>MYR</item>
+        <item>NGN</item>
         <item>NZD</item>
         <item>PLN</item>
-        <item>RON</item>
         <item>RUB</item>
         <item>SEK</item>
         <item>SGD</item>
-        <item>THB</item>
+        <item>TRY</item>
         <item>ZAR</item>
     </string-array>
     <string-array name="currencies_bitcoinaverage_global">
@@ -124,6 +123,8 @@
         <item>JPY</item>
         <item>KRW</item>
         <item>MXN</item>
+        <item>MYR</item>
+        <item>NGN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
@@ -160,6 +161,7 @@
         <item>JPY</item>
         <item>KRW</item>
         <item>MXN</item>
+        <item>NGN</item>
         <item>NOK</item>
         <item>NZD</item>
         <item>PLN</item>
@@ -203,10 +205,16 @@
     </string-array>
     <string-array name="currencies_lake">
         <item>USD</item>
+        <item>AUD</item>
+        <item>CAD</item>
         <item>CNY</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>HKD</item>
         <item>JPY</item>
+        <item>KRW</item>
+        <item>SEK</item>
+        <item>SGD</item>
     </string-array>
     <string-array name="currencies_cryptonit">
         <item>USD</item>
@@ -298,11 +306,12 @@
         <item>MXN</item>
         <item>SGD</item>
     </string-array>
-    <string-array name="currencies_bitx">
-        <item>USD</item>
-        <item>EUR</item>
-        <item>GBP</item>
-        <item>RUB</item>
+    <string-array name="currencies_luno">
+        <item>IDR</item>
+        <item>MYR</item>
+        <item>NGN</item>
+        <item>SGD</item>
+        <item>ZAR</item>
     </string-array>
     <string-array name="currencies_btcbox">
         <item>JPY</item>
@@ -331,52 +340,79 @@
         <item>SEK</item>
         <item>SGD</item>
     </string-array>
+    <string-array name="currencies_surbitcoin">
+        <item>VEF</item>
+    </string-array>
+    <string-array name="currencies_vbtc">
+        <item>VND</item>
+    </string-array>
+    <string-array name="currencies_urdubit">
+        <item>PKR</item>
+    </string-array>
+    <string-array name="currencies_chilebit">
+        <item>CLP</item>
+    </string-array>
+    <string-array name="currencies_gemini">
+        <item>USD</item>
+    </string-array>
+    <string-array name="currencies_coinmate">
+        <item>CZK</item>
+        <item>EUR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
         <item>3</item>
         <item>10</item>
-        <item>35</item>
 
+        <item>35</item>
         <item>7</item>
-        <item>8</item>
         <item>9</item>
         <item>40</item>
-        <item>13</item>
 
+        <item>13</item>
         <item>26</item>
         <item>2</item>
-        <item>44</item>
         <item>45</item>
+
         <item>11</item>
         <item>5</item>
         <item>22</item>
-
         <item>15</item>
+
         <item>46</item>
         <item>4</item>
         <item>30</item>
-        <item>1</item>
+        <item>51</item>
 
+        <item>1</item>
+        <item>53</item>
         <item>21</item>
         <item>20</item>
-        <item>36</item>
 
+        <item>36</item>
+        <item>52</item>
         <item>33</item>
         <item>23</item>
+
         <item>37</item>
         <item>34</item>
-
         <item>24</item>
         <item>14</item>
+
         <item>18</item>
         <item>19</item>
+        <item>44</item>
         <item>6</item>
 
         <item>32</item>
         <item>25</item>
         <item>41</item>
+        <item>48</item>
+
         <item>47</item>
+        <item>50</item>
+        <item>49</item>
         <item>27</item>
     </string-array>
     <string-array name="providers">
@@ -384,47 +420,55 @@
         <item>BitBay</item>
         <item>Bitcoin Average</item>
         <item>Bitcoin Average (global)</item>
-        <item>Bitcoin.co.id</item>
 
+        <item>Bitcoin.co.id</item>
         <item>Bitcoin.de</item>
-        <item>Bitcurex</item>
         <item>Bitfinex</item>
         <item>BitMarket24</item>
-        <item>BitPay</item>
 
+        <item>BitPay</item>
         <item>Bitso</item>
         <item>Bitstamp</item>
-        <item>Bit-X</item>
         <item>BTC Box</item>
+
         <item>BTC China</item>
         <item>BTC-e</item>
         <item>BTC Markets</item>
-
         <item>BTCTurk</item>
+
         <item>BTCXIndia</item>
         <item>Camp BX</item>
         <item>Cex.io</item>
-        <item>Coinbase</item>
+        <item>ChileBit.net</item>
 
+        <item>Coinbase</item>
+        <item>CoinMate.io</item>
         <item>Cointree</item>
         <item>Cryptonit</item>
-        <item>FoxBit</item>
 
+        <item>FoxBit</item>
+        <item>Gemini</item>
         <item>HitBTC</item>
         <item>Huobi</item>
+
         <item>Independent Reserve</item>
         <item>ItBit</item>
-
         <item>Korbit</item>
         <item>Kraken</item>
+
         <item>KunaBTC</item>
         <item>LakeBTC</item>
+        <item>Luno</item>
         <item>Mercado Bitcoin</item>
 
         <item>OK Coin</item>
         <item>Paymium</item>
         <item>QuadrigaCX</item>
+        <item>SurBitcoin</item>
+
         <item>Uphold</item>
+        <item>UrduBit</item>
+        <item>VBTC</item>
         <item>Zyado</item>
     </string-array>
     <string-array name="themes">

@@ -2,21 +2,24 @@ package com.brentpanther.bitcoinwidget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Pair;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Prefs {
+class Prefs {
 
-    private static final String SEPARATOR = ":";
-    public static final String LAST_UPDATE = "last_update";
-    public static final String LAST_AMOUNT = "last_amount";
-    public static final String CURRENCY = "currency";
-    public static final String REFRESH = "refresh";
-    public static final String PROVIDER = "provider";
-    public static final String SHOW_LABEL = "show_label";
-    public static final String WIDTH = "width";
-    public static final String THEME = "theme";
-    public static final String HIDE_ICON = "icon";
+    private static final String LAST_UPDATE = "last_update";
+    private static final String CURRENCY = "currency";
+    private static final String REFRESH = "refresh";
+    private static final String PROVIDER = "provider";
+    private static final String SHOW_LABEL = "show_label";
+    private static final String THEME = "theme";
+    private static final String HIDE_ICON = "icon";
+    private static final String SHOW_DECIMALS = "show_decimals";
+    private static final String WIDGET_WIDTH = "widget_width";
+    private static final String WIDGET_HEIGHT = "widget_height";
+    private static final String LAST_VALUE = "last_value";
 
     private static SharedPreferences getPrefs(Context context) {
 		return context.getSharedPreferences(context.getString(R.string.key_prefs), Context.MODE_PRIVATE);
@@ -32,18 +35,17 @@ public class Prefs {
         setValue(context, widgetId, LAST_UPDATE, "" + System.currentTimeMillis());
 	}
 
-    static void setLastAmount(Context context, int widgetId, double amount) {
-        setValue(context, widgetId, LAST_AMOUNT, "" + amount);
+    static void setWidgetSize(Context context, int widgetId, int width, int height) {
+        setValue(context, widgetId, WIDGET_WIDTH, "" + width);
+        setValue(context, widgetId, WIDGET_HEIGHT, "" + height);
     }
 
-    static void setWidth(Context context, int widgetId, int width) {
-        setValue(context, widgetId, WIDTH, "" + width);
+    static void setLastValue(Context context, int widgetId, String value) {
+        setValue(context, widgetId, LAST_VALUE, value);
     }
 
-    public static Double getLastAmount(Context context, int widgetId) {
-        String last_amount = getValue(context, widgetId, LAST_AMOUNT);
-        if(last_amount == null) return 0d;
-        return Double.valueOf(last_amount);
+    static String getLastValue(Context context, int widgetId) {
+        return getValue(context, widgetId, LAST_VALUE);
     }
 
 	static String getCurrency(Context context, int widgetId) {
@@ -65,19 +67,20 @@ public class Prefs {
 	}
 
     static boolean getLabel(Context context, int widgetId) {
-        String value = getValue(context, widgetId, SHOW_LABEL);
-        return Boolean.valueOf(value);
+        return Boolean.valueOf(getValue(context, widgetId, SHOW_LABEL));
     }
 
     static boolean getIcon(Context context, int widgetId) {
-        String value = getValue(context, widgetId, HIDE_ICON);
-        return Boolean.valueOf(value);
+        return Boolean.valueOf(getValue(context, widgetId, HIDE_ICON));
     }
 
-    static int getWidth(Context context, int widgetId) {
-        String value = getValue(context, widgetId, WIDTH);
-        if(value == null) return -1;
-        return Integer.valueOf(value);
+    static Pair<Integer, Integer> getWidgetSize(Context context, int widgetId) {
+        String width = getValue(context, widgetId, WIDGET_WIDTH);
+        String height = getValue(context, widgetId, WIDGET_HEIGHT);
+        if (width == null || height == null) {
+            return null;
+        }
+        return Pair.create(Integer.valueOf(width), Integer.valueOf(height));
     }
 
     static int getThemeLayout(Context context, int widgetId) {
@@ -87,25 +90,33 @@ public class Prefs {
         return R.layout.widget_layout_transparent;
     }
 
+    static boolean getShowDecimals(Context context, int widgetId) {
+        String value = getValue(context, widgetId, SHOW_DECIMALS);
+        if (value == null) {
+            return true;
+        }
+        return Boolean.valueOf(value);
+    }
+
     static void setValue(Context context, int widgetId, String key, String value) {
         String string = getPrefs(context).getString("" + widgetId, null);
         JSONObject obj;
         try {
             if(string==null) {
                 obj = new JSONObject();
-            } else if(!string.startsWith("{")) {
-                obj = convert(context, widgetId, string);
-            } else {
+            }  else {
                 obj = new JSONObject(string);
             }
             obj.put(key, value);
-            getPrefs(context).edit().putString("" + widgetId, obj.toString()).commit();
+            getPrefs(context).edit().putString("" + widgetId, obj.toString()).apply();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-	static void setValues(Context context, int widgetId, String currency, int refreshValue, int provider, boolean checked, String theme, boolean iconChecked) {
+	static void setValues(Context context, int widgetId, String currency, int refreshValue,
+                          int provider, boolean checked, String theme, boolean iconChecked,
+                          boolean showDecimals) {
         JSONObject obj = new JSONObject();
         try {
             obj.put(CURRENCY, currency);
@@ -114,14 +125,15 @@ public class Prefs {
             obj.put(SHOW_LABEL, "" + checked);
             obj.put(THEME, theme);
             obj.put(HIDE_ICON, "" + !iconChecked);
-            getPrefs(context).edit().putString("" + widgetId, obj.toString()).commit();
+            obj.put(SHOW_DECIMALS, "" + showDecimals);
+            getPrefs(context).edit().putString("" + widgetId, obj.toString()).apply();
         } catch (JSONException e) {
             e.printStackTrace();
         }
 	}
 
 	static void delete(Context context, int widgetId) {
-		getPrefs(context).edit().remove("" + widgetId).commit();
+		getPrefs(context).edit().remove("" + widgetId).apply();
 	}
 
     static String getValue(Context context, int widgetId, String key) {
@@ -129,30 +141,11 @@ public class Prefs {
         if(string==null) return null;
         JSONObject obj;
         try {
-            if(!string.startsWith("{")) {
-                obj = convert(context, widgetId, string);
-            } else {
-                obj = new JSONObject(string);
-            }
+            obj = new JSONObject(string);
             return obj.getString(key);
         } catch (JSONException e) {
             return null;
         }
     }
 
-    private static JSONObject convert(Context context, int widgetId, String string) {
-        String[] strings = string.split(SEPARATOR);
-        JSONObject obj = new JSONObject();
-        try {
-            if(strings.length > 0) obj.put(CURRENCY, strings[0]);
-            if(strings.length > 1) obj.put(REFRESH, strings[1]);
-            if(strings.length > 2) obj.put(PROVIDER, strings[2]);
-            if(strings.length > 3) obj.put(SHOW_LABEL, strings[3]);
-            if(strings.length > 4) obj.put(HIDE_ICON, strings[4]);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        getPrefs(context).edit().putString("" + widgetId, obj.toString()).commit();
-        return obj;
-    }
 }

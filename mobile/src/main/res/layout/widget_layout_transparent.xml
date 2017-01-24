@@ -1,55 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bitcoinParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/widget_margin_vertical"
-    android:paddingLeft="@dimen/widget_margin_horizontal"
-    android:paddingRight="@dimen/widget_margin_horizontal"
-    android:paddingTop="@dimen/widget_margin_vertical" >
+    android:background="@android:color/transparent"
+    android:clickable="true">
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
 
     <LinearLayout
-        android:id="@+id/bitcoinParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:orientation="horizontal"
-        android:padding="5dp" >
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/bitcoinImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:paddingEnd="2dp"
+            android:paddingStart="2dp"
+            android:src="@drawable/icon_bitcoin"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/bitcoinImageBW"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:paddingEnd="2dp"
+            android:paddingStart="2dp"
+            android:src="@drawable/icon_bitcoin_bw"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
+            android:layout_weight="3"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:includeFontPadding="false"
+            android:textColor="#fff"
+            android:textIsSelectable="false"
+            android:typeface="sans"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/loading"
-                android:textColor="#fff"
-                android:textIsSelectable="false"
-                android:textSize="25dp"
-                android:typeface="sans" />
-
-            <include layout="@layout/image_transparent"/>
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="3dp"
-                android:gravity="center"
-                android:textColor="#fff"
-                android:textIsSelectable="false"
-                android:typeface="sans"
-                android:visibility="gone" />
-
-        </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/provider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="1dp"
+        android:textColor="#fff" />
 
 </RelativeLayout>

@@ -10,7 +10,7 @@
         android:allowBackup="false"
         android:icon="@drawable/bitcoinwidgeticon"
         android:label="@string/app_name">
-        <receiver android:name=".WidgetProvider">
+        <receiver android:name=".WidgetProvider" android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
