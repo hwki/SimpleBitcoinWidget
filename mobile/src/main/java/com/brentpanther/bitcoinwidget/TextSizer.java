@@ -29,19 +29,17 @@ class TextSizer {
     private static float getHighestInBounds(TextView textView, String text, float widthPx, float heightPx) {
         Paint paint = textView.getPaint();
         if (TextUtils.isEmpty(text)) {
-            return 12;
+            return 0;
         }
         Rect rect = new Rect();
         float dp = 6f;
-        float fudgedHeight = heightPx * .95f;
-        float fudgedWidth = widthPx * .95f;
         float step = 0.5f;
         while (true) {
             paint.setTextSize(dp);
             paint.getTextBounds(text, 0, text.length(), rect); // does not give accurate width
             float measuredHeight = rect.height();
             float measuredWidth = paint.measureText(text);
-            if (measuredHeight > fudgedHeight || measuredWidth >= fudgedWidth) {
+            if (measuredHeight > heightPx || measuredWidth >= widthPx) {
                 return dp - step;
             }
             dp += step;

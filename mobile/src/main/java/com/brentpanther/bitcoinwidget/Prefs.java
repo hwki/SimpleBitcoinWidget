@@ -17,8 +17,6 @@ class Prefs {
     private static final String THEME = "theme";
     private static final String HIDE_ICON = "icon";
     private static final String SHOW_DECIMALS = "show_decimals";
-    private static final String WIDGET_WIDTH = "widget_width";
-    private static final String WIDGET_HEIGHT = "widget_height";
     private static final String LAST_VALUE = "last_value";
 
     private static SharedPreferences getPrefs(Context context) {
@@ -34,11 +32,6 @@ class Prefs {
 	static void setLastUpdate(Context context, int widgetId) {
         setValue(context, widgetId, LAST_UPDATE, "" + System.currentTimeMillis());
 	}
-
-    static void setWidgetSize(Context context, int widgetId, int width, int height) {
-        setValue(context, widgetId, WIDGET_WIDTH, "" + width);
-        setValue(context, widgetId, WIDGET_HEIGHT, "" + height);
-    }
 
     static void setLastValue(Context context, int widgetId, String value) {
         setValue(context, widgetId, LAST_VALUE, value);
@@ -72,15 +65,6 @@ class Prefs {
 
     static boolean getIcon(Context context, int widgetId) {
         return Boolean.valueOf(getValue(context, widgetId, HIDE_ICON));
-    }
-
-    static Pair<Integer, Integer> getWidgetSize(Context context, int widgetId) {
-        String width = getValue(context, widgetId, WIDGET_WIDTH);
-        String height = getValue(context, widgetId, WIDGET_HEIGHT);
-        if (width == null || height == null) {
-            return null;
-        }
-        return Pair.create(Integer.valueOf(width), Integer.valueOf(height));
     }
 
     static int getThemeLayout(Context context, int widgetId) {

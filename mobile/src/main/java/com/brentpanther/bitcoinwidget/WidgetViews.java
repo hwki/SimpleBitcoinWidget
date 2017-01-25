@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -11,7 +12,7 @@ import java.text.NumberFormat;
 
 class WidgetViews {
 
-    private static final double LABEL_HEIGHT = .19;
+    private static final double LABEL_HEIGHT = .20;
 
     static void setText(Context context, RemoteViews views, Currency currency, String amount, String label, int widgetId) {
         String text = buildText(currency, amount, Prefs.getShowDecimals(context, widgetId));
@@ -43,10 +44,12 @@ class WidgetViews {
         views.setTextViewTextSize(R.id.price, TypedValue.COMPLEX_UNIT_DIP, textSize);
         availableSize = getLabelAvailableSize(context, widgetId);
 
-        int providerInt = Prefs.getProvider(context, widgetId);
-        BTCProvider provider = BTCProvider.values()[providerInt];
-        float labelSize = TextSizer.getLabelSize(context, provider.getLabel(), availableSize);
-        views.setTextViewTextSize(R.id.provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
+        if (Prefs.getLabel(context, widgetId)) {
+            int providerInt = Prefs.getProvider(context, widgetId);
+            BTCProvider provider = BTCProvider.values()[providerInt];
+            float labelSize = TextSizer.getLabelSize(context, provider.getLabel(), availableSize);
+            views.setTextViewTextSize(R.id.provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
+        }
     }
 
     private static void setImageVisibility(Context context, RemoteViews views, int widgetId) {
@@ -61,7 +64,7 @@ class WidgetViews {
     }
 
     private static Pair<Integer, Integer> getTextAvailableSize(Context context, int widgetId) {
-        Pair<Integer, Integer> size = Prefs.getWidgetSize(context, widgetId);
+        Pair<Integer, Integer> size = getWidgetSize(context, widgetId);
         if (size == null) {
             return null;
         }
@@ -79,23 +82,38 @@ class WidgetViews {
             width *= .75;
         }
         if (Prefs.getLabel(context, widgetId)) {
-            // provider will be 18% of height
             height *= (1 - LABEL_HEIGHT);
         }
-        return Pair.create(width, height);
+        return Pair.create((int)(width * .9), (int)(height * .85));
     }
 
     private static Pair<Integer, Integer> getLabelAvailableSize(Context context, int widgetId) {
-        Pair<Integer, Integer> size = Prefs.getWidgetSize(context, widgetId);
+        Pair<Integer, Integer> size = getWidgetSize(context, widgetId);
         if (size == null) {
             return null;
         }
         int height = size.second;
+        int width = size.first;
         if (Prefs.getThemeLayout(context, widgetId) != R.layout.widget_layout_transparent) {
             // light and dark themes have 5dp padding all around
             height -= 10;
         }
-        return Pair.create(size.first, (int)(height * LABEL_HEIGHT));
+        if (!Prefs.getIcon(context, widgetId)) {
+            // icon is 25% of width
+            width *= .75;
+        }
+        height *= LABEL_HEIGHT;
+        return Pair.create((int)(width * .9), (int)(height * .85));
+    }
+
+    private static Pair<Integer, Integer> getWidgetSize(Context context, int widgetId) {
+        boolean portrait = context.getResources().getConfiguration().orientation == 1;
+        String w = portrait ? AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH : AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH;
+        String h = portrait ? AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT : AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT;
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int width = appWidgetManager.getAppWidgetOptions(widgetId).getInt(w);
+        int height = appWidgetManager.getAppWidgetOptions(widgetId).getInt(h);
+        return Pair.create(width, height);
     }
 
     private static String buildText(Currency currency, String amount, boolean showDecimals) {
@@ -107,9 +125,13 @@ class WidgetViews {
         return nf.format(Double.valueOf(amount));
     }
 
-    static void setLoading(RemoteViews views) {
+    static void setLoading(RemoteViews views, Context context, int widgetId) {
         show(views, R.id.loading);
-        hide(views, R.id.bitcoinImage, R.id.bitcoinImageBW, R.id.price);
+        views.setViewVisibility(R.id.price, View.INVISIBLE);
+        views.setViewVisibility(R.id.bitcoinImageBW, View.GONE);
+        if (!Prefs.getIcon(context, widgetId)) {
+            views.setViewVisibility(R.id.bitcoinImage, View.INVISIBLE);
+        }
     }
 
     static void show(RemoteViews views, int... ids) {

@@ -19,7 +19,7 @@ public class PriceBroadcastReceiver extends BroadcastReceiver {
                 int layout = Prefs.getThemeLayout(context, appWidgetId);
                 RemoteViews views = new RemoteViews(context.getPackageName(), layout);
 
-                WidgetViews.setLoading(views);
+                WidgetViews.setLoading(views, context, appWidgetId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
                 String currencyCode = Prefs.getCurrency(context, appWidgetId);
                 Currency currency = Currency.valueOf(currencyCode);

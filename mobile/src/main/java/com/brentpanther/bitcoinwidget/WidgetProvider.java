@@ -14,7 +14,6 @@ public class WidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int widgetId : appWidgetIds) {
-            saveSize(context, appWidgetManager, widgetId);
             int layout = Prefs.getThemeLayout(context, widgetId);
             RemoteViews views = new RemoteViews(context.getPackageName(), layout);
             appWidgetManager.updateAppWidget(widgetId, views);
@@ -26,15 +25,8 @@ public class WidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	private void saveSize(Context context, AppWidgetManager appWidgetManager, int widgetId) {
-        int width = appWidgetManager.getAppWidgetOptions(widgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int height = appWidgetManager.getAppWidgetOptions(widgetId).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-        Prefs.setWidgetSize(context, widgetId, width, height);
-    }
-
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        saveSize(context, appWidgetManager, appWidgetId);
         int layout = Prefs.getThemeLayout(context, appWidgetId);
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
         WidgetViews.resize(context, views, appWidgetId);

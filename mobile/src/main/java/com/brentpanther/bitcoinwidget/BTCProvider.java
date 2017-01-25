@@ -347,8 +347,14 @@ enum BTCProvider {
             JSONObject obj = getJSONObject(url);
             return obj.getJSONObject("data").getString("last");
         }
+    },
+    BITMARKETPL(R.array.currencies_bitmarketpl, "bitmarket.pl") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://www.bitmarket.pl/json/BTC%s/ticker.json", currencyCode);
+            return getJSONObject(url).getString("last");
+        }
     };
-
 
     private final int currencyArrayID;
     private String label;

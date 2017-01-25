@@ -359,6 +359,10 @@
         <item>CZK</item>
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_bitmarketpl">
+        <item>EUR</item>
+        <item>PLN</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -369,6 +373,7 @@
         <item>7</item>
         <item>9</item>
         <item>40</item>
+        <item>54</item>
 
         <item>13</item>
         <item>26</item>
@@ -425,6 +430,7 @@
         <item>Bitcoin.de</item>
         <item>Bitfinex</item>
         <item>BitMarket24</item>
+        <item>BitMarket.pl</item>
 
         <item>BitPay</item>
         <item>Bitso</item>
