@@ -49,10 +49,17 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/top_space"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                />
+
+            <TextView
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_weight="70"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:textColor="#fff"
@@ -64,7 +71,7 @@
                 android:id="@+id/provider"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="15"
                 android:includeFontPadding="false"
                 android:gravity="center"
                 android:textColor="#fff" />

@@ -12,7 +12,7 @@ import java.text.NumberFormat;
 
 class WidgetViews {
 
-    private static final double LABEL_HEIGHT = .20;
+    private static final double TEXT_HEIGHT = .70;
 
     static void setText(Context context, RemoteViews views, Currency currency, String amount, String label, int widgetId) {
         String text = buildText(currency, amount, Prefs.getShowDecimals(context, widgetId));
@@ -28,9 +28,9 @@ class WidgetViews {
             float labelSize = TextSizer.getLabelSize(context, label, availableSize);
             views.setTextViewText(R.id.provider, label);
             views.setTextViewTextSize(R.id.provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
-            show(views, R.id.provider);
+            show(views, R.id.provider, R.id.top_space);
         } else {
-            hide(views, R.id.provider);
+            hide(views, R.id.provider, R.id.top_space);
         }
         show(views, R.id.price);
         hide(views, R.id.loading);
@@ -82,7 +82,7 @@ class WidgetViews {
             width *= .75;
         }
         if (Prefs.getLabel(context, widgetId)) {
-            height *= (1 - LABEL_HEIGHT);
+            height *= TEXT_HEIGHT;
         }
         return Pair.create((int)(width * .9), (int)(height * .85));
     }
@@ -102,8 +102,8 @@ class WidgetViews {
             // icon is 25% of width
             width *= .75;
         }
-        height *= LABEL_HEIGHT;
-        return Pair.create((int)(width * .9), (int)(height * .85));
+        height *= ((1 - TEXT_HEIGHT) / 2);
+        return Pair.create((int)(width * .9), (int)(height * .9));
     }
 
     private static Pair<Integer, Integer> getWidgetSize(Context context, int widgetId) {
