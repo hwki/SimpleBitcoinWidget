@@ -11,6 +11,7 @@
     <string name="title_rate">Rate</string>
     <string name="title_icon">Show Bitcoin icon</string>
     <string name="title_decimals">Show decimals</string>
+    <string name="title_units">BTC Unit</string>
     <plurals name="summary_refresh_interval_minute">
         <item quantity="one">Every minute</item>
         <item quantity="other">Every %d minutes</item>
@@ -25,6 +26,7 @@
     <string name="summary_theme">%s</string>
     <string name="summary_donate">Support the developer</string>
     <string name="summary_rate">Rate on Google Play</string>
+    <string name="summary_units">Show in %s</string>
     <string name="btc_address">bitcoin:15SHnY7HC5bTxzErHDPe7wHXj1HhtDKV7z</string>
     <string name="donate_error">Compatible bitcoin wallet not found.</string>
     <string name="widget_name">Bitcoin Widget</string>

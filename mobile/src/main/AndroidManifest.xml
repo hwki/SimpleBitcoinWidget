@@ -29,6 +29,8 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".BackgroundService" />
+
     </application>
 
 </manifest>

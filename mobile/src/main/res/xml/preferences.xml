@@ -25,6 +25,14 @@
         android:key="@string/key_currency"
         android:persistent="false"
         android:title="@string/title_currency" />
+    <ListPreference
+        android:defaultValue="@string/default_unit"
+        android:dialogTitle="@string/title_units"
+        android:entries="@array/units"
+        android:entryValues="@array/units"
+        android:key="@string/key_units"
+        android:persistent="false"
+        android:title="@string/title_units"/>
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="@string/key_icon"

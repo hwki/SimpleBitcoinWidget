@@ -2,7 +2,6 @@ package com.brentpanther.bitcoinwidget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Pair;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +17,7 @@ class Prefs {
     private static final String HIDE_ICON = "icon";
     private static final String SHOW_DECIMALS = "show_decimals";
     private static final String LAST_VALUE = "last_value";
+    private static final String UNITS = "units";
 
     private static SharedPreferences getPrefs(Context context) {
 		return context.getSharedPreferences(context.getString(R.string.key_prefs), Context.MODE_PRIVATE);
@@ -82,7 +82,13 @@ class Prefs {
         return Boolean.valueOf(value);
     }
 
-    static void setValue(Context context, int widgetId, String key, String value) {
+    static Unit getUnit(Context context, int widgetId) {
+        String value = getValue(context, widgetId, UNITS);
+        if (value == null) return Unit.BTC;
+        return Unit.valueOf(value);
+    }
+
+    private static void setValue(Context context, int widgetId, String key, String value) {
         String string = getPrefs(context).getString("" + widgetId, null);
         JSONObject obj;
         try {
@@ -100,7 +106,7 @@ class Prefs {
 
 	static void setValues(Context context, int widgetId, String currency, int refreshValue,
                           int provider, boolean checked, String theme, boolean iconChecked,
-                          boolean showDecimals) {
+                          boolean showDecimals, String unit) {
         JSONObject obj = new JSONObject();
         try {
             obj.put(CURRENCY, currency);
@@ -110,6 +116,7 @@ class Prefs {
             obj.put(THEME, theme);
             obj.put(HIDE_ICON, "" + !iconChecked);
             obj.put(SHOW_DECIMALS, "" + showDecimals);
+            obj.put(UNITS, unit);
             getPrefs(context).edit().putString("" + widgetId, obj.toString()).apply();
         } catch (JSONException e) {
             e.printStackTrace();

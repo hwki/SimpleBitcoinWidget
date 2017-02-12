@@ -363,6 +363,16 @@
         <item>EUR</item>
         <item>PLN</item>
     </string-array>
+    <string-array name="currencies_coinsph">
+        <item>CLP</item>
+        <item>HKD</item>
+        <item>IDR</item>
+        <item>MYR</item>
+        <item>PHP</item>
+        <item>THB</item>
+        <item>TWD</item>
+        <item>VND</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -393,6 +403,7 @@
         <item>1</item>
         <item>53</item>
         <item>21</item>
+        <item>55</item>
         <item>20</item>
 
         <item>36</item>
@@ -450,6 +461,7 @@
         <item>Coinbase</item>
         <item>CoinMate.io</item>
         <item>Cointree</item>
+        <item>Coins.ph</item>
         <item>Cryptonit</item>
 
         <item>FoxBit</item>
@@ -481,6 +493,11 @@
         <item>Light</item>
         <item>Dark</item>
         <item>Transparent</item>
+    </string-array>
+    <string-array name="units">
+        <item>BTC</item>
+        <item>mBTC</item>
+        <item>μBTC</item>
     </string-array>
 
 </resources>

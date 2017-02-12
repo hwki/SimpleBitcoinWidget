@@ -19,6 +19,7 @@ public class SettingsActivity extends PreferenceActivity {
     private ListPreference currency;
     private ListPreference provider;
     private ListPreference theme;
+    private ListPreference units;
     private CheckBoxPreference icon;
     private CheckBoxPreference label;
     private CheckBoxPreference decimals;
@@ -41,7 +42,8 @@ public class SettingsActivity extends PreferenceActivity {
         label = (CheckBoxPreference) findPreference(getString(R.string.key_label));
         theme = (ListPreference) findPreference(getString(R.string.key_theme));
         icon = (CheckBoxPreference) findPreference(getString(R.string.key_icon));
-        decimals = (CheckBoxPreference) findPreference(getString(R.string.key_decimals)) ;
+        decimals = (CheckBoxPreference) findPreference(getString(R.string.key_decimals));
+        units = (ListPreference) findPreference(getString(R.string.key_units));
 
         setRefresh(Prefs.getInterval(this, appWidgetId));
         refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -92,6 +94,14 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+        units.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object value) {
+                preference.setSummary(getString(R.string.summary_units, value));
+                return true;
+            }
+        });
+        units.setSummary(getString(R.string.summary_units, units.getEntry()));
         findPreference(getString(R.string.key_rate)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -125,7 +135,7 @@ public class SettingsActivity extends PreferenceActivity {
         broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
         sendBroadcast(broadcast);
         Prefs.setValues(this, appWidgetId, currency.getValue(), refreshValue, Integer.valueOf(provider.getValue()),
-                label.isChecked(), theme.getValue(), icon.isChecked(), decimals.isChecked());
+                label.isChecked(), theme.getValue(), icon.isChecked(), decimals.isChecked(), units.getValue());
         Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, result);

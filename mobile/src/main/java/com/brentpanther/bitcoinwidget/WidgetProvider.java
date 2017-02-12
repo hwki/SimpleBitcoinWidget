@@ -29,7 +29,7 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         int layout = Prefs.getThemeLayout(context, appWidgetId);
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
-        WidgetViews.resize(context, views, appWidgetId);
+        WidgetViews.setLastText(context, views, appWidgetId);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 

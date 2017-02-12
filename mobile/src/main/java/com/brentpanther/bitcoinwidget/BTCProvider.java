@@ -1,5 +1,7 @@
 package com.brentpanther.bitcoinwidget;
 
+import android.annotation.SuppressLint;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -271,8 +273,8 @@ enum BTCProvider {
     QUADRIGA(R.array.currencies_quadriga, "quadriga") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = String.format("https://api.quadrigacx.com/v2/ticker?book=BTC_%s", currencyCode);
-            return getJSONObject(url).getString("last_trade");
+            String url = String.format("https://api.quadrigacx.com/v2/ticker?book=btc_%s", currencyCode.toLowerCase());
+            return getJSONObject(url).getString("last");
         }
     },
     //OFFLINE
@@ -354,6 +356,16 @@ enum BTCProvider {
             String url = String.format("https://www.bitmarket.pl/json/BTC%s/ticker.json", currencyCode);
             return getJSONObject(url).getString("last");
         }
+    },
+    COINSPH(R.array.currencies_coinsph, "coins.ph") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://quote.coins.ph/v1/markets/BTC-%s", currencyCode);
+            JSONObject obj = getJSONObject(url).getJSONObject("market");
+            String bid = obj.getString("bid");
+            String ask = obj.getString("ask");
+            return Double.toString((Double.valueOf(bid) + Double.valueOf(ask)) / 2);
+        }
     };
 
     private final int currencyArrayID;
@@ -386,15 +398,16 @@ enum BTCProvider {
     private static String getString(String url) throws Exception {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
-                .readTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
                 .hostnameVerifier(new HostnameVerifier() {
+                    @SuppressLint("BadHostnameVerifier")
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
                         return true;
                     }
                 }).build();
         Request request = new Request.Builder()
-                .addHeader("User-Agent", "curl/7.43.0")
                 .url(url)
                 .build();
 

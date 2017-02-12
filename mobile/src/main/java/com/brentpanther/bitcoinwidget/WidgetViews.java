@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
@@ -14,9 +15,22 @@ class WidgetViews {
 
     private static final double TEXT_HEIGHT = .70;
 
-    static void setText(Context context, RemoteViews views, Currency currency, String amount, String label, int widgetId) {
-        String text = buildText(currency, amount, Prefs.getShowDecimals(context, widgetId));
+    static void setText(Context context, RemoteViews views, Currency currency, String amount, int widgetId) {
+        Unit unit = Prefs.getUnit(context, widgetId);
+        boolean showDecimals = Prefs.getShowDecimals(context, widgetId);
+        String text = buildText(currency, amount, showDecimals, unit);
         Prefs.setLastValue(context, widgetId, text);
+        putValue(context, views, text, widgetId);
+    }
+
+    static void setLastText(Context context, RemoteViews views, int widgetId) {
+        String lastValue = Prefs.getLastValue(context, widgetId);
+        if (!TextUtils.isEmpty(lastValue)) {
+            putValue(context, views, lastValue, widgetId);
+        }
+    }
+
+    private static void putValue(Context context, RemoteViews views, String text, int widgetId) {
         setImageVisibility(context, views, widgetId);
         Pair<Integer, Integer> availableSize = getTextAvailableSize(context, widgetId);
         if (availableSize == null) return;
@@ -24,9 +38,11 @@ class WidgetViews {
         views.setTextViewText(R.id.price, text);
         views.setTextViewTextSize(R.id.price, TypedValue.COMPLEX_UNIT_DIP, textSize);
         if (Prefs.getLabel(context, widgetId)) {
+            int providerInt = Prefs.getProvider(context, widgetId);
+            BTCProvider provider = BTCProvider.values()[providerInt];
             availableSize = getLabelAvailableSize(context, widgetId);
-            float labelSize = TextSizer.getLabelSize(context, label, availableSize);
-            views.setTextViewText(R.id.provider, label);
+            float labelSize = TextSizer.getLabelSize(context, provider.getLabel(), availableSize);
+            views.setTextViewText(R.id.provider, provider.getLabel());
             views.setTextViewTextSize(R.id.provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
             show(views, R.id.provider, R.id.top_space);
         } else {
@@ -34,22 +50,6 @@ class WidgetViews {
         }
         show(views, R.id.price);
         hide(views, R.id.loading);
-    }
-
-    static void resize(Context context, RemoteViews views, int widgetId) {
-        Pair<Integer, Integer> availableSize = getTextAvailableSize(context, widgetId);
-        String lastValue = Prefs.getLastValue(context, widgetId);
-        if (availableSize == null || lastValue == null) return;
-        float textSize = TextSizer.getTextSize(context, lastValue, availableSize);
-        views.setTextViewTextSize(R.id.price, TypedValue.COMPLEX_UNIT_DIP, textSize);
-        availableSize = getLabelAvailableSize(context, widgetId);
-
-        if (Prefs.getLabel(context, widgetId)) {
-            int providerInt = Prefs.getProvider(context, widgetId);
-            BTCProvider provider = BTCProvider.values()[providerInt];
-            float labelSize = TextSizer.getLabelSize(context, provider.getLabel(), availableSize);
-            views.setTextViewTextSize(R.id.provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
-        }
     }
 
     private static void setImageVisibility(Context context, RemoteViews views, int widgetId) {
@@ -116,13 +116,14 @@ class WidgetViews {
         return Pair.create(width, height);
     }
 
-    private static String buildText(Currency currency, String amount, boolean showDecimals) {
+    private static String buildText(Currency currency, String amount, boolean showDecimals, Unit unit) {
         String format = currency.getFormat();
         if (!showDecimals) {
             format = format.replaceAll("\\.00", "");
         }
         NumberFormat nf = new DecimalFormat(format);
-        return nf.format(Double.valueOf(amount));
+        double adjustedAmount = unit.adjust(amount);
+        return nf.format(adjustedAmount);
     }
 
     static void setLoading(RemoteViews views, Context context, int widgetId) {

@@ -11,8 +11,10 @@
     <string name="key_rate">rate</string>
     <string name="key_icon">icon</string>
     <string name="key_decimals">decimals</string>
-    <string name="default_refresh_interval">10</string>
+    <string name="key_units">units</string>
+    <string name="default_refresh_interval">30</string>
     <string name="default_currency">USD</string>
     <string name="default_provider">1</string>
     <string name="default_theme">Light</string>
+    <string name="default_unit">BTC</string>
 </resources>
