@@ -366,6 +366,13 @@ enum BTCProvider {
             String ask = obj.getString("ask");
             return Double.toString((Double.valueOf(bid) + Double.valueOf(ask)) / 2);
         }
+    },
+    POLONIEX(R.array.currencies_poloniex, "poloniex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            JSONObject obj = getJSONObject("https://poloniex.com/public?command=returnTicker");
+            return obj.getJSONObject("USDT_BTC").getString("last");
+        }
     };
 
     private final int currencyArrayID;

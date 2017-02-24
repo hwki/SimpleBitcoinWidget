@@ -373,6 +373,9 @@
         <item>TWD</item>
         <item>VND</item>
     </string-array>
+    <string-array name="currencies_poloniex">
+        <item>USD</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -423,6 +426,7 @@
 
         <item>32</item>
         <item>25</item>
+        <item>56</item>
         <item>41</item>
         <item>48</item>
 
@@ -481,6 +485,7 @@
 
         <item>OK Coin</item>
         <item>Paymium</item>
+        <item>Poloniex</item>
         <item>QuadrigaCX</item>
         <item>SurBitcoin</item>
 

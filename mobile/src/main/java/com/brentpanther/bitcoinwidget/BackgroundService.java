@@ -73,11 +73,12 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(!this.isRunning) {
+        if (!this.isRunning) {
+            if (intent == null) return START_STICKY;
             this.isRunning = true;
             appWidgetId = intent.getIntExtra("appWidgetId", 0);
             this.backgroundThread.start();
         }
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 }
