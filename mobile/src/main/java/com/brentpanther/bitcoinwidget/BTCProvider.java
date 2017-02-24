@@ -373,6 +373,12 @@ enum BTCProvider {
             JSONObject obj = getJSONObject("https://poloniex.com/public?command=returnTicker");
             return obj.getJSONObject("USDT_BTC").getString("last");
         }
+    },
+    UNOCOIN(R.array.currencies_unocoin, "unocoin") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getString("https://www.unocoin.com/trade?avg");
+        }
     };
 
     private final int currencyArrayID;

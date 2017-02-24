@@ -14,10 +14,7 @@ import android.widget.RemoteViews;
 
 public class BackgroundService extends Service {
 
-    private boolean isRunning;
     private Context context;
-    private Thread backgroundThread;
-    private int appWidgetId;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -27,11 +24,16 @@ public class BackgroundService extends Service {
     @Override
     public void onCreate() {
         this.context = this;
-        this.isRunning = false;
-        this.backgroundThread = new Thread(myTask);
     }
 
-    private Runnable myTask = new Runnable() {
+    private final class MyRunnable implements Runnable {
+
+        private final int appWidgetId;
+
+        MyRunnable(int appWidgetId) {
+            this.appWidgetId = appWidgetId;
+        }
+
         public void run() {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int layout = Prefs.getThemeLayout(context, appWidgetId);
@@ -64,21 +66,14 @@ public class BackgroundService extends Service {
             appWidgetManager.updateAppWidget(appWidgetId, views);
             stopSelf();
         }
-    };
-
-    @Override
-    public void onDestroy() {
-        this.isRunning = false;
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (!this.isRunning) {
-            if (intent == null) return START_STICKY;
-            this.isRunning = true;
-            appWidgetId = intent.getIntExtra("appWidgetId", 0);
-            this.backgroundThread.start();
-        }
+        if (intent == null) return START_STICKY;
+        int appWidgetId = intent.getIntExtra("appWidgetId", 0);
+        new Thread(new MyRunnable(appWidgetId)).start();
         return START_REDELIVER_INTENT;
     }
 }

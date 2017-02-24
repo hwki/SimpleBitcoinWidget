@@ -376,6 +376,9 @@
     <string-array name="currencies_poloniex">
         <item>USD</item>
     </string-array>
+    <string-array name="currencies_unocoin">
+        <item>INR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -430,6 +433,7 @@
         <item>41</item>
         <item>48</item>
 
+        <item>57</item>
         <item>47</item>
         <item>50</item>
         <item>49</item>
@@ -489,6 +493,7 @@
         <item>QuadrigaCX</item>
         <item>SurBitcoin</item>
 
+        <item>Unocoin</item>
         <item>Uphold</item>
         <item>UrduBit</item>
         <item>VBTC</item>
