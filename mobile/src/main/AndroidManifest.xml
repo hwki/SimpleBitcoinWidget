@@ -6,6 +6,7 @@
     <uses-feature android:name="android.software.app_widgets" />
 
     <application
+        android:name=".WidgetApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
