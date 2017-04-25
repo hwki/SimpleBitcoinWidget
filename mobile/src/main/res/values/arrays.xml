@@ -379,6 +379,22 @@
     <string-array name="currencies_unocoin">
         <item>INR</item>
     </string-array>
+    <string-array name="currencies_therock">
+        <item>USD</item>
+        <item>EUR</item>
+    </string-array>
+    <string-array name="currencies_quione">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>AUD</item>
+        <item>CNY</item>
+        <item>HKD</item>
+        <item>IDR</item>
+        <item>INR</item>
+        <item>JPY</item>
+        <item>PHP</item>
+        <item>SGD</item>
+    </string-array>
     <string-array name="providerValues">
         <item>12</item>
         <item>29</item>
@@ -431,7 +447,9 @@
         <item>25</item>
         <item>56</item>
         <item>41</item>
+        <item>59</item>
         <item>48</item>
+        <item>58</item>
 
         <item>57</item>
         <item>47</item>
@@ -491,7 +509,9 @@
         <item>Paymium</item>
         <item>Poloniex</item>
         <item>QuadrigaCX</item>
+        <item>Quione</item>
         <item>SurBitcoin</item>
+        <item>TheRock</item>
 
         <item>Unocoin</item>
         <item>Uphold</item>

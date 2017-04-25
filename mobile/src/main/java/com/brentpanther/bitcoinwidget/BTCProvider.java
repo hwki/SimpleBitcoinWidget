@@ -379,6 +379,20 @@ enum BTCProvider {
         public String getValue(String currencyCode) throws Exception {
             return getString("https://www.unocoin.com/trade?avg");
         }
+    },
+    THEROCK(R.array.currencies_therock, "therock") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://api.therocktrading.com/v1/funds/BTC%s/ticker", currencyCode);
+            return getJSONObject(url).getString("last");
+        }
+    },
+    QUIONE(R.array.currencies_quione, "quione") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://api.quoine.com/products/code/CASH/BTC%s", currencyCode);
+            return getJSONObject(url).getString("last_traded_price");
+        }
     };
 
     private final int currencyArrayID;
