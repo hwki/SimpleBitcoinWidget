@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SimpleBitcoinWidget.iml" filepath="$PROJECT_DIR$/SimpleBitcoinWidget.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bitcoin/bitcoin.iml" filepath="$PROJECT_DIR$/bitcoin/bitcoin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cryptowidget/cryptowidget.iml" filepath="$PROJECT_DIR$/cryptowidget/cryptowidget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ethereum/ethereum.iml" filepath="$PROJECT_DIR$/ethereum/ethereum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/litecoin/litecoin.iml" filepath="$PROJECT_DIR$/litecoin/litecoin.iml" />
     </modules>
   </component>
 </project>

@@ -10,7 +10,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/mobile" />
+            <option value="$PROJECT_DIR$/bitcoin" />
+            <option value="$PROJECT_DIR$/cryptowidget" />
+            <option value="$PROJECT_DIR$/ethereum" />
+            <option value="$PROJECT_DIR$/litecoin" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
