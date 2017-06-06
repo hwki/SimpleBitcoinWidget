@@ -405,6 +405,9 @@
     <string-array name="currencies_bter">
         <item>CNY</item>
     </string-array>
+    <string-array name="currencies_coinsecure">
+        <item>INR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>BIT2C</item>
         <item>BITBAY</item>
@@ -430,6 +433,7 @@
         <item>CHILEBIT</item>
         <item>COINBASE</item>
         <item>COINMATE</item>
+        <item>COINSECURE</item>
         <item>COINTREE</item>
         <item>COINSPH</item>
         <item>CRYPTONIT</item>
@@ -484,6 +488,7 @@
         <item>ChileBit.net</item>
         <item>Coinbase</item>
         <item>CoinMate.io</item>
+        <item>Coinsecure</item>
         <item>Cointree</item>
         <item>Coins.ph</item>
         <item>Cryptonit</item>

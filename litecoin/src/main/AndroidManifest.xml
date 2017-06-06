@@ -21,7 +21,6 @@
         </receiver>
 
         <activity
-            android:exported="false"
             android:name=".SettingsActivity"
             android:theme="@style/app_theme">
             <intent-filter>

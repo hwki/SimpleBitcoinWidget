@@ -12,6 +12,13 @@ import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
 enum LitecoinExchange implements Exchange {
 
+    BITBAY(R.array.currencies_bitbay, "bitbay") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://bitbay.net/API/Public/LTC%s/ticker.json", currencyCode);
+            return getJSONObject(url).getString("last");
+        }
+    },
     BITFINEX(R.array.currencies_bitfinex, "bitfinex") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -67,6 +74,12 @@ enum LitecoinExchange implements Exchange {
         public String getValue(String currencyCode) throws Exception {
             String url = String.format("https://api.therocktrading.com/v1/funds/LTC%s/ticker", currencyCode);
             return getJSONObject(url).getString("last");
+        }
+    },
+    BITMARKET24(R.array.currencies_bitmarket24, "bitmarket24") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            return getJSONObject("https://bitmarket24.pl/api/LTC_PLN/status.json").getString("last");
         }
     };
 

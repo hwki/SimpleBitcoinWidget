@@ -38,7 +38,7 @@ enum BTCExchange implements Exchange {
     CAMPBX(R.array.currencies_campbx, "campbx") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("http://campbx.com/api/xticker.php");
+            JSONObject obj = getJSONObject("https://campbx.com/api/xticker.php");
             return obj.getString("Last Trade");
         }
     },
@@ -165,7 +165,7 @@ enum BTCExchange implements Exchange {
     HUOBI(R.array.currencies_huobi, "huobi") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("http://api.huobi.com/usdmarket/ticker_btc_json.js");
+            JSONObject obj = getJSONObject("https://api.huobi.com/usdmarket/ticker_btc_json.js");
             return obj.getJSONObject("ticker").getString("last");
         }
     },
@@ -404,8 +404,15 @@ enum BTCExchange implements Exchange {
     BTER(R.array.currencies_bter, "bter") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = "http://data.bter.com/api2/1/ticker/btc_cny";
+            String url = "https://data.bter.com/api2/1/ticker/btc_cny";
             return getJSONObject(url).getString("last");
+        }
+    },
+    COINSECURE(R.array.currencies_coinsecure, "coinsecure") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.coinsecure.in/v0/noauth/newticker";
+            return String.valueOf(getJSONObject(url).getLong("lastprice") / 100);
         }
     };
 

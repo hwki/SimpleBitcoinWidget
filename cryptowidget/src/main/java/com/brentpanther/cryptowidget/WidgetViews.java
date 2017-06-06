@@ -28,6 +28,8 @@ class WidgetViews {
         String lastValue = prefs.getLastValue();
         if (!TextUtils.isEmpty(lastValue)) {
             putValue(context, views, lastValue, widgetId);
+        } else {
+            putValue(context, views, context.getString(R.string.value_unknown), widgetId);
         }
     }
 
