@@ -22,6 +22,11 @@
         <item>360</item>
         <item>1440</item>
     </string-array>
+    <string-array name="currencies_bitbay">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>PLN</item>
+    </string-array>
     <string-array name="currencies_bitfinex">
         <item>USD</item>
     </string-array>
@@ -36,7 +41,6 @@
     <string-array name="currencies_cexio">
         <item>USD</item>
         <item>EUR</item>
-        <item>RUB</item>
     </string-array>
     <string-array name="currencies_coinbase">
         <item>USD</item>
@@ -113,6 +117,7 @@
         <item>EUR</item>
     </string-array>
     <string-array name="providerValues">
+        <item>BITBAY</item>
         <item>BITFINEX</item>
         <item>BTCE</item>
         <item>BTER</item>
@@ -128,6 +133,7 @@
         <item>THEROCK</item>
     </string-array>
     <string-array name="providers">
+        <item>BitBay</item>
         <item>Bitfinex</item>
         <item>BTC-e</item>
         <item>BTer</item>

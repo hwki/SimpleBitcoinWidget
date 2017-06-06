@@ -13,6 +13,13 @@ import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
 enum EthereumExchange implements Exchange {
 
+    BITBAY(R.array.currencies_bitbay, "bitbay") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://bitbay.net/API/Public/ETH%s/ticker.json", currencyCode);
+            return getJSONObject(url).getString("last");
+        }
+    },
     BITFINEX(R.array.currencies_bitfinex, "bitfinex") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -51,7 +58,8 @@ enum EthereumExchange implements Exchange {
     ETHEXINDIA(R.array.currencies_ethexindia, "ethex") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://api.ethexindia.com/ticker").getString("last_traded_price");
+            JSONObject obj = getJSONObject("https://api.ethexindia.com/ticker");
+            return obj.getString("last_traded_price");
         }
     },
     GATECOIN(R.array.currencies_gatecoin, "gate") {
