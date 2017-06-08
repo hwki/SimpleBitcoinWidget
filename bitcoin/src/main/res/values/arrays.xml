@@ -214,13 +214,12 @@
         <item>USD</item>
         <item>AUD</item>
         <item>CAD</item>
-        <item>CNY</item>
+        <item>CHF</item>
         <item>EUR</item>
         <item>GBP</item>
         <item>HKD</item>
         <item>JPY</item>
-        <item>KRW</item>
-        <item>SEK</item>
+        <item>NZD</item>
         <item>SGD</item>
     </string-array>
     <string-array name="currencies_cryptonit">

@@ -139,8 +139,9 @@ enum BTCExchange implements Exchange {
     LAKEBTC(R.array.currencies_lake, "lakebtc") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("https://www.lakebtc.com/api_v1/ticker");
-            return obj.getJSONObject(currencyCode).getString("last");
+            JSONObject obj = getJSONObject("https://api.lakebtc.com/api_v2/ticker");
+            String code = "btc" + currencyCode.toLowerCase();
+            return obj.getJSONObject(code).getString("last");
         }
     },
     CRYPTONIT(R.array.currencies_cryptonit, "crypt") {
@@ -184,7 +185,14 @@ enum BTCExchange implements Exchange {
     BITSO(R.array.currencies_bitso, "bitso") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://api.bitso.com/v2/ticker").getString("last");
+            JSONArray payload = getJSONObject("https://api.bitso.com/v3/ticker/").getJSONArray("payload");
+            for (int i = 0; i < payload.length(); i++) {
+                JSONObject obj = payload.getJSONObject(i);
+                if (obj.getString("book").equals("btc_mxn")) {
+                    return obj.getString("last");
+                }
+            }
+            return null;
         }
     },
     ZYADO(R.array.currencies_zyado, "zyado") {

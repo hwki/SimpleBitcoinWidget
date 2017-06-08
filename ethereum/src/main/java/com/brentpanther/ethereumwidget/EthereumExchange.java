@@ -27,6 +27,19 @@ enum EthereumExchange implements Exchange {
             return obj.getString("last_price");
         }
     },
+    BITSO(R.array.currencies_bitso, "bitso") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            JSONArray payload = getJSONObject("https://api.bitso.com/v3/ticker/").getJSONArray("payload");
+            for (int i = 0; i < payload.length(); i++) {
+                JSONObject obj = payload.getJSONObject(i);
+                if (obj.getString("book").equals("eth_mxn")) {
+                    return obj.getString("last");
+                }
+            }
+            return null;
+        }
+    },
     BTCE(R.array.currencies_btce, "btc-e") {
         @Override
         public String getValue(String currencyCode) throws Exception {

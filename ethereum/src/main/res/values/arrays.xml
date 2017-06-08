@@ -30,6 +30,9 @@
     <string-array name="currencies_bitfinex">
         <item>USD</item>
     </string-array>
+    <string-array name="currencies_bitso">
+        <item>MXN</item>
+    </string-array>
     <string-array name="currencies_btce">
         <item>USD</item>
         <item>EUR</item>
@@ -119,6 +122,7 @@
     <string-array name="providerValues">
         <item>BITBAY</item>
         <item>BITFINEX</item>
+        <item>BITSO</item>
         <item>BTCE</item>
         <item>BTER</item>
         <item>CEXIO</item>
@@ -135,6 +139,7 @@
     <string-array name="providers">
         <item>BitBay</item>
         <item>Bitfinex</item>
+        <item>Bitso</item>
         <item>BTC-e</item>
         <item>BTer</item>
         <item>Cex.io</item>
