@@ -57,6 +57,7 @@ class BitcoinPrefs extends Prefs {
         String value = getValue(THEME);
         if(value == null || "Light".equals(value)) return R.layout.widget_layout;
         if("Dark".equals(value)) return R.layout.widget_layout_dark;
+        if("Transparent Dark".equals(value)) return R.layout.widget_layout_transparent_dark;
         return R.layout.widget_layout_transparent;
     }
 

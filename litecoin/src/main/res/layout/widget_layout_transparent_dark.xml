@@ -3,7 +3,7 @@
     android:id="@+id/bitcoinParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@drawable/bg_outer_dark"
     android:clickable="true">
 
     <ProgressBar
@@ -19,7 +19,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/bitcoinImage"
+            android:id="@+id/litecoin_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -27,11 +27,11 @@
             android:adjustViewBounds="true"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"
-            android:src="@drawable/icon_bitcoin"
+            android:src="@drawable/ic_litecoin_color"
             android:visibility="gone" />
 
         <ImageView
-            android:id="@+id/bitcoinImageBW"
+            android:id="@+id/litecoin_image_bw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -39,7 +39,7 @@
             android:adjustViewBounds="true"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"
-            android:src="@drawable/icon_bitcoin_bw"
+            android:src="@drawable/ic_litecoin"
             android:visibility="gone" />
 
         <LinearLayout
