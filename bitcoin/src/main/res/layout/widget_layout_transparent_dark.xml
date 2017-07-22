@@ -3,7 +3,7 @@
     android:id="@+id/bitcoinParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@drawable/bg_outer_dark"
     android:clickable="true">
 
     <ProgressBar
