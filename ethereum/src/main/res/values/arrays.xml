@@ -94,6 +94,11 @@
     <string-array name="currencies_hitbtc">
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_independentreserve">
+        <item>USD</item>
+        <item>AUD</item>
+        <item>NZD</item>
+    </string-array>
     <string-array name="currencies_kraken">
         <item>USD</item>
         <item>CAD</item>
@@ -131,6 +136,7 @@
         <item>GATECOIN</item>
         <item>GEMINI</item>
         <item>HITBTC</item>
+        <item>INDEPENDENT_RESERVE</item>
         <item>KRAKEN</item>
         <item>POLONIEX</item>
         <item>QUIONE</item>
@@ -148,6 +154,7 @@
         <item>Gatecoin</item>
         <item>Gemini</item>
         <item>HitBTC</item>
+        <item>Independent Reserve</item>
         <item>Kraken</item>
         <item>Poloniex</item>
         <item>Quione</item>

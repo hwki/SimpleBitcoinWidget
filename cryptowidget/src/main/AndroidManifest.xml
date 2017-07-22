@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.brentpanther.cryptowidget">
+    package="com.brentpanther.cryptowidget" android:installLocation="internalOnly">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.software.app_widgets" />

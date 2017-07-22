@@ -101,6 +101,13 @@ enum EthereumExchange implements Exchange {
             return getJSONObject(String.format("https://api.hitbtc.com/api/1/public/ETH%s/ticker", currencyCode)).getString("last");
         }
     },
+    INDEPENDENT_RESERVE(R.array.currencies_independentreserve, "ind. reserve") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=eth&secondaryCurrencyCode=%s";
+            return getJSONObject(String.format(url, currencyCode)).getString("LastPrice");
+        }
+    },
     KRAKEN(R.array.currencies_kraken, "kraken") {
         @Override
         public String getValue(String currencyCode) throws Exception {
