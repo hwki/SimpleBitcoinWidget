@@ -120,6 +120,7 @@
         <item>Light</item>
         <item>Dark</item>
         <item>Transparent</item>
+        <item>Transparent Dark</item>
     </string-array>
     <string-array name="units">
         <item>LTC</item>
