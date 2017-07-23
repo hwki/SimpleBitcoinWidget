@@ -4,6 +4,8 @@ import com.brentpanther.cryptowidget.Exchange;
 
 import org.json.JSONObject;
 
+import java.net.SocketException;
+
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
 /**
@@ -29,7 +31,13 @@ enum LitecoinExchange implements Exchange {
     BTCE(R.array.currencies_btce, "btc-e") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
+            JSONObject obj;
+            try {
+                obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
+            } catch (SocketException e) {
+                // try mirror
+                obj = getJSONObject(String.format("https://btc-e.nz/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
+            }
             obj = obj.getJSONObject(String.format("ltc_%s", currencyCode.toLowerCase()));
             return obj.getString("last");
         }
