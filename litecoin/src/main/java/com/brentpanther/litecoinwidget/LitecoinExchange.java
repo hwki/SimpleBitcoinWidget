@@ -4,7 +4,7 @@ import com.brentpanther.cryptowidget.Exchange;
 
 import org.json.JSONObject;
 
-import java.net.SocketException;
+import java.io.IOException;
 
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
@@ -34,7 +34,7 @@ enum LitecoinExchange implements Exchange {
             JSONObject obj;
             try {
                 obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
-            } catch (SocketException e) {
+            } catch (IOException e) {
                 // try mirror
                 obj = getJSONObject(String.format("https://btc-e.nz/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
             }

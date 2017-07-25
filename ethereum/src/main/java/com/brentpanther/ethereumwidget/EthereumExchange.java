@@ -5,7 +5,7 @@ import com.brentpanther.cryptowidget.Exchange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.SocketException;
+import java.io.IOException;
 
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
@@ -48,7 +48,7 @@ enum EthereumExchange implements Exchange {
             JSONObject obj;
             try {
                 obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/eth_%s", currencyCode.toLowerCase()));
-            } catch (SocketException e) {
+            } catch (IOException e) {
                 obj = getJSONObject(String.format("https://btc-e.nz/api/3/ticker/eth_%s", currencyCode.toLowerCase()));
             }
             obj = obj.getJSONObject(String.format("eth_%s", currencyCode.toLowerCase()));

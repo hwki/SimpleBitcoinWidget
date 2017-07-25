@@ -13,6 +13,7 @@ import javax.net.ssl.SSLSession;
 
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -52,15 +53,22 @@ public class ExchangeHelper {
     }
 
     public static JSONObject getJSONObject(String url) throws Exception {
-        return new JSONObject(getString(url));
+        return getJSONObject(url, null);
+    }
+
+    public static JSONObject getJSONObject(String url, Headers headers) throws Exception {
+        return new JSONObject(getString(url, headers));
     }
 
     public static JSONArray getJSONArray(String url) throws Exception {
         return new JSONArray(getString(url));
     }
 
-    @SuppressWarnings("deprecation")
     public static String getString(String url) throws Exception {
+        return getString(url, null);
+    }
+
+    public static String getString(String url, Headers headers) throws Exception {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -73,9 +81,12 @@ public class ExchangeHelper {
                         return true;
                     }
                 }).build();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+        Request.Builder builder = new Request.Builder()
+                .url(url);
+        if (headers != null) {
+            builder = builder.headers(headers);
+        }
+        Request request = builder.build();
 
         Response response = client.newCall(request).execute();
         return response.body().string();

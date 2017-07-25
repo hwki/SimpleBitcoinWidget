@@ -5,7 +5,9 @@ import com.brentpanther.cryptowidget.Exchange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.SocketException;
+import java.io.IOException;
+
+import okhttp3.Headers;
 
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONArray;
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
@@ -50,7 +52,7 @@ enum BTCExchange implements Exchange {
             JSONObject obj;
             try {
                 obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/btc_%s", currencyCode.toLowerCase()));
-            } catch (SocketException e) {
+            } catch (IOException e) {
                 // try mirror
                 obj = getJSONObject(String.format("https://btc-e.nz/api/3/ticker/btc_%s", currencyCode.toLowerCase()));
             }
@@ -181,7 +183,8 @@ enum BTCExchange implements Exchange {
     KORBIT(R.array.currencies_korbit, "korbit") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://api.korbit.co.kr/v1/ticker").getString("last");
+            Headers headers = Headers.of("User-Agent", "");
+            return getJSONObject("https://api.korbit.co.kr/v1/ticker", headers).getString("last");
         }
     },
     PAYMIUM(R.array.currencies_paymium, "paymium") {
