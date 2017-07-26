@@ -8,8 +8,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 109
-        versionName "5.0.8"
+        versionCode 110
+        versionName "5.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {

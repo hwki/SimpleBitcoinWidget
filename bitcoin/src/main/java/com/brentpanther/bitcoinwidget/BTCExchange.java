@@ -258,7 +258,7 @@ enum BTCExchange implements Exchange {
     BITCOINCOID(R.array.currencies_bitcoincoid, "bitcoin.co.id") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://vip.bitcoin.co.id/api/BTC_IDR/ticker/").getJSONObject("ticker").getString("last");
+            return getJSONObject("https://vip.bitcoin.co.id/api/btc_idr/ticker/").getJSONObject("ticker").getString("last");
         }
     },
     FOXBIT(R.array.currencies_foxbit, "foxbit") {
