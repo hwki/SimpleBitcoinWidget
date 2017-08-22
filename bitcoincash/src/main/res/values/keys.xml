@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_refresh_interval">update_interval</string>
+    <string name="key_currency">currency</string>
+    <string name="key_prefs">bitcoincashwidget</string>
+    <string name="key_provider">provider</string>
+    <string name="key_label">label</string>
+    <string name="key_theme">theme</string>
+    <string name="key_rate">rate</string>
+    <string name="key_icon">icon</string>
+    <string name="key_decimals">decimals</string>
+    <string name="key_units">units</string>
+    <string name="default_refresh_interval">30</string>
+    <string name="default_currency">USD</string>
+    <string name="default_provider">BITFINEX</string>
+    <string name="default_theme">Light</string>
+    <string name="default_unit">BCH</string>
+</resources>

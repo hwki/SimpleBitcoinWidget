@@ -72,11 +72,6 @@
     <string-array name="currencies_campbx">
         <item>USD</item>
     </string-array>
-    <string-array name="currencies_btce">
-        <item>USD</item>
-        <item>EUR</item>
-        <item>RUR</item>
-    </string-array>
     <string-array name="currencies_mercado">
         <item>BRL</item>
     </string-array>
@@ -407,6 +402,53 @@
     <string-array name="currencies_coinsecure">
         <item>INR</item>
     </string-array>
+    <string-array name="currencies_bittrex">
+        <item>USD</item>
+    </string-array>
+    <string-array name="currencies_coindesk">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>AUD</item>
+        <item>BRL</item>
+        <item>CAD</item>
+        <item>CHF</item>
+        <item>CLP</item>
+        <item>CNY</item>
+        <item>CZK</item>
+        <item>DKK</item>
+        <item>GBP</item>
+        <item>HKD</item>
+        <item>IDR</item>
+        <item>ILS</item>
+        <item>INR</item>
+        <item>JPY</item>
+        <item>KRW</item>
+        <item>MXN</item>
+        <item>MYR</item>
+        <item>NGN</item>
+        <item>NOK</item>
+        <item>NZD</item>
+        <item>PHP</item>
+        <item>PKR</item>
+        <item>PLN</item>
+        <item>RON</item>
+        <item>RUB</item>
+        <item>SEK</item>
+        <item>SGD</item>
+        <item>THB</item>
+        <item>TRY</item>
+        <item>TWD</item>
+        <item>UAH</item>
+        <item>VEF</item>
+        <item>VND</item>
+        <item>ZAR</item>
+    </string-array>
+    <string-array name="currencies_bithumb">
+        <item>KRW</item>
+    </string-array>
+    <string-array name="currencies_zebpay">
+        <item>INR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>BIT2C</item>
         <item>BITBAY</item>
@@ -415,14 +457,15 @@
         <item>BITCOINCOID</item>
         <item>BITCOINDE</item>
         <item>BITFINEX</item>
+        <item>BITHUMB</item>
         <item>BITMARKET24</item>
         <item>BITMARKETPL</item>
         <item>BITPAY</item>
         <item>BITSO</item>
         <item>BITSTAMP</item>
+        <item>BITTREX</item>
         <item>BTCBOX</item>
         <item>BTC_CHINA</item>
-        <item>BTCE</item>
         <item>BTCMARKETS</item>
         <item>BTCTURK</item>
         <item>BTCXINDIA</item>
@@ -431,6 +474,7 @@
         <item>CEXIO</item>
         <item>CHILEBIT</item>
         <item>COINBASE</item>
+        <item>COINDESK</item>
         <item>COINMATE</item>
         <item>COINSECURE</item>
         <item>COINTREE</item>
@@ -460,6 +504,7 @@
         <item>UPHOLD</item>
         <item>URDUBIT</item>
         <item>VBTC</item>
+        <item>ZEBPAY</item>
         <item>ZYADO</item>
     </string-array>
     <string-array name="providers">
@@ -470,14 +515,15 @@
         <item>Bitcoin.co.id</item>
         <item>Bitcoin.de</item>
         <item>Bitfinex</item>
+        <item>Bithumb</item>
         <item>BitMarket24</item>
         <item>BitMarket.pl</item>
         <item>BitPay</item>
         <item>Bitso</item>
         <item>Bitstamp</item>
+        <item>Bittrex</item>
         <item>BTC Box</item>
         <item>BTC China</item>
-        <item>BTC-e</item>
         <item>BTC Markets</item>
         <item>BTCTurk</item>
         <item>BTCXIndia</item>
@@ -486,6 +532,7 @@
         <item>Cex.io</item>
         <item>ChileBit.net</item>
         <item>Coinbase</item>
+        <item>Coindesk</item>
         <item>CoinMate.io</item>
         <item>Coinsecure</item>
         <item>Cointree</item>
@@ -515,6 +562,7 @@
         <item>Uphold</item>
         <item>UrduBit</item>
         <item>VBTC</item>
+        <item>Zebpay</item>
         <item>Zyado</item>
     </string-array>
     <string-array name="themes">

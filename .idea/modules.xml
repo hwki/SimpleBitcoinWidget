@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SimpleBitcoinWidget.iml" filepath="$PROJECT_DIR$/SimpleBitcoinWidget.iml" />
       <module fileurl="file://$PROJECT_DIR$/bitcoin/bitcoin.iml" filepath="$PROJECT_DIR$/bitcoin/bitcoin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bitcoincash/bitcoincash.iml" filepath="$PROJECT_DIR$/bitcoincash/bitcoincash.iml" />
       <module fileurl="file://$PROJECT_DIR$/cryptowidget/cryptowidget.iml" filepath="$PROJECT_DIR$/cryptowidget/cryptowidget.iml" />
       <module fileurl="file://$PROJECT_DIR$/ethereum/ethereum.iml" filepath="$PROJECT_DIR$/ethereum/ethereum.iml" />
       <module fileurl="file://$PROJECT_DIR$/litecoin/litecoin.iml" filepath="$PROJECT_DIR$/litecoin/litecoin.iml" />

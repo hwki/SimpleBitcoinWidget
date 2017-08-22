@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simple Bitcoin Cash Widget</string>
+    <string name="title_refresh_interval">Refresh Interval</string>
+    <string name="title_currency">Currency</string>
+    <string name="title_provider">Exchange</string>
+    <string name="title_label">Show exchange label</string>
+    <string name="title_theme">Theme</string>
+    <string name="title_rate">Rate</string>
+    <string name="title_icon">Show Bitcoin Cash icon</string>
+    <string name="title_decimals">Show decimals</string>
+    <string name="title_units">BCH Unit</string>
+    <plurals name="summary_refresh_interval_minute">
+        <item quantity="one">Every minute</item>
+        <item quantity="other">Every %d minutes</item>
+    </plurals>
+    <plurals name="summary_refresh_interval_hour">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <string name="summary_currency">Use %s as currency</string>
+    <string name="summary_provider">Get data from %s</string>
+    <string name="summary_theme">%s</string>
+    <string name="summary_rate">Rate on Google Play</string>
+    <string name="summary_units">Show in %s</string>
+    <string name="widget_name">Bitcoin Cash Widget</string>
+
+</resources>
