@@ -27,6 +27,13 @@ enum BCHExchange implements Exchange {
             return String.valueOf((buy + sell) / 2);
         }
     },
+    BTER(R.array.currencies_bter, "bter") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://data.bter.com/api2/1/ticker/bcc_cny";
+            return getJSONObject(url).getString("last");
+        }
+    },
     KORBIT(R.array.currencies_korbit, "korbit") {
         @Override
         public String getValue(String currencyCode) throws Exception {

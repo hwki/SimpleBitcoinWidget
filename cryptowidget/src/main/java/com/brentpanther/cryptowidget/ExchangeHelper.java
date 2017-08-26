@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -73,7 +73,7 @@ public class ExchangeHelper {
                 .followRedirects(true)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
-                .connectionSpecs(Collections.singletonList(spec))
+                .connectionSpecs(Arrays.asList(spec, ConnectionSpec.CLEARTEXT))
                 .hostnameVerifier(new HostnameVerifier() {
                     @SuppressLint("BadHostnameVerifier")
                     @Override

@@ -45,7 +45,7 @@ enum LitecoinExchange implements Exchange {
     BTER(R.array.currencies_bter, "bter") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = "http://data.bter.com/api2/1/ticker/ltc_cny";
+            String url = "https://data.bter.com/api2/1/ticker/ltc_cny";
             return getJSONObject(url).getString("last");
         }
     },

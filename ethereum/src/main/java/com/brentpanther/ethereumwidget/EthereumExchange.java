@@ -58,7 +58,7 @@ enum EthereumExchange implements Exchange {
     BTER(R.array.currencies_bter, "bter") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            String url = "http://data.bter.com/api2/1/ticker/eth_cny";
+            String url = "https://data.bter.com/api2/1/ticker/eth_cny";
             return getJSONObject(url).getString("last");
         }
     },

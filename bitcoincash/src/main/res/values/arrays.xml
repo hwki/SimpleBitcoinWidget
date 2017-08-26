@@ -28,6 +28,9 @@
     <string-array name="currencies_bithumb">
         <item>KRW</item>
     </string-array>
+    <string-array name="currencies_bter">
+        <item>CNY</item>
+    </string-array>
     <string-array name="currencies_korbit">
         <item>KRW</item>
     </string-array>
@@ -53,6 +56,7 @@
     <string-array name="providerValues">
         <item>BITFINEX</item>
         <item>BITHUMB</item>
+        <item>BTER</item>
         <item>KORBIT</item>
         <item>KRAKEN</item>
         <item>OKCOIN</item>
@@ -63,6 +67,7 @@
     <string-array name="providers">
         <item>Bitfinex</item>
         <item>Bithumb</item>
+        <item>BTer</item>
         <item>Korbit</item>
         <item>Kraken</item>
         <item>OK Coin</item>
