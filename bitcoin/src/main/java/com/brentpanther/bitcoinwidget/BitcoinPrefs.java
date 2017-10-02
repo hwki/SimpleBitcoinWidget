@@ -38,17 +38,7 @@ class BitcoinPrefs extends Prefs {
     @Override
     public Exchange getExchange() {
         String value = getValue(EXCHANGE);
-        if (value == null) {
-            // we are going to convert to new format here, if using old
-            value = getValue(PROVIDER);
-            BTCExchange exchange;
-            if (value == null) {
-                return BTCExchange.COINBASE;
-            }
-            exchange = BTCExchange.values()[Integer.valueOf(value)];
-            setValue(EXCHANGE, exchange.name());
-            return exchange;
-        }
+        if (value == null) value = context.getString(R.string.default_provider);
         return BTCExchange.valueOf(value);
     }
 

@@ -5,8 +5,6 @@ import com.brentpanther.cryptowidget.Exchange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
 /**
@@ -42,17 +40,18 @@ enum EthereumExchange implements Exchange {
             return null;
         }
     },
-    BTCE(R.array.currencies_btce, "btc-e") {
+    BITSTAMP(R.array.currencies_bitstamp, "bitstamp") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj;
-            try {
-                obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/eth_%s", currencyCode.toLowerCase()));
-            } catch (IOException e) {
-                obj = getJSONObject(String.format("https://btc-e.nz/api/3/ticker/eth_%s", currencyCode.toLowerCase()));
-            }
-            obj = obj.getJSONObject(String.format("eth_%s", currencyCode.toLowerCase()));
-            return obj.getString("last");
+            String url = String.format("https://www.bitstamp.net/api/v2/ticker/eth%s", currencyCode.toLowerCase());
+            return getJSONObject(url).getString("last");
+        }
+    },
+    BITTREX(R.array.currencies_bittrex, "bittrex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://bittrex.com/api/v1.1/public/getticker?market=USDT-ETH";
+            return getJSONObject(url).getJSONObject("result").getString("Last");
         }
     },
     BTER(R.array.currencies_bter, "bter") {
@@ -142,6 +141,14 @@ enum EthereumExchange implements Exchange {
         public String getValue(String currencyCode) throws Exception {
             String url = String.format("https://api.therocktrading.com/v1/funds/ETH%s/ticker", currencyCode);
             return getJSONObject(url).getString("last");
+        }
+    },
+    WEX(R.array.currencies_wex, "wex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String pair = String.format("eth_%s", currencyCode.toLowerCase());
+            String url = String.format("https://wex.nz/api/3/ticker/%s", pair);
+            return getJSONObject(url).getJSONObject(pair).getString("last");
         }
     };
 

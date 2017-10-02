@@ -8,8 +8,8 @@ android {
         applicationId "com.brentpanther.ethereumwidget"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 11
-        versionName "1.1"
+        versionCode 20
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {

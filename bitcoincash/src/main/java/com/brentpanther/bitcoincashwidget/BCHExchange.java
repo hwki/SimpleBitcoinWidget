@@ -10,6 +10,13 @@ import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
 enum BCHExchange implements Exchange {
 
+    BITBAY(R.array.currencies_bitbay, "bitbay") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://bitbay.net/API/Public/BCC%s/ticker.json", currencyCode);
+            return getJSONObject(url).getString("last");
+        }
+    },
     BITFINEX(R.array.currencies_bitfinex, "bitfinex") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -82,6 +89,14 @@ enum BCHExchange implements Exchange {
         public String getValue(String currencyCode) throws Exception {
             String url = String.format("https://api.quoine.com/products/code/CASH/BCH%s", currencyCode);
             return getJSONObject(url).getString("last_traded_price");
+        }
+    },
+    WEX(R.array.currencies_wex, "wex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String pair = String.format("bch_%s", currencyCode.toLowerCase());
+            String url = String.format("https://wex.nz/api/3/ticker/%s", pair);
+            return getJSONObject(url).getJSONObject(pair).getString("last");
         }
     };
 

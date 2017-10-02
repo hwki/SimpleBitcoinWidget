@@ -112,7 +112,7 @@ class WidgetViews {
             width *= .75;
         }
         height *= ((1 - TEXT_HEIGHT) / 2);
-        return Pair.create((int)(width * .9), (int)(height * .9));
+        return Pair.create((int)(width * .9), (int)(height * .75));
     }
 
     private static Pair<Integer, Integer> getWidgetSize(Context context, int widgetId) {

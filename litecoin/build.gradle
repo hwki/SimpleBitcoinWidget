@@ -8,8 +8,8 @@ android {
         applicationId "com.brentpanther.litecoinwidget"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 9
-        versionName "1.0.8"
+        versionCode 10
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {

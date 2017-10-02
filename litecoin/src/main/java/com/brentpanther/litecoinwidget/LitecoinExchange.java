@@ -4,8 +4,6 @@ import com.brentpanther.cryptowidget.Exchange;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
 
 /**
@@ -28,18 +26,24 @@ enum LitecoinExchange implements Exchange {
             return obj.getString("last_price");
         }
     },
-    BTCE(R.array.currencies_btce, "btc-e") {
+    BITMARKET24(R.array.currencies_bitmarket24, "bitmarket24") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj;
-            try {
-                obj = getJSONObject(String.format("https://btc-e.com/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
-            } catch (IOException e) {
-                // try mirror
-                obj = getJSONObject(String.format("https://btc-e.nz/api/3/ticker/ltc_%s", currencyCode.toLowerCase()));
-            }
-            obj = obj.getJSONObject(String.format("ltc_%s", currencyCode.toLowerCase()));
-            return obj.getString("last");
+            return getJSONObject("https://bitmarket24.pl/api/LTC_PLN/status.json").getString("last");
+        }
+    },
+    BITSTAMP(R.array.currencies_bitstamp, "bitstamp") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = String.format("https://www.bitstamp.net/api/v2/ticker/ltc%s", currencyCode.toLowerCase());
+            return getJSONObject(url).getString("last");
+        }
+    },
+    BITTREX(R.array.currencies_bittrex, "bittrex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://bittrex.com/api/v1.1/public/getticker?market=USDT-LTC";
+            return getJSONObject(url).getJSONObject("result").getString("Last");
         }
     },
     BTER(R.array.currencies_bter, "bter") {
@@ -84,10 +88,12 @@ enum LitecoinExchange implements Exchange {
             return getJSONObject(url).getString("last");
         }
     },
-    BITMARKET24(R.array.currencies_bitmarket24, "bitmarket24") {
+    WEX(R.array.currencies_wex, "wex") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            return getJSONObject("https://bitmarket24.pl/api/LTC_PLN/status.json").getString("last");
+            String pair = String.format("ltc_%s", currencyCode.toLowerCase());
+            String url = String.format("https://wex.nz/api/3/ticker/%s", pair);
+            return getJSONObject(url).getJSONObject(pair).getString("last");
         }
     };
 

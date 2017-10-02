@@ -22,6 +22,11 @@
         <item>360</item>
         <item>1440</item>
     </string-array>
+    <string-array name="currencies_bitbay">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>PLN</item>
+    </string-array>
     <string-array name="currencies_bitfinex">
         <item>USD</item>
     </string-array>
@@ -53,7 +58,13 @@
         <item>JPY</item>
         <item>SGD</item>
     </string-array>
+    <string-array name="currencies_wex">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUR</item>
+    </string-array>
     <string-array name="providerValues">
+        <item>BITBAY</item>
         <item>BITFINEX</item>
         <item>BITHUMB</item>
         <item>BTER</item>
@@ -63,8 +74,10 @@
         <item>POLONIEX</item>
         <item>QUADRIGA</item>
         <item>QUIONE</item>
+        <item>WEX</item>
     </string-array>
     <string-array name="providers">
+        <item>Bitbay</item>
         <item>Bitfinex</item>
         <item>Bithumb</item>
         <item>BTer</item>
@@ -74,6 +87,7 @@
         <item>Poloniex</item>
         <item>QuadrigaCX</item>
         <item>Quione</item>
+        <item>Wex</item>
     </string-array>
     <string-array name="themes">
         <item>Light</item>

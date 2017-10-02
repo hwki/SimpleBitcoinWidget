@@ -33,10 +33,12 @@
     <string-array name="currencies_bitso">
         <item>MXN</item>
     </string-array>
-    <string-array name="currencies_btce">
+    <string-array name="currencies_bitstamp">
         <item>USD</item>
         <item>EUR</item>
-        <item>RUR</item>
+    </string-array>
+    <string-array name="currencies_bittrex">
+        <item>USD</item>
     </string-array>
     <string-array name="currencies_bter">
         <item>CNY</item>
@@ -124,11 +126,17 @@
     <string-array name="currencies_therock">
         <item>EUR</item>
     </string-array>
+    <string-array name="currencies_wex">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUR</item>
+    </string-array>
     <string-array name="providerValues">
         <item>BITBAY</item>
         <item>BITFINEX</item>
         <item>BITSO</item>
-        <item>BTCE</item>
+        <item>BITSTAMP</item>
+        <item>BITTREX</item>
         <item>BTER</item>
         <item>CEXIO</item>
         <item>COINBASE</item>
@@ -141,12 +149,14 @@
         <item>POLONIEX</item>
         <item>QUIONE</item>
         <item>THEROCK</item>
+        <item>WEX</item>
     </string-array>
     <string-array name="providers">
         <item>BitBay</item>
         <item>Bitfinex</item>
         <item>Bitso</item>
-        <item>BTC-e</item>
+        <item>Bitstamp</item>
+        <item>Bittrex</item>
         <item>BTer</item>
         <item>Cex.io</item>
         <item>Coinbase</item>
@@ -159,6 +169,7 @@
         <item>Poloniex</item>
         <item>Quione</item>
         <item>TheRock</item>
+        <item>Wex</item>
     </string-array>
     <string-array name="themes">
         <item>Light</item>
