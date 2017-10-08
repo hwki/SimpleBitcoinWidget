@@ -54,6 +54,13 @@ enum EthereumExchange implements Exchange {
             return getJSONObject(url).getJSONObject("result").getString("Last");
         }
     },
+    BRAZILIEX(R.array.currencies_braziliex, "braziliex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://braziliex.com/api/v1/public/ticker/eth_brl";
+            return getJSONObject(url).getString("last");
+        }
+    },
     BTER(R.array.currencies_bter, "bter") {
         @Override
         public String getValue(String currencyCode) throws Exception {

@@ -40,6 +40,9 @@
     <string-array name="currencies_bittrex">
         <item>USD</item>
     </string-array>
+    <string-array name="currencies_braziliex">
+        <item>BRL</item>
+    </string-array>
     <string-array name="currencies_bter">
         <item>CNY</item>
     </string-array>
@@ -137,6 +140,7 @@
         <item>BITSO</item>
         <item>BITSTAMP</item>
         <item>BITTREX</item>
+        <item>BRAZILIEX</item>
         <item>BTER</item>
         <item>CEXIO</item>
         <item>COINBASE</item>
@@ -157,6 +161,7 @@
         <item>Bitso</item>
         <item>Bitstamp</item>
         <item>Bittrex</item>
+        <item>Braziliex</item>
         <item>BTer</item>
         <item>Cex.io</item>
         <item>Coinbase</item>

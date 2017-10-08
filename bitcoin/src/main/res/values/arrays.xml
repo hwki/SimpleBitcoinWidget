@@ -150,6 +150,9 @@
     <string-array name="currencies_bittrex">
         <item>USD</item>
     </string-array>
+    <string-array name="currencies_braziliex">
+        <item>BRL</item>
+    </string-array>
     <string-array name="currencies_btcbox">
         <item>JPY</item>
     </string-array>
@@ -430,6 +433,7 @@
         <item>BITSO</item>
         <item>BITSTAMP</item>
         <item>BITTREX</item>
+        <item>BRAZILIEX</item>
         <item>BTCBOX</item>
         <item>BTC_CHINA</item>
         <item>BTCMARKETS</item>
@@ -490,6 +494,7 @@
         <item>Bitso</item>
         <item>Bitstamp</item>
         <item>Bittrex</item>
+        <item>Braziliex</item>
         <item>BTC Box</item>
         <item>BTC China</item>
         <item>BTC Markets</item>

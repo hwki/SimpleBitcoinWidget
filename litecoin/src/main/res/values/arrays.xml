@@ -40,6 +40,9 @@
     <string-array name="currencies_bittrex">
         <item>USD</item>
     </string-array>
+    <string-array name="currencies_braziliex">
+        <item>BRL</item>
+    </string-array>
     <string-array name="currencies_bter">
         <item>CNY</item>
     </string-array>
@@ -105,6 +108,7 @@
         <item>BITMARKET24</item>
         <item>BITSTAMP</item>
         <item>BITTREX</item>
+        <item>BRAZILIEX</item>
         <item>BTER</item>
         <item>COINBASE</item>
         <item>HITBTC</item>
@@ -119,6 +123,7 @@
         <item>BitMarket24.pl</item>
         <item>Bitstamp</item>
         <item>Bittrex</item>
+        <item>Braziliex</item>
         <item>BTer</item>
         <item>Coinbase</item>
         <item>HitBTC</item>

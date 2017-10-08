@@ -33,6 +33,9 @@
     <string-array name="currencies_bithumb">
         <item>KRW</item>
     </string-array>
+    <string-array name="currencies_braziliex">
+        <item>BRL</item>
+    </string-array>
     <string-array name="currencies_bter">
         <item>CNY</item>
     </string-array>
@@ -67,6 +70,7 @@
         <item>BITBAY</item>
         <item>BITFINEX</item>
         <item>BITHUMB</item>
+        <item>BRAZILIEX</item>
         <item>BTER</item>
         <item>KORBIT</item>
         <item>KRAKEN</item>
@@ -80,6 +84,7 @@
         <item>Bitbay</item>
         <item>Bitfinex</item>
         <item>Bithumb</item>
+        <item>Braziliex</item>
         <item>BTer</item>
         <item>Korbit</item>
         <item>Kraken</item>

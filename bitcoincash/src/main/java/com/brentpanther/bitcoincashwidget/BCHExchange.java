@@ -34,6 +34,13 @@ enum BCHExchange implements Exchange {
             return String.valueOf((buy + sell) / 2);
         }
     },
+    BRAZILIEX(R.array.currencies_braziliex, "braziliex") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://braziliex.com/api/v1/public/ticker/bch_brl";
+            return getJSONObject(url).getString("last");
+        }
+    },
     BTER(R.array.currencies_bter, "bter") {
         @Override
         public String getValue(String currencyCode) throws Exception {
