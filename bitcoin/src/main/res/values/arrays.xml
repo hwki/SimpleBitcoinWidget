@@ -411,6 +411,9 @@
         <item>EUR</item>
         <item>RUR</item>
     </string-array>
+    <string-array name="currencies_wyre">
+        <item>USD</item>
+    </string-array>
     <string-array name="currencies_zebpay">
         <item>INR</item>
     </string-array>
@@ -475,6 +478,7 @@
         <item>URDUBIT</item>
         <item>VBTC</item>
         <item>WEX</item>
+        <item>WYRE</item>
         <item>ZEBPAY</item>
         <item>ZYADO</item>
     </string-array>
@@ -536,6 +540,7 @@
         <item>UrduBit</item>
         <item>VBTC</item>
         <item>Wex</item>
+        <item>Wyre</item>
         <item>Zebpay</item>
         <item>Zyado</item>
     </string-array>
