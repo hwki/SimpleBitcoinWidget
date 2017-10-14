@@ -440,6 +440,14 @@ enum BTCExchange implements Exchange {
             return getJSONObject(url).getJSONObject(pair).getString("last");
         }
     },
+    WYRE(R.array.currencies_wyre, "wyre") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.sendwyre.com/v2/rates";
+            String currency = String.format("%sBTC", currencyCode);
+            return getJSONObject(url).getString(currency);
+        }
+    },
     ZEBPAY(R.array.currencies_zebpay, "zebpay") {
         @Override
         public String getValue(String currencyCode) throws Exception {
