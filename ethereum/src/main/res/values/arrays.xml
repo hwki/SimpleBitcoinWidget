@@ -49,6 +49,7 @@
     <string-array name="currencies_cexio">
         <item>USD</item>
         <item>EUR</item>
+        <item>GBP</item>
     </string-array>
     <string-array name="currencies_coinbase">
         <item>USD</item>
@@ -74,6 +75,7 @@
         <item>NOK</item>
         <item>NZD</item>
         <item>PHP</item>
+        <item>PKR</item>
         <item>PLN</item>
         <item>RON</item>
         <item>RUB</item>
@@ -83,15 +85,17 @@
         <item>TRY</item>
         <item>TWD</item>
         <item>UAH</item>
-        <item>VEF</item>
-        <item>VND</item>
-        <item>ZAR</item>
+    </string-array>
+    <string-array name="currencies_coinnest">
+        <item>KRW</item>
     </string-array>
     <string-array name="currencies_ethexindia">
         <item>INR</item>
     </string-array>
     <string-array name="currencies_gatecoin">
+        <item>USD</item>
         <item>EUR</item>
+        <item>HKD</item>
     </string-array>
     <string-array name="currencies_gemini">
         <item>USD</item>
@@ -144,6 +148,7 @@
         <item>BTER</item>
         <item>CEXIO</item>
         <item>COINBASE</item>
+        <item>COINNEST</item>
         <item>ETHEXINDIA</item>
         <item>GATECOIN</item>
         <item>GEMINI</item>
@@ -165,6 +170,7 @@
         <item>BTer</item>
         <item>Cex.io</item>
         <item>Coinbase</item>
+        <item>Coinnest</item>
         <item>EthexIndia</item>
         <item>Gatecoin</item>
         <item>Gemini</item>

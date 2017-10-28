@@ -6,7 +6,6 @@
 
     <application>
 
-        <service android:name="com.brentpanther.cryptowidget.BackgroundService" />
         <receiver android:name="com.brentpanther.cryptowidget.PriceBroadcastReceiver" />
 
     </application>

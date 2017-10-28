@@ -81,6 +81,13 @@ enum EthereumExchange implements Exchange {
             return obj.getJSONObject("data").getString("amount");
         }
     },
+    COINNEST(R.array.currencies_coinnest, "coinnest") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.coinnest.co.kr/api/pub/ticker?coin=eth";
+            return getJSONObject(url).getString("last");
+        }
+    },
     ETHEXINDIA(R.array.currencies_ethexindia, "ethex") {
         @Override
         public String getValue(String currencyCode) throws Exception {

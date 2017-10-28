@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 public class BTCExchangeTest {
 
     @Test
-    public void testProviders() {
+    public void testProviders() throws InterruptedException {
         Resources resources = InstrumentationRegistry.getTargetContext().getResources();
         List<String> list = new ArrayList<>();
         BTCExchange[] values = BTCExchange.values();
@@ -40,6 +40,7 @@ public class BTCExchangeTest {
                 } catch (Exception e) {
                     list.add(tag + " failed with exception: " + e.getMessage());
                 }
+                Thread.sleep(500);
             }
         }
         if (!list.isEmpty()) {

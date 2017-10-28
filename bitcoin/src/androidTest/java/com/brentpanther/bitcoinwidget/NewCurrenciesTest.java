@@ -21,18 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.brentpanther.bitcoinwidget.BTCExchange.BTCXCHANGE;
-import static com.brentpanther.bitcoinwidget.BTCExchange.BUTTERCOIN;
-import static com.brentpanther.bitcoinwidget.BTCExchange.CRYPTSY;
-import static com.brentpanther.bitcoinwidget.BTCExchange.GATECOIN;
-import static com.brentpanther.bitcoinwidget.BTCExchange.MTGOX;
-import static com.brentpanther.bitcoinwidget.BTCExchange.VIRTEX;
 
 @RunWith(AndroidJUnit4.class)
 public class NewCurrenciesTest extends TestCase {
 
     @Test
-    public void testProviders() {
+    public void testProviders() throws InterruptedException {
         Resources resources = InstrumentationRegistry.getTargetContext().getResources();
         BTCExchange[] values = BTCExchange.values();
         List<String> currencies = new ArrayList<>();
@@ -44,8 +38,6 @@ public class NewCurrenciesTest extends TestCase {
         for (BTCExchange btc : values) {
             List<String> added = new ArrayList<>();
             List<String> removed = new ArrayList<>();
-            Set<BTCExchange> skip = new HashSet<>(Arrays.asList(MTGOX, BTCXCHANGE, BUTTERCOIN, GATECOIN, CRYPTSY, VIRTEX));
-            if (skip.contains(btc)) continue;
             Set<String> existingCurrencies = new HashSet<>(Arrays.asList(resources.getStringArray(btc.getCurrencies())));
             for (String currency : currencies) {
                 try {
@@ -59,6 +51,7 @@ public class NewCurrenciesTest extends TestCase {
                         removed.add(currency);
                     }
                 }
+                Thread.sleep(500);
             }
             if (added.size() + existingCurrencies.size() == currencies.size()) continue;
             if (!added.isEmpty()) {

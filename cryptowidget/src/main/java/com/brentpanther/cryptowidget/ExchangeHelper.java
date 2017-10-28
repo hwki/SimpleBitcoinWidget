@@ -71,7 +71,7 @@ public class ExchangeHelper {
     public static String getString(String url, Headers headers) throws Exception {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(Arrays.asList(spec, ConnectionSpec.CLEARTEXT))
                 .hostnameVerifier(new HostnameVerifier() {

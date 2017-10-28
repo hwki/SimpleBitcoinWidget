@@ -2,6 +2,7 @@ package com.brentpanther.cryptowidget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -33,23 +34,28 @@ class WidgetViews {
         }
     }
 
-    private static void putValue(Context context, RemoteViews views, String text, int widgetId) {
+    static void putValue(Context context, RemoteViews views, String text, int widgetId) {
+        boolean hasAutoTextSizing = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
         Ids ids = WidgetApplication.getInstance().getIds();
         Prefs prefs = WidgetApplication.getInstance().getPrefs(widgetId);
         int price = ids.price();
         int provider = ids.provider();
         setImageVisibility(views, ids, widgetId);
-        Pair<Integer, Integer> availableSize = getTextAvailableSize(context, ids, widgetId);
-        if (availableSize == null) return;
-        float textSize = TextSizer.getTextSize(context, text, availableSize);
+        if (!hasAutoTextSizing) {
+            Pair<Integer, Integer> availableSize = getTextAvailableSize(context, ids, widgetId);
+            if (availableSize == null) return;
+            float textSize = TextSizer.getTextSize(context, text, availableSize);
+            views.setTextViewTextSize(price, TypedValue.COMPLEX_UNIT_DIP, textSize);
+        }
         views.setTextViewText(price, text);
-        views.setTextViewTextSize(price, TypedValue.COMPLEX_UNIT_DIP, textSize);
         if (prefs.getLabel()) {
             Exchange exchange = prefs.getExchange();
-            availableSize = getLabelAvailableSize(context, ids, widgetId);
-            float labelSize = TextSizer.getLabelSize(context, exchange.getLabel(), availableSize);
+            if (!hasAutoTextSizing) {
+                Pair<Integer, Integer> availableSize = getLabelAvailableSize(context, ids, widgetId);
+                float labelSize = TextSizer.getLabelSize(context, exchange.getLabel(), availableSize);
+                views.setTextViewTextSize(provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
+            }
             views.setTextViewText(provider, exchange.getLabel());
-            views.setTextViewTextSize(provider, TypedValue.COMPLEX_UNIT_DIP, labelSize);
             show(views, provider, ids.topSpace());
         } else {
             hide(views, provider, ids.topSpace());

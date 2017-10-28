@@ -48,6 +48,13 @@ enum BCHExchange implements Exchange {
             return getJSONObject(url).getString("last");
         }
     },
+    COINNEST(R.array.currencies_coinnest, "coinnest") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.coinnest.co.kr/api/pub/ticker?coin=bcc";
+            return getJSONObject(url).getString("last");
+        }
+    },
     KORBIT(R.array.currencies_korbit, "korbit") {
         @Override
         public String getValue(String currencyCode) throws Exception {

@@ -16,7 +16,7 @@ abstract class TextSizer {
         Ids ids = WidgetApplication.getInstance().getIds();
         @SuppressLint("InflateParams")
         ViewGroup vg = (ViewGroup) LayoutInflater.from(context).inflate(ids.widgetLayout(), null);
-        TextView textView = (TextView) vg.findViewById(ids.price());
+        TextView textView = vg.findViewById(ids.price());
         return getHighestInBounds(textView, text, availableSize.first, availableSize.second);
     }
 
@@ -24,7 +24,7 @@ abstract class TextSizer {
         Ids ids = WidgetApplication.getInstance().getIds();
         @SuppressLint("InflateParams")
         ViewGroup vg = (ViewGroup) LayoutInflater.from(context).inflate(ids.widgetLayout(), null);
-        TextView textView = (TextView) vg.findViewById(ids.provider());
+        TextView textView = vg.findViewById(ids.provider());
         return getHighestInBounds(textView, text, availableSize.first, availableSize.second);
     }
 

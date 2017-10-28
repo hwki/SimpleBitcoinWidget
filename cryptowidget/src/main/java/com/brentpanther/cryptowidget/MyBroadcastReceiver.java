@@ -6,9 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by brentpanther on 4/24/17.
- */
 
 class MyBroadcastReceiver extends BroadcastReceiver {
 

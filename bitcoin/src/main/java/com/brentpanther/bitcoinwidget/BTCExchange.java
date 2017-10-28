@@ -9,7 +9,6 @@ import okhttp3.Headers;
 
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONArray;
 import static com.brentpanther.cryptowidget.ExchangeHelper.getJSONObject;
-import static com.brentpanther.cryptowidget.ExchangeHelper.getString;
 
 enum BTCExchange implements Exchange {
 
@@ -149,13 +148,6 @@ enum BTCExchange implements Exchange {
             return getJSONObject(url).getString("last");
         }
     },
-    BTC_CHINA(R.array.currencies_btcchina, "btc china") {
-        @Override
-        public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("https://data.btcchina.com/data/ticker");
-            return obj.getJSONObject("ticker").getString("last");
-        }
-    },
     BTCMARKETS(R.array.currencies_btcmarkets, "btcmarkets") {
         @Override
         public String getValue(String currencyCode) throws Exception {
@@ -165,7 +157,7 @@ enum BTCExchange implements Exchange {
     BTCTURK(R.array.currencies_btcturk, "btcturk") {
         @Override
         public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("https://www.btcturk.com/api/ticker");
+            JSONObject obj = getJSONArray("https://www.btcturk.com/api/ticker").getJSONObject(0);
             return obj.getString("last");
         }
     },
@@ -222,6 +214,13 @@ enum BTCExchange implements Exchange {
             String url = String.format("https://coinmate.io/api/ticker?currencyPair=BTC_%s", currencyCode);
             JSONObject obj = getJSONObject(url);
             return obj.getJSONObject("data").getString("last");
+        }
+    },
+    COINNEST(R.array.currencies_coinnest, "coinnest") {
+        @Override
+        public String getValue(String currencyCode) throws Exception {
+            String url = "https://api.coinnest.co.kr/api/pub/ticker?coin=btc";
+            return getJSONObject(url).getString("last");
         }
     },
     COINSECURE(R.array.currencies_coinsecure, "coinsecure") {
@@ -284,13 +283,6 @@ enum BTCExchange implements Exchange {
         @Override
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject(String.format("https://api.hitbtc.com/api/1/public/BTC%s/ticker", currencyCode)).getString("last");
-        }
-    },
-    HUOBI(R.array.currencies_huobi, "huobi") {
-        @Override
-        public String getValue(String currencyCode) throws Exception {
-            JSONObject obj = getJSONObject("https://api.huobi.com/usdmarket/ticker_btc_json.js");
-            return obj.getJSONObject("ticker").getString("last");
         }
     },
     INDEPENDENT_RESERVE(R.array.currencies_independentreserve, "ind. reserve") {
@@ -404,12 +396,12 @@ enum BTCExchange implements Exchange {
             return getJSONObject(url).getString("last");
         }
     },
-    UNOCOIN(R.array.currencies_unocoin, "unocoin") {
-        @Override
-        public String getValue(String currencyCode) throws Exception {
-            return getString("https://www.unocoin.com/trade?avg");
-        }
-    },
+//    UNOCOIN(R.array.currencies_unocoin, "unocoin") {
+//        @Override
+//        public String getValue(String currencyCode) throws Exception {
+//            return getString("https://www.unocoin.com/trade?avg");
+//        }
+//    },
     UPHOLD(R.array.currencies_uphold, "uphold") {
         @Override
         public String getValue(String currencyCode) throws Exception {

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bitcoinParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_outer_dark"
+    tools:targetApi="o"
     android:clickable="true">
 
     <ProgressBar
@@ -61,9 +63,11 @@
                 android:layout_height="0dp"
                 android:layout_weight="70"
                 android:gravity="center"
-                android:includeFontPadding="false"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="6sp"
                 android:textColor="#fff"
                 android:textIsSelectable="false"
+                android:lines="1"
                 android:typeface="sans"
                 android:visibility="invisible" />
 
@@ -72,8 +76,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="15"
-                android:includeFontPadding="false"
-                android:gravity="center"
+                android:autoSizeMinTextSize="4sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center_horizontal"
                 android:textColor="#fff" />
 
         </LinearLayout>
