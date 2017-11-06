@@ -8,8 +8,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 130
-        versionName "5.3"
+        versionCode 131
+        versionName "5.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     testOptions {
@@ -22,8 +22,7 @@ android {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support:support-annotations:27.0.0'
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
-    compile project(':cryptowidget')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    implementation project(':cryptowidget')
 }

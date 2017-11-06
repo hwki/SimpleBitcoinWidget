@@ -495,7 +495,7 @@
         <item>QUIONE</item>
         <item>SURBITCOIN</item>
         <item>THEROCK</item>
-        <item>UNOCOIN</item>
+        <!--<item>UNOCOIN</item>-->
         <item>UPHOLD</item>
         <item>URDUBIT</item>
         <item>VBTC</item>
@@ -556,7 +556,7 @@
         <item>Quione</item>
         <item>SurBitcoin</item>
         <item>TheRock</item>
-        <item>Unocoin</item>
+        <!--<item>Unocoin</item>-->
         <item>Uphold</item>
         <item>UrduBit</item>
         <item>VBTC</item>

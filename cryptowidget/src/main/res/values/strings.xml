@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="value_unknown">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
-    <string name="value_exchange_removed">\u0020\u0020\u0020\!\u0020️\u0020\u0020</string>
+    <string name="value_exchange_removed">!</string>
 </resources>

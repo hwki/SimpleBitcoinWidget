@@ -3,10 +3,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.software.app_widgets" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" android:maxSdkVersion="25"/>
 
     <application>
 
         <receiver android:name="com.brentpanther.cryptowidget.PriceBroadcastReceiver" />
+        <service android:name="com.brentpanther.cryptowidget.UpdatePriceService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
     </application>
 

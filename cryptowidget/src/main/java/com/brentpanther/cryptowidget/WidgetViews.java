@@ -49,7 +49,13 @@ class WidgetViews {
         }
         views.setTextViewText(price, text);
         if (prefs.getLabel()) {
-            Exchange exchange = prefs.getExchange();
+            Exchange exchange;
+            try {
+                exchange = prefs.getExchange();
+            } catch (IllegalArgumentException e) {
+                WidgetViews.putValue(context, views, context.getString(R.string.value_exchange_removed), widgetId);
+                return;
+            }
             if (!hasAutoTextSizing) {
                 Pair<Integer, Integer> availableSize = getLabelAvailableSize(context, ids, widgetId);
                 float labelSize = TextSizer.getLabelSize(context, exchange.getLabel(), availableSize);
