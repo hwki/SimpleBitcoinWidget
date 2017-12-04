@@ -452,7 +452,16 @@ enum BTCExchange implements Exchange {
         public String getValue(String currencyCode) throws Exception {
             return getJSONObject("http://chart.zyado.com/ticker.json").getString("last");
         }
-    };
+    },
+	SIMPLECOINCZ(R.array.currencies_simplecoincz, "simplecoincz") {
+        @Override
+		public String getValue(String currencyCode) throws Exception {
+			JSONObject obj = getJSONObject("https://www.simplecoin.cz/ticker/");
+			String bid = obj.getString("offer");
+            String ask = obj.getString("ask");
+            return Double.toString((Double.valueOf(bid) + Double.valueOf(ask)) / 2);
+		}
+	};
 
     private final int currencyArrayID;
     private String label;
