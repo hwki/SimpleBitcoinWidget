@@ -443,6 +443,9 @@
     <string-array name="currencies_zyado">
         <item>EUR</item>
     </string-array>
+	<string-array name="currencies_simplecoincz">
+		<item>CZK</item>
+	</string-array>
     <string-array name="providerValues">
         <item>BIT2C</item>
         <item>BITBAY</item>
@@ -503,6 +506,7 @@
         <item>WYRE</item>
         <item>ZEBPAY</item>
         <item>ZYADO</item>
+		<item>SIMPLECOINCZ</item>
     </string-array>
     <string-array name="providers">
         <item>Bit2C</item>
@@ -564,6 +568,7 @@
         <item>Wyre</item>
         <item>Zebpay</item>
         <item>Zyado</item>
+		<item>Simplecoin.cz</item>
     </string-array>
     <string-array name="themes">
         <item>Light</item>
