@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bitcoinParent"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     tools:targetApi="o"
+    android:focusable="true"
     android:clickable="true">
 
     <ProgressBar
@@ -21,7 +22,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/bitcoinImage"
+            android:id="@+id/icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -29,19 +30,6 @@
             android:adjustViewBounds="true"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"
-            android:src="@drawable/icon_bitcoin"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/bitcoinImageBW"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:paddingEnd="2dp"
-            android:paddingStart="2dp"
-            android:src="@drawable/icon_bitcoin_bw"
             android:visibility="gone" />
 
         <LinearLayout
@@ -62,8 +50,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="70"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="6sp"
                 android:gravity="center"
                 android:lines="1"
                 android:textColor="#fff"
@@ -72,7 +58,29 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/provider"
+                android:id="@+id/priceAutoSize"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="70"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="6sp"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="#fff"
+                android:textIsSelectable="false"
+                android:typeface="sans"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/exchange"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:gravity="center_horizontal"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/exchangeAutoSize"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="15"

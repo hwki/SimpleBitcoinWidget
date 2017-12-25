@@ -1,159 +1,102 @@
 package com.brentpanther.bitcoinwidget;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
-import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
-import com.brentpanther.cryptowidget.Prefs;
-import com.brentpanther.cryptowidget.WidgetApplication;
+import org.json.JSONException;
 
-public class SettingsActivity extends PreferenceActivity {
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
-    private ListPreference refresh;
-    private ListPreference currency;
-    private ListPreference provider;
-    private ListPreference theme;
-    private ListPreference units;
-    private CheckBoxPreference icon;
-    private CheckBoxPreference label;
-    private CheckBoxPreference decimals;
-    private int appWidgetId;
-    private int refreshValue;
+public class SettingsActivity extends Activity {
 
-    @SuppressWarnings("deprecation")
+    private static final String TAG = SettingsActivity.class.getName();
+    public static final String EXTRA_COIN = "coin";
+
+    private ProgressDialog dialog;
+    private int widgetId;
+    private Coin coin;
+    private BroadcastReceiver receiver;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setResult(RESULT_CANCELED);
         Bundle extras = getIntent().getExtras();
-        appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-        if (extras != null)
-            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        addPreferencesFromResource(R.xml.preferences);
-        refresh = (ListPreference) findPreference(getString(R.string.key_refresh_interval));
-        currency = (ListPreference) findPreference(getString(R.string.key_currency));
-        provider = (ListPreference) findPreference(getString(R.string.key_provider));
-        label = (CheckBoxPreference) findPreference(getString(R.string.key_label));
-        theme = (ListPreference) findPreference(getString(R.string.key_theme));
-        icon = (CheckBoxPreference) findPreference(getString(R.string.key_icon));
-        decimals = (CheckBoxPreference) findPreference(getString(R.string.key_decimals));
-        units = (ListPreference) findPreference(getString(R.string.key_units));
-
-        Prefs prefs = WidgetApplication.getInstance().getPrefs(appWidgetId);
-        setRefresh(prefs.getInterval());
-        refresh.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference p, Object value) {
-                setRefresh(Integer.valueOf(value.toString()));
-                return true;
-            }
-
-        });
-
-        provider.setSummary(getString(R.string.summary_provider, provider.getEntry()));
-        provider.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object value) {
-                ListPreference p = (ListPreference) preference;
-                CharSequence[] entryValues = p.getEntryValues();
-                int v = 0;
-                for (int i = 0; i < entryValues.length; i++) {
-                    if (entryValues[i].equals(value)) v = i;
-                }
-                preference.setSummary(getString(R.string.summary_provider, p.getEntries()[v]));
-                BTCExchange provider = BTCExchange.valueOf((String)value);
-                currency.setEntries(provider.getCurrencies());
-                currency.setEntryValues(provider.getCurrencies());
-                currency.setValueIndex(0);
-                currency.setSummary(getString(R.string.summary_currency, currency.getEntry()));
-                return true;
-            }
-        });
-        currency.setSummary(getString(R.string.summary_currency, currency.getEntry()));
-        currency.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference p, Object value) {
-                p.setSummary(getString(R.string.summary_currency, value));
-                return true;
-            }
-        });
-        theme.setSummary(getString(R.string.summary_theme, theme.getEntry()));
-        theme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object value) {
-                preference.setSummary(getString(R.string.summary_theme, value));
-                return true;
-            }
-        });
-        units.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object value) {
-                preference.setSummary(getString(R.string.summary_units, value));
-                return true;
-            }
-        });
-        units.setSummary(getString(R.string.summary_units, units.getEntry()));
-        findPreference(getString(R.string.key_rate)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                final String appPackageName = getPackageName();
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
-                return true;
-            }
-        });
+        widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        coin = Coin.valueOf(extras.getString(EXTRA_COIN));
+        setTitle(getString(R.string.new_widget, coin.getName()));
+        loadData();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem menuItem = menu.add(0, 0, 0, "Save");
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == 0) save();
-        return true;
-    }
-
-    private void save() {
-        Intent broadcast = new Intent(this, WidgetProvider.class);
-        broadcast.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
-
-        Prefs prefs = WidgetApplication.getInstance().getPrefs(appWidgetId);
-        prefs.setValues(currency.getValue(), refreshValue, provider.getValue(),
-                label.isChecked(), theme.getValue(), icon.isChecked(), decimals.isChecked(), units.getValue());
-        sendBroadcast(broadcast);
-        Intent result = new Intent();
-        result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(RESULT_OK, result);
-        finish();
-    }
-
-    private void setRefresh(int rate) {
-        refreshValue = rate;
-        if (rate < 60) {
-            refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_minute, rate, rate));
+    private void loadData() {
+        if (DownloadJSONService.downloaded) {
+            populateData();
         } else {
-            refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_hour, rate / 60, rate / 60));
+            dialog = ProgressDialog.show(this, getString(R.string.dialog_update_title), getString(R.string.dialog_update_message), true);
+            IntentFilter intentFilter = new IntentFilter(DownloadJSONService.JSON_DOWNLOADED_ACTION);
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    populateData();
+                    dialog.dismiss();
+                }
+            };
+            LocalBroadcastManager.getInstance(this).registerReceiver(receiver, intentFilter);
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
+
+    private void populateData() {
+        ExchangeData data = null;
+        try {
+            data = new ExchangeData(coin, getCoinJSON());
+        } catch (JSONException e) {
+            // if any error parsing JSON, fall back to raw resource
+            Log.e(TAG, "Error parsing JSON file, falling back to original.", e);
+            deleteFile(DownloadJSONService.CURRENCY_FILE_NAME);
+            try {
+                data = new ExchangeData(coin, getCoinJSON());
+            } catch (JSONException ignored) {
+            }
+        }
+        if (getFragmentManager().findFragmentById(android.R.id.content) == null) {
+            getFragmentManager().beginTransaction()
+                    .add(android.R.id.content, SettingsFragment.newInstance(data, widgetId)).commit();
+        }
+    }
+
+    private String getCoinJSON() {
+        try {
+            InputStream inputStream;
+            if (new File(getFilesDir(), DownloadJSONService.CURRENCY_FILE_NAME).exists()) {
+                inputStream = openFileInput(DownloadJSONService.CURRENCY_FILE_NAME);
+            } else {
+                inputStream = getResources().openRawResource(R.raw.cryptowidgetcoins);
+            }
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            return new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
