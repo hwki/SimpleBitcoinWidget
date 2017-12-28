@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.brentpanther.bitcoinwidget">
+    package="com.brentpanther.bitcoinwidget" android:installLocation="internalOnly">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.software.app_widgets" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" android:maxSdkVersion="25"/>
 
     <application
-        android:name="com.brentpanther.bitcoinwidget.BitcoinWidgetApplication"
         android:allowBackup="false"
+        android:name="com.brentpanther.bitcoinwidget.WidgetApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/app_theme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <receiver android:name=".WidgetProvider" android:label="@string/widget_name">
+        <receiver android:name="com.brentpanther.bitcoinwidget.PriceBroadcastReceiver" />
+        <receiver android:name="com.brentpanther.bitcoinwidget.WidgetProvider" android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -20,14 +28,17 @@
                 android:resource="@xml/widgetinfo" />
         </receiver>
 
+        <service android:name="com.brentpanther.bitcoinwidget.UpdatePriceService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name="com.brentpanther.bitcoinwidget.DownloadJSONService" />
+
         <activity
-            android:name=".SettingsActivity"
-            android:theme="@style/app_theme">
+            android:name="com.brentpanther.bitcoinwidget.CoinSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-
+        <activity android:name="com.brentpanther.bitcoinwidget.SettingsActivity"/>
     </application>
 
 </manifest>

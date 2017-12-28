@@ -9,6 +9,5 @@
     android:widgetCategory="home_screen|keyguard"
     android:initialKeyguardLayout="@layout/widget_layout"
     android:resizeMode="vertical|horizontal"
-    android:previewImage="@drawable/widget_preview"
-    android:configure="com.brentpanther.bitcoinwidget.SettingsActivity"
-  />
+    android:previewImage="@mipmap/ic_launcher"
+    android:configure="com.brentpanther.bitcoinwidget.CoinSelectionActivity" />

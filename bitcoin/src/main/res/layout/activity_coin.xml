@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:targetApi="lollipop"
+    tools:context="com.brentpanther.bitcoinwidget.CoinSelectionActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/coin_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin1"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toStartOf="@id/coin2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin2"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/coin1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin3"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/coin1"
+            app:layout_constraintEnd_toStartOf="@id/coin4"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin4"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/coin3"
+            app:layout_constraintTop_toBottomOf="@id/coin2"/>
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin5"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/coin3"
+            app:layout_constraintEnd_toStartOf="@id/coin6"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin6"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/coin5"
+            app:layout_constraintTop_toBottomOf="@id/coin4"/>
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin7"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintTop_toBottomOf="@id/coin5"
+            app:layout_constraintEnd_toStartOf="@id/coin8"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.brentpanther.bitcoinwidget.CoinSelectionView
+            android:id="@+id/coin8"
+            layout="@layout/view_coin_selector"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/coin7"
+            app:layout_constraintTop_toBottomOf="@id/coin6"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>
