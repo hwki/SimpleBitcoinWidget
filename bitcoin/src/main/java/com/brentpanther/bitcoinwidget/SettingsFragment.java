@@ -42,6 +42,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         loadPreferences();
         fixedSize = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(R.string.key_fixed_size), false);
         setHasOptionsMenu(true);

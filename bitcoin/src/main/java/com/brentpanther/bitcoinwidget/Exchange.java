@@ -76,7 +76,10 @@ enum Exchange {
             if ("DASH".equals(coin)) {
                 coin = "dsh";
             }
-            String url = String.format("https://api.bitfinex.com/v1/pubticker/%s%s", coin, currency);
+            if ("IOTA".equals(coin)) {
+                coin = "iot";
+            }
+            String url = String.format("https://api.bitfinex.com/v1/pubticker/%s%s", coin.toLowerCase(), currency);
             JSONObject obj = getJSONObject(url);
             return obj.getString("last_price");
         }

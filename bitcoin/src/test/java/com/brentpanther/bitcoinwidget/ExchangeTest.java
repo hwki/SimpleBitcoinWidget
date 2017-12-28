@@ -30,7 +30,6 @@ public class ExchangeTest {
             for (String currency : currencies) {
                 String[] exchanges = data.getExchanges(currency);
                 for (String exchange : exchanges) {
-                    if (!exchange.equals("COINBASE") && !exchange.equals("KRAKEN")) continue;
                     try {
                         String value = Exchange.valueOf(exchange).getValue(coin.name(), currency);
                         Double.valueOf(value);
