@@ -13,6 +13,7 @@ import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.brentpanther.cryptowidget.DeprecationHelper;
 import com.brentpanther.cryptowidget.Prefs;
 import com.brentpanther.cryptowidget.WidgetApplication;
 import com.brentpanther.cryptowidget.WidgetProvider;
@@ -34,6 +35,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DeprecationHelper.showDialog(this);
         setResult(RESULT_CANCELED);
         Bundle extras = getIntent().getExtras();
         appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
