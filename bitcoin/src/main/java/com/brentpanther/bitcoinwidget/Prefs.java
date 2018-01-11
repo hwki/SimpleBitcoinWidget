@@ -51,7 +51,8 @@ class Prefs {
     }
 
     Currency getCurrency() {
-        return Currency.valueOf(getValue(CURRENCY));
+        String currency = getValue(CURRENCY);
+        return currency != null ? Currency.valueOf(currency) : null;
     }
 
     String getExchangeCurrencyName() {
