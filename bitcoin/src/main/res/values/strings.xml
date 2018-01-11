@@ -60,7 +60,6 @@
         <item>Transparent Dark</item>
     </string-array>
     <string-array name="intervals">
-        <item>1 minute</item>
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>20 minutes</item>
@@ -71,7 +70,6 @@
         <item>24 hours</item>
     </string-array>
     <string-array name="intervalValues">
-        <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>20</item>
@@ -84,7 +82,7 @@
     <string name="value_unknown">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
     <string name="value_exchange_removed">!</string>
     <string name="json_url">http://www.brentpanther.com/cryptowidgetcoins.json</string>
-    <string name="json_last_modified">Wed, 27 Dec 2017 23:52:42 GMT</string>
+    <string name="json_last_modified">Thu, 11 Jan 2018 03:25:34 GMT</string>
 
     <string name="dialog_update_title">Updating</string>
     <string name="dialog_update_message">Updating coin data…</string>

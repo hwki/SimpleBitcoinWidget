@@ -17,6 +17,7 @@ public class UpdatePriceService extends JobIntentService {
     public static final String EXTRA_MANUAL_REFRESH = "manualRefresh";
 
     static void enqueueWork(Context context, Intent work) {
+        DataMigration.migrate(context);
         enqueueWork(context, UpdatePriceService.class, JOB_ID, work);
     }
 
@@ -29,11 +30,10 @@ public class UpdatePriceService extends JobIntentService {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int layout = prefs.getThemeLayout();
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
-        String currencyCode = prefs.getCurrency();
-        if (currencyCode == null) return;
+        String currencyCode = prefs.getExchangeCurrencyName();
         try {
             Exchange exchange = prefs.getExchange();
-            String amount = exchange.getValue(prefs.getCoin(), currencyCode);
+            String amount = exchange.getValue(prefs.getExchangeCoinName(), currencyCode);
             WidgetViews.setText(context, views, amount, prefs);
             prefs.setLastUpdate();
             setOldValue(prefs, views, context);
