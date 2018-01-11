@@ -31,6 +31,7 @@ public class UpdatePriceService extends JobIntentService {
         int layout = prefs.getThemeLayout();
         RemoteViews views = new RemoteViews(context.getPackageName(), layout);
         String currencyCode = prefs.getExchangeCurrencyName();
+        if (currencyCode == null) return;
         try {
             Exchange exchange = prefs.getExchange();
             String amount = exchange.getValue(prefs.getExchangeCoinName(), currencyCode);
