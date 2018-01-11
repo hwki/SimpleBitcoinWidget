@@ -46,7 +46,7 @@ class WidgetViews {
         views.setViewVisibility(R.id.icon, prefs.showIcon() ? View.VISIBLE : View.GONE);
         if (prefs.showIcon()) {
             boolean lightTheme = prefs.isLightTheme();
-            int[] drawables = Coin.valueOf(prefs.getCoin()).getDrawables();
+            int[] drawables = prefs.getCoin().getDrawables();
             views.setImageViewResource(R.id.icon, lightTheme ? drawables[0] : drawables[2]);
         }
 
@@ -171,7 +171,7 @@ class WidgetViews {
     }
 
     private static String buildText(String amount, Prefs prefs) {
-        Currency currency = Currency.valueOf(prefs.getCurrency());
+        Currency currency = prefs.getCurrency();
         String format = currency.getFormat();
         if (!prefs.getShowDecimals()) {
             format = format.replaceAll("\\.00", "");
@@ -180,8 +180,7 @@ class WidgetViews {
         Double adjustedAmount = Double.valueOf(amount);
         String unit = prefs.getUnit();
         if (unit != null) {
-            double unitAmount = Coin.valueOf(prefs.getCoin()).getUnitAmount(unit);
-            adjustedAmount *= unitAmount;
+            adjustedAmount *= prefs.getCoin().getUnitAmount(unit);
         }
         return nf.format(adjustedAmount);
     }
@@ -202,7 +201,7 @@ class WidgetViews {
     static void setOld(RemoteViews views, boolean isOld, Prefs prefs) {
         if (!prefs.showIcon()) return;
         boolean lightTheme = prefs.isLightTheme();
-        int[] drawables = Coin.valueOf(prefs.getCoin()).getDrawables();
+        int[] drawables = prefs.getCoin().getDrawables();
         if (isOld) {
             views.setImageViewResource(R.id.icon, lightTheme ? drawables[1] : drawables[3]);
         } else {

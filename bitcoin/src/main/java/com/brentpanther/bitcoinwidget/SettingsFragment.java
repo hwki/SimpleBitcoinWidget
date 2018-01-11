@@ -202,6 +202,7 @@ public class SettingsFragment extends PreferenceFragment {
         } else {
             refresh.setSummary(getResources().getQuantityString(R.plurals.summary_refresh_interval_hour, value / 60, value / 60));
         }
+
     }
 
     private void setExchange(String currency) {
@@ -224,6 +225,9 @@ public class SettingsFragment extends PreferenceFragment {
         prefs.setValues(data.getCoin().name(), currency.getValue(), refreshValue,
                         exchange.getValue(), label.isChecked(), theme.getValue(), icon.isChecked(),
                         decimals.isChecked(), units.getValue());
+        String exchangeCoinName = data.getExchangeCoinName(exchange.getValue(), data.getCoin().name());
+        String exchangeCurrencyName = data.getExchangeCurrencyName(exchange.getValue(), currency.getValue());
+        prefs.setExchangeValues(exchangeCoinName, exchangeCurrencyName);
         getActivity().setResult(Activity.RESULT_OK);
         boolean newFixedSize = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(R.string.key_fixed_size), false);
         if (fixedSize && !newFixedSize) {

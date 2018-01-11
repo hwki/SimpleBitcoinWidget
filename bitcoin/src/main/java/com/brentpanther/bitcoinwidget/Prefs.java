@@ -10,6 +10,7 @@ class Prefs {
 
     private static final String LAST_UPDATE = "last_update";
     private static final String CURRENCY = "currency";
+    private static final String CURRENCY_CUSTOM = "currency_custom";
     private static final String REFRESH = "refresh";
     private static final String PROVIDER = "provider";
     private static final String EXCHANGE = "exchange";
@@ -20,6 +21,7 @@ class Prefs {
     private static final String LAST_VALUE = "last_value";
     private static final String UNITS = "units";
     private static final String COIN = "coin";
+    private static final String COIN_CUSTOM = "coin_custom";
     private static final String PORTRAIT_TEXT_SIZE = "portrait_text_size";
     private static final String LANDSCAPE_TEXT_SIZE = "landscape_text_size";
     private final int widgetId;
@@ -38,16 +40,23 @@ class Prefs {
         return context.getSharedPreferences(context.getString(R.string.key_prefs), Context.MODE_PRIVATE);
     }
 
-    String getCoin() {
+    Coin getCoin() {
         String coin = getValue(COIN);
-        if (coin != null) {
-            return coin;
-        }
-        return "BTC";
+        return coin != null ? Coin.valueOf(coin) : Coin.BTC;
     }
 
-    String getCurrency() {
-        return getValue(CURRENCY);
+    String getExchangeCoinName() {
+        String coin = getValue(COIN_CUSTOM);
+        return coin != null ? coin : getValue(COIN);
+    }
+
+    Currency getCurrency() {
+        return Currency.valueOf(getValue(CURRENCY));
+    }
+
+    String getExchangeCurrencyName() {
+        String code = getValue(CURRENCY_CUSTOM);
+        return code != null ? code : getValue(CURRENCY);
     }
 
     int getInterval() {
@@ -115,11 +124,11 @@ class Prefs {
         return Boolean.valueOf(value);
     }
 
-    private void setValue(String key, String value) {
+    void setValue(String key, String value) {
         String string = getPrefs().getString("" + widgetId, null);
         JSONObject obj;
         try {
-            if(string==null) {
+            if (string == null) {
                 obj = new JSONObject();
             }  else {
                 obj = new JSONObject(string);
@@ -182,5 +191,10 @@ class Prefs {
     void clearTextSize() {
         setTextSize(0, true);
         setTextSize(0, false);
+    }
+
+    void setExchangeValues(String exchangeCoinName, String exchangeCurrencyName) {
+        if (exchangeCoinName != null) setValue(COIN_CUSTOM, exchangeCoinName);
+        if (exchangeCurrencyName != null) setValue(CURRENCY_CUSTOM, exchangeCurrencyName);
     }
 }

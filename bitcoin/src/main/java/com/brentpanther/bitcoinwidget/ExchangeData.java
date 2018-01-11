@@ -14,10 +14,11 @@ class ExchangeData {
 
     private final Coin coin;
     private final Map<String, List<String>> CURRENCY_TO_EXCHANGE = new HashMap<>();
+    private final JSONObject obj;
 
     ExchangeData(Coin coin, String json) throws JSONException {
         this.coin = coin;
-        JSONObject obj = new JSONObject(json);
+        this.obj = new JSONObject(json);
         JSONArray exchanges = obj.getJSONArray("exchanges");
         for (int i = 0; i < exchanges.length(); i++) {
             addExchange(coin.name(), exchanges.getJSONObject(i));
@@ -54,7 +55,9 @@ class ExchangeData {
     String[] getExchanges(String currency) {
         // only return exchanges that we know about
         List<String> exchangeNames = Exchange.getAllExchangeNames();
-        exchangeNames.retainAll(CURRENCY_TO_EXCHANGE.get(currency));
+        List<String> exchanges = CURRENCY_TO_EXCHANGE.get(currency);
+        if (exchanges == null) return new String[] {};
+        exchangeNames.retainAll(exchanges);
         return exchangeNames.toArray(new String[]{});
     }
 
@@ -74,4 +77,29 @@ class ExchangeData {
         if (exchanges.contains(Exchange.COINBASE.name())) return Exchange.COINBASE.name();
         return exchanges.get(0);
     }
+
+    String getExchangeCoinName(String exchange, String coin) {
+        return getExchangeName(exchange, "coin_overrides", coin);
+    }
+
+    String getExchangeCurrencyName(String exchange, String currency) {
+        return getExchangeName(exchange, "currency_overrides", currency);
+    }
+
+    private String getExchangeName(String exchange, String objectName, String value) {
+        try {
+            JSONArray exchanges = obj.getJSONArray("exchanges");
+            for (int i = 0; i < exchanges.length(); i++) {
+                JSONObject exchangeJSON = exchanges.getJSONObject(i);
+                String name = exchangeJSON.getString("name");
+                if (!name.equals(exchange)) continue;
+
+                JSONObject currencyOverrides = exchangeJSON.getJSONObject(objectName);
+                return currencyOverrides.getString(value);
+            }
+        } catch (JSONException ignored) {
+        }
+        return null;
+    }
+
 }
