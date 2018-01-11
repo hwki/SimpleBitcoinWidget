@@ -47,7 +47,7 @@ class Prefs {
 
     String getExchangeCoinName() {
         String coin = getValue(COIN_CUSTOM);
-        return coin != null ? coin : getValue(COIN);
+        return coin != null ? coin : getCoin().name();
     }
 
     Currency getCurrency() {

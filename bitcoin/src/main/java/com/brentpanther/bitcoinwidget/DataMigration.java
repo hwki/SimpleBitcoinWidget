@@ -18,7 +18,7 @@ import static com.brentpanther.bitcoinwidget.Currency.USD;
  */
 class DataMigration {
 
-    private static final String EXCHANGE_OVERRIDE_MIGRATION = "exchange_override_migration";
+    private static final String EXCHANGE_OVERRIDE_MIGRATION = "exchange_override";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -46,6 +46,7 @@ class DataMigration {
                     if (BTC == coin) coinName = "Btc";
                     if (BCH == coin) coinName = "Bch";
                     if (LTC == coin) coinName = "Ltc";
+                    break;
                 case BITBAY:
                     if (BCH == coin) coinName = "BCC";
                     break;
