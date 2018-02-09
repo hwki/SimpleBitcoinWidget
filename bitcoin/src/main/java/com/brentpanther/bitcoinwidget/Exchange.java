@@ -224,6 +224,14 @@ enum Exchange {
             return obj.getJSONObject("data").getString("amount");
         }
     },
+    COINBE("Coinbe") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            JSONObject obj = getJSONObject("https://coinbe.net/public/graphs/ticker/ticker.json");
+            String pair = String.format("%s_%s", currency, coin);
+            return obj.getJSONObject(pair).getString("last");
+        }
+    },
     COINDELTA("Coindelta") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
