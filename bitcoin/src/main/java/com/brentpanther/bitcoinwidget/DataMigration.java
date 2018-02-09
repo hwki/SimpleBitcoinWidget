@@ -36,60 +36,64 @@ class DataMigration {
         int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
         for (int widgetId : widgetIds) {
             Prefs prefs = new Prefs(widgetId);
-            Exchange exchange = prefs.getExchange();
-            Coin coin = prefs.getCoin();
-            Currency currency = prefs.getCurrency();
-            String coinName = null;
-            String currencyName = null;
-            switch (exchange) {
-                case BIT2C:
-                    if (BTC == coin) coinName = "Btc";
-                    if (BCH == coin) coinName = "Bch";
-                    if (LTC == coin) coinName = "Ltc";
-                    break;
-                case BITBAY:
-                    if (BCH == coin) coinName = "BCC";
-                    break;
-                case BITFINEX:
-                    if (DASH == coin) coinName = "dsh";
-                    if (IOTA == coin) coinName = "iot";
-                    break;
-                case BITMARKET24:
-                    if (BCH == coin) coinName = "BCC";
-                    break;
-                case BITMARKETPL:
-                    if (BCH == coin) coinName = "BCC";
-                    break;
-                case BITTREX:
-                    if (BCH == coin) coinName = "BCC";
-                    if (USD == currency) currencyName = "USDT";
-                    break;
-                case INDEPENDENT_RESERVE:
-                    if (BTC == coin) coinName = "xbt";
-                    break;
-                case ITBIT:
-                    if (BTC == coin) coinName = "XBT";
-                    break;
-                case KOINEX:
-                    if (IOTA == coin) coinName = "MIOTA";
-                    break;
-                case KRAKEN:
-                    if (BTC == coin) coinName = "XBT";
-                    break;
-                case LUNO:
-                    if (BTC == coin) coinName = "XBT";
-                    break;
-                case PARIBU:
-                    if (TRY == currency) currencyName = "TL";
-                    break;
-                case POLONIEX:
-                    if (USD == currency) currencyName = "USDT";
-                    break;
-                case WEX:
-                    if (DASH == coin) coinName = "DSH";
-                    break;
+            try {
+                Exchange exchange = prefs.getExchange();
+                Coin coin = prefs.getCoin();
+                Currency currency = prefs.getCurrency();
+                String coinName = null;
+                String currencyName = null;
+                switch (exchange) {
+                    case BIT2C:
+                        if (BTC == coin) coinName = "Btc";
+                        if (BCH == coin) coinName = "Bch";
+                        if (LTC == coin) coinName = "Ltc";
+                        break;
+                    case BITBAY:
+                        if (BCH == coin) coinName = "BCC";
+                        break;
+                    case BITFINEX:
+                        if (DASH == coin) coinName = "dsh";
+                        if (IOTA == coin) coinName = "iot";
+                        break;
+                    case BITMARKET24:
+                        if (BCH == coin) coinName = "BCC";
+                        break;
+                    case BITMARKETPL:
+                        if (BCH == coin) coinName = "BCC";
+                        break;
+                    case BITTREX:
+                        if (BCH == coin) coinName = "BCC";
+                        if (USD == currency) currencyName = "USDT";
+                        break;
+                    case INDEPENDENT_RESERVE:
+                        if (BTC == coin) coinName = "xbt";
+                        break;
+                    case ITBIT:
+                        if (BTC == coin) coinName = "XBT";
+                        break;
+                    case KOINEX:
+                        if (IOTA == coin) coinName = "MIOTA";
+                        break;
+                    case KRAKEN:
+                        if (BTC == coin) coinName = "XBT";
+                        break;
+                    case LUNO:
+                        if (BTC == coin) coinName = "XBT";
+                        break;
+                    case PARIBU:
+                        if (TRY == currency) currencyName = "TL";
+                        break;
+                    case POLONIEX:
+                        if (USD == currency) currencyName = "USDT";
+                        break;
+                    case WEX:
+                        if (DASH == coin) coinName = "DSH";
+                        break;
+                }
+                prefs.setExchangeValues(coinName, currencyName);
+            } catch (Exception e) {
+                // user's exchange no longer exists
             }
-            prefs.setExchangeValues(coinName, currencyName);
         }
     }
 
