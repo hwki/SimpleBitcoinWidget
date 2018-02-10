@@ -64,11 +64,12 @@ public class ExchangeTest {
             for (Currency currency : Currency.values()) {
                 Set<String> exchanges = new HashSet<>(Arrays.asList(data.getExchanges(currency.name())));
                 for (Exchange exchange : exchangeSet) {
+                    if (exchange == Exchange.ZEBPAY && currency != Currency.INR) continue;
                     boolean exists = exchanges.contains(exchange.name());
-                        String coinName = data.getExchangeCoinName(exchange.name(), coin.name());
-                        String currencyName = data.getExchangeCurrencyName(exchange.name(), currency.name());
-                        if (coinName == null) coinName = coin.name();
-                        if (currencyName == null) currencyName = currency.name();
+                    String coinName = data.getExchangeCoinName(exchange.name(), coin.name());
+                    String currencyName = data.getExchangeCurrencyName(exchange.name(), currency.name());
+                    if (coinName == null) coinName = coin.name();
+                    if (currencyName == null) currencyName = currency.name();
                     try {
                         String value = exchange.getValue(coinName, currencyName);
                         Double valueDouble = Double.valueOf(value);
