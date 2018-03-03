@@ -78,7 +78,7 @@ public class ExchangeTest {
                     } catch (Exception e) {
                         if (exists) System.out.println(String.format("REMOVED: %s %s %s", coin.name(), exchange, currency));
                     }
-                    Thread.sleep(100);
+                    Thread.sleep(10);
                 }
             }
         }

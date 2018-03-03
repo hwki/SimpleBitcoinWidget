@@ -1,15 +1,10 @@
 package com.brentpanther.bitcoinwidget;
 
-import android.annotation.SuppressLint;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
@@ -48,15 +43,15 @@ class ExchangeHelper {
         return null;
     }
 
-    public static JSONObject getJSONObject(String url) throws Exception {
+    static JSONObject getJSONObject(String url) throws Exception {
         return getJSONObject(url, null);
     }
 
-    public static JSONObject getJSONObject(String url, Headers headers) throws Exception {
+    static JSONObject getJSONObject(String url, Headers headers) throws Exception {
         return new JSONObject(getString(url, headers));
     }
 
-    public static JSONArray getJSONArray(String url) throws Exception {
+    static JSONArray getJSONArray(String url) throws Exception {
         return new JSONArray(getString(url));
     }
 
@@ -70,13 +65,7 @@ class ExchangeHelper {
                 .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(Arrays.asList(SPEC, ConnectionSpec.CLEARTEXT))
-                .hostnameVerifier(new HostnameVerifier() {
-                    @SuppressLint("BadHostnameVerifier")
-                    @Override
-                    public boolean verify(String hostname, SSLSession session) {
-                        return true;
-                    }
-                }).build();
+                .hostnameVerifier((hostname, session) -> true).build();
         Request.Builder builder = new Request.Builder()
                 .url(url);
         if (headers != null) {

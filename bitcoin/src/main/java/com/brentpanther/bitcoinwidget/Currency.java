@@ -1,7 +1,6 @@
 package com.brentpanther.bitcoinwidget;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public enum Currency {
@@ -45,15 +44,8 @@ public enum Currency {
     ZAR("R#,###.00");
 
     private static final List<String> ALL_CURRENCY_NAMES;
-    private static final Comparator<String> COMPARATOR;
 
     static {
-        COMPARATOR = new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return ALL_CURRENCY_NAMES.indexOf(o1) - ALL_CURRENCY_NAMES.indexOf(o2);
-            }
-        };
         ALL_CURRENCY_NAMES = new ArrayList<>();
         for (Currency currency : Currency.values()) {
             ALL_CURRENCY_NAMES.add(currency.name());

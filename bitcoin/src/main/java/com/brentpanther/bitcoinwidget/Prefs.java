@@ -164,7 +164,7 @@ class Prefs {
 		getPrefs().edit().remove("" + widgetId).apply();
 	}
 
-    private String getValue(String key) {
+    String getValue(String key) {
         String string = getPrefs().getString("" + widgetId, null);
         if(string==null) return null;
         JSONObject obj;

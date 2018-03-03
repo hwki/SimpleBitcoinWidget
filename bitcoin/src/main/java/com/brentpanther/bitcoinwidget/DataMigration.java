@@ -19,6 +19,7 @@ import static com.brentpanther.bitcoinwidget.Currency.USD;
 class DataMigration {
 
     private static final String EXCHANGE_OVERRIDE_MIGRATION = "exchange_override";
+    private static final String QUOINE_MIGRATION = "quoine";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -26,6 +27,23 @@ class DataMigration {
         if (!hasOverrideMigration) {
             migrateExchangeCoinAndCurrencyNames();
             prefs.edit().putBoolean(EXCHANGE_OVERRIDE_MIGRATION, true).apply();
+        }
+        boolean hasQuoineMigration = prefs.getBoolean(QUOINE_MIGRATION, false);
+        if (!hasQuoineMigration) {
+            migrateQuoine();
+            prefs.edit().putBoolean(QUOINE_MIGRATION, true).apply();
+        }
+    }
+
+    // spelled quoine wrong, so migrate users who have the prior bad spelling
+    private static void migrateQuoine() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            String exchange = prefs.getValue("exchange");
+            if ("QUIONE".equals(exchange)) {
+                prefs.setValue("exchange", Exchange.QUOINE.name());
+            }
         }
     }
 

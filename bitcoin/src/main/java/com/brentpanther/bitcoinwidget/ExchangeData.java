@@ -40,7 +40,7 @@ class ExchangeData {
 
     private void addCurrency(String exchangeName, String currency) {
         if (!CURRENCY_TO_EXCHANGE.containsKey(currency)) {
-            CURRENCY_TO_EXCHANGE.put(currency, new ArrayList<String>());
+            CURRENCY_TO_EXCHANGE.put(currency, new ArrayList<>());
         }
         CURRENCY_TO_EXCHANGE.get(currency).add(exchangeName);
     }

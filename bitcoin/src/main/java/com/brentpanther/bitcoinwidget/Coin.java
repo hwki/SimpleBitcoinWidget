@@ -27,6 +27,12 @@ public enum Coin {
             return new int[] {R.drawable.ic_eth_color, R.drawable.ic_eth, R.drawable.ic_eth_color, R.drawable.ic_eth};
         }
     },
+    XRP("Ripple", R.drawable.ic_xrp) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_xrp, R.drawable.ic_xrp_bw, R.drawable.ic_xrp, R.drawable.ic_xrp_bw};
+        }
+    },
     BCH("Bitcoin Cash", R.drawable.ic_bch) {
         @Override
         protected List<Unit> getUnits() {
@@ -54,16 +60,28 @@ public enum Coin {
             return new int[] {R.drawable.ic_ltc_color, R.drawable.ic_ltc, R.drawable.ic_ltc_color, R.drawable.ic_ltc};
         }
     },
+    NEO("NEO", R.drawable.ic_neo) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_neo, R.drawable.ic_neo_bw, R.drawable.ic_neo, R.drawable.ic_neo_bw};
+        }
+    },
+    ADA("Cardano", R.drawable.ic_ada) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_ada, R.drawable.ic_ada_bw, R.drawable.ic_ada, R.drawable.ic_ada_bw};
+        }
+    },
+    XLM("Stellar", R.drawable.ic_xlm) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_xlm, R.drawable.ic_xlm_bw, R.drawable.ic_xlm, R.drawable.ic_xlm_bw};
+        }
+    },
     IOTA("Iota", R.drawable.ic_iota) {
         @Override
         public int[] getDrawables() {
             return new int[] {R.drawable.ic_iota, R.drawable.ic_iota_bw, R.drawable.ic_iota, R.drawable.ic_iota_bw};
-        }
-    },
-    XRP("Ripple", R.drawable.ic_xrp) {
-        @Override
-        public int[] getDrawables() {
-            return new int[] {R.drawable.ic_xrp, R.drawable.ic_xrp_bw, R.drawable.ic_xrp, R.drawable.ic_xrp_bw};
         }
     },
     DASH("Dash", R.drawable.ic_dash) {
@@ -76,6 +94,24 @@ public enum Coin {
         @Override
         public int[] getDrawables() {
             return new int[] {R.drawable.ic_xrm, R.drawable.ic_xrm_bw, R.drawable.ic_xrm, R.drawable.ic_xrm_bw};
+        }
+    },
+    XEM("NEM", R.drawable.ic_xem) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_xem, R.drawable.ic_xem_bw, R.drawable.ic_xem, R.drawable.ic_xem_bw};
+        }
+    },
+    NANO("Nano", R.drawable.ic_nano) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_nano, R.drawable.ic_nano_bw, R.drawable.ic_nano, R.drawable.ic_nano_bw};
+        }
+    },
+    BTG("Bitcoin Gold", R.drawable.ic_btg) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_btg, R.drawable.ic_btg_bw, R.drawable.ic_btg, R.drawable.ic_btg_bw};
         }
     };
 
