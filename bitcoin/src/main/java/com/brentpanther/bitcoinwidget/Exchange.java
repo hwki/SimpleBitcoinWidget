@@ -376,6 +376,14 @@ enum Exchange {
             return null;
         }
     },
+    GATEIO("Gate.io") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s_%s", coin, currency).toLowerCase();
+            String url = String.format("http://data.gate.io/api2/1/ticker/%s", pair);
+            return getJSONObject(url).getString("last");
+        }
+    },
     GDAX("GDAX") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -390,6 +398,15 @@ enum Exchange {
             return getJSONObject("https://api.gemini.com/v1/pubticker/" + pair).getString("last");
         }
     },
+    HITBTC("HitBTC") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            if (coin.equals("XRP") && currency.equals("USD")) {
+                currency = "USDT";
+            }
+            return getJSONObject(String.format("https://api.hitbtc.com/api/2/public/ticker/%s%s", coin, currency)).getString("last");
+        }
+    },
     HUOBI("Huobi") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -399,15 +416,6 @@ enum Exchange {
             double ask = tick.getJSONArray("ask").getDouble(0);
             double bid = tick.getJSONArray("bid").getDouble(0);
             return Double.toString((ask + bid) / 2);
-        }
-    },
-    HITBTC("HitBTC") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            if (coin.equals("XRP") && currency.equals("USD")) {
-                currency = "USDT";
-            }
-            return getJSONObject(String.format("https://api.hitbtc.com/api/2/public/ticker/%s%s", coin, currency)).getString("last");
         }
     },
     INDEPENDENT_RESERVE("Independent Reserve", "Ind. Reserve") {
@@ -479,6 +487,13 @@ enum Exchange {
             return obj.getJSONObject(pair).getString("last");
         }
     },
+    LIVECOIN("Livecoin") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://api.livecoin.net/exchange/ticker?currencyPair=%s/%s", coin, currency);
+            return getJSONObject(url).getString("last");
+        }
+    },
     LUNO("Luno") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -506,6 +521,14 @@ enum Exchange {
             String tld = currency.equals("USD") ? "com" : "cn";
             String url = String.format("https://www.okcoin.%s/api/v1/ticker.do?symbol=%s_%s", tld,
                     coin.toLowerCase(), currency.toLowerCase());
+            return getJSONObject(url).getJSONObject("ticker").getString("last");
+        }
+    },
+    OKEX("OKEx") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s_%s", coin, currency).toLowerCase();
+            String url = String.format("https://www.okex.com/api/v1/ticker.do?symbol=%s", pair);
             return getJSONObject(url).getJSONObject("ticker").getString("last");
         }
     },
@@ -540,7 +563,7 @@ enum Exchange {
             return getJSONObject(url).getString("last");
         }
     },
-    QUIONE("Quione") {
+    QUOINE("Quoine") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
             String url = String.format("https://api.quoine.com/products/code/CASH/%s%s", coin, currency);
@@ -605,6 +628,14 @@ enum Exchange {
             String url = "https://api.sendwyre.com/v2/rates";
             String currency = String.format("%s%s", currencyCode, coin);
             return getJSONObject(url).getString(currency);
+        }
+    },
+    YOBIT("YoBit") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s_%s", coin, currency).toLowerCase();
+            String url = String.format("https://yobit.net/api/3/ticker/%s", pair);
+            return getJSONObject(url).getJSONObject(pair).getString("last");
         }
     },
     ZEBPAY("Zebpay") {

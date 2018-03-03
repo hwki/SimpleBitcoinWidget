@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class CoinSelectionActivity extends Activity implements CoinSelectionView.CoinSelectedListener {
+public class CoinSelectionActivity extends Activity {
 
     private int widgetId;
 
@@ -15,17 +15,18 @@ public class CoinSelectionActivity extends Activity implements CoinSelectionView
         setContentView(R.layout.activity_coin);
         Bundle extras = getIntent().getExtras();
         widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        int[] coinIds = {R.id.coin1, R.id.coin2, R.id.coin3, R.id.coin4, R.id.coin5, R.id.coin6, R.id.coin7, R.id.coin8};
+        int[] coinIds = {R.id.coin1, R.id.coin2, R.id.coin3, R.id.coin4, R.id.coin5, R.id.coin6,
+                R.id.coin7, R.id.coin8, R.id.coin9, R.id.coin10, R.id.coin11, R.id.coin12,
+                R.id.coin13, R.id.coin14};
         Coin[] coins = Coin.values();
         for (int i = 0; i < coinIds.length; i++) {
             CoinSelectionView view = findViewById(coinIds[i]);
-            view.setCoin(coins[i], this);
+            view.setCoin(coins[i], this::selected);
         }
         startService(new Intent(CoinSelectionActivity.this, DownloadJSONService.class));
     }
 
-    @Override
-    public void selected(Coin coin) {
+    private void selected(Coin coin) {
         Intent intent = new Intent(this, SettingsActivity.class);
         intent.putExtra(SettingsActivity.EXTRA_COIN, coin.name());
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);

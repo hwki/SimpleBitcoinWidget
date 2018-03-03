@@ -80,12 +80,9 @@ public class SettingsFragment extends PreferenceFragment {
 
         // refresh option
         setRefresh(Integer.valueOf(refresh.getValue()));
-        refresh.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                setRefresh(Integer.valueOf((String)newValue));
-                return true;
-            }
+        refresh.setOnPreferenceChangeListener((preference, newValue) -> {
+            setRefresh(Integer.valueOf((String)newValue));
+            return true;
         });
 
         // currency option
@@ -102,22 +99,16 @@ public class SettingsFragment extends PreferenceFragment {
 
         // exchange option
         setExchange(defaultCurrency);
-        currency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                currency.setSummary(getString(R.string.summary_currency, (String)newValue));
-                setExchange((String)newValue);
-                return true;
-            }
+        currency.setOnPreferenceChangeListener((preference, newValue) -> {
+            currency.setSummary(getString(R.string.summary_currency, (String)newValue));
+            setExchange((String)newValue);
+            return true;
         });
-        exchange.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String exchangeCode = (String) newValue;
-                String exchangeName = Exchange.valueOf(exchangeCode).getName();
-                exchange.setSummary(getString(R.string.summary_exchange, exchangeName));
-                return true;
-            }
+        exchange.setOnPreferenceChangeListener((preference, newValue) -> {
+            String exchangeCode = (String) newValue;
+            String exchangeName = Exchange.valueOf(exchangeCode).getName();
+            exchange.setSummary(getString(R.string.summary_exchange, exchangeName));
+            return true;
         });
 
         // icon
@@ -126,26 +117,20 @@ public class SettingsFragment extends PreferenceFragment {
         // theme
         theme.setValueIndex(0);
         theme.setSummary(theme.getValue());
-        theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                theme.setSummary((String)newValue);
-                return true;
-            }
+        theme.setOnPreferenceChangeListener((preference, newValue) -> {
+            theme.setSummary((String)newValue);
+            return true;
         });
 
-        fixedSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                // if we are switching fixed text size on, clear out any pre-existing values
-                if (Boolean.valueOf(newValue.toString())) {
-                    int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
-                    for (int widgetId : widgetIds) {
-                        new Prefs(widgetId).clearTextSize();
-                    }
+        fixedSize.setOnPreferenceChangeListener((preference, newValue) -> {
+            // if we are switching fixed text size on, clear out any pre-existing values
+            if (Boolean.valueOf(newValue.toString())) {
+                int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+                for (int widgetId : widgetIds) {
+                    new Prefs(widgetId).clearTextSize();
                 }
-                return true;
             }
+            return true;
         });
 
         // units
@@ -158,40 +143,31 @@ public class SettingsFragment extends PreferenceFragment {
             units.setEntries(unitNames);
             units.setEntryValues(unitNames);
         }
-        units.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                units.setSummary(getString(R.string.summary_units, newValue.toString()));
-                return true;
-            }
+        units.setOnPreferenceChangeListener((preference, newValue) -> {
+            units.setSummary(getString(R.string.summary_units, newValue.toString()));
+            return true;
         });
 
         // rate
-        rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                final String appPackageName = getActivity().getPackageName();
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
-                return true;
+        rate.setOnPreferenceClickListener(preference -> {
+            final String appPackageName = getActivity().getPackageName();
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            } catch (ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
             }
+            return true;
         });
 
         // donation
-        donate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-             @Override
-             public boolean onPreferenceClick(Preference preference) {
-                 Intent btc = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.btc_address)));
-                 try {
-                     startActivity(btc);
-                 } catch (ActivityNotFoundException e) {
-                     Toast.makeText(getActivity(), getString(R.string.error_donate), Toast.LENGTH_SHORT).show();
-                 }
-                 return true;
-             }
+        donate.setOnPreferenceClickListener(preference -> {
+            Intent btc = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.btc_address)));
+            try {
+                startActivity(btc);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getActivity(), getString(R.string.error_donate), Toast.LENGTH_SHORT).show();
+            }
+            return true;
         });
     }
 
