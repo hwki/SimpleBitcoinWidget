@@ -3,7 +3,6 @@ package com.brentpanther.bitcoinwidget;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -13,16 +12,11 @@ import java.util.Set;
 
 public class ExchangeTest {
 
-    private String json;
+    private InputStream json;
 
     @Before
-    public void loadJSON() throws IOException {
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("raw/cryptowidgetcoins.json");
-        int size = inputStream.available();
-        byte[] buffer = new byte[size];
-        inputStream.read(buffer);
-        inputStream.close();
-        this.json = new String(buffer, "UTF-8");
+    public void loadJSON() {
+        json = this.getClass().getClassLoader().getResourceAsStream("raw/cryptowidgetcoins.json");
     }
 
     @Test
