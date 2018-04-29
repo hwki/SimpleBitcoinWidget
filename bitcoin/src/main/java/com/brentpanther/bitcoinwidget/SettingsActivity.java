@@ -14,7 +14,7 @@ import android.util.Log;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class SettingsActivity extends Activity {
@@ -77,20 +77,15 @@ public class SettingsActivity extends Activity {
         }
     }
 
-    private String getCoinJSON() {
+    private InputStream getCoinJSON() {
         try {
             InputStream inputStream;
             if (new File(getFilesDir(), DownloadJSONService.CURRENCY_FILE_NAME).exists()) {
-                inputStream = openFileInput(DownloadJSONService.CURRENCY_FILE_NAME);
+                return openFileInput(DownloadJSONService.CURRENCY_FILE_NAME);
             } else {
-                inputStream = getResources().openRawResource(R.raw.cryptowidgetcoins);
+                return getResources().openRawResource(R.raw.cryptowidgetcoins);
             }
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            return new String(buffer, "UTF-8");
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

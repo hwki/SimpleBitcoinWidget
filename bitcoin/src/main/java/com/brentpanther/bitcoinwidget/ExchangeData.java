@@ -2,6 +2,8 @@ package com.brentpanther.bitcoinwidget;
 
 import com.google.gson.Gson;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,9 +75,9 @@ class ExchangeData {
     private final Coin coin;
     private final JsonExchangeObject obj;
 
-    ExchangeData(Coin coin, String json) {
+    ExchangeData(Coin coin, InputStream json) {
         this.coin = coin;
-        this.obj = new Gson().fromJson(json, JsonExchangeObject.class);
+        this.obj = new Gson().fromJson(new InputStreamReader(json), JsonExchangeObject.class);
         currencyExchange = new HashMap<>();
         this.obj.loadCurrencies(coin.name());
     }

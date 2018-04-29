@@ -25,3 +25,4 @@ local.properties
 build/
 .gradle
 .DS_Store
+.idea/caches/build_file_checksums.ser
