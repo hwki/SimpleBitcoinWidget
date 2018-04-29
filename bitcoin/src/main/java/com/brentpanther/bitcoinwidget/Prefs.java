@@ -3,8 +3,10 @@ package com.brentpanther.bitcoinwidget;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 
 class Prefs {
 
@@ -127,37 +129,27 @@ class Prefs {
 
     void setValue(String key, String value) {
         String string = getPrefs().getString("" + widgetId, null);
-        JSONObject obj;
-        try {
-            if (string == null) {
-                obj = new JSONObject();
-            }  else {
-                obj = new JSONObject(string);
-            }
-            obj.put(key, value);
-            getPrefs().edit().putString("" + widgetId, obj.toString()).apply();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JsonObject obj = new JsonObject();
+        if (string != null) {
+            obj = new Gson().fromJson(string, JsonObject.class);
         }
+        obj.addProperty(key, value);
+        getPrefs().edit().putString("" + widgetId, obj.toString()).apply();
     }
 
     void setValues(String coin, String currency, int refreshValue, String exchange, boolean checked,
                    String theme, boolean iconChecked, boolean showDecimals, String unit) {
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put(COIN, coin);
-            obj.put(CURRENCY, currency);
-            obj.put(REFRESH, "" + refreshValue);
-            obj.put(EXCHANGE, exchange);
-            obj.put(SHOW_LABEL, "" + checked);
-            obj.put(THEME, theme);
-            obj.put(HIDE_ICON, "" + !iconChecked);
-            obj.put(SHOW_DECIMALS, "" + showDecimals);
-            obj.put(UNITS, unit);
-            getPrefs().edit().putString("" + widgetId, obj.toString()).apply();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        JsonObject obj = new JsonObject();
+        obj.addProperty(COIN, coin);
+        obj.addProperty(CURRENCY, currency);
+        obj.addProperty(REFRESH, "" + refreshValue);
+        obj.addProperty(EXCHANGE, exchange);
+        obj.addProperty(SHOW_LABEL, "" + checked);
+        obj.addProperty(THEME, theme);
+        obj.addProperty(HIDE_ICON, "" + !iconChecked);
+        obj.addProperty(SHOW_DECIMALS, "" + showDecimals);
+        obj.addProperty(UNITS, unit);
+        getPrefs().edit().putString("" + widgetId, obj.toString()).apply();
 	}
 
     void delete() {
@@ -166,14 +158,11 @@ class Prefs {
 
     String getValue(String key) {
         String string = getPrefs().getString("" + widgetId, null);
-        if(string==null) return null;
-        JSONObject obj;
-        try {
-            obj = new JSONObject(string);
-            return obj.getString(key);
-        } catch (JSONException e) {
-            return null;
-        }
+        if (string == null) return null;
+        JsonObject obj = new Gson().fromJson(string, JsonObject.class);
+        if (!obj.has(key)) return null;
+        JsonElement el = obj.get(key);
+        return el.isJsonNull() ? null : el.getAsString();
     }
 
     void setTextSize(float size, boolean portrait) {

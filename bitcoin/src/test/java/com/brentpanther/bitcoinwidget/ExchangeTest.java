@@ -41,7 +41,7 @@ public class ExchangeTest {
                     } catch (Exception e) {
                         System.out.println(String.format("Failure: %s %s %s", coin.name(), exchange, currency));
                     }
-                    Thread.sleep(200);
+                    Thread.sleep(100);
                 }
             }
         }
@@ -51,10 +51,10 @@ public class ExchangeTest {
     public void allCoins() throws Exception {
         // some exchanges don't use coin/currency parameters, so skip them
         EnumSet<Exchange> skip = EnumSet.of(Exchange.BIT2C, Exchange.BITCOINDE, Exchange.BITHUMB, Exchange.BITPAY, Exchange.BTCBOX,
-                Exchange.BTCTURK, Exchange.BTCXINDIA, Exchange.CAMPBX, Exchange.COINDESK, Exchange.COINNEST,
-                Exchange.COINONE, Exchange.COINSECURE, Exchange.ETHEXINDIA, Exchange.KOINEX, Exchange.MERCADO,
+                Exchange.BTCTURK, Exchange.CAMPBX, Exchange.COINDESK, Exchange.COINNEST, Exchange.COINMARKETCAP,
+                Exchange.COINONE, Exchange.COINSECURE, Exchange.KOINEX, Exchange.MERCADO,
                 Exchange.PAYMIUM, Exchange.SIMPLECOINCZ, Exchange.ZYADO, Exchange.CHILEBIT, Exchange.FOXBIT,
-                Exchange.SURBITCOIN, Exchange.URDUBIT, Exchange.VBTC);
+                Exchange.SURBITCOIN, Exchange.URDUBIT, Exchange.VBTC, Exchange.COINMARKETCAP);
         EnumSet<Exchange> exchangeSet = EnumSet.allOf(Exchange.class);
         exchangeSet.removeAll(skip);
 

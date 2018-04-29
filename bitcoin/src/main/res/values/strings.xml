@@ -50,7 +50,7 @@
     <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
 
-    <string name="btc_address">bitcoin:15SHnY7HC5bTxzErHDPe7wHXj1HhtDKV7z</string>
+    <string name="btc_address" translatable="false">bitcoin:15SHnY7HC5bTxzErHDPe7wHXj1HhtDKV7z</string>
     <string name="error_donate">No wallet found</string>
 
     <string-array name="themes">
@@ -79,13 +79,17 @@
         <item>360</item>
         <item>1440</item>
     </string-array>
-    <string name="value_unknown">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
-    <string name="value_exchange_removed">!</string>
-    <string name="json_url">http://www.brentpanther.com/cryptowidgetcoins.json</string>
-    <string name="json_last_modified">Sat, 03 Mar 2018 02:21:45 GMT</string>
+    <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
+    <string name="value_exchange_removed" translatable="false">!</string>
+    <string name="json_last_modified">Sun, 29 Apr 2018 11:57:51 GMT</string>
+    <string name="json_url">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>
     <string name="dialog_update_message">Updating coin data…</string>
     <string name="error_no_currencies">No currencies/exchanges found for this coin!</string>
+    <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
+    <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
+    <string name="error_exchange_removed">This exchange is no longer available</string>
+    <string name="error_retrieving_value">Unable to retrieve value from exchange</string>
 
 </resources>
