@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import org.json.JSONException;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,17 +62,14 @@ public class SettingsActivity extends Activity {
     }
 
     private void populateData() {
-        ExchangeData data = null;
+        ExchangeData data;
         try {
             data = new ExchangeData(coin, getCoinJSON());
-        } catch (JSONException e) {
+        } catch (JsonSyntaxException e) {
             // if any error parsing JSON, fall back to raw resource
             Log.e(TAG, "Error parsing JSON file, falling back to original.", e);
             deleteFile(DownloadJSONService.CURRENCY_FILE_NAME);
-            try {
-                data = new ExchangeData(coin, getCoinJSON());
-            } catch (JSONException ignored) {
-            }
+            data = new ExchangeData(coin, getCoinJSON());
         }
         if (getFragmentManager().findFragmentById(android.R.id.content) == null) {
             getFragmentManager().beginTransaction()

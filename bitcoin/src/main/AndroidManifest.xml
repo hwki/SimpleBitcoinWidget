@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.brentpanther.bitcoinwidget" android:installLocation="internalOnly">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.software.app_widgets" />
     <uses-permission android:name="android.permission.WAKE_LOCK" android:maxSdkVersion="25"/>
@@ -15,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/app_theme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="n">
 
         <receiver android:name="com.brentpanther.bitcoinwidget.PriceBroadcastReceiver" />
         <receiver android:name="com.brentpanther.bitcoinwidget.WidgetProvider" android:label="@string/widget_name">

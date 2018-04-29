@@ -1,8 +1,11 @@
 package com.brentpanther.bitcoinwidget;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -33,33 +36,33 @@ class ExchangeHelper {
                     CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
             .build();
 
-    public static String getFromBitcoinCharts(String symbol) throws Exception {
-        JSONArray array = getJSONArray("http://api.bitcoincharts.com/v1/markets.json");
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-            if (!symbol.equals(obj.getString("symbol"))) continue;
-            return obj.getString("avg");
+    public static String getFromBitcoinCharts(String symbol) throws IOException {
+        JsonArray array = getJsonArray("https://api.bitcoincharts.com/v1/markets.json");
+        for (JsonElement obj : array) {
+            JsonObject o = obj.getAsJsonObject();
+            if (!symbol.equals(o.get("symbol").getAsString())) continue;
+            return o.get("avg").getAsString();
         }
         return null;
     }
 
-    static JSONObject getJSONObject(String url) throws Exception {
-        return getJSONObject(url, null);
+    static JsonObject getJsonObject(String url) throws IOException {
+        return getJsonObject(url, null);
     }
 
-    static JSONObject getJSONObject(String url, Headers headers) throws Exception {
-        return new JSONObject(getString(url, headers));
+    static JsonObject getJsonObject(String url, Headers headers) throws IOException {
+        return new Gson().fromJson(getString(url, headers), JsonObject.class);
     }
 
-    static JSONArray getJSONArray(String url) throws Exception {
-        return new JSONArray(getString(url));
+    static JsonArray getJsonArray(String url) throws IOException {
+        return new Gson().fromJson(getString(url), JsonArray.class);
     }
 
-    private static String getString(String url) throws Exception {
+    private static String getString(String url) throws IOException {
         return getString(url, null);
     }
 
-    private static String getString(String url, Headers headers) throws Exception {
+    private static String getString(String url, Headers headers) throws IOException {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
                 .readTimeout(8, TimeUnit.SECONDS)

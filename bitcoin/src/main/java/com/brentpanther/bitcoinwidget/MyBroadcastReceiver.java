@@ -11,6 +11,10 @@ class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        int restriction = NetworkStatusHelper.getRestriction(context);
+        if (restriction != 0) {
+            return;
+        }
         Intent widgetUpdateIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, WidgetProvider.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         ComponentName cm = new ComponentName(context, WidgetProvider.class);

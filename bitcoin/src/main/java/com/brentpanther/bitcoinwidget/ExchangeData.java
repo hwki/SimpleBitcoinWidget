@@ -1,8 +1,6 @@
 package com.brentpanther.bitcoinwidget;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,50 +10,87 @@ import java.util.Map;
 
 class ExchangeData {
 
-    private final Coin coin;
-    private final Map<String, List<String>> CURRENCY_TO_EXCHANGE = new HashMap<>();
-    private final JSONObject obj;
+    private static Map<String, List<String>> currencyExchange;
 
-    ExchangeData(Coin coin, String json) throws JSONException {
-        this.coin = coin;
-        this.obj = new JSONObject(json);
-        JSONArray exchanges = obj.getJSONArray("exchanges");
-        for (int i = 0; i < exchanges.length(); i++) {
-            addExchange(coin.name(), exchanges.getJSONObject(i));
-        }
-    }
+    class JsonExchangeObject {
 
-    private void addExchange(String coinName, JSONObject exchange) throws JSONException {
-        JSONArray coins = exchange.getJSONArray("coins");
-        for (int i = 0; i < coins.length(); i++) {
-            JSONObject coin = coins.getJSONObject(i);
-            if (!coin.getString("name").equals(coinName)) continue;
-            String exchangeName = exchange.getString("name");
-            JSONArray currencies = coin.getJSONArray("currencies");
-            for (int j = 0; j < currencies.length(); j++) {
-                addCurrency(exchangeName, currencies.get(j).toString());
+        List<JsonExchange> exchanges;
+
+        void loadCurrencies(String coin) {
+            for (JsonExchange exchange: exchanges) {
+                List<String> currencies = exchange.loadExchange(coin);
+                for (String currency : currencies) {
+                    if (!currencyExchange.containsKey(currency)) {
+                        currencyExchange.put(currency, new ArrayList<>());
+                    }
+                    currencyExchange.get(currency).add(exchange.name);
+                }
             }
         }
+
+        String getExchangeCoinName(String exchange, String coin) {
+            for (JsonExchange jsonExchange : exchanges) {
+                if (!jsonExchange.name.equals(exchange)) continue;
+                if (jsonExchange.coin_overrides != null) {
+                    return jsonExchange.coin_overrides.get(coin);
+                }
+            }
+            return null;
+        }
+
+        String getExchangeCurrencyName(String exchange, String currency) {
+            for (JsonExchange jsonExchange : exchanges) {
+                if (!jsonExchange.name.equals(exchange)) continue;
+                if (jsonExchange.currency_overrides != null) {
+                    return jsonExchange.currency_overrides.get(currency);
+                }
+            }
+            return null;
+        }
     }
 
-    private void addCurrency(String exchangeName, String currency) {
-        if (!CURRENCY_TO_EXCHANGE.containsKey(currency)) {
-            CURRENCY_TO_EXCHANGE.put(currency, new ArrayList<>());
+    class JsonExchange {
+
+        String name;
+        List<JsonCoin> coins;
+        Map<String, String> currency_overrides;
+        Map<String, String> coin_overrides;
+
+        public List<String> loadExchange(String coin) {
+            for (JsonCoin jsonCoin : coins) {
+                if (!jsonCoin.name.equals(coin)) continue;
+                return jsonCoin.currencies;
+            }
+            return new ArrayList<>();
         }
-        CURRENCY_TO_EXCHANGE.get(currency).add(exchangeName);
+    }
+
+    class JsonCoin {
+        String name;
+        List<String> currencies;
+    }
+
+    private final Coin coin;
+    private final JsonExchangeObject obj;
+
+    ExchangeData(Coin coin, String json) {
+        this.coin = coin;
+        this.obj = new Gson().fromJson(json, JsonExchangeObject.class);
+        currencyExchange = new HashMap<>();
+        this.obj.loadCurrencies(coin.name());
     }
 
     String[] getCurrencies() {
         // only return currencies that we know about
         List<String> currencyNames = Currency.getAllCurrencyNames();
-        currencyNames.retainAll(CURRENCY_TO_EXCHANGE.keySet());
+        currencyNames.retainAll(currencyExchange.keySet());
         return currencyNames.toArray(new String[]{});
     }
 
     String[] getExchanges(String currency) {
         // only return exchanges that we know about
         List<String> exchangeNames = Exchange.getAllExchangeNames();
-        List<String> exchanges = CURRENCY_TO_EXCHANGE.get(currency);
+        List<String> exchanges = currencyExchange.get(currency);
         if (exchanges == null) return new String[] {};
         exchangeNames.retainAll(exchanges);
         return exchangeNames.toArray(new String[]{});
@@ -66,40 +101,24 @@ class ExchangeData {
     }
 
     String getDefaultCurrency() {
-        if (CURRENCY_TO_EXCHANGE.containsKey("USD")) return "USD";
-        if (CURRENCY_TO_EXCHANGE.containsKey("EUR")) return "EUR";
-        if (CURRENCY_TO_EXCHANGE.isEmpty()) return null;
-        return CURRENCY_TO_EXCHANGE.keySet().iterator().next();
+        if (currencyExchange.containsKey("USD")) return "USD";
+        if (currencyExchange.containsKey("EUR")) return "EUR";
+        if (currencyExchange.isEmpty()) return null;
+        return currencyExchange.keySet().iterator().next();
     }
 
     String getDefaultExchange(String currency) {
-        List<String> exchanges = CURRENCY_TO_EXCHANGE.get(currency);
+        List<String> exchanges = currencyExchange.get(currency);
         if (exchanges.contains(Exchange.COINBASE.name())) return Exchange.COINBASE.name();
         return exchanges.get(0);
     }
 
     String getExchangeCoinName(String exchange, String coin) {
-        return getExchangeName(exchange, "coin_overrides", coin);
+        return obj.getExchangeCoinName(exchange, coin);
     }
 
     String getExchangeCurrencyName(String exchange, String currency) {
-        return getExchangeName(exchange, "currency_overrides", currency);
-    }
-
-    private String getExchangeName(String exchange, String objectName, String value) {
-        try {
-            JSONArray exchanges = obj.getJSONArray("exchanges");
-            for (int i = 0; i < exchanges.length(); i++) {
-                JSONObject exchangeJSON = exchanges.getJSONObject(i);
-                String name = exchangeJSON.getString("name");
-                if (!name.equals(exchange)) continue;
-
-                JSONObject currencyOverrides = exchangeJSON.getJSONObject(objectName);
-                return currencyOverrides.getString(value);
-            }
-        } catch (JSONException ignored) {
-        }
-        return null;
+        return obj.getExchangeCurrencyName(exchange, currency);
     }
 
 }
