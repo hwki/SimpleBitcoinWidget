@@ -5,7 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Headers;
 
@@ -259,9 +261,27 @@ enum Exchange {
     COINMARKETCAP("CoinMarketCap") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
-            String url = String.format("https://api.coinmarketcap.com/v1/ticker/%s/?convert=%s", coin, currency);
-            String field = String.format("price_%s", currency).toLowerCase();
-            return getJsonArray(url).get(0).getAsJsonObject().get(field).getAsString();
+            // hard coded ids of each coin :(
+            Map<String, Integer> map = new HashMap<String, Integer>() {{
+                put("BTC", 1);
+                put("ETH", 1027);
+                put("XRP", 52);
+                put("BCH", 1831);
+                put("LTC", 2);
+                put("NEO", 1376);
+                put("ADA", 2010);
+                put("XLM", 512);
+                put("MIOTA", 1720);
+                put("DASH", 131);
+                put("XMR", 328);
+                put("XEM", 873);
+                put("NANO", 1567);
+                put("BTG", 2083);
+            }};
+            int id = map.get(coin);
+            String url = String.format("https://api.coinmarketcap.com/v2/ticker/%s/?convert=%s", id, currency);
+            JsonObject quotes = getJsonObject(url).getAsJsonObject("data").getAsJsonObject("quotes");
+            return quotes.getAsJsonObject(currency).get("price").getAsString();
         }
     },
     COINMATE("CoinMate.io") {
