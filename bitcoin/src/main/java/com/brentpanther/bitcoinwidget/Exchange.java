@@ -424,7 +424,7 @@ enum Exchange {
         @Override
         public String getValue(String coin, String currency) throws Exception {
             String url = "https://koinex.in/api/ticker";
-            return getJsonObject(url).getAsJsonObject("prices").getAsJsonObject(coin.toLowerCase()).get(coin).getAsString();
+            return getJsonObject(url).getAsJsonObject("prices").getAsJsonObject(currency.toLowerCase()).get(coin).getAsString();
         }
     },
     KORBIT("Korbit") {

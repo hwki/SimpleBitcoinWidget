@@ -1,6 +1,5 @@
 package com.brentpanther.bitcoinwidget;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -12,17 +11,16 @@ import java.util.Set;
 
 public class ExchangeTest {
 
-    private InputStream json;
-
-    @Before
-    public void loadJSON() {
-        json = this.getClass().getClassLoader().getResourceAsStream("raw/cryptowidgetcoins.json");
+    private InputStream loadJSON() {
+        return this.getClass().getClassLoader().getResourceAsStream("raw/cryptowidgetcoins.json");
     }
 
     @Test
     public void removedCoins() throws Exception {
-        for (Coin coin : Coin.values()) {
-            ExchangeData data = new ExchangeData(coin, json);
+        EnumSet<Coin> coins = EnumSet.allOf(Coin.class);
+        for (Coin coin : coins) {
+            System.out.println("trying coin: " + coin.name());
+            ExchangeData data = new ExchangeData(coin, loadJSON());
             for (String currency : data.getCurrencies()) {
                 for (String exchange : data.getExchanges(currency)) {
                     try {
@@ -53,7 +51,7 @@ public class ExchangeTest {
         exchangeSet.removeAll(skip);
 
         for (Coin coin : Coin.values()) {
-            ExchangeData data = new ExchangeData(coin, json);
+            ExchangeData data = new ExchangeData(coin, loadJSON());
             Set<String> currencies = new HashSet<>(Arrays.asList(data.getCurrencies()));
             for (Currency currency : Currency.values()) {
                 Set<String> exchanges = new HashSet<>(Arrays.asList(data.getExchanges(currency.name())));
