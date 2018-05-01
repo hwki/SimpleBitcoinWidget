@@ -20,6 +20,7 @@ class DataMigration {
 
     private static final String EXCHANGE_OVERRIDE_MIGRATION = "exchange_override";
     private static final String QUOINE_MIGRATION = "quoine";
+    private static final String COINMARKETCAP_MIGRATION = "coinmarketcap";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -33,7 +34,30 @@ class DataMigration {
             migrateQuoine();
             prefs.edit().putBoolean(QUOINE_MIGRATION, true).apply();
         }
+        boolean hasCoinMarketCapMigration = prefs.getBoolean(COINMARKETCAP_MIGRATION, false);
+        if (!hasCoinMarketCapMigration) {
+            migrateCoinMarketCapV2();
+            prefs.edit().putBoolean(COINMARKETCAP_MIGRATION, true).apply();
+        }
     }
+
+    // coinmarketcap changed their API a lot
+    private static void migrateCoinMarketCapV2() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            String exchange = prefs.getValue("exchange");
+            if ("COINMARKETCAP".equals(exchange)) {
+                String exchangeCoinName = prefs.getExchangeCoinName();
+                if ("iota".equals(exchangeCoinName)) {
+                    prefs.setValue("coin_custom", "MIOTA");
+                } else {
+                    prefs.setValue("coin_custom", prefs.getCoin().name());
+                }
+            }
+        }
+    }
+
 
     // spelled quoine wrong, so migrate users who have the prior bad spelling
     private static void migrateQuoine() {
