@@ -11,9 +11,9 @@ import android.os.PowerManager;
 public class NetworkStatusHelper {
 
     public static int getRestriction(Context context) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            if (powerManager.isPowerSaveMode()) {
+            if (powerManager.isPowerSaveMode() && !powerManager.isIgnoringBatteryOptimizations(context.getPackageName())) {
                 return R.string.error_restricted_battery_saver;
             }
         }
