@@ -54,6 +54,10 @@
                 android:lines="1"
                 android:textColor="#fff"
                 android:textIsSelectable="false"
+                android:shadowColor="#000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="0.5"
                 android:typeface="sans"
                 android:visibility="invisible" />
 
@@ -67,6 +71,10 @@
                 android:gravity="center"
                 android:lines="1"
                 android:textColor="#fff"
+                android:shadowColor="#000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
                 android:textIsSelectable="false"
                 android:typeface="sans"
                 android:visibility="gone" />

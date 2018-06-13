@@ -19,4 +19,4 @@ This software has an MIT License. All forks of this codebase have my authorizati
 
 ## Donations
 
-Donation can be made by Bitcoin to 15SHnY7HC5bTxzErHDPe7wHXj1HhtDKV7z
+Donation can be made by Bitcoin to 194QqhXirp21F5fJVaqviMeHkzZzkZKyi8

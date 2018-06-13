@@ -102,6 +102,14 @@ enum Exchange {
             return String.valueOf((buy + sell) / 2);
         }
     },
+    BITLISH("Bitlish") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = "https://bitlish.com/api/v1/tickers";
+            String pair = String.format("%s%s", coin, currency).toLowerCase();
+            return getJsonObject(url).getAsJsonObject(pair).get("last").getAsString();
+        }
+    },
     BITMARKET24("BitMarket24") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -277,6 +285,8 @@ enum Exchange {
                 put("XEM", 873);
                 put("NANO", 1567);
                 put("BTG", 2083);
+                put("ETC", 1321);
+                put("ZEC", 1437);
             }};
             int id = map.get(coin);
             String url = String.format("https://api.coinmarketcap.com/v2/ticker/%s/?convert=%s", id, currency);
@@ -587,15 +597,6 @@ enum Exchange {
             return getJsonObject(url).get("last_traded_price").getAsString();
         }
     },
-    SIMPLECOINCZ("Simplecoin.cz") {
-        @Override
-		public String getValue(String coin, String currency) throws Exception {
-            JsonObject obj = getJsonObject("https://www.simplecoin.cz/ticker/");
-            String bid = obj.get("offer").getAsString();
-            String ask = obj.get("ask").getAsString();
-            return Double.toString((Double.valueOf(bid) + Double.valueOf(ask)) / 2);
-        }
-    },
     SURBITCOIN("SurBitcoin") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -607,6 +608,14 @@ enum Exchange {
         public String getValue(String coin, String currency) throws Exception {
             String url = String.format("https://api.therocktrading.com/v1/funds/%s%s/ticker", coin, currency);
             return getJsonObject(url).get("last").getAsString();
+        }
+    },
+    TRADESATOSHI("Trade Satoshi") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s_%s", coin, currency);
+            String url = String.format("https://tradesatoshi.com/api/public/getticker?market=%s", pair);
+            return getJsonObject(url).getAsJsonObject("result").get("last").getAsString();
         }
     },
     UPHOLD("Uphold") {

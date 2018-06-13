@@ -47,7 +47,7 @@ public class DownloadJSONService extends IntentService {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
                 .followSslRedirects(true)
-                .readTimeout(8, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
