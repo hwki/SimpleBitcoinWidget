@@ -3,6 +3,8 @@ package com.brentpanther.bitcoinwidget;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,9 +15,15 @@ public class CoinSelectionView extends LinearLayout {
     private Coin coin;
     private CoinSelectedListener listener;
 
-    public CoinSelectionView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public CoinSelectionView(Context context) {
+        super(context);
         inflate(context, R.layout.view_coin_selector, this);
+        int height = (int)getResources().getDimension(R.dimen.coin_selection_height);
+        MarginLayoutParams layoutParams = new MarginLayoutParams(LayoutParams.MATCH_PARENT, height);
+        int verticalMargin = (int) getResources().getDimension(R.dimen.vertical_margin);
+        int horizontalMargin = (int) getResources().getDimension(R.dimen.horizontal_margin);
+        layoutParams.setMargins(horizontalMargin, verticalMargin, horizontalMargin, verticalMargin);
+        setLayoutParams(layoutParams);
         setOnClickListener(v -> listener.selected(coin));
         setBackgroundResource(R.drawable.bg_rounded);
     }

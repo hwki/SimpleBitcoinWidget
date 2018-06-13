@@ -3,10 +3,7 @@ package com.brentpanther.bitcoinwidget;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class ExchangeTest {
@@ -34,43 +31,6 @@ public class ExchangeTest {
                         System.out.println(String.format("Failure: %s %s %s", coin.name(), exchange, currency));
                     }
                     Thread.sleep(100);
-                }
-            }
-        }
-    }
-
-    @Test
-    public void allCoins() throws Exception {
-        // some exchanges don't use coin/currency parameters, so skip them
-        EnumSet<Exchange> skip = EnumSet.of(Exchange.BIT2C, Exchange.BITCOINDE, Exchange.BITHUMB, Exchange.BITPAY, Exchange.BTCBOX,
-                Exchange.BTCTURK, Exchange.CAMPBX, Exchange.COINDESK, Exchange.COINNEST, Exchange.COINMARKETCAP,
-                Exchange.COINONE, Exchange.COINSECURE, Exchange.KOINEX, Exchange.MERCADO,
-                Exchange.PAYMIUM, Exchange.SIMPLECOINCZ, Exchange.ZYADO, Exchange.CHILEBIT, Exchange.FOXBIT,
-                Exchange.SURBITCOIN, Exchange.URDUBIT, Exchange.VBTC, Exchange.COINMARKETCAP);
-        EnumSet<Exchange> exchangeSet = EnumSet.allOf(Exchange.class);
-        exchangeSet.removeAll(skip);
-
-        for (Coin coin : Coin.values()) {
-            ExchangeData data = new ExchangeData(coin, loadJSON());
-            Set<String> currencies = new HashSet<>(Arrays.asList(data.getCurrencies()));
-            for (Currency currency : Currency.values()) {
-                Set<String> exchanges = new HashSet<>(Arrays.asList(data.getExchanges(currency.name())));
-                for (Exchange exchange : exchangeSet) {
-                    if (exchange == Exchange.ZEBPAY && currency != Currency.INR) continue;
-                    boolean exists = exchanges.contains(exchange.name());
-                    String coinName = data.getExchangeCoinName(exchange.name(), coin.name());
-                    String currencyName = data.getExchangeCurrencyName(exchange.name(), currency.name());
-                    if (coinName == null) coinName = coin.name();
-                    if (currencyName == null) currencyName = currency.name();
-                    try {
-                        String value = exchange.getValue(coinName, currencyName);
-                        Double valueDouble = Double.valueOf(value);
-                        if (valueDouble == 0) throw new ArithmeticException();
-                        if (!exists) System.out.println(String.format("ADDED: %s %s %s", coin.name(), exchange, currency));
-                    } catch (Exception e) {
-                        if (exists) System.out.println(String.format("REMOVED: %s %s %s", coin.name(), exchange, currency));
-                    }
-                    Thread.sleep(10);
                 }
             }
         }

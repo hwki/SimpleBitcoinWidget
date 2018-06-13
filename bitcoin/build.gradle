@@ -7,8 +7,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 174
-        versionName "6.4.4"
+        versionCode 180
+        versionName "6.5.0"
     }
 
     buildTypes {
@@ -36,9 +36,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     testImplementation 'junit:junit:4.12'
     implementation 'com.google.code.gson:gson:2.8.2'
+
 }

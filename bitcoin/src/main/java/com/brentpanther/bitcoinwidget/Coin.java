@@ -113,6 +113,18 @@ public enum Coin {
         public int[] getDrawables() {
             return new int[] {R.drawable.ic_btg, R.drawable.ic_btg_bw, R.drawable.ic_btg, R.drawable.ic_btg_bw};
         }
+    },
+    ETC("Ethereum Classic", R.drawable.ic_etc) {
+        @Override
+        public int[] getDrawables() {
+            return new int[] {R.drawable.ic_etc, R.drawable.ic_etc_bw, R.drawable.ic_etc, R.drawable.ic_etc_bw};
+        }
+    },
+    ZEC("Zcash", R.drawable.ic_zec) {
+        @Override
+        public int[] getDrawables() {
+            return new int[]{R.drawable.ic_zec, R.drawable.ic_zec_bw, R.drawable.ic_zec, R.drawable.ic_zec_bw};
+        }
     };
 
     private final String name;
