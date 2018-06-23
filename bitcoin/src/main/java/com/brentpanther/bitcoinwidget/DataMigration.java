@@ -21,6 +21,7 @@ class DataMigration {
     private static final String EXCHANGE_OVERRIDE_MIGRATION = "exchange_override";
     private static final String QUOINE_MIGRATION = "quoine";
     private static final String COINMARKETCAP_MIGRATION = "coinmarketcap";
+    private static final String BITTREX_TO_BCH = "bittrex_to_bch";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -38,6 +39,27 @@ class DataMigration {
         if (!hasCoinMarketCapMigration) {
             migrateCoinMarketCapV2();
             prefs.edit().putBoolean(COINMARKETCAP_MIGRATION, true).apply();
+        }
+        boolean hasBittrexBCHMigration = prefs.getBoolean(BITTREX_TO_BCH, false);
+        if (!hasBittrexBCHMigration) {
+            migrateBittrexBCH();
+            prefs.edit().putBoolean(BITTREX_TO_BCH, true).apply();
+        }
+    }
+
+    // bittrex changed from using BCC to BCH
+    private static void migrateBittrexBCH() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            String exchange = prefs.getValue("exchange");
+            if ("BITTREX".equals(exchange)) {
+                Coin coin = prefs.getCoin();
+                String exchangeCoinName = prefs.getExchangeCoinName();
+                if ("BCC".equals(exchangeCoinName)) {
+                    prefs.setValue("coin_custom", "BCH");
+                }
+            }
         }
     }
 
