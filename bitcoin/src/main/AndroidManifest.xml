@@ -20,8 +20,8 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
 
-        <receiver android:name="com.brentpanther.bitcoinwidget.PriceBroadcastReceiver" />
-        <receiver android:name="com.brentpanther.bitcoinwidget.WidgetProvider" android:label="@string/widget_name">
+        <receiver android:name=".PriceBroadcastReceiver" />
+        <receiver android:name=".WidgetProvider" android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -30,13 +30,18 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
         </receiver>
+        <receiver android:name=".UpgradeBroadcastReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
-        <service android:name="com.brentpanther.bitcoinwidget.UpdatePriceService"
+        <service android:name=".UpdatePriceService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <service android:name="com.brentpanther.bitcoinwidget.DownloadJSONService" />
+        <service android:name=".DownloadJSONService" />
 
         <activity
-            android:name="com.brentpanther.bitcoinwidget.CoinSelectionActivity">
+            android:name=".CoinSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

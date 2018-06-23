@@ -73,7 +73,7 @@ enum Exchange {
         public String getValue(String code, String currency) throws Exception {
             JsonObject obj = getJsonObject("https://bitcoinapi.de/widget/current-btc-price/rate.json");
             String price = obj.get("price_eur").getAsString();
-            String[] amount = price.split("\\s");
+            String[] amount = price.split("\\u00A0");
             return amount[0].replaceAll("\\.", "").replaceAll(",", ".");
         }
     },
@@ -90,6 +90,23 @@ enum Exchange {
         public String getValue(String coin, String currency) throws Exception {
             String url = String.format("https://api.bitflyer.jp/v1/ticker?product_code=%s_%s", coin, currency);
             return getJsonObject(url).get("ltp").getAsString();
+        }
+    },
+    BITFLIP("BitFlip") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s:%s", coin, currency);
+            String url = "https://api.bitflip.cc/method/market.getRates";
+            JsonArray arr = getJsonArray(url);
+            JsonArray pairs = arr.get(arr.size() - 1).getAsJsonArray();
+            for (JsonElement p : pairs) {
+                JsonObject obj = p.getAsJsonObject();
+                if (pair.equals(obj.get("pair").getAsString())) {
+                    double total = obj.get("buy").getAsDouble() + obj.get("sell").getAsDouble();
+                    return Double.toString(total / 2);
+                }
+            }
+            return null;
         }
     },
     BITHUMB("Bithumb") {
