@@ -22,6 +22,7 @@ class DataMigration {
     private static final String QUOINE_MIGRATION = "quoine";
     private static final String COINMARKETCAP_MIGRATION = "coinmarketcap";
     private static final String BITTREX_TO_BCH = "bittrex_to_bch";
+    private static final String GDAX = "gdax_to_coinbasepro";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -44,6 +45,22 @@ class DataMigration {
         if (!hasBittrexBCHMigration) {
             migrateBittrexBCH();
             prefs.edit().putBoolean(BITTREX_TO_BCH, true).apply();
+        }
+        boolean hasGDAXMigration = prefs.getBoolean(GDAX, false);
+        if (!hasGDAXMigration) {
+            migrateGDAX();
+            prefs.edit().putBoolean(GDAX, true).apply();
+        }
+    }
+
+    private static void migrateGDAX() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            String exchange = prefs.getValue("exchange");
+            if ("GDAX".equals(exchange)) {
+                prefs.setValue("exchange", "COINBASEPRO");
+            }
         }
     }
 

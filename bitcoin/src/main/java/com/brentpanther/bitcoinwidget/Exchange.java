@@ -245,6 +245,13 @@ enum Exchange {
             return obj.getAsJsonObject("data").get("amount").getAsString();
         }
     },
+    COINBASEPRO("Coinbase Pro") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://api.pro.coinbase.com/products/%s-%s/ticker", coin, currency);
+            return getJsonObject(url).get("price").getAsString();
+        }
+    },
     COINBE("Coinbe") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -416,13 +423,6 @@ enum Exchange {
             String pair = String.format("%s_%s", coin, currency).toLowerCase();
             String url = String.format("https://data.gate.io/api2/1/ticker/%s", pair);
             return getJsonObject(url).get("last").getAsString();
-        }
-    },
-    GDAX("GDAX") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            String url = String.format("https://api.gdax.com/products/%s-%s/ticker", coin, currency);
-            return getJsonObject(url).get("price").getAsString();
         }
     },
     GEMINI("Gemini") {
