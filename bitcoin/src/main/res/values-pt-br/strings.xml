@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">Simple Bitcoin Widget</string>
+    <string name="widget_name">Simple Widget</string>
+    <string name="new_widget">New %s Widget</string>
+    <string name="default_theme">Light</string>
+
+    <string name="key_other" translatable="false">other</string>
+    <string name="key_style" translatable="false">style</string>
+    <string name="key_data" translatable="false">data</string>
+    <string name="key_refresh_interval" translatable="false">refresh_interval</string>
+    <string name="key_currency" translatable="false">currency</string>
+    <string name="key_exchange" translatable="false">exchange</string>
+    <string name="key_units" translatable="false">units</string>
+    <string name="key_icon" translatable="false">icon</string>
+    <string name="key_decimals" translatable="false">decimals</string>
+    <string name="key_label" translatable="false">label</string>
+    <string name="key_theme" translatable="false">theme</string>
+    <string name="key_rate" translatable="false">rate</string>
+    <string name="key_donate" translatable="false">donate</string>
+    <string name="key_prefs" translatable="false">bitcoinwidget</string>
+    <string name="key_fixed_size" translatable="false">fixed_size</string>
+
+    <string name="title_fixed_size">Fixed Text Size</string>
+    <string name="title_data">Data</string>
+    <string name="title_style">Style</string>
+    <string name="title_other">Other</string>
+    <string name="title_refresh_interval">Refresh Interval</string>
+    <string name="title_currency">Currency</string>
+    <string name="title_exchange">Exchange</string>
+    <string name="title_label">Show exchange label</string>
+    <string name="title_theme">Theme</string>
+    <string name="title_rate">Rate</string>
+    <string name="title_icon">Show %s icon</string>
+    <string name="title_decimals">Show decimals</string>
+    <string name="title_units">Denomination</string>
+    <string name="title_donate">Support the Developer</string>
+
+    <string name="summary_donate">Donate Bitcoin</string>
+    <string name="summary_fixed_size">Keep text size consistent across all widgets (global setting)</string>
+    <plurals name="summary_refresh_interval_minute">
+        <item quantity="one">Every minute</item>
+        <item quantity="other">Every %d minutes</item>
+    </plurals>
+    <plurals name="summary_refresh_interval_hour">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <string name="summary_currency">Use %s as currency</string>
+    <string name="summary_exchange">Get data from %s</string>
+    <string name="summary_rate">Rate on Google Play</string>
+    <string name="summary_units">Show in %s</string>
+
+    <string name="btc_address" translatable="false">bitcoin:194QqhXirp21F5fJVaqviMeHkzZzkZKyi8</string>
+    <string name="error_donate">No wallet found</string>
+
+    <string-array name="themes">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Transparent</item>
+        <item>Transparent Dark</item>
+    </string-array>
+    <string-array name="intervals">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>6 hours</item>
+        <item>24 hours</item>
+    </string-array>
+    <string-array name="intervalValues">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>360</item>
+        <item>1440</item>
+    </string-array>
+    <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
+    <string name="value_exchange_removed" translatable="false">!</string>
+    <string name="json_last_modified">Tue, 1 May 2018 22:44:17 GMT</string>
+    <string name="json_url">https://www.brentpanther.com/cryptowidgetcoins.json</string>
+
+    <string name="dialog_update_title">Updating</string>
+    <string name="dialog_update_message">Updating coin data…</string>
+    <string name="error_no_currencies">No currencies/exchanges found for this coin!</string>
+    <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
+    <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
+    <string name="error_exchange_removed">This exchange is no longer available</string>
+    <string name="error_retrieving_value">Unable to retrieve value from exchange</string>
+
+</resources>
