@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Simple Bitcoin Widget</string>
-    <string name="widget_name">Simple Widget</string>
-    <string name="new_widget">New %s Widget</string>
-    <string name="default_theme">Light</string>
+    <string name="widget_name">Widget Simples</string>
+    <string name="new_widget">Novo %s Widget</string>
+    <string name="default_theme">Tema Claro</string>
 
     <string name="key_other" translatable="false">other</string>
     <string name="key_style" translatable="false">style</string>
@@ -20,54 +20,54 @@
     <string name="key_prefs" translatable="false">bitcoinwidget</string>
     <string name="key_fixed_size" translatable="false">fixed_size</string>
 
-    <string name="title_fixed_size">Fixed Text Size</string>
+    <string name="title_fixed_size">Tamanho De Texto Fixo</string>
     <string name="title_data">Data</string>
-    <string name="title_style">Style</string>
-    <string name="title_other">Other</string>
-    <string name="title_refresh_interval">Refresh Interval</string>
-    <string name="title_currency">Currency</string>
+    <string name="title_style">Estilo</string>
+    <string name="title_other">Outros</string>
+    <string name="title_refresh_interval">Atualizar Intervalo</string>
+    <string name="title_currency">Moeda</string>
     <string name="title_exchange">Exchange</string>
-    <string name="title_label">Show exchange label</string>
-    <string name="title_theme">Theme</string>
-    <string name="title_rate">Rate</string>
-    <string name="title_icon">Show %s icon</string>
-    <string name="title_decimals">Show decimals</string>
-    <string name="title_units">Denomination</string>
-    <string name="title_donate">Support the Developer</string>
+    <string name="title_label">Mostar marcador de exchange</string>
+    <string name="title_theme">Tema</string>
+    <string name="title_rate">Nota</string>
+    <string name="title_icon">Mostrar %s ícone</string>
+    <string name="title_decimals">Mostrar Decimais</string>
+    <string name="title_units">Denominação</string>
+    <string name="title_donate">Apoie O Desenvolvedor</string>
 
-    <string name="summary_donate">Donate Bitcoin</string>
-    <string name="summary_fixed_size">Keep text size consistent across all widgets (global setting)</string>
+    <string name="summary_donate">Doar Bitcoin</string>
+    <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
     <plurals name="summary_refresh_interval_minute">
-        <item quantity="one">Every minute</item>
-        <item quantity="other">Every %d minutes</item>
+        <item quantity="one">Todo minuto</item>
+        <item quantity="other">A cada %d minutos</item>
     </plurals>
     <plurals name="summary_refresh_interval_hour">
-        <item quantity="one">Every hour</item>
-        <item quantity="other">Every %d hours</item>
+        <item quantity="one">Toda hora</item>
+        <item quantity="other">A cada %d horas</item>
     </plurals>
-    <string name="summary_currency">Use %s as currency</string>
-    <string name="summary_exchange">Get data from %s</string>
-    <string name="summary_rate">Rate on Google Play</string>
-    <string name="summary_units">Show in %s</string>
+    <string name="summary_currency">Usar %s como moeda</string>
+    <string name="summary_exchange">Pegar data de %s</string>
+    <string name="summary_rate">Avalie na Google Play</string>
+    <string name="summary_units">Mostrar em %s</string>
 
     <string name="btc_address" translatable="false">bitcoin:194QqhXirp21F5fJVaqviMeHkzZzkZKyi8</string>
-    <string name="error_donate">No wallet found</string>
+    <string name="error_donate">Endereço bitcoin não encontrado</string>
 
     <string-array name="themes">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>Transparent</item>
-        <item>Transparent Dark</item>
+        <item>Tema Claro</item>
+        <item>Tema Escuro</item>
+        <item>Transparente</item>
+        <item>Transparente Escuro</item>
     </string-array>
     <string-array name="intervals">
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>20 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>6 hours</item>
-        <item>24 hours</item>
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>20 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+        <item>2 horas</item>
+        <item>6 horas</item>
+        <item>24 horas</item>
     </string-array>
     <string-array name="intervalValues">
         <item>5</item>
@@ -84,12 +84,12 @@
     <string name="json_last_modified">Tue, 1 May 2018 22:44:17 GMT</string>
     <string name="json_url">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
-    <string name="dialog_update_title">Updating</string>
-    <string name="dialog_update_message">Updating coin data…</string>
-    <string name="error_no_currencies">No currencies/exchanges found for this coin!</string>
-    <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
-    <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
-    <string name="error_exchange_removed">This exchange is no longer available</string>
-    <string name="error_retrieving_value">Unable to retrieve value from exchange</string>
+    <string name="dialog_update_title">Atualizando</string>
+    <string name="dialog_update_message">Atualizando dados da moeda…</string>
+    <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
+    <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
+    <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
+    <string name="error_exchange_removed">Essa exchange não está mais disponível</string>
+    <string name="error_retrieving_value">Não foi possível exibir o valor dessa exchange</string>
 
 </resources>
