@@ -1,24 +1,7 @@
 <resources>
-    <string name="app_name">Simple Bitcoin Widget</string>
     <string name="widget_name">Widget Simples</string>
     <string name="new_widget">Novo %s Widget</string>
     <string name="default_theme">Tema Claro</string>
-
-    <string name="key_other" translatable="false">other</string>
-    <string name="key_style" translatable="false">style</string>
-    <string name="key_data" translatable="false">data</string>
-    <string name="key_refresh_interval" translatable="false">refresh_interval</string>
-    <string name="key_currency" translatable="false">currency</string>
-    <string name="key_exchange" translatable="false">exchange</string>
-    <string name="key_units" translatable="false">units</string>
-    <string name="key_icon" translatable="false">icon</string>
-    <string name="key_decimals" translatable="false">decimals</string>
-    <string name="key_label" translatable="false">label</string>
-    <string name="key_theme" translatable="false">theme</string>
-    <string name="key_rate" translatable="false">rate</string>
-    <string name="key_donate" translatable="false">donate</string>
-    <string name="key_prefs" translatable="false">bitcoinwidget</string>
-    <string name="key_fixed_size" translatable="false">fixed_size</string>
 
     <string name="title_fixed_size">Tamanho De Texto Fixo</string>
     <string name="title_data">Data</string>
@@ -50,7 +33,6 @@
     <string name="summary_rate">Avalie na Google Play</string>
     <string name="summary_units">Mostrar em %s</string>
 
-    <string name="btc_address" translatable="false">bitcoin:194QqhXirp21F5fJVaqviMeHkzZzkZKyi8</string>
     <string name="error_donate">Endereço bitcoin não encontrado</string>
 
     <string-array name="themes">
@@ -79,10 +61,6 @@
         <item>360</item>
         <item>1440</item>
     </string-array>
-    <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
-    <string name="value_exchange_removed" translatable="false">!</string>
-    <string name="json_last_modified">Tue, 1 May 2018 22:44:17 GMT</string>
-    <string name="json_url">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Atualizando</string>
     <string name="dialog_update_message">Atualizando dados da moeda…</string>
