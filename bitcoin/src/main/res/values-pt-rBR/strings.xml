@@ -1,0 +1,73 @@
+<resources>
+    <string name="widget_name">Widget Simples</string>
+    <string name="new_widget">Novo %s Widget</string>
+    <string name="default_theme">Tema Claro</string>
+
+    <string name="title_fixed_size">Tamanho De Texto Fixo</string>
+    <string name="title_data">Data</string>
+    <string name="title_style">Estilo</string>
+    <string name="title_other">Outros</string>
+    <string name="title_refresh_interval">Atualizar Intervalo</string>
+    <string name="title_currency">Moeda</string>
+    <string name="title_exchange">Exchange</string>
+    <string name="title_label">Mostar marcador de exchange</string>
+    <string name="title_theme">Tema</string>
+    <string name="title_rate">Nota</string>
+    <string name="title_icon">Mostrar %s ícone</string>
+    <string name="title_decimals">Mostrar Decimais</string>
+    <string name="title_units">Denominação</string>
+    <string name="title_donate">Apoie O Desenvolvedor</string>
+
+    <string name="summary_donate">Doar Bitcoin</string>
+    <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
+    <plurals name="summary_refresh_interval_minute">
+        <item quantity="one">Todo minuto</item>
+        <item quantity="other">A cada %d minutos</item>
+    </plurals>
+    <plurals name="summary_refresh_interval_hour">
+        <item quantity="one">Toda hora</item>
+        <item quantity="other">A cada %d horas</item>
+    </plurals>
+    <string name="summary_currency">Usar %s como moeda</string>
+    <string name="summary_exchange">Pegar data de %s</string>
+    <string name="summary_rate">Avalie na Google Play</string>
+    <string name="summary_units">Mostrar em %s</string>
+
+    <string name="error_donate">Endereço bitcoin não encontrado</string>
+
+    <string-array name="themes">
+        <item>Tema Claro</item>
+        <item>Tema Escuro</item>
+        <item>Transparente</item>
+        <item>Transparente Escuro</item>
+    </string-array>
+    <string-array name="intervals">
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>20 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+        <item>2 horas</item>
+        <item>6 horas</item>
+        <item>24 horas</item>
+    </string-array>
+    <string-array name="intervalValues">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>360</item>
+        <item>1440</item>
+    </string-array>
+
+    <string name="dialog_update_title">Atualizando</string>
+    <string name="dialog_update_message">Atualizando dados da moeda…</string>
+    <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
+    <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
+    <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
+    <string name="error_exchange_removed">Essa exchange não está mais disponível</string>
+    <string name="error_retrieving_value">Não foi possível exibir o valor dessa exchange</string>
+
+</resources>
