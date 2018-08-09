@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simple Bitcoin Widget</string>
+    <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
     <string name="widget_name">Simple Widget</string>
     <string name="new_widget">New %s Widget</string>
     <string name="default_theme">Light</string>
@@ -81,8 +81,8 @@
     </string-array>
     <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
     <string name="value_exchange_removed" translatable="false">!</string>
-    <string name="json_last_modified">Tue, 1 May 2018 22:44:17 GMT</string>
-    <string name="json_url">https://www.brentpanther.com/cryptowidgetcoins.json</string>
+    <string name="json_last_modified" translatable="false">Tue, 1 May 2018 22:44:17 GMT</string>
+    <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>
     <string name="dialog_update_message">Updating coin data…</string>
