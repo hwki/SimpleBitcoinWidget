@@ -65,6 +65,7 @@ class ExchangeHelper {
     private static String getString(String url, Headers headers) throws IOException {
         OkHttpClient client = new OkHttpClient.Builder()
                 .followRedirects(true)
+                .followSslRedirects(true)
                 .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(Arrays.asList(SPEC, ConnectionSpec.CLEARTEXT))
