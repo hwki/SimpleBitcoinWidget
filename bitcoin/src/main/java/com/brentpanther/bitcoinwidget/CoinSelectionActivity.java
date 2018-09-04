@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CoinSelectionActivity extends Activity {
 
@@ -18,7 +19,7 @@ public class CoinSelectionActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         RecyclerView coinList = findViewById(R.id.coin_list);
-        coinList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        coinList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         coinList.setAdapter(new CoinSelectionAdapter(this::selected));
         startService(new Intent(CoinSelectionActivity.this, DownloadJSONService.class));
     }

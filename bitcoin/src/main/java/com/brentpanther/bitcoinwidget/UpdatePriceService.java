@@ -4,9 +4,11 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
 import android.widget.RemoteViews;
+
+
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import static android.app.PendingIntent.FLAG_CANCEL_CURRENT;
 

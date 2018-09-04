@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.customview:customview-1.0.0-rc02">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/customview-1.0.0-rc02.aar/ed7e3362c7b9ba7c6323f6b528f547e8/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/customview-1.0.0-rc02.aar/ed7e3362c7b9ba7c6323f6b528f547e8/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.customview/customview/1.0.0-rc02/d8c4e67cb1150c2089f3708eb11457e6de54935a/customview-1.0.0-rc02-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

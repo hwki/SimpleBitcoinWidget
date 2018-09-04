@@ -52,11 +52,14 @@ class WidgetViews {
 
         if (!useAutoSizing) {
             Pair<Integer, Integer> availableSize = getTextAvailableSize(context, prefs.getWidgetId());
-            if (availableSize == null) return textSize;
-            textSize = TextSizer.getTextSize(context, text, availableSize);
-            textSize = adjustForFixedSize(context, views, prefs, textSize);
-            views.setTextViewTextSize(priceView, TypedValue.COMPLEX_UNIT_DIP, textSize);
-            views.setTextViewText(priceView, text);
+            if (availableSize == null) {
+                views.setTextViewText(priceView, text);
+            } else {
+                textSize = TextSizer.getTextSize(context, text, availableSize);
+                textSize = adjustForFixedSize(context, views, prefs, textSize);
+                views.setTextViewTextSize(priceView, TypedValue.COMPLEX_UNIT_DIP, textSize);
+                views.setTextViewText(priceView, text);
+            }
         } else {
             views.setTextViewText(priceAutoSizeView, text);
         }
@@ -73,9 +76,13 @@ class WidgetViews {
             }
             if (!useAutoSizing) {
                 Pair<Integer, Integer> availableSize = getLabelAvailableSize(context, prefs.getWidgetId());
-                float labelSize = TextSizer.getLabelSize(context, exchange.getShortName(), availableSize);
-                views.setTextViewTextSize(exchangeView, TypedValue.COMPLEX_UNIT_DIP, labelSize);
-                views.setTextViewText(exchangeView, exchange.getShortName());
+                if (availableSize == null) {
+                    views.setTextViewText(exchangeView, exchange.getShortName());
+                } else {
+                    float labelSize = TextSizer.getLabelSize(context, exchange.getShortName(), availableSize);
+                    views.setTextViewTextSize(exchangeView, TypedValue.COMPLEX_UNIT_DIP, labelSize);
+                    views.setTextViewText(exchangeView, exchange.getShortName());
+                }
             } else {
                 views.setTextViewText(exchangeAutoSizeView, exchange.getShortName());
             }

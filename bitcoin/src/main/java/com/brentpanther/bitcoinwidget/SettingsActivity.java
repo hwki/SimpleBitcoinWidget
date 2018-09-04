@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
@@ -16,6 +15,8 @@ import com.google.gson.JsonSyntaxException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class SettingsActivity extends Activity {
 
