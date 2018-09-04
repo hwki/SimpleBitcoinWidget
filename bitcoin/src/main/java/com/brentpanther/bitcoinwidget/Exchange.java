@@ -219,13 +219,6 @@ enum Exchange {
             return null;
         }
     },
-    CAMPBX("Camp BX") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            JsonObject obj = getJsonObject("https://campbx.com/api/xticker.php");
-            return obj.get("Last Trade").getAsString();
-        }
-    },
     CEXIO("Cex.io") {
         @Override
         public String getValue(String coin, String currency) throws Exception {

@@ -23,6 +23,7 @@ class DataMigration {
     private static final String COINMARKETCAP_MIGRATION = "coinmarketcap";
     private static final String BITTREX_TO_BCH = "bittrex_to_bch";
     private static final String GDAX = "gdax_to_coinbasepro";
+    private static final String XRB_TO_NANO = "xrb_to_nano";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -50,6 +51,22 @@ class DataMigration {
         if (!hasGDAXMigration) {
             migrateGDAX();
             prefs.edit().putBoolean(GDAX, true).apply();
+        }
+        boolean hasXRBMigration = prefs.getBoolean(XRB_TO_NANO, false);
+        if (!hasXRBMigration) {
+            migrateXRB();
+            prefs.edit().putBoolean(XRB_TO_NANO, true).apply();
+        }
+    }
+
+    // exchanges changed from using code xrb to nano
+    private static void migrateXRB() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            if ("XRB".equals(prefs.getExchangeCoinName())) {
+                prefs.setValue("coin_custom", "NANO");
+            }
         }
     }
 
