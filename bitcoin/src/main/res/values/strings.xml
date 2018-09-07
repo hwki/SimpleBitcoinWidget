@@ -16,7 +16,6 @@
     <string name="key_label" translatable="false">label</string>
     <string name="key_theme" translatable="false">theme</string>
     <string name="key_rate" translatable="false">rate</string>
-    <string name="key_donate" translatable="false">donate</string>
     <string name="key_prefs" translatable="false">bitcoinwidget</string>
     <string name="key_fixed_size" translatable="false">fixed_size</string>
 
@@ -33,9 +32,7 @@
     <string name="title_icon">Show %s icon</string>
     <string name="title_decimals">Show decimals</string>
     <string name="title_units">Denomination</string>
-    <string name="title_donate">Support the Developer</string>
 
-    <string name="summary_donate">Donate Bitcoin</string>
     <string name="summary_fixed_size">Keep text size consistent across all widgets (global setting)</string>
     <plurals name="summary_refresh_interval_minute">
         <item quantity="one">Every minute</item>
@@ -49,9 +46,6 @@
     <string name="summary_exchange">Get data from %s</string>
     <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
-
-    <string name="btc_address" translatable="false">bitcoin:194QqhXirp21F5fJVaqviMeHkzZzkZKyi8</string>
-    <string name="error_donate">No wallet found</string>
 
     <string-array name="themes">
         <item>Light</item>
@@ -81,7 +75,7 @@
     </string-array>
     <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
     <string name="value_exchange_removed" translatable="false">!</string>
-    <string name="json_last_modified" translatable="false">Tue, 04 Sep 2018 21:15:14 GMT</string>
+    <string name="json_last_modified" translatable="false">Fri, 07 Sep 2018 12:53:49 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>

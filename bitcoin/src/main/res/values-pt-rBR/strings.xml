@@ -16,9 +16,7 @@
     <string name="title_icon">Mostrar %s ícone</string>
     <string name="title_decimals">Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
-    <string name="title_donate">Apoie O Desenvolvedor</string>
 
-    <string name="summary_donate">Doar Bitcoin</string>
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
     <plurals name="summary_refresh_interval_minute">
         <item quantity="one">Todo minuto</item>
@@ -32,8 +30,6 @@
     <string name="summary_exchange">Pegar data de %s</string>
     <string name="summary_rate">Avalie na Google Play</string>
     <string name="summary_units">Mostrar em %s</string>
-
-    <string name="error_donate">Endereço bitcoin não encontrado</string>
 
     <string-array name="themes">
         <item>Tema Claro</item>
