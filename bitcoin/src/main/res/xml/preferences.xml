@@ -57,4 +57,12 @@
             android:summary="@string/summary_fixed_size"
             />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/key_other"
+        android:title="@string/title_other">
+        <Preference
+            android:key="@string/key_rate"
+            android:summary="@string/summary_rate"
+            android:title="@string/title_rate" />
+    </PreferenceCategory>
 </PreferenceScreen>
