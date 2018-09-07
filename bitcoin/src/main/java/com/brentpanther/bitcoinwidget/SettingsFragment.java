@@ -76,7 +76,6 @@ public class SettingsFragment extends PreferenceFragment {
         TwoStatePreference fixedSize = (TwoStatePreference) findPreference(getString(R.string.key_fixed_size));
         units = (ListPreference) findPreference(getString(R.string.key_units));
         Preference rate = findPreference(getString(R.string.key_rate));
-        Preference donate = findPreference(getString(R.string.key_donate));
 
         // refresh option
         setRefresh(Integer.valueOf(refresh.getValue()));
@@ -155,17 +154,6 @@ public class SettingsFragment extends PreferenceFragment {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
             } catch (ActivityNotFoundException anfe) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-            return true;
-        });
-
-        // donation
-        donate.setOnPreferenceClickListener(preference -> {
-            Intent btc = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.btc_address)));
-            try {
-                startActivity(btc);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(getActivity(), getString(R.string.error_donate), Toast.LENGTH_SHORT).show();
             }
             return true;
         });
