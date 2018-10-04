@@ -9,8 +9,6 @@ import static com.brentpanther.bitcoinwidget.Coin.BTC;
 import static com.brentpanther.bitcoinwidget.Coin.DASH;
 import static com.brentpanther.bitcoinwidget.Coin.IOTA;
 import static com.brentpanther.bitcoinwidget.Coin.LTC;
-import static com.brentpanther.bitcoinwidget.Currency.TRY;
-import static com.brentpanther.bitcoinwidget.Currency.USD;
 
 
 /**
@@ -24,6 +22,7 @@ class DataMigration {
     private static final String BITTREX_TO_BCH = "bittrex_to_bch";
     private static final String GDAX = "gdax_to_coinbasepro";
     private static final String XRB_TO_NANO = "xrb_to_nano";
+    private static final String FIX_BCH_UNITS = "bch_units";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -56,6 +55,32 @@ class DataMigration {
         if (!hasXRBMigration) {
             migrateXRB();
             prefs.edit().putBoolean(XRB_TO_NANO, true).apply();
+        }
+        boolean hasBCHUnitMigration = prefs.getBoolean(FIX_BCH_UNITS, false);
+        if (!hasBCHUnitMigration) {
+            migrationBCHUnits();
+            prefs.edit().putBoolean(FIX_BCH_UNITS, true).apply();
+        }
+    }
+
+    // wrong bch units, need to fix
+    private static void migrationBCHUnits() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            if (prefs.getCoin() != Coin.BCH) continue;
+            switch (prefs.getUnit()) {
+                case "BTC":
+                    prefs.setValue("units", "BCH");
+                    break;
+                case "mBTC":
+                    prefs.setValue("units", "mBCH");
+                    break;
+                case "μBTC":
+                    prefs.setValue("units", "μBCH");
+                    break;
+            }
+
         }
     }
 
@@ -137,7 +162,7 @@ class DataMigration {
             try {
                 Exchange exchange = prefs.getExchange();
                 Coin coin = prefs.getCoin();
-                Currency currency = prefs.getCurrency();
+                String currency = prefs.getCurrency();
                 String coinName = null;
                 String currencyName = null;
                 switch (exchange) {
@@ -161,7 +186,7 @@ class DataMigration {
                         break;
                     case BITTREX:
                         if (BCH == coin) coinName = "BCC";
-                        if (USD == currency) currencyName = "USDT";
+                        if ("USD".equals(currency))currencyName = "USDT";
                         break;
                     case INDEPENDENT_RESERVE:
                         if (BTC == coin) coinName = "xbt";
@@ -179,10 +204,10 @@ class DataMigration {
                         if (BTC == coin) coinName = "XBT";
                         break;
                     case PARIBU:
-                        if (TRY == currency) currencyName = "TL";
+                        if ("TRY".equals(currency)) currencyName = "TL";
                         break;
                     case POLONIEX:
-                        if (USD == currency) currencyName = "USDT";
+                        if ("USD".equals(currency)) currencyName = "USDT";
                         break;
                     case WEX:
                         if (DASH == coin) coinName = "DSH";

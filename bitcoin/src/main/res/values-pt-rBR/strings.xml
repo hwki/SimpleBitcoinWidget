@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="widget_name">Widget Simples</string>
     <string name="new_widget">Novo %s Widget</string>
     <string name="default_theme">Tema Claro</string>
@@ -19,11 +19,11 @@
 
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
     <plurals name="summary_refresh_interval_minute">
-        <item quantity="one">Todo minuto</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Todo minuto</item>
         <item quantity="other">A cada %d minutos</item>
     </plurals>
     <plurals name="summary_refresh_interval_hour">
-        <item quantity="one">Toda hora</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Toda hora</item>
         <item quantity="other">A cada %d horas</item>
     </plurals>
     <string name="summary_currency">Usar %s como moeda</string>

@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Currency;
 
 class WidgetViews {
 
@@ -178,16 +179,24 @@ class WidgetViews {
     }
 
     private static String buildText(String amount, Prefs prefs) {
-        Currency currency = prefs.getCurrency();
-        String format = currency.getFormat();
-        if (!prefs.getShowDecimals()) {
-            format = format.replaceAll("\\.00", "");
-        }
-        NumberFormat nf = new DecimalFormat(format);
+        String currency = prefs.getCurrency();
         Double adjustedAmount = Double.valueOf(amount);
         String unit = prefs.getUnit();
         if (unit != null) {
             adjustedAmount *= prefs.getCoin().getUnitAmount(unit);
+        }
+        NumberFormat nf;
+        if (Coin.COIN_NAMES.contains(currency)) {
+            // virtual currency
+            String format = Coin.getVirtualCurrencyFormat(currency);
+            nf = new DecimalFormat(format);
+            nf.setMaximumFractionDigits(adjustedAmount < 1 ? amount.length() : 2);
+        } else {
+            nf = DecimalFormat.getCurrencyInstance();
+            nf.setCurrency(Currency.getInstance(currency));
+            if (!prefs.getShowDecimals() && adjustedAmount > 1) {
+                nf.setMaximumFractionDigits(0);
+            }
         }
         return nf.format(adjustedAmount);
     }
