@@ -1,9 +1,13 @@
 package com.brentpanther.bitcoinwidget;
 
 
+import android.os.Build;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import androidx.annotation.DrawableRes;
 
@@ -38,9 +42,9 @@ public enum Coin {
         @Override
         protected List<Unit> getUnits() {
             return Arrays.asList(
-                    new Unit("BTC", 1),
-                    new Unit("mBTC", .001d),
-                    new Unit("μBTC", .000001d));
+                    new Unit("BCH", 1),
+                    new Unit("mBCH", .001d),
+                    new Unit("μBCH", .000001d));
         }
 
         @Override
@@ -128,6 +132,14 @@ public enum Coin {
         }
     };
 
+    static Set<String> COIN_NAMES = new TreeSet<>();
+
+    static {
+        for (Coin coin : Coin.values()) {
+            COIN_NAMES.add(coin.name());
+        }
+    }
+
     private final String name;
     private final int icon;
 
@@ -169,4 +181,17 @@ public enum Coin {
         }
         return 1;
     }
+
+    public static String getVirtualCurrencyFormat(String currency) {
+        switch (currency) {
+            case "BTC":
+                // bitcoin symbol added in Oreo
+                return Build.VERSION.SDK_INT >= 26 ? "₿ #,###" : "Ƀ #,###";
+            case "LTC":
+                return "Ł #,###";
+            default:
+                return String.format("#,### %s", currency);
+        }
+    }
+
 }

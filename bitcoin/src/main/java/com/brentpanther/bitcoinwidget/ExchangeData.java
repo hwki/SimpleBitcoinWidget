@@ -5,6 +5,9 @@ import com.google.gson.Gson;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +61,7 @@ class ExchangeData {
         Map<String, String> currency_overrides;
         Map<String, String> coin_overrides;
 
-        public List<String> loadExchange(String coin) {
+        List<String> loadExchange(String coin) {
             for (JsonCoin jsonCoin : coins) {
                 if (!jsonCoin.name.equals(coin)) continue;
                 return jsonCoin.currencies;
@@ -74,6 +77,7 @@ class ExchangeData {
 
     private final Coin coin;
     private final JsonExchangeObject obj;
+    private static final List<String> CURRENCY_TOP_ORDER = Arrays.asList("USD", "EUR", "BTC");
 
     ExchangeData(Coin coin, InputStream json) {
         this.coin = coin;
@@ -84,8 +88,20 @@ class ExchangeData {
 
     String[] getCurrencies() {
         // only return currencies that we know about
-        List<String> currencyNames = Currency.getAllCurrencyNames();
+        List<String> currencyNames = new ArrayList<>();
+        for (Currency currency : Currency.getAvailableCurrencies()) {
+            currencyNames.add(currency.getCurrencyCode());
+        }
+        currencyNames.addAll(Coin.COIN_NAMES);
         currencyNames.retainAll(currencyExchange.keySet());
+        Collections.sort(currencyNames, (o1, o2) -> {
+            int i1 = CURRENCY_TOP_ORDER.indexOf(o1);
+            int i2 = CURRENCY_TOP_ORDER.indexOf(o2);
+            if (i1 >= 0 && i2 >= 0) return i1 - i2;
+            if (i1 >= 0) return -1;
+            if (i2 >= 0) return 1;
+            return o1.compareTo(o2);
+        });
         return currencyNames.toArray(new String[]{});
     }
 

@@ -7,8 +7,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 185
-        versionName "6.5.4"
+        versionCode 190
+        versionName "6.6"
     }
 
     buildTypes {
@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    def support_version = '1.0.0-rc02'
+    def support_version = '1.0.0'
     implementation "androidx.appcompat:appcompat:$support_version"
     implementation "androidx.recyclerview:recyclerview:$support_version"
     implementation "androidx.core:core:$support_version"

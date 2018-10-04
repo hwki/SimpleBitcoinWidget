@@ -20,6 +20,9 @@ public class ExchangeTest {
             ExchangeData data = new ExchangeData(coin, loadJSON());
             for (String currency : data.getCurrencies()) {
                 for (String exchange : data.getExchanges(currency)) {
+                    if (exchange.equals("COINMARKETCAP")) continue;
+                    if (exchange.equals("BITCOIN_AVERAGE")) continue;
+                    if (exchange.equals("BITCOIN_AVERAGE_GLOBAL")) continue;
                     try {
                         String coinName = data.getExchangeCoinName(exchange, coin.name());
                         String currencyName = data.getExchangeCurrencyName(exchange, currency);

@@ -34,7 +34,7 @@ enum Exchange {
         @Override
         public String getValue(String coin, String currency) throws Exception {
             String url = String.format("https://www.bit2c.co.il/Exchanges/%sNis/Ticker.json", coin);
-            return getJsonObject(url).get("av").getAsString();
+            return getJsonObject(url).get("ll").getAsString();
         }
     },
     BITBAY("BitBay") {
@@ -672,14 +672,6 @@ enum Exchange {
             String pair = String.format("%s_%s", coin, currency).toLowerCase();
             String url = String.format("https://yobit.net/api/3/ticker/%s", pair);
             return getJsonObject(url).getAsJsonObject(pair).get("last").getAsString();
-        }
-    },
-    ZEBPAY("Zebpay") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            String pair = String.format("%s/%s", coin, currency).toLowerCase();
-            String url = "https://www.zebapi.com/api/v1/market/ticker-new/" + pair;
-            return getJsonObject(url).get("market").getAsString();
         }
     },
     ZYADO("Zyado") {
