@@ -190,13 +190,20 @@ class WidgetViews {
             // virtual currency
             String format = Coin.getVirtualCurrencyFormat(currency);
             nf = new DecimalFormat(format);
-            nf.setMaximumFractionDigits(adjustedAmount < 1 ? amount.length() : 2);
         } else {
             nf = DecimalFormat.getCurrencyInstance();
             nf.setCurrency(Currency.getInstance(currency));
             if (!prefs.getShowDecimals() && adjustedAmount > 1) {
                 nf.setMaximumFractionDigits(0);
             }
+        }
+        if (adjustedAmount < 1) {
+            // how many decimal places should we show?
+            int zeroes = nf.getMaximumFractionDigits();
+            while (adjustedAmount * Math.pow(10, zeroes-1) < 1) {
+                zeroes++;
+            }
+            nf.setMaximumFractionDigits(zeroes);
         }
         return nf.format(adjustedAmount);
     }
