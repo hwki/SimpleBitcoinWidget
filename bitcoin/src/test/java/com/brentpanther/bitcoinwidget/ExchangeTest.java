@@ -16,7 +16,6 @@ public class ExchangeTest {
     public void removedCoins() throws Exception {
         EnumSet<Coin> coins = EnumSet.allOf(Coin.class);
         for (Coin coin : coins) {
-            System.out.println("trying coin: " + coin.name());
             ExchangeData data = new ExchangeData(coin, loadJSON());
             for (String currency : data.getCurrencies()) {
                 for (String exchange : data.getExchanges(currency)) {
@@ -33,7 +32,7 @@ public class ExchangeTest {
                     } catch (Exception e) {
                         System.out.println(String.format("Failure: %s %s %s", coin.name(), exchange, currency));
                     }
-                    Thread.sleep(100);
+                    Thread.sleep(250);
                 }
             }
         }

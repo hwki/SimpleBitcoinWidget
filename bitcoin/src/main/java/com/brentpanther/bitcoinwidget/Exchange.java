@@ -23,6 +23,13 @@ enum Exchange {
             return getJsonObject(url).get("last").getAsString();
         }
     },
+    BIBOX("Bibox") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://api.bibox.com/v1/mdata?cmd=ticker&pair=%s_%s", coin, currency);
+            return getJsonObject(url).getAsJsonObject("result").get("last").getAsString();
+        }
+    },
     BINANCE("Binance") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -139,6 +146,13 @@ enum Exchange {
         public String getValue(String coin, String currency) throws Exception {
             String url = String.format("https://www.bitmarket.pl/json/%s%s/ticker.json", coin, currency);
             return getJsonObject(url).get("last").getAsString();
+        }
+    },
+    BITMEX("BitMEX") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://www.bitmex.com/api/v1/instrument?symbol=%s%s&columns=lastPrice", coin, currency);
+            return getJsonArray(url).get(0).getAsJsonObject().get("lastPrice").getAsString();
         }
     },
     BITPAY("BitPay") {
@@ -275,6 +289,13 @@ enum Exchange {
             return getJsonObject(url).getAsJsonObject("bpi").getAsJsonObject(currency).get("rate_float").getAsString();
         }
     },
+    COINEGG("CoinEgg") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://api.coinegg.im/api/v1/ticker/region/%s?coin=%s", currency.toLowerCase(), coin.toLowerCase());
+            return getJsonObject(url).get("last").getAsString();
+        }
+    },
     COINJAR("CoinJar") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -334,6 +355,13 @@ enum Exchange {
             return getJsonObject(url).get("last").getAsString();
         }
     },
+    COINROOM("Coinroom") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://coinroom.com/api/ticker/%s/%s", coin, currency);
+            return getJsonObject(url).get("last").getAsString();
+        }
+    },
     COINSECURE("Coinsecure") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -380,6 +408,13 @@ enum Exchange {
             String url = String.format("https://cryptonit.net/apiv2/rest/public/ccorder.json?bid_currency=%s&ask_currency=%s&ticker", coin, currency);
             JsonObject obj = getJsonObject(url);
             return obj.getAsJsonObject("rate").get("last").getAsString();
+        }
+    },
+    CRYPTOPIA("Cryptopia") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = String.format("https://www.cryptopia.co.nz/api/GetMarket/%s_%s", coin, currency);
+            return getJsonObject(url).getAsJsonObject("Data").get("LastPrice").getAsString();
         }
     },
     EXMO("Exmo") {
@@ -479,16 +514,10 @@ enum Exchange {
     KRAKEN("Kraken") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
-            String resultPair;
-            if (coin.equals("DASH") || coin.equals("BCH")) {
-                resultPair = coin + currency;
-            } else {
-                resultPair = "X" + coin + "Z" + currency;
-            }
-
-            JsonObject obj = getJsonObject(String.format("https://api.kraken.com/0/public/Ticker?pair=%s", resultPair));
-            JsonObject obj2 = obj.getAsJsonObject("result").getAsJsonObject(resultPair);
-            return obj2.getAsJsonArray("c").get(0).getAsString();
+            JsonObject obj = getJsonObject(String.format("https://api.kraken.com/0/public/Ticker?pair=%s%s", coin, currency));
+            JsonObject obj2 = obj.getAsJsonObject("result");
+            String key = obj2.keySet().iterator().next();
+            return obj2.getAsJsonObject(key).getAsJsonArray("c").get(0).getAsString();
         }
     },
     KUCOIN("Kucoin") {
@@ -512,6 +541,14 @@ enum Exchange {
             String pair = String.format("%s%s", coin, currency).toLowerCase();
             JsonObject obj = getJsonObject("https://api.lakebtc.com/api_v2/ticker?symbol=" + pair);
             return obj.getAsJsonObject(pair).get("last").getAsString();
+        }
+    },
+    LBANK("LBank") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s_%s", coin, currency).toLowerCase();
+            String url = String.format("https://api.lbkex.com/v1/ticker.do?symbol=%s", pair);
+            return getJsonObject(url).getAsJsonObject("ticker").get("latest").getAsString();
         }
     },
     LIVECOIN("Livecoin") {

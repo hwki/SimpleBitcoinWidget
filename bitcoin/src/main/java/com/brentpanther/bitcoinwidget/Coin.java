@@ -130,6 +130,36 @@ public enum Coin {
         public int[] getDrawables() {
             return new int[]{R.drawable.ic_zec, R.drawable.ic_zec_bw, R.drawable.ic_zec, R.drawable.ic_zec_bw};
         }
+    },
+    DOGE("Dogecoin", R.drawable.ic_doge) {
+        @Override
+        public int[] getDrawables() {
+            return new int[]{R.drawable.ic_doge, R.drawable.ic_doge_bw, R.drawable.ic_doge, R.drawable.ic_doge_bw};
+        }
+    },
+    DCR("Decred", R.drawable.ic_dcr) {
+        @Override
+        public int[] getDrawables() {
+            return new int[]{R.drawable.ic_dcr, R.drawable.ic_dcr_bw, R.drawable.ic_dcr, R.drawable.ic_dcr_bw};
+        }
+    }    ,
+    PPC("Peercoin", R.drawable.ic_ppc) {
+        @Override
+        public int[] getDrawables() {
+            return new int[]{R.drawable.ic_ppc, R.drawable.ic_ppc_bw, R.drawable.ic_ppc, R.drawable.ic_ppc_bw};
+        }
+    },
+    VTC("Vertcoin", R.drawable.ic_vtc) {
+        @Override
+        public int[] getDrawables() {
+            return new int[]{R.drawable.ic_vtc, R.drawable.ic_vtc_bw, R.drawable.ic_vtc, R.drawable.ic_vtc_bw};
+        }
+    },
+    TRX("Tron", R.drawable.ic_trx) {
+        @Override
+        public int[] getDrawables() {
+            return new int[]{R.drawable.ic_trx, R.drawable.ic_trx_bw, R.drawable.ic_trx, R.drawable.ic_trx_bw};
+        }
     };
 
     static Set<String> COIN_NAMES = new TreeSet<>();
