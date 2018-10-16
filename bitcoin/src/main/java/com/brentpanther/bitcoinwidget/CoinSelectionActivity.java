@@ -17,6 +17,10 @@ public class CoinSelectionActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin);
         Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            finish();
+            return;
+        }
         widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         RecyclerView coinList = findViewById(R.id.coin_list);
         coinList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
