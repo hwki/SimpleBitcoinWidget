@@ -41,8 +41,7 @@
         <service android:name=".DownloadJSONService" />
 
         <activity
-            android:name=".CoinSelectionActivity"
-            android:exported="false">
+            android:name=".CoinSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
