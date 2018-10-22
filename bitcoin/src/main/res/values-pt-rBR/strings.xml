@@ -14,7 +14,7 @@
     <string name="title_theme">Tema</string>
     <string name="title_rate">Nota</string>
     <string name="title_icon">Mostrar %s ícone</string>
-    <string name="title_decimals">Mostrar Decimais</string>
+    <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
 
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>

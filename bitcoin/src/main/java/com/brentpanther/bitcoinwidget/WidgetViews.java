@@ -68,24 +68,23 @@ class WidgetViews {
         if (prefs.getLabel()) {
             show(views, useAutoSizing ? exchangeAutoSizeView : exchangeView, R.id.top_space);
             hide(views, useAutoSizing ? exchangeView : exchangeAutoSizeView);
-            Exchange exchange;
+            String shortName;
             try {
-                exchange = prefs.getExchange();
-            } catch (IllegalArgumentException e) {
-                WidgetViews.putValue(context, views, context.getString(R.string.value_exchange_removed), prefs);
-                return textSize;
+                shortName = prefs.getExchange().getShortName();
+            } catch (IllegalArgumentException ignored) {
+                shortName = prefs.getExchangeName();
             }
             if (!useAutoSizing) {
                 Pair<Integer, Integer> availableSize = getLabelAvailableSize(context, prefs.getWidgetId());
                 if (availableSize == null) {
-                    views.setTextViewText(exchangeView, exchange.getShortName());
+                    views.setTextViewText(exchangeView, shortName);
                 } else {
-                    float labelSize = TextSizer.getLabelSize(context, exchange.getShortName(), availableSize);
+                    float labelSize = TextSizer.getLabelSize(context, shortName, availableSize);
                     views.setTextViewTextSize(exchangeView, TypedValue.COMPLEX_UNIT_DIP, labelSize);
-                    views.setTextViewText(exchangeView, exchange.getShortName());
+                    views.setTextViewText(exchangeView, shortName);
                 }
             } else {
-                views.setTextViewText(exchangeAutoSizeView, exchange.getShortName());
+                views.setTextViewText(exchangeAutoSizeView, shortName);
             }
         } else {
             hide(views, exchangeView, exchangeAutoSizeView, R.id.top_space);
@@ -118,7 +117,12 @@ class WidgetViews {
         boolean widgetWasSmallest = currentTextSize < smallestSize;
         boolean widgetIsSmallest = newTextSize < smallestSize;
         if (widgetChangedSize && (widgetIsSmallest || widgetWasSmallest || smallestSize == 0)) {
-            WidgetProvider.refreshWidgets(context, prefs.getWidgetId());
+            // refresh all widgets that are not the same smallestSize
+            for (int widgetId : widgetIds) {
+                if (new Prefs(widgetId).getTextSize(isPortrait) != smallestSize) {
+                    WidgetProvider.refreshWidgets(context, widgetId);
+                }
+            }
         }
         return Math.min(newTextSize, smallestSize);
     }
