@@ -75,6 +75,10 @@ class Prefs {
         return Exchange.valueOf(value);
     }
 
+    String getExchangeName() {
+        return getValue(EXCHANGE);
+    }
+
     int getThemeLayout() {
         String value = getValue(THEME);
         if(value == null || "Light".equals(value)) return R.layout.widget_layout;

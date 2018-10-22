@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WidgetProvider extends AppWidgetProvider {
 
 	@Override
@@ -56,10 +59,18 @@ public class WidgetProvider extends AppWidgetProvider {
 
     public static void refreshWidgets(Context context, int widgetId) {
         int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        List<Integer> refreshWidgetIds = new ArrayList<>();
         for (int appWidgetId : widgetIds) {
             if (appWidgetId == widgetId) continue;
+            refreshWidgetIds.add(appWidgetId);
+        }
+        refreshWidgets(context, refreshWidgetIds);
+    }
+
+    public static void refreshWidgets(Context context, List<Integer> widgetIds) {
+        for (Integer widgetId : widgetIds) {
             Intent widgetUpdateIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, PriceBroadcastReceiver.class);
-            widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
             context.sendBroadcast(widgetUpdateIntent);
         }
     }
