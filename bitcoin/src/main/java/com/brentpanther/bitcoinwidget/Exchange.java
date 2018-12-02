@@ -267,6 +267,13 @@ enum Exchange {
             return obj.getAsJsonObject(pair).get("last").getAsString();
         }
     },
+    COINBOOK("Coinbook") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String url = "https://coinbook.com/api/SimpleBitcoinWidget/price";
+            return getJsonObject(url).get("Bitcoin Price").getAsString();
+        }
+    },
     COINDELTA("Coindelta") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
