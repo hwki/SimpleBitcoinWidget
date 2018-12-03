@@ -46,7 +46,7 @@ class WidgetViews {
 
         views.setViewVisibility(R.id.icon, prefs.showIcon() ? View.VISIBLE : View.GONE);
         if (prefs.showIcon()) {
-            boolean lightTheme = prefs.isLightTheme();
+            boolean lightTheme = prefs.isLightTheme(context);
             int[] drawables = prefs.getCoin().getDrawables();
             views.setImageViewResource(R.id.icon, lightTheme ? drawables[0] : drawables[2]);
         }
@@ -225,9 +225,9 @@ class WidgetViews {
         for (int id : ids) views.setViewVisibility(id, View.GONE);
     }
 
-    static void setOld(RemoteViews views, boolean isOld, Prefs prefs) {
+    static void setOld(Context context, RemoteViews views, boolean isOld, Prefs prefs) {
         if (!prefs.showIcon()) return;
-        boolean lightTheme = prefs.isLightTheme();
+        boolean lightTheme = prefs.isLightTheme(context);
         int[] drawables = prefs.getCoin().getDrawables();
         if (isOld) {
             views.setImageViewResource(R.id.icon, lightTheme ? drawables[1] : drawables[3]);

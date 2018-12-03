@@ -2,7 +2,9 @@ package com.brentpanther.bitcoinwidget;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.UiModeManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -118,6 +120,10 @@ public class SettingsFragment extends PreferenceFragment {
         theme.setSummary(theme.getValue());
         theme.setOnPreferenceChangeListener((preference, newValue) -> {
             theme.setSummary((String)newValue);
+            if ("DayNight".equals(theme.getValue()) || "Transparent DayNight".equals(theme.getValue())) {
+                UiModeManager service = (UiModeManager) getActivity().getSystemService(Context.UI_MODE_SERVICE);
+                service.setNightMode(UiModeManager.MODE_NIGHT_AUTO);
+            }
             return true;
         });
 

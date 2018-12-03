@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -81,14 +82,29 @@ class Prefs {
 
     int getThemeLayout() {
         String value = getValue(THEME);
-        if(value == null || "Light".equals(value)) return R.layout.widget_layout;
-        if("Dark".equals(value)) return R.layout.widget_layout_dark;
-        if("Transparent Dark".equals(value)) return R.layout.widget_layout_transparent_dark;
-        return R.layout.widget_layout_transparent;
+        if (value == null) return R.layout.widget_layout;
+        switch(value) {
+            case "Dark":
+                return R.layout.widget_layout_dark;
+            case "Transparent Dark":
+                return R.layout.widget_layout_transparent_dark;
+            case "DayNight":
+                return R.layout.widget_layout_auto;
+            case "Transparent DayNight":
+                return R.layout.widget_layout_transparent_auto;
+            case "Transparent":
+                return R.layout.widget_layout_transparent;
+            default:
+                return R.layout.widget_layout;
+        }
     }
 
-    boolean isLightTheme() {
+    boolean isLightTheme(Context context) {
         int themeLayout = getThemeLayout();
+        if (themeLayout == R.layout.widget_layout_auto || themeLayout == R.layout.widget_layout_transparent_auto) {
+            int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            return nightModeFlags == Configuration.UI_MODE_NIGHT_NO;
+        }
         return themeLayout == R.layout.widget_layout || themeLayout == R.layout.widget_layout_transparent;
     }
 
