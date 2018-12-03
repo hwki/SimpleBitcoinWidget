@@ -61,7 +61,7 @@ public class UpdatePriceService extends JobIntentService {
         //if its been "a while" since the last successful update, gray out the icon.
         boolean isOld = ((System.currentTimeMillis() - lastUpdate) > 1000 * 90 * interval);
         WidgetViews.setLastText(context, views, prefs);
-        WidgetViews.setOld(views, isOld, prefs);
+        WidgetViews.setOld(context, views, isOld, prefs);
     }
 
 }
