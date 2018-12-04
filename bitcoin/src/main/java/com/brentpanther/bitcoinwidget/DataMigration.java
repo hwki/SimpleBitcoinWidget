@@ -23,6 +23,8 @@ class DataMigration {
     private static final String GDAX = "gdax_to_coinbasepro";
     private static final String XRB_TO_NANO = "xrb_to_nano";
     private static final String FIX_BCH_UNITS = "bch_units";
+    private static final String BCH_TO_ABC = "bch_abc";
+    private static final String INDODAX = "indodax";
 
     static void migrate(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -60,6 +62,55 @@ class DataMigration {
         if (!hasBCHUnitMigration) {
             migrationBCHUnits();
             prefs.edit().putBoolean(FIX_BCH_UNITS, true).apply();
+        }
+        boolean hasBCHABCMigration = prefs.getBoolean(BCH_TO_ABC, false);
+        if (!hasBCHABCMigration) {
+            migrationBCHABC();
+            prefs.edit().putBoolean(BCH_TO_ABC, true).apply();
+        }
+        boolean hasIndoDax = prefs.getBoolean(INDODAX, false);
+        if (!hasIndoDax) {
+            migrationIndodax();
+            prefs.edit().putBoolean(INDODAX, true).apply();
+        }
+    }
+
+    private static void migrationIndodax() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            if ("BITCOINCOID".equals(prefs.getExchangeName())) {
+                prefs.setValue("exchange", "INDODAX");
+            }
+        }
+    }
+
+    private static void migrationBCHABC() {
+        int[] widgetIds = WidgetApplication.getInstance().getWidgetIds();
+        for (int widgetId : widgetIds) {
+            Prefs prefs = new Prefs(widgetId);
+            if (prefs.getCoin() != Coin.BCH) continue;
+            String exchange = prefs.getValue("exchange");
+            if ("BITFINEX".equals(exchange)) {
+                switch (prefs.getCoin()) {
+                    case BCH:
+                        prefs.setValue("coin_custom", "BAB");
+                        break;
+                    case DASH:
+                        prefs.setValue("coin_custom", "DSH");
+                        break;
+                    case IOTA:
+                        prefs.setValue("coin_custom", "IOT");
+                }
+            } else if ("COINSQUARE".equals(exchange)) {
+                prefs.setValue("coin_custom", "BAB");
+            } else if ("BTCMARKETS".equals(exchange)) {
+                prefs.setValue("coin_custom", "BCHABC");
+            } else if ("BIT2C".equals(exchange)) {
+                prefs.setValue("coin_custom", "Bchabc");
+            } else if ("KOINEX".equals(exchange)) {
+                prefs.setValue("coin_custom", "BCHABC");
+            }
         }
     }
 
@@ -208,9 +259,6 @@ class DataMigration {
                         break;
                     case POLONIEX:
                         if ("USD".equals(currency)) currencyName = "USDT";
-                        break;
-                    case WEX:
-                        if (DASH == coin) coinName = "DSH";
                         break;
                 }
                 prefs.setExchangeValues(coinName, currencyName);

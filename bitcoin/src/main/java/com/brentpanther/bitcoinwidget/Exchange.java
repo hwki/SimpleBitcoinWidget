@@ -67,14 +67,6 @@ enum Exchange {
             return obj.getAsJsonObject(String.format("%s%s", coin, currency)).get("last").getAsString();
         }
     },
-    BITCOINCOID("Bitcoin.co.id") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            String pair = String.format("%s_%s", coin, currency).toLowerCase();
-            String url = String.format("https://vip.bitcoin.co.id/api/%s/ticker/", pair);
-            return getJsonObject(url).getAsJsonObject("ticker").get("last").getAsString();
-        }
-    },
     BITCOINDE("Bitcoin.de") {
         @Override
         public String getValue(String code, String currency) throws Exception {
@@ -87,9 +79,8 @@ enum Exchange {
     BITFINEX("Bitfinex") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
-            String url = String.format("https://api.bitfinex.com/v1/pubticker/%s%s", coin, currency);
-            JsonObject obj = getJsonObject(url);
-            return obj.get("last_price").getAsString();
+            String url = String.format("https://api.bitfinex.com/v2/ticker/t%s%s", coin, currency);
+            return getJsonArray(url).get(6).getAsString();
         }
     },
     BITFLYER("BitFlyer") {
@@ -97,23 +88,6 @@ enum Exchange {
         public String getValue(String coin, String currency) throws Exception {
             String url = String.format("https://api.bitflyer.jp/v1/ticker?product_code=%s_%s", coin, currency);
             return getJsonObject(url).get("ltp").getAsString();
-        }
-    },
-    BITFLIP("BitFlip") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            String pair = String.format("%s:%s", coin, currency);
-            String url = "https://api.bitflip.cc/method/market.getRates";
-            JsonArray arr = getJsonArray(url);
-            JsonArray pairs = arr.get(arr.size() - 1).getAsJsonArray();
-            for (JsonElement p : pairs) {
-                JsonObject obj = p.getAsJsonObject();
-                if (pair.equals(obj.get("pair").getAsString())) {
-                    double total = obj.get("buy").getAsDouble() + obj.get("sell").getAsDouble();
-                    return Double.toString(total / 2);
-                }
-            }
-            return null;
         }
     },
     BITHUMB("Bithumb") {
@@ -496,6 +470,14 @@ enum Exchange {
             return getJsonObject(url).get("LastPrice").getAsString();
         }
     },
+    INDODAX("Indodax") {
+        @Override
+        public String getValue(String coin, String currency) throws Exception {
+            String pair = String.format("%s_%s", coin, currency).toLowerCase();
+            String url = String.format("https://indodax.com/api/%s/ticker", pair);
+            return getJsonObject(url).getAsJsonObject("ticker").get("last").getAsString();
+        }
+    },
     ITBIT("ItBit") {
         @Override
         public String getValue(String coin, String currency) throws Exception {
@@ -694,14 +676,7 @@ enum Exchange {
             return getBlinkTradeValue(coin, currency);
         }
     },
-    WEX("Wex") {
-        @Override
-        public String getValue(String coin, String currency) throws Exception {
-            String pair = String.format("%s_%s", coin, currency).toLowerCase();
-            String url = String.format("https://wex.nz/api/3/ticker/%s", pair);
-            return getJsonObject(url).getAsJsonObject(pair).get("last").getAsString();
-        }
-    },
+
     WYRE("Wyre") {
         @Override
         public String getValue(String coin, String currencyCode) throws Exception {
