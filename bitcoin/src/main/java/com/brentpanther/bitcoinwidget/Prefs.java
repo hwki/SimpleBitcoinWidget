@@ -99,6 +99,11 @@ class Prefs {
         }
     }
 
+    boolean isTransparent() {
+        String value = getValue(THEME);
+        return "Transparent".equals(value) || "Transparent Dark".equals(value) || "Transparent DayNight".equals(value);
+    }
+
     boolean isLightTheme(Context context) {
         int themeLayout = getThemeLayout();
         if (themeLayout == R.layout.widget_layout_auto || themeLayout == R.layout.widget_layout_transparent_auto) {
