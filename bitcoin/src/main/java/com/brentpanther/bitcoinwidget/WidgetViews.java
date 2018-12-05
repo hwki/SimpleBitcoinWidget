@@ -136,7 +136,7 @@ class WidgetViews {
         int width = size.first;
         int height = size.second;
 
-        if (prefs.getThemeLayout() != R.layout.widget_layout_transparent) {
+        if (!prefs.isTransparent()) {
             // light and dark themes have 5dp padding all around
             width -= 10;
             height -= 10;
@@ -160,7 +160,7 @@ class WidgetViews {
         }
         int height = size.second;
         int width = size.first;
-        if (prefs.getThemeLayout() != R.layout.widget_layout_transparent) {
+        if (!prefs.isTransparent()) {
             // light and dark themes have 5dp padding all around
             height -= 10;
         }
