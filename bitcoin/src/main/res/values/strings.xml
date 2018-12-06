@@ -1,8 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
     <string name="widget_name">Simple Widget</string>
     <string name="new_widget">New %s Widget</string>
-    <string name="default_theme">Light</string>
 
     <string name="key_other" translatable="false">other</string>
     <string name="key_style" translatable="false">style</string>
@@ -47,7 +46,13 @@
     <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
 
-    <string-array name="themes">
+    <string-array name="themes" tools:ignore="InconsistentArrays">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Transparent</item>
+        <item>Transparent Dark</item>
+    </string-array>
+    <string-array name="themeValues" tools:ignore="InconsistentArrays">
         <item>Light</item>
         <item>Dark</item>
         <item>Transparent</item>
