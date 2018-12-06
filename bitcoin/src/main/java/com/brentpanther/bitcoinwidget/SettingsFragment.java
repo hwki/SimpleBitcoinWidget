@@ -96,19 +96,16 @@ public class SettingsFragment extends PreferenceFragment {
             return;
         }
         currency.setValue(defaultCurrency);
-        currency.setSummary(getString(R.string.summary_currency, defaultCurrency));
 
         // exchange option
         setExchange(defaultCurrency);
         currency.setOnPreferenceChangeListener((preference, newValue) -> {
-            currency.setSummary(getString(R.string.summary_currency, (String)newValue));
             setExchange((String)newValue);
             return true;
         });
         exchange.setOnPreferenceChangeListener((preference, newValue) -> {
             String exchangeCode = (String) newValue;
             String exchangeName = Exchange.valueOf(exchangeCode).getName();
-            exchange.setSummary(getString(R.string.summary_exchange, exchangeName));
             return true;
         });
 
@@ -116,10 +113,7 @@ public class SettingsFragment extends PreferenceFragment {
         icon.setTitle(getString(R.string.title_icon, data.getCoin().getName()));
 
         // theme
-        theme.setValueIndex(0);
-        theme.setSummary(theme.getValue());
         theme.setOnPreferenceChangeListener((preference, newValue) -> {
-            theme.setSummary((String)newValue);
             if ("DayNight".equals(theme.getValue()) || "Transparent DayNight".equals(theme.getValue())) {
                 UiModeManager service = (UiModeManager) getActivity().getSystemService(Context.UI_MODE_SERVICE);
                 service.setNightMode(UiModeManager.MODE_NIGHT_AUTO);
@@ -144,14 +138,9 @@ public class SettingsFragment extends PreferenceFragment {
             ((PreferenceCategory) findPreference(getString(R.string.key_style))).removePreference(this.units);
         } else {
             units.setValue(unitNames[0]);
-            units.setSummary(getString(R.string.summary_units, unitNames[0]));
             units.setEntries(unitNames);
             units.setEntryValues(unitNames);
         }
-        units.setOnPreferenceChangeListener((preference, newValue) -> {
-            units.setSummary(getString(R.string.summary_units, newValue.toString()));
-            return true;
-        });
 
         // rate
         rate.setOnPreferenceClickListener(preference -> {
@@ -187,7 +176,6 @@ public class SettingsFragment extends PreferenceFragment {
         exchange.setEntries(exchangeNames);
         exchange.setEntryValues(exchangeCodes);
         exchange.setValue(defaultExchange);
-        exchange.setSummary(getString(R.string.summary_exchange, Exchange.valueOf(defaultExchange).getName()));
     }
 
     private void save() {

@@ -14,9 +14,12 @@
         <ListPreference
             android:key="@string/key_currency"
             android:persistent="false"
+            android:summary="@string/summary_currency"
             android:title="@string/title_currency" />
         <ListPreference
+            android:defaultValue="0"
             android:key="@string/key_exchange"
+            android:summary="@string/summary_exchange"
             android:persistent="false"
             android:title="@string/title_exchange" />
     </PreferenceCategory>
@@ -26,6 +29,7 @@
         <ListPreference
             android:key="@string/key_units"
             android:persistent="false"
+            android:summary="@string/summary_units"
             android:title="@string/title_units"/>
         <CheckBoxPreference
             android:defaultValue="true"
@@ -43,12 +47,13 @@
             android:persistent="false"
             android:title="@string/title_label" />
         <ListPreference
-            android:defaultValue="@string/default_theme"
+            android:defaultValue="Light"
             android:dialogTitle="@string/title_theme"
             android:entries="@array/themes"
-            android:entryValues="@array/themes"
+            android:entryValues="@array/themeValues"
             android:key="@string/key_theme"
             android:persistent="false"
+            android:summary="%s"
             android:title="@string/title_theme" />
         <SwitchPreference
             android:key="@string/key_fixed_size"

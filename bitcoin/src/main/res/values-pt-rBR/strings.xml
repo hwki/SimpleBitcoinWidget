@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="widget_name">Widget Simples</string>
     <string name="new_widget">Novo %s Widget</string>
-    <string name="default_theme">Tema Claro</string>
 
     <string name="title_fixed_size">Tamanho De Texto Fixo</string>
     <string name="title_data">Data</string>
@@ -31,7 +30,7 @@
     <string name="summary_rate">Avalie na Google Play</string>
     <string name="summary_units">Mostrar em %s</string>
 
-    <string-array name="themes">
+    <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Tema Claro</item>
         <item>Tema Escuro</item>
         <item>Transparente</item>
