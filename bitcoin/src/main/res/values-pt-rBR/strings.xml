@@ -2,6 +2,8 @@
     <string name="widget_name">Widget Simples</string>
     <string name="new_widget">Novo %s Widget</string>
 
+    <string name="select_coin">Selecione Moeda</string>
+
     <string name="title_fixed_size">Tamanho De Texto Fixo</string>
     <string name="title_data">Data</string>
     <string name="title_style">Estilo</string>
@@ -15,6 +17,7 @@
     <string name="title_icon">Mostrar %s ícone</string>
     <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
+    <string name="title_preview">Prévia</string>
 
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
     <plurals name="summary_refresh_interval_minute">
@@ -64,5 +67,6 @@
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
     <string name="error_exchange_removed">Essa exchange não está mais disponível</string>
     <string name="error_retrieving_value">Não foi possível exibir o valor dessa exchange</string>
+    <string name="save">Salve</string>
 
 </resources>

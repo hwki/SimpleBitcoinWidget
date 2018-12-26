@@ -1,73 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="bitcoinwidget">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="bitcoinwidget">
     <PreferenceCategory
-        android:key="@string/key_data"
-        android:title="@string/title_data">
+        app:iconSpaceReserved="false"
+        app:key="@string/key_data"
+        app:title="@string/title_data">
         <ListPreference
-            android:key="@string/key_refresh_interval"
-            android:entries="@array/intervals"
-            android:entryValues="@array/intervalValues"
-            android:defaultValue="30"
-            android:persistent="false"
-            android:title="@string/title_refresh_interval" />
+            app:iconSpaceReserved="false"
+            app:key="@string/key_refresh_interval"
+            app:entries="@array/intervals"
+            app:entryValues="@array/intervalValues"
+            app:defaultValue="30"
+            app:persistent="false"
+            app:title="@string/title_refresh_interval" />
         <ListPreference
-            android:key="@string/key_currency"
-            android:persistent="false"
-            android:summary="@string/summary_currency"
-            android:title="@string/title_currency" />
+            app:iconSpaceReserved="false"
+            app:key="@string/key_currency"
+            app:persistent="false"
+            app:summary="@string/summary_currency"
+            app:title="@string/title_currency" />
         <ListPreference
-            android:defaultValue="0"
-            android:key="@string/key_exchange"
-            android:summary="@string/summary_exchange"
-            android:persistent="false"
-            android:title="@string/title_exchange" />
+            app:iconSpaceReserved="false"
+            app:defaultValue="0"
+            app:key="@string/key_exchange"
+            app:summary="@string/summary_exchange"
+            app:persistent="false"
+            app:title="@string/title_exchange" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:key="@string/key_style"
-        android:title="@string/title_style">
+        app:iconSpaceReserved="false"
+        app:key="@string/key_style"
+        app:title="@string/title_style">
         <ListPreference
-            android:key="@string/key_units"
-            android:persistent="false"
-            android:summary="@string/summary_units"
-            android:title="@string/title_units"/>
+            app:iconSpaceReserved="false"
+            app:key="@string/key_units"
+            app:isPreferenceVisible="false"
+            app:persistent="false"
+            app:summary="@string/summary_units"
+            app:title="@string/title_units"/>
         <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/key_icon"
-            android:persistent="false"
-            android:title="@string/title_icon"/>
+            app:iconSpaceReserved="false"
+            app:defaultValue="true"
+            app:key="@string/key_icon"
+            app:persistent="false"
+            app:title="@string/title_icon"/>
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="@string/key_decimals"
-            android:persistent="false"
-            android:title="@string/title_decimals" />
+            app:iconSpaceReserved="false"
+            app:defaultValue="false"
+            app:key="@string/key_decimals"
+            app:persistent="false"
+            app:title="@string/title_decimals" />
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="@string/key_label"
-            android:persistent="false"
-            android:title="@string/title_label" />
+            app:iconSpaceReserved="false"
+            app:defaultValue="false"
+            app:key="@string/key_label"
+            app:persistent="false"
+            app:title="@string/title_label" />
         <ListPreference
-            android:defaultValue="Light"
-            android:dialogTitle="@string/title_theme"
-            android:entries="@array/themes"
-            android:entryValues="@array/themeValues"
-            android:key="@string/key_theme"
-            android:persistent="false"
-            android:summary="%s"
-            android:title="@string/title_theme" />
-        <SwitchPreference
-            android:key="@string/key_fixed_size"
-            android:defaultValue="false"
-            android:title="@string/title_fixed_size"
-            android:summary="@string/summary_fixed_size"
+            app:iconSpaceReserved="false"
+            app:defaultValue="Light"
+            app:dialogTitle="@string/title_theme"
+            app:entries="@array/themes"
+            app:entryValues="@array/themeValues"
+            app:key="@string/key_theme"
+            app:persistent="false"
+            app:summary="%s"
+            app:title="@string/title_theme" />
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:key="@string/key_fixed_size"
+            app:defaultValue="false"
+            app:title="@string/title_fixed_size"
+            app:summary="@string/summary_fixed_size"
             />
     </PreferenceCategory>
     <PreferenceCategory
-        android:key="@string/key_other"
-        android:title="@string/title_other">
+        app:iconSpaceReserved="false"
+        app:key="@string/key_other"
+        app:title="@string/title_other">
         <Preference
-            android:key="@string/key_rate"
-            android:summary="@string/summary_rate"
-            android:title="@string/title_rate" />
+            app:iconSpaceReserved="false"
+            app:key="@string/key_rate"
+            app:summary="@string/summary_rate"
+            app:title="@string/title_rate" />
     </PreferenceCategory>
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

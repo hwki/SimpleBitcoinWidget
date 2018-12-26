@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
     <string name="widget_name">Simple Widget</string>
     <string name="new_widget">New %s Widget</string>
+    <string name="select_coin">Select Coin</string>
 
     <string name="key_other" translatable="false">other</string>
     <string name="key_style" translatable="false">style</string>
@@ -31,6 +32,7 @@
     <string name="title_icon">Show %s icon</string>
     <string name="title_decimals">Always show decimals</string>
     <string name="title_units">Denomination</string>
+    <string name="title_preview">Preview</string>
 
     <string name="summary_fixed_size">Keep text size consistent across all widgets (global setting)</string>
     <plurals name="summary_refresh_interval_minute">
@@ -90,5 +92,6 @@
     <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
     <string name="error_exchange_removed">This exchange is no longer available</string>
     <string name="error_retrieving_value">Unable to retrieve value from exchange</string>
+    <string name="save">Save</string>
 
 </resources>
