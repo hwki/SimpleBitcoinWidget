@@ -27,6 +27,7 @@ internal object ExchangeHelper {
                     CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
             .build()
 
+    @Suppress("unused")
     @Throws(IOException::class)
     fun getFromBitcoinCharts(symbol: String): String? {
         val array = getJsonArray("https://api.bitcoincharts.com/v1/markets.json")

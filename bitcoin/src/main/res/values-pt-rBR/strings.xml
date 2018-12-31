@@ -65,8 +65,11 @@
     <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
     <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
-    <string name="error_exchange_removed">Essa exchange não está mais disponível</string>
-    <string name="error_retrieving_value">Não foi possível exibir o valor dessa exchange</string>
+
     <string name="save">Salve</string>
+    <string name="button_settings">Preferências</string>
+    <string name="title_warning">Aviso</string>
+    <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
+    <string name="warning_battery_saver">O aplicativo não será atualizado porque o protetor de bateria está ativado no momento.</string>
 
 </resources>

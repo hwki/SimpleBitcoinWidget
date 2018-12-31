@@ -87,7 +87,8 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<View>(R.id.previewLabel).visibility = View.VISIBLE
         findViewById<View>(R.id.previewLayout).visibility = View.VISIBLE
         if (addFragment) {
-            supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, SettingsFragment.newInstance(data, widgetId)).commit()
+            val settingsFragment = SettingsFragment.newInstance(data, widgetId)
+            supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, settingsFragment, "settings").commit()
         }
     }
 

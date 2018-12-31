@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:aapt="http://schemas.android.com/aapt"
-        android:width="108dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="108dp"
         android:height="108dp"
         android:viewportWidth="207.01755"
         android:viewportHeight="207.01755">
@@ -53,7 +54,8 @@
         3.26672,-3.26652c1.55291,0 3.26672,-0.30974 4.67079,-1.09011c2.64302,-1.55271
         4.208,-4.35663 4.208,-7.31321s-1.55693,-5.7605 -4.208,-7.31341c-1.24699,-0.78038
         -2.8001,-1.09011 -4.20357,-1.09011c-1.39603,-0.00805 -2.961,0.30974
-        -4.19995,1.08207" />
+        -4.19995,1.08207"
+                tools:ignore="VectorPath" />
         </group>
         <group
             android:translateX="72.36516"
@@ -138,7 +140,8 @@
     6.850608,1.194199 8.68374,4.096463 0.347764,0.684593 0.383397,1.487346
     0.19426,2.220537 z m 1.086,-11.312 c -0.987247,3.66189 -7.553066,2.646928
     -8.950614,0.930102 0.538871,-2.161034 1.077743,-4.322068 1.616614,-6.483102
-    2.844001,0.700399 8.140606,1.475869 7.334,5.553 z" />
+    2.844001,0.700399 8.140606,1.475869 7.334,5.553 z"
+                tools:ignore="VectorPath" />
         </group>
         </group>
 
