@@ -1,10 +1,10 @@
 package com.brentpanther.bitcoinwidget
 
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Serializable
-import java.util.ArrayList
 import java.util.Arrays
 import java.util.Currency
 import java.util.HashMap
@@ -17,10 +17,7 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
     // only return currencies that we know about
     val currencies: Array<String>
         get() {
-            val currencyNames = ArrayList<String>()
-            for (currency in Currency.getAvailableCurrencies()) {
-                currencyNames.add(currency.currencyCode)
-            }
+            val currencyNames = Currency.getAvailableCurrencies().map { it.currencyCode}.toMutableList()
             currencyNames.addAll(Coin.COIN_NAMES)
             currencyNames.retainAll(currencyExchange.keys)
             currencyNames.sortWith(Comparator { o1, o2 ->
@@ -41,9 +38,9 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
             return if (currencyExchange.isEmpty()) null else currencyExchange.keys.iterator().next()
         }
 
-    internal inner class JsonExchangeObject {
+    internal inner class JsonExchangeObject : Serializable {
 
-        lateinit var exchanges: List<JsonExchange>
+        private lateinit var exchanges: List<JsonExchange>
 
         fun loadCurrencies(coin: String) {
             exchanges.forEach { exchange ->
@@ -55,29 +52,32 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
         }
 
         fun getExchangeCoinName(exchange: String, coin: String): String? {
-            return exchanges.filter {it.name == exchange}.firstOrNull {it.coin_overrides != null}
-                    ?.coin_overrides?.get(coin)
+            return exchanges.filter {it.name == exchange}.firstOrNull {it.coinOverrides != null}
+                    ?.coinOverrides?.get(coin)
         }
 
         fun getExchangeCurrencyName(exchange: String, currency: String): String? {
-            return exchanges.filter { it.name == exchange }.firstOrNull { it.currency_overrides != null}
-                    ?.currency_overrides?.get(currency)
+            return exchanges.filter { it.name == exchange }.firstOrNull { it.currencyOverrides != null}
+                    ?.currencyOverrides?.get(currency)
         }
+
     }
 
-    internal inner class JsonExchange {
+    internal inner class JsonExchange : Serializable {
 
         lateinit var name: String
-        lateinit var coins: List<JsonCoin>
-        var currency_overrides: Map<String, String>? = null
-        var coin_overrides: Map<String, String>? = null
+        private lateinit var coins: List<JsonCoin>
+        @SerializedName("currency_overrides")
+        var currencyOverrides: Map<String, String>? = null
+        @SerializedName("coin_overrides")
+        var coinOverrides: Map<String, String>? = null
 
         fun loadExchange(coin: String): List<String> {
            return coins.firstOrNull { it.name == coin}?.currencies ?: listOf()
         }
     }
 
-    internal inner class JsonCoin {
+    internal inner class JsonCoin : Serializable {
         lateinit var name: String
         lateinit var currencies: List<String>
     }

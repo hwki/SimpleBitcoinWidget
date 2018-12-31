@@ -6,13 +6,18 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.DialogFragment
 import androidx.preference.*
 
-class SettingsFragment : PreferenceFragmentCompat() {
+
+class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.NoticeDialogListener {
 
     private lateinit var data: ExchangeData
     private var widgetId: Int = 0
@@ -25,6 +30,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var label: TwoStatePreference
     private lateinit var theme: ListPreference
     private var fixedSize: Boolean = false
+    private var checkDataSaver: Boolean = true
+    private var checkBatterySaver: Boolean = true
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         saveAndUpdate(true)
@@ -195,6 +202,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun save() {
+        if (checkDataSaver && !checkDataSaver()) return
+        if (checkBatterySaver && !checkBatterySaver()) return
         saveValues(false)
         requireActivity().setResult(Activity.RESULT_OK)
         val newFixedSize = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(getString(R.string.key_fixed_size), false)
@@ -204,7 +213,45 @@ class SettingsFragment : PreferenceFragmentCompat() {
         requireActivity().finish()
     }
 
+    private fun checkBatterySaver(): Boolean {
+        if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
+            // user has battery saver on, warn that widget will be affected
+            val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_battery_saver, CODE_BATTERY_SAVER, false)
+            dialogFragment.show(requireFragmentManager(), "dialog")
+            return false
+        }
+        return true
+    }
+
+    private fun checkDataSaver(): Boolean {
+        if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
+            // user has data saver on, show dialog asking for permission to whitelist
+            val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
+            dialogFragment.show(requireFragmentManager(), "dialog")
+            return false
+        }
+        return true
+    }
+
+    override fun onDialogPositiveClick(code: Int) {
+        (requireFragmentManager().findFragmentByTag("dialog") as DialogFragment).dismissAllowingStateLoss()
+        when (code) {
+            CODE_BATTERY_SAVER -> checkBatterySaver = false
+            CODE_DATA_SAVER -> checkDataSaver = false
+        }
+        save()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onDialogNegativeClick() {
+        startActivity(Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
+                Uri.parse("package:" + requireActivity().packageName)))
+    }
+
     companion object {
+
+        private const val CODE_DATA_SAVER = 1
+        private const val CODE_BATTERY_SAVER = 2
 
         internal fun newInstance(data: ExchangeData, widgetId: Int): SettingsFragment {
             val fragment = SettingsFragment()
@@ -215,7 +262,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             return fragment
         }
     }
-
 
 }
 

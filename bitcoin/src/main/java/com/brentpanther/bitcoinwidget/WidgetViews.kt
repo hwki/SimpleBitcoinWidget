@@ -28,7 +28,7 @@ internal object WidgetViews {
         } ?: putValue(context, views, context.getString(R.string.value_unknown), prefs)
     }
 
-    private fun putValue(context: Context, views: RemoteViews, text: String, prefs: Prefs): Float {
+    fun putValue(context: Context, views: RemoteViews, text: String, prefs: Prefs): Float {
         val useAutoSizing = WidgetApplication.instance.useAutoSizing()
         val priceView = R.id.price
         val priceAutoSizeView = R.id.priceAutoSize

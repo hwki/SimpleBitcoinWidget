@@ -22,6 +22,7 @@ class UpdatePriceService : JobIntentService() {
         try {
             updateValue(applicationContext, views, prefs)
         } catch (e: IllegalArgumentException) {
+            WidgetViews.putValue(applicationContext, views, applicationContext.getString(R.string.value_exchange_removed), prefs)
             appWidgetManager.updateAppWidget(appWidgetId, views)
             return
         }
@@ -56,17 +57,15 @@ class UpdatePriceService : JobIntentService() {
             } catch (e: IllegalArgumentException) {
                 throw e
             } catch (ignored: Exception) {
+                val lastUpdate = prefs.lastUpdate
+                // if its been "a while" since the last successful update, gray out the icon.
+                val isOld = System.currentTimeMillis() - lastUpdate > 1000 * 90 * prefs.interval
+                if (isOld) {
+                    WidgetViews.setLastText(context, views, prefs)
+                }
+                WidgetViews.setOld(context, views, isOld, prefs)
+                return null
             }
-
-            val lastUpdate = prefs.lastUpdate
-            // if its been "a while" since the last successful update, gray out the icon.
-            var isOld = System.currentTimeMillis() - lastUpdate > 1000 * 90 * prefs.interval
-            isOld = false
-            if (isOld) {
-                WidgetViews.setLastText(context, views, prefs)
-            }
-            WidgetViews.setOld(context, views, isOld, prefs)
-            return null
         }
     }
 
