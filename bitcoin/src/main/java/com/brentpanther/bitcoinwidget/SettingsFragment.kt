@@ -54,7 +54,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     }
 
     override fun onSaveInstanceState(@NonNull outState: Bundle) {
-        outState.putString("refresh", refresh.value)
+        with(outState) {
+            putString("refresh", refresh.value)
+            putString("currency", currency.value)
+            putString("exchange", exchange.value)
+            putBoolean("icon", icon.isChecked)
+            putBoolean("decimals", icon.isChecked)
+            putBoolean("label", label.isChecked)
+            putString("theme", theme.value)
+            putString("units", units.value)
+        }
         super.onSaveInstanceState(outState)
     }
 
@@ -78,10 +87,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         units = findPreference(getString(R.string.key_units)) as ListPreference
         val rate = findPreference(getString(R.string.key_rate)) as Preference
 
-        val refreshValue = bundle?.getString("refresh")
-        if (refreshValue != null) refresh.value = refreshValue
-
         // refresh option
+        bundle?.getString("refresh")?.let {refresh.value = it}
         setRefresh(refresh.value.toInt())
         refresh.setOnPreferenceChangeListener { _, newValue ->
             setRefresh((newValue as String).toInt())
@@ -97,10 +104,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             requireActivity().finish()
             return
         }
-        currency.value = defaultCurrency
+        currency.value = bundle?.getString("currency") ?: defaultCurrency
 
         // exchange option
-        setExchange(defaultCurrency)
+        setExchange(currency.value)
+        bundle?.getString("exchange")?.let { exchange.value = it }
         currency.setOnPreferenceChangeListener { _, newValue ->
             setExchange(newValue as String)
             saveAndUpdate(currency, newValue, true)
@@ -109,15 +117,19 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
 
         // icon
         icon.title = getString(R.string.title_icon, data.coin.name)
+        bundle?.getBoolean("bundle")?.let { icon.isChecked = it }
         icon.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(icon, newValue, false) }
 
         // decimals
+        bundle?.getBoolean("decimals")?.let { decimals.isChecked = it }
         decimals.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(decimals, newValue, true) }
 
         // exchange label
+        bundle?.getBoolean("label")?.let { label.isChecked = it }
         label.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(label, newValue, false) }
 
         // theme
+        bundle?.getString("theme")?.let { theme.value = it }
         theme.setOnPreferenceChangeListener { _, newValue ->
             if ("DayNight" == newValue || "Transparent DayNight" == newValue) {
                 val service = requireActivity().getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
@@ -141,7 +153,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         val unitNames = data.coin.unitNames
         if (unitNames.isNotEmpty()) {
             findPreference<Preference>(getString(R.string.key_units)).isVisible = true
-            units.value = unitNames[0]
+            units.value = bundle?.getString("units") ?: unitNames[0]
             units.entries = unitNames
             units.entryValues = unitNames
             units.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(units, newValue, true) }
@@ -168,9 +180,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     }
 
     private fun setExchange(currency: String) {
-        exchange.entryValues = data.getExchanges(currency)
-        exchange.entries = exchange.entryValues.map { Exchange.valueOf(it.toString()).exchangeName }.toTypedArray()
-        exchange.value = data.getDefaultExchange(currency)
+        with (exchange) {
+            entryValues = data.getExchanges(currency)
+            entries = entryValues.map { Exchange.valueOf(it.toString()).exchangeName }.toTypedArray()
+            value = data.getDefaultExchange(currency)
+        }
     }
 
     private fun saveAndUpdate(pref: ListPreference, newValue: Any, refreshValue: Boolean): Boolean {
