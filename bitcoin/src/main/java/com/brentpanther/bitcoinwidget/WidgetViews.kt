@@ -51,7 +51,7 @@ internal object WidgetViews {
             if (availableSize == null) {
                 views.setTextViewText(priceView, text)
             } else {
-                textSize = TextSizer.getTextSize(context, text, availableSize)
+                textSize = TextSizer.getTextSize(context, text, availableSize, prefs.themeLayout)
                 textSize = adjustForFixedSize(context, prefs, textSize)
                 views.setTextViewTextSize(priceView, TypedValue.COMPLEX_UNIT_DIP, textSize)
                 views.setTextViewText(priceView, text)
@@ -74,7 +74,7 @@ internal object WidgetViews {
                 if (availableSize == null) {
                     views.setTextViewText(exchangeView, shortName)
                 } else {
-                    val labelSize = TextSizer.getLabelSize(context, shortName!!, availableSize)
+                    val labelSize = TextSizer.getLabelSize(context, shortName!!, availableSize, prefs.themeLayout)
                     views.setTextViewTextSize(exchangeView, TypedValue.COMPLEX_UNIT_DIP, labelSize)
                     views.setTextViewText(exchangeView, shortName)
                 }
@@ -138,7 +138,7 @@ internal object WidgetViews {
             width *= .75
         }
         if (prefs.label) {
-            height *= TEXT_HEIGHT.toInt()
+            height *= TEXT_HEIGHT
         }
         return Pair.create((width * .9).toInt(), (height * .85).toInt())
     }
