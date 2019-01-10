@@ -17,8 +17,7 @@ class UpdatePriceService : JobIntentService() {
         val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
         val prefs = Prefs(appWidgetId)
         val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
-        val layout = prefs.themeLayout
-        val views = RemoteViews(applicationContext.packageName, layout)
+        val views = RemoteViews(applicationContext.packageName, prefs.themeLayout)
         try {
             updateValue(applicationContext, views, prefs)
         } catch (e: IllegalArgumentException) {

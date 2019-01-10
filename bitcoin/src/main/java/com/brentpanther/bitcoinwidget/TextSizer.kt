@@ -11,14 +11,14 @@ import android.widget.TextView
 @SuppressLint("InflateParams")
 internal object TextSizer {
 
-    fun getTextSize(context: Context, text: String, availableSize: Pair<Int, Int>): Float {
-        val vg = LayoutInflater.from(context).inflate(R.layout.widget_layout, null) as ViewGroup
+    fun getTextSize(context: Context, text: String, availableSize: Pair<Int, Int>, layout: Int): Float {
+        val vg = LayoutInflater.from(context).inflate(layout, null) as ViewGroup
         val textView = vg.findViewById<TextView>(R.id.price)
         return getHighestInBounds(textView, text, availableSize.first.toFloat(), availableSize.second.toFloat())
     }
 
-    fun getLabelSize(context: Context, text: String, availableSize: Pair<Int, Int>): Float {
-        val vg = LayoutInflater.from(context).inflate(R.layout.widget_layout, null) as ViewGroup
+    fun getLabelSize(context: Context, text: String, availableSize: Pair<Int, Int>, layout: Int): Float {
+        val vg = LayoutInflater.from(context).inflate(layout, null) as ViewGroup
         val textView = vg.findViewById<TextView>(R.id.exchange)
         return getHighestInBounds(textView, text, availableSize.first.toFloat(), availableSize.second.toFloat())
     }
