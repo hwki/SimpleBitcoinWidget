@@ -156,7 +156,7 @@ internal object WidgetViews {
             // icon is 25% of width
             width *= .75
         }
-        height *= ((1 - TEXT_HEIGHT) / 2).toInt()
+        height *= ((1 - TEXT_HEIGHT) / 2)
         return Pair.create((width * .9).toInt(), (height * .75).toInt())
     }
 
