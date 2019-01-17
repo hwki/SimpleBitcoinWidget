@@ -125,7 +125,7 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
 
     companion object {
 
-        internal var COIN_NAMES: SortedSet<String> = Coin.values().map { it.coinName }.toSortedSet()
+        internal var COIN_NAMES: SortedSet<String> = Coin.values().map { it.name }.toSortedSet()
 
         fun getVirtualCurrencyFormat(currency: String): String {
             return when (currency) {

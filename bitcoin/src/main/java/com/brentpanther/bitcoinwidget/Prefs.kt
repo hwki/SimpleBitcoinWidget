@@ -30,7 +30,11 @@ internal class Prefs(val widgetId: Int) {
 
     val exchange: Exchange
         get() {
-            return Exchange.valueOf(getValue(EXCHANGE) ?: return Exchange.values()[0])
+            return try {
+                Exchange.valueOf(getValue(EXCHANGE) ?: return Exchange.values()[0])
+            } catch (e: IllegalArgumentException) {
+                Exchange.values()[0]
+            }
         }
 
     val exchangeName: String?

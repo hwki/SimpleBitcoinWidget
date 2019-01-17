@@ -12,7 +12,9 @@ import kotlin.Comparator
 
 
 internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
+
     private val obj: JsonExchangeObject
+    var currencyExchange: MutableMap<String, MutableList<String>> = HashMap()
 
     // only return currencies that we know about
     val currencies: Array<String>
@@ -38,18 +40,9 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
             return if (currencyExchange.isEmpty()) null else currencyExchange.keys.iterator().next()
         }
 
-    internal inner class JsonExchangeObject : Serializable {
+    inner class JsonExchangeObject : Serializable {
 
-        private lateinit var exchanges: List<JsonExchange>
-
-        fun loadCurrencies(coin: String) {
-            exchanges.forEach { exchange ->
-                exchange.loadExchange(coin).forEach { currency ->
-                    currencyExchange.getOrPut(currency) { mutableListOf() }
-                    currencyExchange[currency]?.add(exchange.name)
-                }
-            }
-        }
+        lateinit var exchanges: List<JsonExchange>
 
         fun getExchangeCoinName(exchange: String, coin: String): String? {
             return exchanges.filter {it.name == exchange}.firstOrNull {it.coinOverrides != null}
@@ -84,8 +77,7 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
 
     init {
         this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
-        currencyExchange = HashMap()
-        this.obj.loadCurrencies(coin.name)
+        loadCurrencies(coin.name)
     }
 
     fun getExchanges(currency: String): Array<String> {
@@ -112,9 +104,17 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
         return obj.getExchangeCurrencyName(exchange, currency)
     }
 
+    private fun loadCurrencies(coin: String) {
+        for (exchange in obj.exchanges) {
+            for (currency in exchange.loadExchange(coin)) {
+                currencyExchange.getOrPut(currency) { arrayListOf() }
+                currencyExchange[currency]?.add(exchange.name)
+            }
+        }
+    }
+
     companion object {
 
-        private lateinit var currencyExchange: MutableMap<String, MutableList<String>>
         private val CURRENCY_TOP_ORDER = Arrays.asList("USD", "EUR", "BTC")
     }
 
