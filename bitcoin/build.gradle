@@ -8,8 +8,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 199
-        versionName "6.7.2"
+        versionCode 200
+        versionName "6.7.3"
     }
 
     buildTypes {
@@ -20,11 +20,6 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     testOptions {
