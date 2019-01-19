@@ -234,7 +234,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
 
         override fun getValue(coin: String, currency: String): String {
             val url = "https://coinbook.com/api/SimpleBitcoinWidget/price"
-            return getJsonObject(url).get("Bitcoin Price").asString
+            return getJsonObject(url).get("$coin-$currency").asString
         }
     },
     COINDELTA("Coindelta") {
