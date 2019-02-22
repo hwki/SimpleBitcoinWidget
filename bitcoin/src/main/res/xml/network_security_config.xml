@@ -3,5 +3,6 @@
     <base-config cleartextTrafficPermitted="false"/>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">zyado.com</domain>
+        <domain includeSubdomains="true">api.zb.cn</domain>
     </domain-config>
 </network-security-config>

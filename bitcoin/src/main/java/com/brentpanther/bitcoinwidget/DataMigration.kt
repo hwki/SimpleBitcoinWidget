@@ -206,7 +206,6 @@ internal object DataMigration {
                         if (DASH === coin) coinName = "dsh"
                         if (IOTA === coin) coinName = "iot"
                     }
-                    Exchange.BITMARKET24 -> if (BCH === coin) coinName = "BCC"
                     Exchange.BITMARKETPL -> if (BCH === coin) coinName = "BCC"
                     Exchange.BITTREX -> {
                         if (BCH === coin) coinName = "BCC"
