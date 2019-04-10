@@ -126,6 +126,12 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return null
         }
     },
+    BITSEVEN("BitSeven") {
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://api.bitseven.com/q/ticker/$coin"
+            return getJsonArray(url).get(2).asString
+        }
+    },
     BITSO("Bitso") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -314,13 +320,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getJsonObject(url).get("last").asString
         }
     },
-    COINROOM("Coinroom") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://coinroom.com/api/ticker/$coin/$currency"
-            return getJsonObject(url).get("last").asString
-        }
-    },
     COINSECURE("Coinsecure") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -385,20 +384,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
 
         override fun getValue(coin: String, currency: String): String {
             return getBlinkTradeValue(coin, currency)
-        }
-    },
-    GATECOIN("Gatecoin") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val tickers = getJsonObject("https://api.gatecoin.com/Public/LiveTickers").getAsJsonArray("tickers")
-            val pair = coin + currency
-            for (jsonElement in tickers) {
-                val obj = jsonElement as JsonObject
-                if (obj.get("currencyPair").asString == pair) {
-                    return obj.get("last").asString
-                }
-            }
-            return null
         }
     },
     GATEIO("Gate.io") {
