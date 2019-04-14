@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.RemoteViews
 import java.text.DecimalFormat
 import java.text.NumberFormat
+
 import java.util.*
 
 internal object WidgetViews {
@@ -191,8 +192,10 @@ internal object WidgetViews {
         }
         if (adjustedAmount < 1) {
             // how many decimal places should we show?
+            //originally displayed 7 decimal places. Changed (zeroes -1) to
+            //(zeroes - 2) in order to display 8 decimal places. Down to 1 satoshi
             var zeroes = nf.maximumFractionDigits
-            while (adjustedAmount * Math.pow(10.0, (zeroes - 1).toDouble()) < 1) {
+            while (adjustedAmount * Math.pow(10.0, (zeroes - 2).toDouble()) < 1) {
                 zeroes++
             }
             nf.maximumFractionDigits = zeroes

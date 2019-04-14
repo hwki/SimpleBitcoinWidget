@@ -89,6 +89,10 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
         override val drawables: IntArray
             get() = intArrayOf(ic_zec, ic_zec_bw, ic_zec, ic_zec_bw)
     },
+    XVG("Verge", ic_xvg) {
+        override val drawables: IntArray
+            get() = intArrayOf(ic_xvg, ic_xvg_bw, ic_xvg, ic_xvg_bw)
+    },
     DOGE("Dogecoin", ic_doge) {
         override val drawables: IntArray
             get() = intArrayOf(ic_doge, ic_doge_bw, ic_doge, ic_doge_bw)
