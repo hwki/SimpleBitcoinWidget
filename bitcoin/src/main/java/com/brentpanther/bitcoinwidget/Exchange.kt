@@ -292,7 +292,8 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
                     "NANO" to 1567,
                     "BTG" to 2083,
                     "ETC" to 1321,
-                    "ZEC" to 1437)
+                    "ZEC" to 1437,
+                    "XVG" to 693)
             val url = "https://api.coinmarketcap.com/v2/ticker/${map[coin]}/?convert=$currency"
             val quotes = getJsonObject(url).getAsJsonObject("data").getAsJsonObject("quotes")
             return quotes.getAsJsonObject(currency).get("price").asString
