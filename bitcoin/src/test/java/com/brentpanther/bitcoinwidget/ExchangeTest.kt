@@ -19,7 +19,6 @@ class ExchangeTest {
             val data = ExchangeData(coin, loadJSON())
             for (currency in data.currencies) {
                 for (exchange in data.getExchanges(currency)) {
-                    if (exchange == "COINMARKETCAP") continue
                     if (exchange == "BITCOIN_AVERAGE") continue
                     if (exchange == "BITCOIN_AVERAGE_GLOBAL") continue
                     try {

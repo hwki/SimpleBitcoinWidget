@@ -265,38 +265,43 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getJsonObject(url).get("last").asString
         }
     },
+    COINGECKO("CoinGecko") {
+        override fun getValue(coin: String, currency: String): String? {
+            // hardcoded map to id
+            val map = mapOf("BTC" to "bitcoin",
+                    "ETH" to "ethereum",
+                    "XRP" to "ripple",
+                    "BCH" to "bitcoin-cash",
+                    "LTC" to "litecoin",
+                    "NEO" to "neo",
+                    "ADA" to "cardano",
+                    "XLM" to "stellar",
+                    "IOTA" to "iota",
+                    "DASH" to "dash",
+                    "XMR" to "monero",
+                    "XEM" to "nem",
+                    "NANO" to "nano",
+                    "BTG" to "bitcoin-gold",
+                    "ETC" to "ethereum-classic",
+                    "ZEC" to "zcash",
+                    "XVG" to "verge",
+                    "DOGE" to "dogecoin",
+                    "DCR" to "decred",
+                    "PPC" to "peercoin",
+                    "VTC" to "vertcoin",
+                    "TRX" to "tron")
+            val id = map[coin]
+            val vs = currency.toLowerCase()
+            val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"
+            return getJsonObject(url).getAsJsonObject(id).get(vs).asString
+        }
+    },
     COINJAR("CoinJar") {
 
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.coinjar.com/v3/exchange_rates"
             val pair = "$coin$currency"
             return getJsonObject(url).getAsJsonObject("exchange_rates").getAsJsonObject(pair).get("midpoint").asString
-        }
-    },
-    COINMARKETCAP("CoinMarketCap") {
-
-        override fun getValue(coin: String, currency: String): String {
-            // hard coded ids of each coin :(
-            val map = mapOf("BTC" to 1,
-                    "ETH" to 1027,
-                    "XRP" to 52,
-                    "BCH" to 1831,
-                    "LTC" to 2,
-                    "NEO" to 1376,
-                    "ADA" to 2010,
-                    "XLM" to 512,
-                    "MIOTA" to 1720,
-                    "DASH" to 131,
-                    "XMR" to 328,
-                    "XEM" to 873,
-                    "NANO" to 1567,
-                    "BTG" to 2083,
-                    "ETC" to 1321,
-                    "ZEC" to 1437,
-                    "XVG" to 693)
-            val url = "https://api.coinmarketcap.com/v2/ticker/${map[coin]}/?convert=$currency"
-            val quotes = getJsonObject(url).getAsJsonObject("data").getAsJsonObject("quotes")
-            return quotes.getAsJsonObject(currency).get("price").asString
         }
     },
     COINMATE("CoinMate.io") {

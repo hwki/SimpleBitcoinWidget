@@ -12,7 +12,6 @@ internal object DataMigration {
 
     private const val EXCHANGE_OVERRIDE_MIGRATION = "exchange_override"
     private const val QUOINE_MIGRATION = "quoine"
-    private const val COINMARKETCAP_MIGRATION = "coinmarketcap"
     private const val BITTREX_TO_BCH = "bittrex_to_bch"
     private const val GDAX = "gdax_to_coinbasepro"
     private const val XRB_TO_NANO = "xrb_to_nano"
@@ -31,11 +30,6 @@ internal object DataMigration {
         if (!hasQuoineMigration) {
             migrateQuoine()
             prefs.edit().putBoolean(QUOINE_MIGRATION, true).apply()
-        }
-        val hasCoinMarketCapMigration = prefs.getBoolean(COINMARKETCAP_MIGRATION, false)
-        if (!hasCoinMarketCapMigration) {
-            migrateCoinMarketCapV2()
-            prefs.edit().putBoolean(COINMARKETCAP_MIGRATION, true).apply()
         }
         val hasBittrexBCHMigration = prefs.getBoolean(BITTREX_TO_BCH, false)
         if (!hasBittrexBCHMigration) {
@@ -151,24 +145,6 @@ internal object DataMigration {
             }
         }
     }
-
-    // coinmarketcap changed their API a lot
-    private fun migrateCoinMarketCapV2() {
-        val widgetIds = WidgetApplication.instance.widgetIds
-        for (widgetId in widgetIds) {
-            val prefs = Prefs(widgetId)
-            val exchange = prefs.getValue("exchange")
-            if ("COINMARKETCAP" == exchange) {
-                val exchangeCoinName = prefs.exchangeCoinName
-                if ("iota" == exchangeCoinName) {
-                    prefs.setValue("coin_custom", "MIOTA")
-                } else {
-                    prefs.setValue("coin_custom", prefs.coin.name)
-                }
-            }
-        }
-    }
-
 
     // spelled quoine wrong, so migrate users who have the prior bad spelling
     private fun migrateQuoine() {
