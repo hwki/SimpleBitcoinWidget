@@ -191,9 +191,8 @@ internal object WidgetViews {
             }
         }
         if (adjustedAmount < 1) {
-            // how many decimal places should we show?
-            //originally displayed 7 decimal places. Changed (zeroes -1) to
-            //(zeroes - 2) in order to display 8 decimal places. Down to 1 satoshi
+            // show at least 3 significant digits if small amount
+            // e.g. show 0.00000000243 instead of 0.00 but still show 1.25 instead of 1.25000003
             var zeroes = nf.maximumFractionDigits
             while (adjustedAmount * Math.pow(10.0, (zeroes - 2).toDouble()) < 1) {
                 zeroes++

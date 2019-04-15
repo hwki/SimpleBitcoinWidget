@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.brentpanther.bitcoinwidget
 
 import android.app.Activity

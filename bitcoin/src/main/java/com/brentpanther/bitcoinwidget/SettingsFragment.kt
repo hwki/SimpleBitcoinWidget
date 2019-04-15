@@ -76,16 +76,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     }
 
     private fun loadPreferences(bundle: Bundle?) {
-        refresh = findPreference(getString(R.string.key_refresh_interval)) as ListPreference
-        currency = findPreference(getString(R.string.key_currency)) as ListPreference
-        exchange = findPreference(getString(R.string.key_exchange)) as ListPreference
-        icon = findPreference(getString(R.string.key_icon)) as TwoStatePreference
-        decimals = findPreference(getString(R.string.key_decimals)) as TwoStatePreference
-        label = findPreference(getString(R.string.key_label)) as TwoStatePreference
-        theme = findPreference(getString(R.string.key_theme)) as ListPreference
-        val fixedSize = findPreference(getString(R.string.key_fixed_size)) as TwoStatePreference
-        units = findPreference(getString(R.string.key_units)) as ListPreference
-        val rate = findPreference(getString(R.string.key_rate)) as Preference
+        refresh = findPreference(getString(R.string.key_refresh_interval))!!
+        currency = findPreference(getString(R.string.key_currency))!!
+        exchange = findPreference(getString(R.string.key_exchange))!!
+        icon = findPreference(getString(R.string.key_icon))!!
+        decimals = findPreference(getString(R.string.key_decimals))!!
+        label = findPreference(getString(R.string.key_label))!!
+        theme = findPreference(getString(R.string.key_theme))!!
+        val fixedSize = findPreference(getString(R.string.key_fixed_size)) as? TwoStatePreference
+        units = findPreference(getString(R.string.key_units))!!
+        val rate = findPreference(getString(R.string.key_rate)) as? Preference
 
         // refresh option
         bundle?.getString("refresh")?.let {refresh.value = it}
@@ -138,7 +138,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             saveAndUpdate(theme, newValue, false)
         }
 
-        fixedSize.setOnPreferenceChangeListener { _, newValue ->
+        fixedSize?.setOnPreferenceChangeListener { _, newValue ->
             // if we are switching fixed text size on, clear out any pre-existing values
             if (newValue.toString().toBoolean()) {
                 val widgetIds = WidgetApplication.instance.widgetIds
@@ -152,7 +152,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         // units
         val unitNames = data.coin.unitNames
         if (unitNames.isNotEmpty()) {
-            findPreference<Preference>(getString(R.string.key_units)).isVisible = true
+            findPreference<Preference>(getString(R.string.key_units))?.isVisible = true
             units.value = bundle?.getString("units") ?: unitNames[0]
             units.entries = unitNames
             units.entryValues = unitNames
@@ -160,7 +160,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
 
         // rate
-        rate.setOnPreferenceClickListener {
+        rate?.setOnPreferenceClickListener {
             val appPackageName = requireActivity().packageName
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
