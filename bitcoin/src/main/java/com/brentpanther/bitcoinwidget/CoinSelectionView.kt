@@ -2,7 +2,6 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,7 +15,7 @@ class CoinSelectionView(context: Context) : LinearLayout(context) {
     init {
         View.inflate(context, R.layout.view_coin_selector, this)
         val height = resources.getDimension(R.dimen.coin_selection_height).toInt()
-        val layoutParams = ViewGroup.MarginLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
+        val layoutParams = MarginLayoutParams(LayoutParams.MATCH_PARENT, height)
         val verticalMargin = resources.getDimension(R.dimen.vertical_margin).toInt()
         val horizontalMargin = resources.getDimension(R.dimen.horizontal_margin).toInt()
         layoutParams.setMargins(horizontalMargin, verticalMargin, horizontalMargin, verticalMargin)
