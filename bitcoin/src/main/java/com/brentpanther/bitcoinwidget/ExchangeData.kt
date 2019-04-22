@@ -14,7 +14,7 @@ import kotlin.Comparator
 internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
 
     private val obj: JsonExchangeObject
-    var currencyExchange: MutableMap<String, MutableList<String>> = HashMap()
+    var currencyExchange: MutableMap<String, ArrayList<String>> = HashMap()
 
     // only return currencies that we know about
     val currencies: Array<String>

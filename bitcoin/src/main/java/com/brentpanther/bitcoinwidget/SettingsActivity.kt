@@ -49,7 +49,7 @@ class SettingsActivity : AppCompatActivity() {
         val extras = intent.extras!!
         widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         coin = Coin.valueOf(extras.getString(EXTRA_COIN, "BTC"))
-        title = getString(R.string.new_widget, coin.name)
+        title = getString(R.string.new_widget, coin.coinName)
         loadData(savedInstanceState == null)
         currentValue = AtomicReference<String>(null)
     }

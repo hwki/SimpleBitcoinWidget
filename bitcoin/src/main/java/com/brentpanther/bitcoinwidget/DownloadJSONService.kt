@@ -7,6 +7,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import androidx.annotation.Nullable
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
@@ -36,6 +37,8 @@ class DownloadJSONService : IntentService("Download JSON") {
                 .followSslRedirects(true)
                 .readTimeout(5, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
                 .build()
         val request = Request.Builder()
                 .addHeader("If-Modified-Since", lastModified!!)
