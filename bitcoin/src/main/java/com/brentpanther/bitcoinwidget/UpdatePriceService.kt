@@ -41,7 +41,7 @@ class UpdatePriceService : JobIntentService() {
 
         internal fun enqueueWork(context: Context, work: Intent) {
             DataMigration.migrate(context)
-            JobIntentService.enqueueWork(context, UpdatePriceService::class.java, JOB_ID, work)
+            enqueueWork(context, UpdatePriceService::class.java, JOB_ID, work)
         }
 
         @Throws(IllegalArgumentException::class)
