@@ -77,7 +77,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun populateData(addFragment: Boolean) {
-        val data = try {
+        ExchangeDataHelper.data = try {
             ExchangeData(coin, coinJSON)
         } catch (e: JsonSyntaxException) {
             // if any error parsing JSON, fall back to raw resource
@@ -89,7 +89,7 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<View>(R.id.previewLabel).visibility = View.VISIBLE
         findViewById<View>(R.id.previewLayout).visibility = View.VISIBLE
         if (addFragment) {
-            val settingsFragment = SettingsFragment.newInstance(data, widgetId)
+            val settingsFragment = SettingsFragment.newInstance(widgetId)
             supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, settingsFragment, "settings").commit()
         }
     }

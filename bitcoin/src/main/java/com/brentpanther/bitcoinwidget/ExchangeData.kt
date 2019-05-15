@@ -11,10 +11,10 @@ import java.util.HashMap
 import kotlin.Comparator
 
 
-internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
+class ExchangeData(val coin: Coin, json: InputStream) {
 
     private val obj: JsonExchangeObject
-    var currencyExchange: MutableMap<String, ArrayList<String>> = HashMap()
+    private var currencyExchange: MutableMap<String, ArrayList<String>> = HashMap()
 
     // only return currencies that we know about
     val currencies: Array<String>
@@ -40,7 +40,7 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
             return if (currencyExchange.isEmpty()) null else currencyExchange.keys.iterator().next()
         }
 
-    inner class JsonExchangeObject : Serializable {
+    inner class JsonExchangeObject {
 
         lateinit var exchanges: List<JsonExchange>
 
@@ -56,7 +56,7 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
 
     }
 
-    internal inner class JsonExchange : Serializable {
+    inner class JsonExchange {
 
         lateinit var name: String
         private lateinit var coins: List<JsonCoin>
@@ -117,5 +117,11 @@ internal class ExchangeData(val coin: Coin, json: InputStream) : Serializable {
 
         private val CURRENCY_TOP_ORDER = Arrays.asList("USD", "EUR", "BTC")
     }
+
+}
+
+object ExchangeDataHelper {
+
+    var data: ExchangeData? = null
 
 }

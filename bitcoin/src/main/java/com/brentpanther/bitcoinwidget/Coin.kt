@@ -55,7 +55,7 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
     },
     XLM("Stellar", ic_xlm) {
         override val drawables: IntArray
-            get() = intArrayOf(ic_xlm, ic_xlm_bw, ic_xlm, ic_xlm_bw)
+            get() = intArrayOf(ic_xlm, ic_xlm, ic_xlm, ic_xlm)
     },
     IOTA("Iota", ic_iota) {
         override val drawables: IntArray
