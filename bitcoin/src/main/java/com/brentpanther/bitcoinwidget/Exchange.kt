@@ -161,6 +161,15 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getJsonObject(url).getAsJsonObject("result").get("Last").asString
         }
     },
+    BLEUTRADE("Bleutrade") {
+
+        override fun getValue(coin: String, currency: String): String {
+            val pair = "${coin}_${currency}"
+            val url = "https://bleutrade.com/api/v3/public/getticker?market=$pair"
+            val result = getJsonObject(url).getAsJsonArray("result").get(0).asJsonObject
+            return result.get("Last").asString
+        }
+    },
     BRAZILIEX("Braziliex") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -289,7 +298,8 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
                     "DCR" to "decred",
                     "PPC" to "peercoin",
                     "VTC" to "vertcoin",
-                    "TRX" to "tron")
+                    "TRX" to "tron",
+                    "RDD" to "reddcoin")
             val id = map[coin]
             val vs = currency.toLowerCase()
             val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"

@@ -112,6 +112,10 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
     TRX("Tron", ic_trx) {
         override val drawables: IntArray
             get() = intArrayOf(ic_trx, ic_trx_bw, ic_trx, ic_trx_bw)
+    },
+    RDD("Reddcoin", ic_rdd) {
+        override val drawables: IntArray
+            get() = intArrayOf(ic_rdd, ic_rdd_bw, ic_rdd, ic_rdd_bw)
     };
 
     @get:DrawableRes
