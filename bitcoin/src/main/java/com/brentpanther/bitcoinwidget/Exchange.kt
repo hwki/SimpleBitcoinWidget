@@ -164,7 +164,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
     BLEUTRADE("Bleutrade") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_${currency}"
+            val pair = "${coin}_$currency"
             val url = "https://bleutrade.com/api/v3/public/getticker?market=$pair"
             val result = getJsonObject(url).getAsJsonArray("result").get(0).asJsonObject
             return result.get("Last").asString

@@ -18,13 +18,11 @@
             app:iconSpaceReserved="false"
             app:key="@string/key_currency"
             app:persistent="false"
-            app:summary="@string/summary_currency"
             app:title="@string/title_currency" />
         <ListPreference
             app:iconSpaceReserved="false"
             app:defaultValue="0"
             app:key="@string/key_exchange"
-            app:summary="@string/summary_exchange"
             app:persistent="false"
             app:title="@string/title_exchange" />
     </PreferenceCategory>
@@ -37,7 +35,6 @@
             app:key="@string/key_units"
             app:isPreferenceVisible="false"
             app:persistent="false"
-            app:summary="@string/summary_units"
             app:title="@string/title_units"/>
         <CheckBoxPreference
             app:iconSpaceReserved="false"
@@ -65,7 +62,6 @@
             app:entryValues="@array/themeValues"
             app:key="@string/key_theme"
             app:persistent="false"
-            app:summary="%s"
             app:title="@string/title_theme" />
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"

@@ -42,7 +42,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         setPreferencesFromResource(R.xml.preferences, rootKey)
         fixedSize = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(getString(R.string.key_fixed_size), false)
         setHasOptionsMenu(true)
-        data = arguments?.getSerializable("data") as ExchangeData
+        data = ExchangeDataHelper.data!!
         widgetId = arguments?.getInt("widgetId")!!
         loadPreferences(savedInstanceState)
     }
@@ -59,7 +59,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             putString("currency", currency.value)
             putString("exchange", exchange.value)
             putBoolean("icon", icon.isChecked)
-            putBoolean("decimals", icon.isChecked)
+            putBoolean("decimals", decimals.isChecked)
             putBoolean("label", label.isChecked)
             putString("theme", theme.value)
             putString("units", units.value)
@@ -105,6 +105,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             return
         }
         currency.value = bundle?.getString("currency") ?: defaultCurrency
+        currency.setSummaryProvider {
+            getString(R.string.summary_currency, (it as ListPreference).value)
+        }
 
         // exchange option
         setExchange(currency.value)
@@ -112,12 +115,17 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         currency.setOnPreferenceChangeListener { _, newValue ->
             setExchange(newValue as String)
             saveAndUpdate(currency, newValue, true)
+
         }
         exchange.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(exchange, newValue, true) }
+        exchange.setSummaryProvider {
+            val exchange = Exchange.valueOf((it as ListPreference).value)
+            getString(R.string.summary_exchange, exchange.exchangeName)
+        }
 
         // icon
         icon.title = getString(R.string.title_icon, data.coin.name)
-        bundle?.getBoolean("bundle")?.let { icon.isChecked = it }
+        bundle?.getBoolean("icon")?.let { icon.isChecked = it }
         icon.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(icon, newValue, false) }
 
         // decimals
@@ -136,6 +144,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 service.nightMode = UiModeManager.MODE_NIGHT_AUTO
             }
             saveAndUpdate(theme, newValue, false)
+        }
+        theme.setSummaryProvider {
+            (it as ListPreference).value
         }
 
         fixedSize?.setOnPreferenceChangeListener { _, newValue ->
@@ -157,6 +168,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             units.entries = unitNames
             units.entryValues = unitNames
             units.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(units, newValue, true) }
+            units.setSummaryProvider {
+                getString(R.string.summary_units, (it as ListPreference).value)
+            }
         }
 
         // rate
@@ -267,11 +281,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         private const val CODE_DATA_SAVER = 1
         private const val CODE_BATTERY_SAVER = 2
 
-        internal fun newInstance(data: ExchangeData, widgetId: Int): SettingsFragment {
+        internal fun newInstance(widgetId: Int): SettingsFragment {
             val fragment = SettingsFragment()
             val bundle = Bundle()
             bundle.putInt("widgetId", widgetId)
-            bundle.putSerializable("data", data)
             fragment.arguments = bundle
             return fragment
         }

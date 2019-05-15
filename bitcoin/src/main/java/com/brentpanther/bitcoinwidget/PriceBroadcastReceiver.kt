@@ -27,7 +27,7 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
         appWidgetManager.updateAppWidget(appWidgetId, views)
         val i = Intent(context, UpdatePriceService::class.java)
         i.putExtras(intent)
-        UpdatePriceService.enqueueWork(context, i)
+        UpdatePriceService.enqueueWork(WidgetApplication.instance.applicationContext, i)
     }
 
 }
