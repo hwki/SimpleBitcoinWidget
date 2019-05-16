@@ -82,7 +82,7 @@
     </string-array>
     <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
     <string name="value_exchange_removed" translatable="false">!</string>
-    <string name="json_last_modified" translatable="false">Mon, 15 Apr 2019 12:46:36 GMT</string>
+    <string name="json_last_modified" translatable="false">Thu, 16 May 2019 01:57:23 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>

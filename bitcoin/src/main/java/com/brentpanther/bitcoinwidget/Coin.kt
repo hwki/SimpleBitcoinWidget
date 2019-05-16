@@ -116,6 +116,10 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
     RDD("Reddcoin", ic_rdd) {
         override val drawables: IntArray
             get() = intArrayOf(ic_rdd, ic_rdd_bw, ic_rdd, ic_rdd_bw)
+    },
+    XTZ("Tezos", ic_xtz) {
+        override val drawables: IntArray
+            get() = intArrayOf(ic_xtz, ic_xtz_bw, ic_xtz, ic_xtz_bw)
     };
 
     @get:DrawableRes
@@ -133,7 +137,7 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
 
     companion object {
 
-        internal var COIN_NAMES: SortedSet<String> = Coin.values().map { it.name }.toSortedSet()
+        internal var COIN_NAMES: SortedSet<String> = values().map { it.name }.toSortedSet()
 
         fun getVirtualCurrencyFormat(currency: String): String {
             return when (currency) {
