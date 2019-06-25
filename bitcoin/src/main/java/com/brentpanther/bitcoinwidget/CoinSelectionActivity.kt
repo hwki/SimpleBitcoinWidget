@@ -37,14 +37,17 @@ class CoinSelectionActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) return
-        val broadcast = Intent(this, WidgetProvider::class.java)
-        broadcast.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(widgetId))
-        sendBroadcast(broadcast)
-        val intent = Intent()
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+        if (resultCode != Activity.RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, data)
+        } else {
+            val broadcast = Intent(this, WidgetProvider::class.java)
+            broadcast.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            broadcast.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(widgetId))
+            sendBroadcast(broadcast)
+            val intent = Intent()
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 }

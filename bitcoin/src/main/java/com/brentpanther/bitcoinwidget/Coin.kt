@@ -11,10 +11,7 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
 
     BTC("Bitcoin", ic_btc) {
         override val units: List<Unit>
-            get() = Arrays.asList(
-                    Unit("BTC", 1.0),
-                    Unit("mBTC", .001),
-                    Unit("μBTC", .000001))
+            get() = listOf(Unit("BTC", 1.0), Unit("mBTC", .001), Unit("μBTC", .000001))
         override val drawables: IntArray
             get() = intArrayOf(ic_btc, ic_btc_bw, ic_btc_dark, ic_btc_dark_bw)
     },
@@ -28,19 +25,14 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
     },
     BCH("Bitcoin Cash", ic_bch) {
         override val units: List<Unit>
-            get() = Arrays.asList(
-                    Unit("BCH", 1.0),
-                    Unit("mBCH", .001),
-                    Unit("μBCH", .000001))
+            get() = listOf(Unit("BCH", 1.0), Unit("mBCH", .001), Unit("μBCH", .000001))
 
         override val drawables: IntArray
             get() = intArrayOf(ic_bch, ic_bch_bw, ic_bch_dark, ic_bch_dark_bw)
     },
     LTC("Litecoin", ic_ltc) {
         override val units: List<Unit>
-            get() = Arrays.asList(
-                    Unit("LTC", 1.0),
-                    Unit("lites", .001))
+            get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
 
         override val drawables: IntArray
             get() = intArrayOf(ic_ltc_color, ic_ltc, ic_ltc_color, ic_ltc)
@@ -120,6 +112,10 @@ enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: I
     XTZ("Tezos", ic_xtz) {
         override val drawables: IntArray
             get() = intArrayOf(ic_xtz, ic_xtz_bw, ic_xtz, ic_xtz_bw)
+    },
+    BNB("Binance Coin", ic_bnb) {
+        override val drawables: IntArray
+            get() = intArrayOf(ic_bnb, ic_bnb, ic_bnb, ic_bnb)
     };
 
     @get:DrawableRes

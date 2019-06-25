@@ -26,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
     private var widgetId: Int = 0
     private lateinit var coin: Coin
     private var receiver: BroadcastReceiver? = null
-    private lateinit var currentValue: AtomicReference<String>
+    private lateinit var currentValue: AtomicReference<String?>
 
     private val coinJSON: InputStream
         get() {
@@ -51,7 +51,7 @@ class SettingsActivity : AppCompatActivity() {
         coin = Coin.valueOf(extras.getString(EXTRA_COIN, "BTC"))
         title = getString(R.string.new_widget, coin.coinName)
         loadData(savedInstanceState == null)
-        currentValue = AtomicReference<String>(null)
+        currentValue = AtomicReference(null)
     }
 
     private fun loadData(addFragment: Boolean) {
@@ -100,7 +100,7 @@ class SettingsActivity : AppCompatActivity() {
         if (refreshValue || currentValue.get() == null) {
             Thread { currentValue.set(UpdatePriceService.updateValue(this@SettingsActivity, views, prefs)) }.start()
         } else {
-            WidgetViews.setText(this, views, currentValue.get(), prefs)
+            WidgetViews.setText(this, views, currentValue.get() as String, prefs)
         }
     }
 

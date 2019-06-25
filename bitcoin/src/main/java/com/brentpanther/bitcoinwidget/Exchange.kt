@@ -374,20 +374,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return ((bid.toDouble() + ask.toDouble()) / 2).toString()
         }
     },
-    CRYPTONIT("Cryptonit") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://cryptonit.net/apiv2/rest/public/ccorder.json?bid_currency=${coin.toLowerCase()}&ask_currency=${currency.toLowerCase()}&ticker"
-            return getJsonObject(url).getAsJsonObject("rate").get("last").asString
-        }
-    },
-    CRYPTOPIA("Cryptopia") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://www.cryptopia.co.nz/api/GetMarket/${coin}_$currency"
-            return getJsonObject(url).getAsJsonObject("Data").get("LastPrice").asString
-        }
-    },
     EXMO("Exmo") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -645,7 +631,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getBlinkTradeValue(coin, currency)
         }
     },
-
     WYRE("Wyre") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -687,7 +672,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
 
     companion object {
 
-        private val ALL_EXCHANGE_NAMES = Exchange.values().map { it.name}.toMutableList()
+        private val ALL_EXCHANGE_NAMES = values().map { it.name}.toMutableList()
 
         fun getAllExchangeNames(): MutableList<String> {
             return ALL_EXCHANGE_NAMES.toMutableList()
