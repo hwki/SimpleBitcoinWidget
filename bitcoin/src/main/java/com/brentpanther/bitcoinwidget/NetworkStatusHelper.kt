@@ -11,7 +11,7 @@ import android.os.PowerManager
 object NetworkStatusHelper {
 
     fun checkBattery(context: Context): Int {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
             if (powerManager.isPowerSaveMode && !powerManager.isIgnoringBatteryOptimizations(context.packageName)) {
                 return R.string.error_restricted_battery_saver
@@ -21,10 +21,10 @@ object NetworkStatusHelper {
     }
 
     fun checkBackgroundData(context: Context): Int {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val restrictBackgroundStatus = connectivityManager.restrictBackgroundStatus
-            if (restrictBackgroundStatus == android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED) {
+            if (restrictBackgroundStatus == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED) {
                 return R.string.error_restricted_data_saver
             }
         }

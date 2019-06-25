@@ -5,7 +5,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import okhttp3.*
 import java.io.IOException
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 internal object ExchangeHelper {
@@ -57,7 +56,7 @@ internal object ExchangeHelper {
                 .followSslRedirects(true)
                 .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
-                .connectionSpecs(Arrays.asList(SPEC, ConnectionSpec.CLEARTEXT))
+                .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
                 .hostnameVerifier { _, _ -> true }.build()
         var builder: Request.Builder = Request.Builder()
                 .url(url)
