@@ -42,8 +42,7 @@ internal class Prefs(val widgetId: Int) {
 
     val themeLayout: Int
         get() {
-            val value = getValue(THEME) ?: return R.layout.widget_layout
-            return when (value) {
+            return when (getValue(THEME)) {
                 "Dark" -> R.layout.widget_layout_dark
                 "Transparent Dark" -> R.layout.widget_layout_transparent_dark
                 "DayNight" -> R.layout.widget_layout_auto

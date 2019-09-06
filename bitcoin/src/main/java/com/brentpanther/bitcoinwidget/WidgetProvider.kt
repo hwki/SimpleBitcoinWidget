@@ -7,8 +7,8 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.widget.RemoteViews
+import androidx.preference.PreferenceManager
 import java.util.*
 
 class WidgetProvider : AppWidgetProvider() {

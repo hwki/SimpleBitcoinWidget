@@ -3,10 +3,10 @@ package com.brentpanther.bitcoinwidget
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import android.preference.PreferenceManager
 import android.util.Log
 import androidx.annotation.Nullable
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.preference.PreferenceManager
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -46,17 +46,17 @@ class DownloadJSONService : IntentService("Download JSON") {
                 .build()
 
         val response = client.newCall(request).execute()
-        when (response.code()) {
+        when (response.code) {
             304 -> Log.d(TAG, "No changes found in JSON file.")
             200 -> {
                 Log.d(TAG, "Updated JSON file found.")
                 prefs.edit().putString(LAST_MODIFIED, response.header("Last-Modified")).apply()
-                val json = response.body()!!.bytes()
+                val json = response.body!!.bytes()
                 val os = openFileOutput(CURRENCY_FILE_NAME, Context.MODE_PRIVATE)
                 os.write(json)
                 os.close()
             }
-            else -> Log.d(TAG, "Retrieved status code: " + response.code())
+            else -> Log.d(TAG, "Retrieved status code: " + response.code)
         }
     }
 
