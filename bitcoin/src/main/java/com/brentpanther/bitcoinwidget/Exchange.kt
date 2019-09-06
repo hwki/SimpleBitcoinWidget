@@ -42,6 +42,13 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getJsonObject(url).get("last").asString
         }
     },
+    BITCLUDE("BitClude") {
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://api.bitclude.com/stats/ticker.json"
+            val obj = getJsonObject(url)
+            return obj.getAsJsonObject("${coin.toLowerCase()}_${currency.toLowerCase()}").get("last").asString
+        }
+    },
     BITCOIN_AVERAGE("Bitcoin Average", "BTC avg") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -86,8 +93,8 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.bithumb.com/public/ticker/$coin"
             val data = getJsonObject(url).getAsJsonObject("data")
-            val buy = data.get("buy_price").asString.toDouble()
-            val sell = data.get("sell_price").asString.toDouble()
+            val buy = data.get("opening_price").asString.toDouble()
+            val sell = data.get("closing_price").asString.toDouble()
             return ((buy + sell) / 2).toString()
         }
     },
@@ -97,13 +104,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             val url = "https://bitlish.com/api/v1/tickers"
             val pair = "$coin$currency".toLowerCase()
             return getJsonObject(url).getAsJsonObject(pair).get("last").asString
-        }
-    },
-    BITMARKETPL("BitMarket.pl") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://www.bitmarket.pl/json/$coin$currency/ticker.json"
-            return getJsonObject(url).get("last").asString
         }
     },
     BITMEX("BitMEX") {
@@ -322,13 +322,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return obj.getAsJsonObject("data").get("last").asString
         }
     },
-    COINNEST("Coinnest") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.coinnest.co.kr/api/pub/ticker?coin=${coin.toLowerCase()}"
-            return getJsonObject(url).get("last").asString
-        }
-    },
     COINONE("Coinone") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -455,7 +448,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
     KORBIT("Korbit") {
 
         override fun getValue(coin: String, currency: String): String {
-            val headers = Headers.of("User-Agent", "")
+            val headers = Headers.headersOf("User-Agent", "")
             val pair = "${coin}_$currency".toLowerCase()
             val url = "https://api.korbit.co.kr/v1/ticker?currency_pair=$pair"
             return getJsonObject(url, headers).get("last").asString
@@ -520,12 +513,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
         override fun getValue(coin: String, currency: String): String {
             val url = "https://www.mercadobitcoin.net/api/$coin/ticker/"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
-        }
-    },
-    NDAX("NDAX") {
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://ndax.io/api/returnticker"
-            return getJsonObject(url).getAsJsonObject("${coin}_$currency").get("last").asString
         }
     },
     NEGOCIECOINS("NegocieCoins", "Negocie") {

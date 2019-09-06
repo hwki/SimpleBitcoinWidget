@@ -19,7 +19,7 @@
     -27.571,-21.638 -23.295,-38.78 4.272,-17.145 21.635,-27.579 38.775,-23.305
     17.144,4.274 27.576,21.64 23.302,38.784 z">
                 <aapt:attr name="android:fillColor">
-                    <gradient xmlns:android="http://schemas.android.com/apk/res/android"
+                    <gradient
                         android:endX="3.5551904"
                         android:endY="-61.374856"
                         android:startX="-60.441726"

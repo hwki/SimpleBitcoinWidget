@@ -3,11 +3,11 @@ package com.brentpanther.bitcoinwidget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration
-import android.preference.PreferenceManager
 import android.util.Pair
 import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
+import androidx.preference.PreferenceManager
 import java.text.DecimalFormat
 import java.text.NumberFormat
 

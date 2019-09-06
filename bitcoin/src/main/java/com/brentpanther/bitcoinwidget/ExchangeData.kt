@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Serializable
-import java.util.Arrays
 import java.util.Currency
 import java.util.HashMap
 import kotlin.Comparator
@@ -115,7 +114,7 @@ class ExchangeData(val coin: Coin, json: InputStream) {
 
     companion object {
 
-        private val CURRENCY_TOP_ORDER = Arrays.asList("USD", "EUR", "BTC")
+        private val CURRENCY_TOP_ORDER = listOf("USD", "EUR", "BTC")
     }
 
 }

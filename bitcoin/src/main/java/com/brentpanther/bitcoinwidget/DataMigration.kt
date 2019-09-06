@@ -1,7 +1,7 @@
 package com.brentpanther.bitcoinwidget
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.brentpanther.bitcoinwidget.Coin.*
 
 
@@ -77,9 +77,8 @@ internal object DataMigration {
         val widgetIds = WidgetApplication.instance.widgetIds
         for (widgetId in widgetIds) {
             val prefs = Prefs(widgetId)
-            if (prefs.coin !== Coin.BCH) continue
-            val exchange = prefs.getValue("exchange")
-            when (exchange) {
+            if (prefs.coin !== BCH) continue
+            when (prefs.getValue("exchange")) {
                 "BITFINEX" -> when (prefs.coin) {
                     BCH -> prefs.setValue("coin_custom", "BAB")
                     DASH -> prefs.setValue("coin_custom", "DSH")
@@ -99,7 +98,7 @@ internal object DataMigration {
         val widgetIds = WidgetApplication.instance.widgetIds
         for (widgetId in widgetIds) {
             val prefs = Prefs(widgetId)
-            if (prefs.coin !== Coin.BCH) continue
+            if (prefs.coin !== BCH) continue
             when (prefs.unit) {
                 "BTC" -> prefs.setValue("units", "BCH")
                 "mBTC" -> prefs.setValue("units", "mBCH")
@@ -182,7 +181,6 @@ internal object DataMigration {
                         if (DASH === coin) coinName = "dsh"
                         if (IOTA === coin) coinName = "iot"
                     }
-                    Exchange.BITMARKETPL -> if (BCH === coin) coinName = "BCC"
                     Exchange.BITTREX -> {
                         if (BCH === coin) coinName = "BCC"
                         if ("USD" == currency) currencyName = "USDT"
