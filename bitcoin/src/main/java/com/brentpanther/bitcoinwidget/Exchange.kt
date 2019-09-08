@@ -448,7 +448,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
     KORBIT("Korbit") {
 
         override fun getValue(coin: String, currency: String): String {
-            val headers = Headers.of("User-Agent", "")
+            val headers = Headers.headersOf("User-Agent", "")
             val pair = "${coin}_$currency".toLowerCase()
             val url = "https://api.korbit.co.kr/v1/ticker?currency_pair=$pair"
             return getJsonObject(url, headers).get("last").asString
