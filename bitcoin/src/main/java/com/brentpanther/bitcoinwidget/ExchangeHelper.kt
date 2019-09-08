@@ -6,7 +6,6 @@ import com.google.gson.JsonObject
 import okhttp3.*
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
 
 internal object ExchangeHelper {
 
@@ -58,7 +57,7 @@ internal object ExchangeHelper {
                 .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
-                .hostnameVerifier(HostnameVerifier { _, _ -> true }).build()
+                .hostnameVerifier { _, _ -> true }.build()
         var builder: Request.Builder = Request.Builder()
                 .url(url)
         if (headers != null) {
@@ -67,7 +66,7 @@ internal object ExchangeHelper {
         val request = builder.build()
 
         val response = client.newCall(request).execute()
-        return response.body!!.string()
+        return response.body()!!.string()
     }
 
 }
