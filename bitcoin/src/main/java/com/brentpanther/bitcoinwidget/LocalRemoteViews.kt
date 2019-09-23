@@ -9,7 +9,7 @@ import android.widget.TextView
 import java.lang.ref.WeakReference
 
 
-class LocalRemoteViews internal constructor(activity: Activity, layoutId: Int) : RemoteViews(activity.packageName, layoutId) {
+class LocalRemoteViews(activity: Activity, layoutId: Int) : RemoteViews(activity.packageName, layoutId) {
 
     private val activityRef: WeakReference<Activity> = WeakReference(activity)
 
