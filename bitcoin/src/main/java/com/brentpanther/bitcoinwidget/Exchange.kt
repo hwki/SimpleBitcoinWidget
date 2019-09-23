@@ -5,7 +5,7 @@ import com.brentpanther.bitcoinwidget.ExchangeHelper.getJsonObject
 import com.google.gson.JsonObject
 import okhttp3.Headers
 
-internal enum class Exchange constructor(val exchangeName: String, shortName: String? = null) {
+internal enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
     ABUCOINS("Abucoins") {
 
@@ -28,6 +28,13 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getJsonObject(url).get("price").asString
         }
     },
+    BINANCE_US("Binance.us") {
+
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://api.binance.us/api/v3/ticker/price?symbol=$coin$currency"
+            return getJsonObject(url).get("price").asString
+        }
+    },
     BIT2C("Bit2C") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -43,6 +50,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
         }
     },
     BITCLUDE("BitClude") {
+
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://api.bitclude.com/stats/ticker.json"
             val obj = getJsonObject(url)
@@ -127,6 +135,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
         }
     },
     BITSEVEN("BitSeven") {
+
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://api.bitseven.com/q/ticker/$coin"
             return getJsonArray(url).get(2).asString
@@ -207,11 +216,13 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
         }
     },
     CEXIO("Cex.io") {
+
         override fun getValue(coin: String, currency: String): String {
             return getJsonObject("https://cex.io/api/last_price/$coin/$currency").get("lprice").asString
         }
     },
     CHILEBIT("ChileBit.net") {
+
         override fun getValue(coin: String, currency: String): String {
             return getBlinkTradeValue(coin, currency)
         }
@@ -245,21 +256,6 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
             return getJsonObject(url).get("$coin-$currency").asString
         }
     },
-    COINDELTA("Coindelta") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://coindelta.com/api/v1/public/getticker/"
-            val pair = "$coin-$currency".toLowerCase()
-            val array = getJsonArray(url)
-            for (jsonElement in array) {
-                val obj = jsonElement as JsonObject
-                if (obj.get("MarketName").asString == pair) {
-                    return obj.get("Last").asString
-                }
-            }
-            return null
-        }
-    },
     COINDESK("Coindesk") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -270,11 +266,12 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
     COINEGG("CoinEgg") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.coinegg.im/api/v1/ticker/region/${currency.toLowerCase()}?coin=${coin.toLowerCase()}"
+            val url = "https://api.coinegg.vip/api/v1/ticker/region/${currency.toLowerCase()}?coin=${coin.toLowerCase()}"
             return getJsonObject(url).get("last").asString
         }
     },
     COINGECKO("CoinGecko") {
+
         override fun getValue(coin: String, currency: String): String? {
             // hardcoded map to id
             val map = mapOf("BTC" to "bitcoin",
@@ -635,6 +632,7 @@ internal enum class Exchange constructor(val exchangeName: String, shortName: St
         }
     },
     ZB("ZB") {
+
         override fun getValue(coin: String, currency: String): String? {
             val url = "http://api.zb.cn/data/v1/ticker/?market=${coin.toLowerCase()}_${currency.toLowerCase()}"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString

@@ -7,7 +7,7 @@ import androidx.annotation.DrawableRes
 import com.brentpanther.bitcoinwidget.R.drawable.*
 import java.util.*
 
-enum class Coin constructor(val coinName: String, @param:DrawableRes val icon: Int) {
+enum class Coin(val coinName: String, @param:DrawableRes val icon: Int) {
 
     BTC("Bitcoin", ic_btc) {
         override val units: List<Unit>

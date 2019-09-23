@@ -21,6 +21,7 @@ class ExchangeTest {
                 for (exchange in data.getExchanges(currency)) {
                     if (exchange == "BITCOIN_AVERAGE") continue
                     if (exchange == "BITCOIN_AVERAGE_GLOBAL") continue
+                    if (exchange !in listOf("KUNA", "TRADESATOSHI")) continue
                     try {
                         var coinName = data.getExchangeCoinName(exchange, coin.name)
                         var currencyName = data.getExchangeCurrencyName(exchange, currency)

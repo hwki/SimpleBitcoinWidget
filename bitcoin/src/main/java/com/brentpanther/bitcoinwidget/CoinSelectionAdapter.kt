@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
-internal class CoinSelectionAdapter internal constructor(private val listener: ((coin: Coin) -> kotlin.Unit)?) : RecyclerView.Adapter<CoinSelectionAdapter.ViewHolder>() {
+internal class CoinSelectionAdapter(private val listener: ((coin: Coin) -> kotlin.Unit)?) : RecyclerView.Adapter<CoinSelectionAdapter.ViewHolder>() {
 
     private val coins: MutableList<Coin> = Coin.values().toMutableList()
 
