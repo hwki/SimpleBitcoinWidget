@@ -10,7 +10,6 @@ import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
 import java.text.DecimalFormat
 import java.text.NumberFormat
-
 import java.util.*
 import kotlin.math.min
 import kotlin.math.pow
@@ -26,12 +25,14 @@ internal object WidgetViews {
     }
 
     fun setLastText(context: Context, views: RemoteViews, prefs: Prefs) {
-        prefs.lastValue?.let {
-            putValue(context, views, it, prefs)
-        } ?: putValue(context, views, context.getString(R.string.value_unknown), prefs)
+        val lastUpdate = prefs.lastUpdate
+        // if its been "a while" since the last successful update, gray out the icon.
+        val isOld = System.currentTimeMillis() - lastUpdate > 1000 * 90 * prefs.interval
+        val value = prefs.lastValue ?: context.getString(R.string.value_unknown)
+        putValue(context, views, value, prefs, isOld)
     }
 
-    fun putValue(context: Context, views: RemoteViews, text: String, prefs: Prefs): Float {
+    fun putValue(context: Context, views: RemoteViews, text: String, prefs: Prefs, isOld: Boolean = false): Float {
         val useAutoSizing = WidgetApplication.instance.useAutoSizing()
         val priceView = R.id.price
         val priceAutoSizeView = R.id.priceAutoSize
@@ -39,15 +40,10 @@ internal object WidgetViews {
         val exchangeAutoSizeView = R.id.exchangeAutoSize
         var textSize = 0f
 
-        show(views, if (useAutoSizing) priceAutoSizeView else priceView)
-        hide(views, if (useAutoSizing) priceView else priceAutoSizeView)
+        views.show(if (useAutoSizing) priceAutoSizeView else priceView)
+        views.hide(if (useAutoSizing) priceView else priceAutoSizeView)
 
-        views.setViewVisibility(R.id.icon, if (prefs.showIcon()) View.VISIBLE else View.GONE)
-        if (prefs.showIcon()) {
-            val lightTheme = prefs.isLightTheme(context)
-            val drawables = prefs.coin.drawables
-            views.setImageViewResource(R.id.icon, if (lightTheme) drawables[0] else drawables[2])
-        }
+        Themer.updateTheme(context, views, prefs, isOld)
 
         if (!useAutoSizing) {
             val availableSize = getTextAvailableSize(context, prefs.widgetId)
@@ -64,8 +60,8 @@ internal object WidgetViews {
         }
 
         if (prefs.label) {
-            show(views, if (useAutoSizing) exchangeAutoSizeView else exchangeView, R.id.top_space)
-            hide(views, if (useAutoSizing) exchangeView else exchangeAutoSizeView)
+            views.show(if (useAutoSizing) exchangeAutoSizeView else exchangeView, R.id.top_space)
+            views.hide(if (useAutoSizing) exchangeView else exchangeAutoSizeView)
             val shortName = try {
                 prefs.exchange.shortName
             } catch (ignored: IllegalArgumentException) {
@@ -85,9 +81,9 @@ internal object WidgetViews {
                 views.setTextViewText(exchangeAutoSizeView, shortName)
             }
         } else {
-            hide(views, exchangeView, exchangeAutoSizeView, R.id.top_space)
+            views.hide(exchangeView, exchangeAutoSizeView, R.id.top_space)
         }
-        hide(views, R.id.loading)
+        views.hide(R.id.loading)
         return textSize
     }
 
@@ -205,27 +201,16 @@ internal object WidgetViews {
     }
 
     fun setLoading(views: RemoteViews) {
-        show(views, R.id.loading)
-        hide(views, R.id.price, R.id.priceAutoSize, R.id.icon, R.id.exchange, R.id.exchangeAutoSize)
+        views.show(R.id.loading)
+        views.hide(R.id.price, R.id.priceAutoSize, R.id.icon, R.id.exchange, R.id.exchangeAutoSize)
     }
 
-    private fun show(views: RemoteViews, vararg ids: Int) {
-        for (id in ids) views.setViewVisibility(id, View.VISIBLE)
+    private fun RemoteViews.hide(vararg ids: Int) {
+        for (id in ids) setViewVisibility(id, View.GONE)
     }
 
-    private fun hide(views: RemoteViews, vararg ids: Int) {
-        for (id in ids) views.setViewVisibility(id, View.GONE)
-    }
-
-    fun setOld(context: Context, views: RemoteViews, isOld: Boolean, prefs: Prefs) {
-        if (!prefs.showIcon()) return
-        val lightTheme = prefs.isLightTheme(context)
-        val drawables = prefs.coin.drawables
-        if (isOld) {
-            views.setImageViewResource(R.id.icon, if (lightTheme) drawables[1] else drawables[3])
-        } else {
-            views.setImageViewResource(R.id.icon, if (lightTheme) drawables[0] else drawables[2])
-        }
+    private fun RemoteViews.show(vararg ids: Int) {
+        for (id in ids) setViewVisibility(id, View.VISIBLE)
     }
 
 }

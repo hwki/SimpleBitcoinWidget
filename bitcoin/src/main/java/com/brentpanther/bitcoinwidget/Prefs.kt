@@ -2,7 +2,6 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
@@ -43,20 +42,16 @@ internal class Prefs(val widgetId: Int) {
     val themeLayout: Int
         get() {
             return when (getValue(THEME)) {
-                "Dark" -> R.layout.widget_layout_dark
-                "Transparent Dark" -> R.layout.widget_layout_transparent_dark
-                "DayNight" -> R.layout.widget_layout_auto
-                "Transparent DayNight" -> R.layout.widget_layout_transparent_auto
-                "Transparent" -> R.layout.widget_layout_transparent
-                else -> R.layout.widget_layout
+                "Light", "Dark", "DayNight" -> R.layout.widget_layout
+                else -> R.layout.widget_layout_transparent
             }
         }
 
+    val theme: String
+        get() = getValue(THEME) ?: "Light"
+
     val isTransparent: Boolean
-        get() {
-            val value = getValue(THEME)
-            return "Transparent" == value || "Transparent Dark" == value || "Transparent DayNight" == value
-        }
+        get() = theme in arrayOf("Transparent", "Transparent Dark", "Transparent DayNight")
 
     val unit: String?
         get() = getValue(UNITS)
@@ -73,15 +68,6 @@ internal class Prefs(val widgetId: Int) {
 
     val showDecimals: Boolean
         get() = getValue(SHOW_DECIMALS)?.toBoolean() ?: true
-
-    fun isLightTheme(context: Context): Boolean {
-        val themeLayout = themeLayout
-        if (themeLayout == R.layout.widget_layout_auto || themeLayout == R.layout.widget_layout_transparent_auto) {
-            val nightModeFlags = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            return nightModeFlags == Configuration.UI_MODE_NIGHT_NO
-        }
-        return themeLayout == R.layout.widget_layout || themeLayout == R.layout.widget_layout_transparent
-    }
 
     fun setLastUpdate() {
         setValue(LAST_UPDATE, "" + System.currentTimeMillis())

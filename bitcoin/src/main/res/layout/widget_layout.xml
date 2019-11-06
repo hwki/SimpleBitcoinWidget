@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_outer"
-    tools:targetApi="o"
-    android:padding="5dp">
+    android:id="@+id/outerParent"
+    android:padding="5dp"
+    tools:targetApi="o">
 
     <RelativeLayout
         android:id="@+id/parent"
@@ -22,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,15 +38,15 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:paddingEnd="2dp"
                 android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:visibility="gone" />
 
             <LinearLayout
-                android:layout_weight="3"
                 android:layout_width="0dp"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/top_space"
@@ -59,8 +60,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="70"
                     android:gravity="center"
-                    android:textColor="#888"
                     android:lines="1"
+                    android:textColor="#888"
                     android:textIsSelectable="false"
                     android:typeface="sans"
                     android:visibility="gone" />
@@ -70,11 +71,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="70"
-                    android:autoSizeTextType="uniform"
                     android:autoSizeMinTextSize="6sp"
+                    android:autoSizeTextType="uniform"
                     android:gravity="center"
-                    android:textColor="#888"
                     android:lines="1"
+                    android:textColor="#888"
                     android:textIsSelectable="false"
                     android:typeface="sans"
                     android:visibility="gone" />
@@ -89,16 +90,16 @@
 
                 <TextView
                     android:id="@+id/exchangeAutoSize"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="15"
-                    android:paddingStart="1dp"
-                    android:paddingEnd="1dp"
                     android:autoSizeMinTextSize="4sp"
                     android:autoSizeTextType="uniform"
                     android:gravity="center_horizontal"
-                    android:textColor="#888" />
+                    android:paddingStart="1dp"
+                    android:paddingEnd="1dp"
+                    android:textColor="#888"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
