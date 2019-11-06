@@ -249,13 +249,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return obj.getAsJsonObject(pair).get("last").asString
         }
     },
-    COINBOOK("Coinbook") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://coinbook.com/api/SimpleBitcoinWidget/price"
-            return getJsonObject(url).get("$coin-$currency").asString
-        }
-    },
     COINDESK("Coindesk") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -618,7 +611,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     WYRE("Wyre") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.sendwyre.com/v2/rates"
+            val url = "https://api.sendwyre.com/v3/rates"
             val currencyName = "$currency$coin"
             return getJsonObject(url).get(currencyName).asString
         }

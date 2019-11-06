@@ -18,7 +18,7 @@
         android:theme="@style/app_theme"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:targetApi="n">
+        tools:targetApi="q">
 
         <receiver android:name=".PriceBroadcastReceiver" />
         <receiver android:name=".WidgetProvider" android:label="@string/widget_name">
@@ -37,6 +37,8 @@
         </receiver>
 
         <service android:name=".UpdatePriceService"
+            android:foregroundServiceType="dataSync"
+            android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".DownloadJSONService" />
 

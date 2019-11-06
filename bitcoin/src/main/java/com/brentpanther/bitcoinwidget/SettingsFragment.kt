@@ -146,7 +146,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             saveAndUpdate(theme, newValue, false)
         }
         theme.setSummaryProvider {
-            (it as ListPreference).value
+            (it as ListPreference).entry
         }
 
         fixedSize?.setOnPreferenceChangeListener { _, newValue ->

@@ -5,8 +5,8 @@
         <item>Dark</item>
         <item>Transparent</item>
         <item>Transparent Dark</item>
-        <item>Day/Night</item>
-        <item>Transparent Day/Night</item>
+        <item>Light/Dark</item>
+        <item>Transparent Light/Dark</item>
     </string-array>
     <string-array name="themeValues" tools:ignore="InconsistentArrays">
         <item>Light</item>

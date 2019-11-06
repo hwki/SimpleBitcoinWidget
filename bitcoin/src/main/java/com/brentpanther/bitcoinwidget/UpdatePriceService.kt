@@ -47,23 +47,17 @@ class UpdatePriceService : JobIntentService() {
         @Throws(IllegalArgumentException::class)
         internal fun updateValue(context: Context, views: RemoteViews, prefs: Prefs): String? {
             val currencyCode = prefs.exchangeCurrencyName ?: return null
-            try {
+            return try {
                 val exchange = prefs.exchange
                 val amount = exchange.getValue(prefs.exchangeCoinName, currencyCode) ?: throw Exception("")
                 WidgetViews.setText(context, views, amount, prefs)
                 prefs.setLastUpdate()
-                return amount
+                amount
             } catch (e: IllegalArgumentException) {
                 throw e
             } catch (ignored: Exception) {
-                val lastUpdate = prefs.lastUpdate
-                // if its been "a while" since the last successful update, gray out the icon.
-                val isOld = System.currentTimeMillis() - lastUpdate > 1000 * 90 * prefs.interval
-                if (isOld) {
-                    WidgetViews.setLastText(context, views, prefs)
-                }
-                WidgetViews.setOld(context, views, isOld, prefs)
-                return null
+                WidgetViews.setLastText(context, views, prefs)
+                null
             }
         }
     }
