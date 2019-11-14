@@ -20,7 +20,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
         override val units: List<Unit>
             get() = listOf(Unit("BCH", 1.0), Unit("mBCH", .001), Unit("μBCH", .000001))
     },
-    LTC("Litecoin", ic_ltc_gray, mapOf("Light" to ic_ltc, "Light Old" to ic_ltc_gray)) {
+    LTC("Litecoin", ic_ltc, mapOf("Light" to ic_ltc, "Light Old" to ic_ltc_gray)) {
         override val units: List<Unit>
             get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
     },
@@ -44,7 +44,12 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     TRX("Tron", ic_trx, mapOf("Light" to ic_trx, "Light Old" to ic_trx_gray)),
     RDD("Reddcoin", ic_rdd, mapOf("Light" to ic_rdd, "Light Old" to ic_rdd_gray)),
     XTZ("Tezos", ic_xtz, mapOf("Light" to ic_xtz, "Light Old" to ic_xtz_gray)),
-    BNB("Binance Coin", ic_bnb, mapOf("Light" to ic_bnb, "Light Old" to ic_bnb_gray));
+    BNB("Binance Coin", ic_bnb, mapOf("Light" to ic_bnb, "Light Old" to ic_bnb_gray)),
+    KMD("Komodo", ic_kmd, mapOf("Light" to ic_kmd, "Light Old" to ic_kmd_gray)),
+    OMG("OmiseGO", ic_omg, mapOf("Light" to ic_omg, "Light Old" to ic_omg_gray)),
+    BAT("Basic Attention Token", ic_bat, mapOf("Light" to ic_bat, "Light Old" to ic_bat_gray)),
+    EOS("EOS", ic_eos_black, mapOf("Light" to ic_eos_black, "Light Old" to ic_eos_gray, "Transparent" to ic_eos_white, "Dark" to ic_eos_white)),
+    XZC("ZCoin", ic_xzc, mapOf("Light" to ic_xzc, "Light Old" to ic_xzc_gray));
 
     protected open val units: List<Unit> = emptyList()
 

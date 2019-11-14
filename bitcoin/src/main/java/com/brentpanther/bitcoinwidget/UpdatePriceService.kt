@@ -56,6 +56,7 @@ class UpdatePriceService : JobIntentService() {
             } catch (e: IllegalArgumentException) {
                 throw e
             } catch (ignored: Exception) {
+                ExchangeHelper.connectionPool.evictAll()
                 WidgetViews.setLastText(context, views, prefs)
                 null
             }
