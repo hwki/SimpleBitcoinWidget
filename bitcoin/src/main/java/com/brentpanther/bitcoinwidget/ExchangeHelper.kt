@@ -27,6 +27,8 @@ internal object ExchangeHelper {
                     CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
             .build()
 
+    val connectionPool = ConnectionPool()
+
     @Suppress("unused")
     @Throws(IOException::class)
     fun getFromBitcoinCharts(symbol: String): String? {
@@ -58,6 +60,8 @@ internal object ExchangeHelper {
                 .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
+                .retryOnConnectionFailure(true)
+                .connectionPool(connectionPool)
                 .hostnameVerifier(HostnameVerifier { _, _ -> true }).build()
         var builder: Request.Builder = Request.Builder()
                 .url(url)
