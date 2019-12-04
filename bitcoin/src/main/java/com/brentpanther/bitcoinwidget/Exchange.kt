@@ -623,6 +623,13 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getBlinkTradeValue(coin, currency)
         }
     },
+    WOWOO("Wowoo") {
+        override fun getValue(coin: String, currency: String): String? {
+            val pair = "$coin$currency".toLowerCase()
+            val url = "https://trade.wowoo.exchange/api/v2/peatio/public/markets/$pair/tickers"
+            return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
+        }
+    },
     WYRE("Wyre") {
 
         override fun getValue(coin: String, currency: String): String {
