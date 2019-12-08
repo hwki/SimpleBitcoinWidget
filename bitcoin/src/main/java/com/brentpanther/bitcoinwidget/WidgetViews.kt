@@ -3,6 +3,7 @@ package com.brentpanther.bitcoinwidget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.util.Pair
 import android.util.TypedValue
 import android.view.View
@@ -128,8 +129,8 @@ internal object WidgetViews {
 
         if (!prefs.isTransparent) {
             // light and dark themes have 5dp padding all around
-            width -= 10
-            height -= 10
+            width -= 10.toPx()
+            height -= 10.toPx()
         }
 
         if (prefs.showIcon()) {
@@ -142,6 +143,10 @@ internal object WidgetViews {
         return Pair.create((width * .9).toInt(), (height * .85).toInt())
     }
 
+    private fun Int.toPx(): Int {
+        return (Resources.getSystem().displayMetrics.density * this).toInt()
+    }
+
     private fun getLabelAvailableSize(context: Context, widgetId: Int): Pair<Int, Int>? {
         val prefs = Prefs(widgetId)
         val size = getWidgetSize(context, widgetId)
@@ -149,7 +154,7 @@ internal object WidgetViews {
         var width = size.first
         if (!prefs.isTransparent) {
             // light and dark themes have 5dp padding all around
-            height -= 10
+            height -= 10.toPx()
         }
         if (prefs.showIcon()) {
             // icon is 25% of width
