@@ -520,13 +520,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },
-    NEGOCIECOINS("NegocieCoins", "Negocie") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://broker.negociecoins.com.br/api/v3/$coin$currency/ticker"
-            return getJsonObject(url).get("last").asString
-        }
-    },
     NEXCHANGE("Nexchange") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -623,7 +616,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getBlinkTradeValue(coin, currency)
         }
     },
-    WOWOO("Wowoo") {
+    WOWOO("Wowoo Exchange Singapore", "Wowoo") {
         override fun getValue(coin: String, currency: String): String? {
             val pair = "$coin$currency".toLowerCase()
             val url = "https://trade.wowoo.exchange/api/v2/peatio/public/markets/$pair/tickers"
