@@ -411,17 +411,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject("https://api.hitbtc.com/api/2/public/ticker/$coin$currencyValue").get("last").asString
         }
     },
-    HUOBI("Huobi") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase()
-            val url = "https://api.huobi.pro/market/detail/merged?symbol=$pair"
-            val tick = getJsonObject(url).getAsJsonObject("tick")
-            val ask = tick.getAsJsonArray("ask").get(0).asDouble
-            val bid = tick.getAsJsonArray("bid").get(0).asDouble
-            return ((ask + bid) / 2).toString()
-        }
-    },
     INDEPENDENT_RESERVE("Independent Reserve", "Ind. Reserve") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -520,16 +509,16 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },
-    NEXCHANGE("Nexchange") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.nexchange.io/en/api/v1/price/$coin$currency/latest/?format=json"
-            val ticker = getJsonArray(url).get(0).asJsonObject.getAsJsonObject("ticker")
-            val ask = ticker.get("ask").asString
-            val bid = ticker.get("bid").asString
-            return ((ask.toDouble() + bid.toDouble()) / 2).toString()
-        }
-    },
+//    NEXCHANGE("Nexchange") {
+//
+//        override fun getValue(coin: String, currency: String): String {
+//            val url = "https://api.nexchange.io/en/api/v1/price/$coin$currency/latest/?format=json"
+//            val ticker = getJsonArray(url).get(0).asJsonObject.getAsJsonObject("ticker")
+//            val ask = ticker.get("ask").asString
+//            val bid = ticker.get("bid").asString
+//            return ((ask.toDouble() + bid.toDouble()) / 2).toString()
+//        }
+//    },
     OKCOIN("OK Coin") {
 
         override fun getValue(coin: String, currency: String): String {
