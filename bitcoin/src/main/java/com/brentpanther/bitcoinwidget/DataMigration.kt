@@ -11,7 +11,6 @@ import com.brentpanther.bitcoinwidget.Coin.*
 internal object DataMigration {
 
     private const val EXCHANGE_OVERRIDE_MIGRATION = "exchange_override"
-    private const val QUOINE_MIGRATION = "quoine"
     private const val BITTREX_TO_BCH = "bittrex_to_bch"
     private const val GDAX = "gdax_to_coinbasepro"
     private const val XRB_TO_NANO = "xrb_to_nano"
@@ -25,11 +24,6 @@ internal object DataMigration {
         if (!hasOverrideMigration) {
             migrateExchangeCoinAndCurrencyNames()
             prefs.edit().putBoolean(EXCHANGE_OVERRIDE_MIGRATION, true).apply()
-        }
-        val hasQuoineMigration = prefs.getBoolean(QUOINE_MIGRATION, false)
-        if (!hasQuoineMigration) {
-            migrateQuoine()
-            prefs.edit().putBoolean(QUOINE_MIGRATION, true).apply()
         }
         val hasBittrexBCHMigration = prefs.getBoolean(BITTREX_TO_BCH, false)
         if (!hasBittrexBCHMigration) {
@@ -141,18 +135,6 @@ internal object DataMigration {
                 if ("BCC" == exchangeCoinName) {
                     prefs.setValue("coin_custom", "BCH")
                 }
-            }
-        }
-    }
-
-    // spelled quoine wrong, so migrate users who have the prior bad spelling
-    private fun migrateQuoine() {
-        val widgetIds = WidgetApplication.instance.widgetIds
-        for (widgetId in widgetIds) {
-            val prefs = Prefs(widgetId)
-            val exchange = prefs.getValue("exchange")
-            if ("QUIONE" == exchange) {
-                prefs.setValue("exchange", Exchange.QUOINE.name)
             }
         }
     }

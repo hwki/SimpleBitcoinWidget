@@ -232,6 +232,12 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return null
         }
     },
+    BYBIT("Bybit") {
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://api.bybit.com/v2/public/tickers?symbol=$coin$currency"
+            return getJsonObject(url).getAsJsonArray("result")[0].asJsonObject.get("last_price").asString
+        }
+    },
     CEXIO("Cex.io") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -488,6 +494,60 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).getAsJsonObject("ticker").get("latest").asString
         }
     },
+    LIQUID("Liquid") {
+        override fun getValue(coin: String, currency: String): String? {
+            // hardcoded map to currency pair
+            val map = mapOf(
+                    "BCHBTC" to 114,
+                    "BCHJPY" to 41,
+                    "BCHSGD" to 40,
+                    "BCHUSD" to 39,
+                    "BTCAUD" to 13,
+                    "BTCEUR" to 3,
+                    "BTCHKD" to 9,
+                    "BTCJPY" to 5,
+                    "BTCSGD" to 7,
+                    "BTCUSD" to 1,
+                    "DASHBTC" to 116,
+                    "ETCBTC" to 110,
+                    "ETHAUD" to 33,
+                    "ETHBTC" to 37,
+                    "ETHCNY" to 35,
+                    "ETHEUR" to 28,
+                    "ETHHKD" to 31,
+                    "ETHINR" to 36,
+                    "ETHJPY" to 29,
+                    "ETHPHP" to 34,
+                    "ETHSGD" to 30,
+                    "ETHUSD" to 27,
+                    "IOTABTC" to 614,
+                    "IOTAETH" to 615,
+                    "IOTAUSD" to 613,
+                    "KMDBTC" to 550,
+                    "LTCBTC" to 112,
+                    "NEOBTC" to 119,
+                    "NEOEUR" to 56,
+                    "NEOSGD" to 55,
+                    "NEOUSD" to 53,
+                    "OMGBTC" to 125,
+                    "TRXBTC" to 117,
+                    "TRXETH" to 120,
+                    "XEMBTC" to 113,
+                    "XLMBTC" to 115,
+                    "XLMETH" to 141,
+                    "XMRBTC" to 109,
+                    "XRPBTC" to 111,
+                    "XRPEUR" to 85,
+                    "XRPIDR" to 87,
+                    "XRPJPY" to 83,
+                    "XRPSGD" to 86,
+                    "XRPUSD" to 84,
+                    "ZECBTC" to 107)
+            val id = map["$currency$coin"]
+            val url = "https://api.liquid.com/products/$id"
+            return getJsonObject(url).get("last_traded_price").asString
+        }
+    },
     LIVECOIN("Livecoin") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -553,13 +613,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val obj = getJsonObject("https://poloniex.com/public?command=returnTicker")
             return obj.getAsJsonObject("${currency}_$coin").get("last").asString
-        }
-    },
-    QUOINE("Quoine") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.quoine.com/products/code/CASH/$coin$currency"
-            return getJsonObject(url).get("last_traded_price").asString
         }
     },
     SURBITCOIN("SurBitcoin") {
