@@ -30,6 +30,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ETH("Ethereum", ic_eth, mapOf("Light" to ic_eth, "Light Old" to ic_eth_gray)),
     IOTA("Iota", ic_iota, mapOf("Light" to ic_iota, "Light Old" to ic_iota_gray, "Dark" to ic_iota_gray)),
     KMD("Komodo", ic_kmd, mapOf("Light" to ic_kmd, "Light Old" to ic_kmd_gray)),
+    LINK("ChainLink", ic_link, mapOf("Light" to ic_link, "Light Old" to ic_link_gray)),
     LTC("Litecoin", ic_ltc, mapOf("Light" to ic_ltc, "Light Old" to ic_ltc_gray)) {
         override val units: List<Unit>
             get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
