@@ -124,7 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
 
         // icon
-        icon.title = getString(R.string.title_icon, data.coin.name)
+        icon.title = getString(R.string.title_icon, data.coin.coinName)
         bundle?.getBoolean("icon")?.let { icon.isChecked = it }
         icon.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(icon, newValue, false) }
 
