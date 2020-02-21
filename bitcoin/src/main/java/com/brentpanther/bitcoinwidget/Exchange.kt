@@ -521,7 +521,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "ETHSGD" to 30,
                     "ETHUSD" to 27,
                     "IOTABTC" to 614,
-                    "IOTAETH" to 615,
                     "IOTAUSD" to 613,
                     "KMDBTC" to 550,
                     "LTCBTC" to 112,
@@ -543,7 +542,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "XRPSGD" to 86,
                     "XRPUSD" to 84,
                     "ZECBTC" to 107)
-            val id = map["$currency$coin"]
+            val id = map["$coin$currency"]
             val url = "https://api.liquid.com/products/$id"
             return getJsonObject(url).get("last_traded_price").asString
         }
