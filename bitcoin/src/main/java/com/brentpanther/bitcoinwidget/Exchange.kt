@@ -304,7 +304,8 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "PPC" to "peercoin",
                     "VTC" to "vertcoin",
                     "TRX" to "tron",
-                    "RDD" to "reddcoin")
+                    "RDD" to "reddcoin",
+                    "HNS" to "handshake")
             val id = map[coin]
             val vs = currency.toLowerCase()
             val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"
