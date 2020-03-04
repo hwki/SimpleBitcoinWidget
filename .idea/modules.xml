@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SimpleBitcoinWidget.iml" filepath="$PROJECT_DIR$/SimpleBitcoinWidget.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bitcoin/bitcoin.iml" filepath="$PROJECT_DIR$/bitcoin/bitcoin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SimpleBitcoinWidget.iml" filepath="$PROJECT_DIR$/SimpleBitcoinWidget.iml" group="SimpleBitcoinWidget" />
+      <module fileurl="file://$PROJECT_DIR$/bitcoin/bitcoin.iml" filepath="$PROJECT_DIR$/bitcoin/bitcoin.iml" group="SimpleBitcoinWidget/bitcoin" />
     </modules>
   </component>
 </project>
