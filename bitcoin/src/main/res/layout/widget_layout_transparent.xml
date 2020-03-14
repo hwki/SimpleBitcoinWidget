@@ -30,7 +30,8 @@
             android:adjustViewBounds="true"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:layout_weight="3"
