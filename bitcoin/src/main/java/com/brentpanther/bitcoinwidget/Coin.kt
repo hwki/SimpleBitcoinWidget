@@ -28,7 +28,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     EOS("EOS", ic_eos_black, mapOf("Light" to ic_eos_black, "Light Old" to ic_eos_gray, "Transparent" to ic_eos_white, "Dark" to ic_eos_white)),
     ETC("Ethereum Classic", ic_etc, mapOf("Light" to ic_etc, "Light Old" to ic_etc_gray)),
     ETH("Ethereum", ic_eth, mapOf("Light" to ic_eth, "Light Old" to ic_eth_gray)),
-    HNS("Handshake", ic_hns, mapOf("Light" to ic_hns, "Light Old" to ic_hns_gray, "Dark" to ic_hns_dark, "Dark Old" to ic_hns_dark_gray)),
+    HNS("Handshake", ic_hns, mapOf("Light" to ic_hns, "Light Old" to ic_hns_gray, "Dark" to ic_hns_dark)),
     IOTA("Iota", ic_iota, mapOf("Light" to ic_iota, "Light Old" to ic_iota_gray, "Dark" to ic_iota_gray)),
     KMD("Komodo", ic_kmd, mapOf("Light" to ic_kmd, "Light Old" to ic_kmd_gray)),
     LINK("ChainLink", ic_link, mapOf("Light" to ic_link, "Light Old" to ic_link_gray)),

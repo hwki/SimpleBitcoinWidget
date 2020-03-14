@@ -4,6 +4,7 @@ import com.brentpanther.bitcoinwidget.ExchangeHelper.getJsonArray
 import com.brentpanther.bitcoinwidget.ExchangeHelper.getJsonObject
 import com.google.gson.JsonObject
 import okhttp3.Headers
+import java.util.*
 
 internal enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
@@ -63,7 +64,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://api.bitclude.com/stats/ticker.json"
             val obj = getJsonObject(url)
-            return obj.getAsJsonObject("${coin.toLowerCase()}_${currency.toLowerCase()}").get("last").asString
+            return obj.getAsJsonObject("${coin.toLowerCase(Locale.ROOT)}_${currency.toLowerCase(Locale.ROOT)}").get("last").asString
         }
     },
     BITCOIN_AVERAGE("Bitcoin Average", "BTC avg") {
@@ -119,7 +120,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String {
             val url = "https://bitlish.com/api/v1/tickers"
-            val pair = "$coin$currency".toLowerCase()
+            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
             return getJsonObject(url).getAsJsonObject(pair).get("last").asString
         }
     },
@@ -162,7 +163,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String? {
             val payload = getJsonObject("https://api.bitso.com/v3/ticker/").getAsJsonArray("payload")
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             for (jsonElement in payload) {
                 val obj = jsonElement as JsonObject
                 if (obj.get("book").asString == pair) {
@@ -175,7 +176,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BITSTAMP("Bitstamp") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://www.bitstamp.net/api/v2/ticker/${coin.toLowerCase()}${currency.toLowerCase()}"
+            val url = "https://www.bitstamp.net/api/v2/ticker/${coin.toLowerCase(Locale.ROOT)}${currency.toLowerCase(Locale.ROOT)}"
             return getJsonObject(url).get("last").asString
         }
     },
@@ -199,7 +200,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BRAZILIEX("Braziliex") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://braziliex.com/api/v1/public/ticker/$pair"
             return getJsonObject(url).get("last").asString
         }
@@ -221,15 +222,9 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BTCTURK("BTCTurk") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val array = getJsonArray("https://www.btcturk.com/api/ticker")
-            val pair = coin + currency
-            for (jsonElement in array) {
-                val obj = jsonElement as JsonObject
-                if (obj.get("pair").asString == pair) {
-                    return obj.get("last").asString
-                }
-            }
-            return null
+            val url = "https://api.btcturk.com/api/v2/ticker?pairSymbol=${coin}_$currency"
+            val array = getJsonObject(url).getAsJsonArray("data")
+            return array.get(0).asJsonObject.get("last").asString
         }
     },
     BYBIT("Bybit") {
@@ -274,7 +269,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     COINEGG("CoinEgg") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.coinegg.vip/api/v1/ticker/region/${currency.toLowerCase()}?coin=${coin.toLowerCase()}"
+            val url = "https://api.coinegg.vip/api/v1/ticker/region/${currency.toLowerCase(Locale.ROOT)}?coin=${coin.toLowerCase(Locale.ROOT)}"
             return getJsonObject(url).get("last").asString
         }
     },
@@ -307,7 +302,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "RDD" to "reddcoin",
                     "HNS" to "handshake")
             val id = map[coin]
-            val vs = currency.toLowerCase()
+            val vs = currency.toLowerCase(Locale.ROOT)
             val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"
             return getJsonObject(url).getAsJsonObject(id).get(vs).asString
         }
@@ -365,7 +360,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     COINTREE("Cointree") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin/$currency".toLowerCase()
+            val pair = "$coin/$currency".toLowerCase(Locale.ROOT)
             return getJsonObject("https://www.cointree.com.au/api/price/$pair").get("Spot").asString
         }
     },
@@ -396,7 +391,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     GATEIO("Gate.io") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://data.gate.io/api2/1/ticker/$pair"
             return getJsonObject(url).get("last").asString
         }
@@ -404,7 +399,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     GEMINI("Gemini") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase()
+            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
             return getJsonObject("https://api.gemini.com/v1/pubticker/$pair").get("last").asString
         }
     },
@@ -421,14 +416,14 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     INDEPENDENT_RESERVE("Independent Reserve", "Ind. Reserve") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=${coin.toLowerCase()}&secondaryCurrencyCode=${currency.toLowerCase()}"
+            val url = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=${coin.toLowerCase(Locale.ROOT)}&secondaryCurrencyCode=${currency.toLowerCase(Locale.ROOT)}"
             return getJsonObject(url).get("LastPrice").asString
         }
     },
     INDODAX("Indodax") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://indodax.com/api/$pair/ticker"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
@@ -443,14 +438,14 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String {
             val url = "https://koinex.in/api/ticker"
-            return getJsonObject(url).getAsJsonObject("prices").getAsJsonObject(currency.toLowerCase()).get(coin).asString
+            return getJsonObject(url).getAsJsonObject("prices").getAsJsonObject(currency.toLowerCase(Locale.ROOT)).get(coin).asString
         }
     },
     KORBIT("Korbit") {
 
         override fun getValue(coin: String, currency: String): String {
             val headers = Headers.headersOf("User-Agent", "")
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://api.korbit.co.kr/v1/ticker?currency_pair=$pair"
             return getJsonObject(url, headers).get("last").asString
         }
@@ -474,7 +469,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     KUNA("KunaBTC") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase()
+            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
             val obj = getJsonObject("https://kuna.io/api/v2/tickers/$pair")
             return obj.getAsJsonObject("ticker").get("last").asString
         }
@@ -482,7 +477,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     LAKEBTC("LakeBTC") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase()
+            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
             val obj = getJsonObject("https://api.lakebtc.com/api_v2/ticker?symbol=$pair")
             return obj.getAsJsonObject(pair).get("last").asString
         }
@@ -490,7 +485,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     LBANK("LBank") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://api.lbkex.com/v1/ticker.do?symbol=$pair"
             return getJsonObject(url).getAsJsonObject("ticker").get("latest").asString
         }
@@ -569,16 +564,16 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },
-//    NEXCHANGE("Nexchange") {
-//
-//        override fun getValue(coin: String, currency: String): String {
-//            val url = "https://api.nexchange.io/en/api/v1/price/$coin$currency/latest/?format=json"
-//            val ticker = getJsonArray(url).get(0).asJsonObject.getAsJsonObject("ticker")
-//            val ask = ticker.get("ask").asString
-//            val bid = ticker.get("bid").asString
-//            return ((ask.toDouble() + bid.toDouble()) / 2).toString()
-//        }
-//    },
+    NEXCHANGE("Nexchange") {
+
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://api.n.exchange/en/api/v1/price/$coin$currency/latest/?format=json"
+            val ticker = getJsonArray(url).get(0).asJsonObject.getAsJsonObject("ticker")
+            val ask = ticker.get("ask").asString
+            val bid = ticker.get("bid").asString
+            return ((ask.toDouble() + bid.toDouble()) / 2).toString()
+        }
+    },
     OKCOIN("OK Coin") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -589,7 +584,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     OKEX("OKEx") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://www.okex.com/api/v1/ticker.do?symbol=$pair"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
@@ -604,7 +599,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     PAYMIUM("Paymium") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://paymium.com/api/v1/data/${currency.toLowerCase()}/ticker"
+            val url = "https://paymium.com/api/v1/data/${currency.toLowerCase(Locale.ROOT)}/ticker"
             return getJsonObject(url).get("price").asString
         }
     },
@@ -626,14 +621,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.therocktrading.com/v1/funds/$coin$currency/ticker"
             return getJsonObject(url).get("last").asString
-        }
-    },
-    TRADESATOSHI("Trade Satoshi") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency"
-            val url = "https://tradesatoshi.com/api/public/getticker?market=$pair"
-            return getJsonObject(url).getAsJsonObject("result").get("last").asString
         }
     },
     UPHOLD("Uphold") {
@@ -660,7 +647,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     WOWOO("Wowoo Exchange Singapore", "Wowoo") {
         override fun getValue(coin: String, currency: String): String? {
-            val pair = "$coin$currency".toLowerCase()
+            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
             val url = "https://trade.wowoo.exchange/api/v2/peatio/public/markets/$pair/tickers"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
@@ -675,7 +662,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     YOBIT("YoBit") {
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://yobit.net/api/3/ticker/$pair"
             return getJsonObject(url).getAsJsonObject(pair).get("last").asString
         }
@@ -683,13 +670,13 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     ZB("ZB") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val url = "http://api.zb.cn/data/v1/ticker/?market=${coin.toLowerCase()}_${currency.toLowerCase()}"
+            val url = "http://api.zb.cn/data/v1/ticker/?market=${coin.toLowerCase(Locale.ROOT)}_${currency.toLowerCase(Locale.ROOT)}"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },
     ZBG("ZBG") {
         override fun getValue(coin: String, currency: String): String? {
-            val pair = "${coin}_$currency".toLowerCase()
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://kline.zbg.com/api/data/v1/ticker?marketName=$pair"
             return getJsonObject(url).getAsJsonArray("datas")[1].asString
         }

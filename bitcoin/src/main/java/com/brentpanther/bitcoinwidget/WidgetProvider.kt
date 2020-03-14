@@ -13,10 +13,6 @@ import java.util.*
 
 class WidgetProvider : AppWidgetProvider() {
 
-    override fun onEnabled(context: Context?) {
-        super.onEnabled(context)
-    }
-
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
             val prefs = Prefs(widgetId)
