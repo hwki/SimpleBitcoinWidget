@@ -12,6 +12,17 @@ import android.widget.RemoteViews
  */
 object Themer {
 
+    const val LIGHT = "Light"
+    const val LIGHT_OLD = "Light Old"
+    const val DARK = "Dark"
+    const val DARK_OLD = "Dark Old"
+    const val DAY_NIGHT = "DayNight"
+    const val TRANSPARENT = "Transparent"
+    const val TRANSPARENT_OLD = "Transparent Old"
+    const val TRANSPARENT_DARK = "Transparent Dark"
+    const val TRANSPARENT_DARK_OLD = "Transparent Dark Old"
+    const val TRANSPARENT_DAY_NIGHT = "Transparent DayNight"
+
     internal fun updateTheme(context: Context, views: RemoteViews, prefs: Prefs, isOld: Boolean) {
         updateLayout(context, views, prefs)
         updateIcon(context, views, prefs, isOld)
@@ -26,23 +37,23 @@ object Themer {
 
         var bgParent = R.drawable.transparent
         val theme = prefs.theme
-        if (theme == "Dark" || (theme == "DayNight" && isNight)) {
+        if (theme == DARK || (theme == DAY_NIGHT && isNight)) {
             bgOuter = R.drawable.bg_outer_dark
             bgInner = R.drawable.bg_inner_dark
             textColor = Color.parseColor("#666666")
         }
-        else if (theme == "Transparent Dark" || (theme == "Transparent DayNight" && isNight)) {
+        else if (theme == TRANSPARENT_DARK || (theme == TRANSPARENT_DAY_NIGHT && isNight)) {
             bgParent = R.drawable.bg_outer_dark
         }
         when (theme) {
-            "Light", "Dark", "DayNight" -> {
+            LIGHT, DARK, DAY_NIGHT -> {
                 views.setInt(R.id.outerParent, "setBackgroundResource", bgOuter)
                 views.setInt(R.id.parent, "setBackgroundResource", bgInner)
                 for (view in arrayOf(R.id.price, R.id.priceAutoSize, R.id.exchange, R.id.exchangeAutoSize)) {
                     views.setTextColor(view, textColor)
                 }
             }
-            "Transparent", "Transparent Dark", "Transparent DayNight" -> {
+            TRANSPARENT, TRANSPARENT_DARK, TRANSPARENT_DAY_NIGHT -> {
                 views.setInt(R.id.parent, "setBackgroundResource", bgParent)
             }
         }
@@ -60,21 +71,23 @@ object Themer {
     private fun getIcon(context: Context, coin: Coin, theme: String, isOld: Boolean = false) : Int {
         val isNight = (context.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-        var key = if (theme == "DayNight") {
-            if (isNight) "Dark" else "Light"
-        } else if (theme == "Transparent DayNight") {
-            if (isNight) "Transparent Dark" else "Transparent"
+
+        var key = if (theme == DAY_NIGHT) {
+            if (isNight) DARK else LIGHT
+        } else if (theme == TRANSPARENT_DAY_NIGHT) {
+            if (isNight) TRANSPARENT_DARK else TRANSPARENT
         } else {
             theme
         }
         if (isOld) key += " Old"
-        val fallback = fallbacks[key] ?: "Light"
+        val fallback = fallbacks[key] ?: LIGHT
         return coin.icons.getOrElse(key, { getIcon(context, coin, fallback) })
     }
 
     // if an icon is not defined for a theme, fallback to another icon
-    private val fallbacks = mapOf("Light Old" to "Light", "Dark Old" to "Light Old",
-            "Transparent Dark Old" to "Dark Old", "Transparent Old" to "Light Old",
-            "Transparent Dark" to "Dark", "Transparent" to "Light", "Dark" to "Light")
+    private val fallbacks = mapOf(LIGHT_OLD to LIGHT, DARK_OLD to LIGHT_OLD,
+            TRANSPARENT_DARK_OLD to DARK_OLD, TRANSPARENT_OLD to LIGHT_OLD,
+            TRANSPARENT_DARK to DARK, TRANSPARENT to LIGHT, DARK to LIGHT)
+
 
 }

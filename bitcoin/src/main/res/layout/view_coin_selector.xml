@@ -3,25 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:focusable="true">
 
     <ImageView
         android:id="@+id/coin_icon"
         android:layout_width="0dp"
-        android:layout_weight="30"
-        android:layout_height="wrap_content"
+        android:layout_weight="20"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/coin_name"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
-        android:layout_weight="70"
+        android:layout_weight="80"
         android:fontFamily="sans-serif-light"
         android:gravity="center_vertical"
         android:textColor="#000"

@@ -15,6 +15,8 @@ import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.preference.*
+import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
+import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
 
 
 class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.NoticeDialogListener {
@@ -139,7 +141,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         // theme
         bundle?.getString("theme")?.let { theme.value = it }
         theme.setOnPreferenceChangeListener { _, newValue ->
-            if ("DayNight" == newValue || "Transparent DayNight" == newValue) {
+            if (DAY_NIGHT == newValue || TRANSPARENT_DAY_NIGHT == newValue) {
                 val service = requireActivity().getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
                 service.nightMode = UiModeManager.MODE_NIGHT_AUTO
             }
@@ -245,7 +247,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
             // user has battery saver on, warn that widget will be affected
             val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_battery_saver, CODE_BATTERY_SAVER, false)
-            dialogFragment.show(requireFragmentManager(), "dialog")
+            dialogFragment.show(parentFragmentManager, "dialog")
             return false
         }
         return true
@@ -255,14 +257,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
             // user has data saver on, show dialog asking for permission to whitelist
             val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
-            dialogFragment.show(requireFragmentManager(), "dialog")
+            dialogFragment.show(parentFragmentManager, "dialog")
             return false
         }
         return true
     }
 
     override fun onDialogPositiveClick(code: Int) {
-        (requireFragmentManager().findFragmentByTag("dialog") as DialogFragment).dismissAllowingStateLoss()
+        (parentFragmentManager.findFragmentByTag("dialog") as DialogFragment).dismissAllowingStateLoss()
         when (code) {
             CODE_BATTERY_SAVER -> checkBatterySaver = false
             CODE_DATA_SAVER -> checkDataSaver = false

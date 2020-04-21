@@ -2,6 +2,12 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.brentpanther.bitcoinwidget.Themer.DARK
+import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
+import com.brentpanther.bitcoinwidget.Themer.LIGHT
+import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT
+import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DARK
+import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
@@ -42,16 +48,16 @@ internal class Prefs(val widgetId: Int) {
     val themeLayout: Int
         get() {
             return when (getValue(THEME)) {
-                "Light", "Dark", "DayNight" -> R.layout.widget_layout
+                LIGHT, DARK, DAY_NIGHT -> R.layout.widget_layout
                 else -> R.layout.widget_layout_transparent
             }
         }
 
     val theme: String
-        get() = getValue(THEME) ?: "Light"
+        get() = getValue(THEME) ?: LIGHT
 
     val isTransparent: Boolean
-        get() = theme in arrayOf("Transparent", "Transparent Dark", "Transparent DayNight")
+        get() = theme in arrayOf(TRANSPARENT, TRANSPARENT_DARK, TRANSPARENT_DAY_NIGHT)
 
     val unit: String?
         get() = getValue(UNITS)
