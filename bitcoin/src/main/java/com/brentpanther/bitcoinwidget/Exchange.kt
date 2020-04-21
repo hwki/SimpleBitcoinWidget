@@ -23,7 +23,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         }
     },
     BIGONE("BigONE") {
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             val url = "https://big.one/api/v3/asset_pairs/$coin-$currency/ticker"
             val obj = getJsonObject(url).getAsJsonObject("data")
             val bid = obj.getAsJsonObject("bid").get("price").asString
@@ -31,7 +31,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return ((bid.toDouble() + ask.toDouble()) / 2).toString()
         }
     },
-    BINANCE("Binance") {
+    BINANCE("Binance.com") {
 
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.binance.com/api/v3/ticker/price?symbol=$coin$currency"
@@ -40,7 +40,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     BINANCE_US("Binance.us") {
 
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             val url = "https://api.binance.us/api/v3/ticker/price?symbol=$coin$currency"
             return getJsonObject(url).get("price").asString
         }
@@ -50,6 +50,13 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://www.bit2c.co.il/Exchanges/${coin}Nis/Ticker.json"
             return getJsonObject(url).get("ll").asString
+        }
+    },
+    BITBANK("Bitbank") {
+        override fun getValue(coin: String, currency: String): String {
+            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val url = "https://public.bitbank.cc/$pair/ticker"
+            return getJsonObject(url).getAsJsonObject("data").get("last").asString
         }
     },
     BITBAY("BitBay") {
@@ -213,7 +220,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     BTCTURK("BTCTurk") {
 
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             val url = "https://api.btcturk.com/api/v2/ticker?pairSymbol=${coin}_$currency"
             val array = getJsonObject(url).getAsJsonArray("data")
             return array.get(0).asJsonObject.get("last").asString
@@ -269,30 +276,60 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String? {
             // hardcoded map to id
-            val map = mapOf("BTC" to "bitcoin",
-                    "ETH" to "ethereum",
-                    "XRP" to "ripple",
-                    "BCH" to "bitcoin-cash",
-                    "LTC" to "litecoin",
-                    "NEO" to "neo",
+            val map = mapOf(
                     "ADA" to "cardano",
-                    "XLM" to "stellar",
-                    "IOTA" to "iota",
-                    "DASH" to "dash",
-                    "XMR" to "monero",
-                    "XEM" to "nem",
-                    "NANO" to "nano",
+                    "ALGO" to "algorand",
+                    "ATOM" to "cosmos",
+                    "BAT" to "basic-attention-token",
+                    "BCD" to "bitcoin-diamond",
+                    "BCH" to "bitcoin-cash",
+                    "BNB" to "binancecoin",
+                    "BSV" to "bitcoin-cash-sv",
+                    "BTC" to "bitcoin",
                     "BTG" to "bitcoin-gold",
-                    "ETC" to "ethereum-classic",
-                    "ZEC" to "zcash",
-                    "XVG" to "verge",
-                    "DOGE" to "dogecoin",
+                    "BTM" to "bytom",
+                    "CRO" to "crypto-com-chain",
+                    "DASH" to "dash",
                     "DCR" to "decred",
+                    "DOGE" to "dogecoin",
+                    "ENJ" to "enjincoin",
+                    "EOS" to "eos",
+                    "ETC" to "ethereum-classic",
+                    "ETH" to "ethereum",
+                    "FTT" to "ftx-token",
+                    "HBAR" to "hedera-hashgraph",
+                    "HNS" to "handshake",
+                    "HT" to "huobi-token",
+                    "ICX" to "icon",
+                    "IOTA" to "iota",
+                    "KMD" to "komodo",
+                    "LEO" to "leo-token",
+                    "LINK" to "chainlink",
+                    "LSK" to "lisk",
+                    "LTC" to "litecoin",
+                    "MKR" to "maker",
+                    "NANO" to "nano",
+                    "NEO" to "neo",
+                    "OKB" to "okb",
+                    "OMG" to "omisego",
+                    "ONT" to "ontology",
                     "PPC" to "peercoin",
-                    "VTC" to "vertcoin",
-                    "TRX" to "tron",
+                    "QTUM" to "qtum",
                     "RDD" to "reddcoin",
-                    "HNS" to "handshake")
+                    "REP" to "augur",
+                    "RVN" to "ravencoin",
+                    "TRX" to "tron",
+                    "VET" to "vechain",
+                    "VTC" to "vertcoin",
+                    "WAVES" to "waves",
+                    "XEM" to "nem",
+                    "XLM" to "stellar",
+                    "XMR" to "monero",
+                    "XRP" to "ripple",
+                    "XTZ" to "tezos",
+                    "XVG" to "verge",
+                    "XZC" to "zcoin",
+                    "ZEC" to "zcash")
             val id = map[coin]
             val vs = currency.toLowerCase(Locale.ROOT)
             val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"
@@ -323,7 +360,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         }
     },
     COINSBIT("Coinsbit") {
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             val url = "https://coinsbit.io/api/v1/public/ticker?market=${coin}_$currency"
             return getJsonObject(url).getAsJsonObject("result").get("last").asString
         }
@@ -366,12 +403,25 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return ((bid.toDouble() + ask.toDouble()) / 2).toString()
         }
     },
+    CRYPTO("Crypto.com") {
+
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://api.crypto.com/v1/ticker?symbol=$coin$currency"
+            return getJsonObject(url).getAsJsonObject("data").get("last").asString
+        }
+    },
     EXMO("Exmo") {
 
         override fun getValue(coin: String, currency: String): String {
             val pair = "${coin}_$currency"
             val url = "https://api.exmo.com/v1/ticker/"
             return getJsonObject(url).getAsJsonObject(pair).get("last_trade").asString
+        }
+    },
+    FTX("FTX") {
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://ftx.com/api/markets/$coin/$currency"
+            return getJsonObject(url).getAsJsonObject("result").get("last").asString
         }
     },
     FOXBIT("FoxBit") {
@@ -483,7 +533,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         }
     },
     LIQUID("Liquid") {
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             // hardcoded map to currency pair
             val map = mapOf(
                     "BCHBTC" to 114,
@@ -636,13 +686,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getBlinkTradeValue(coin, currency)
         }
     },
-    WOWOO("Wowoo Exchange Singapore", "Wowoo") {
-        override fun getValue(coin: String, currency: String): String? {
-            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
-            val url = "https://trade.wowoo.exchange/api/v2/peatio/public/markets/$pair/tickers"
-            return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
-        }
-    },
     WYRE("Wyre") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -660,22 +703,16 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     ZB("ZB") {
 
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             val url = "http://api.zb.live/data/v1/ticker?market=${coin.toLowerCase(Locale.ROOT)}_${currency.toLowerCase(Locale.ROOT)}"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },
     ZBG("ZBG") {
-        override fun getValue(coin: String, currency: String): String? {
+        override fun getValue(coin: String, currency: String): String {
             val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
             val url = "https://kline.zbg.com/api/data/v1/ticker?marketName=$pair"
             return getJsonObject(url).getAsJsonArray("datas")[1].asString
-        }
-    },
-    ZYADO("Zyado") {
-
-        override fun getValue(coin: String, currency: String): String {
-            return getJsonObject("http://chart.zyado.com/ticker.json").get("last").asString
         }
     };
 
