@@ -239,6 +239,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         val newFixedSize = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(getString(R.string.key_fixed_size), false)
         if (fixedSize && !newFixedSize) {
             WidgetProvider.refreshWidgets(requireActivity(), widgetId)
+        } else {
+            WidgetProvider.refreshWidgets(requireActivity(), listOf(widgetId))
         }
         requireActivity().finish()
     }

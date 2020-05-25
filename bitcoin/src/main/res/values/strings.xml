@@ -63,7 +63,7 @@
     <string-array name="intervals">
         <item>5 minutes</item>
         <item>10 minutes</item>
-        <item>20 minutes</item>
+        <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
         <item>2 hours</item>
@@ -73,7 +73,7 @@
     <string-array name="intervalValues">
         <item>5</item>
         <item>10</item>
-        <item>20</item>
+        <item>15</item>
         <item>30</item>
         <item>60</item>
         <item>120</item>
@@ -81,8 +81,8 @@
         <item>1440</item>
     </string-array>
     <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
-    <string name="value_exchange_removed" translatable="false">!</string>
-    <string name="json_last_modified" translatable="false">Tue, 21 Apr 2020 20:23:05 GMT</string>
+    <string name="value_exchange_removed" translatable="false">\u0020!\u0020</string>
+    <string name="json_last_modified" translatable="false">Sun, 24 May 2020 13:34:48 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>

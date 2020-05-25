@@ -19,18 +19,17 @@ internal object WidgetViews {
 
     private const val TEXT_HEIGHT = .70
 
-    fun setText(context: Context, views: RemoteViews, amount: String, prefs: Prefs) {
-        val text = buildText(amount, prefs)
-        prefs.lastValue = text
-        putValue(context, views, text, prefs)
-    }
-
-    fun setLastText(context: Context, views: RemoteViews, prefs: Prefs) {
-        val lastUpdate = prefs.lastUpdate
-        // if its been "a while" since the last successful update, gray out the icon.
-        val isOld = System.currentTimeMillis() - lastUpdate > 1000 * 90 * prefs.interval
-        val value = prefs.lastValue ?: context.getString(R.string.value_unknown)
-        putValue(context, views, value, prefs, isOld)
+    fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?) {
+        if (amount == null) {
+            val lastUpdate = prefs.lastUpdate
+            // gray out older values
+            val isOld = System.currentTimeMillis() - lastUpdate > 60000 * prefs.interval * 1.5
+            val value = prefs.lastValue ?: context.getString(R.string.value_unknown)
+            putValue(context, views, value, prefs, isOld)
+        } else {
+            prefs.lastValue = amount
+            putValue(context, views, buildText(amount, prefs), prefs)
+        }
     }
 
     fun putValue(context: Context, views: RemoteViews, text: String, prefs: Prefs, isOld: Boolean = false): Float {
@@ -63,11 +62,7 @@ internal object WidgetViews {
         if (prefs.label) {
             views.show(if (useAutoSizing) exchangeAutoSizeView else exchangeView, R.id.top_space)
             views.hide(if (useAutoSizing) exchangeView else exchangeAutoSizeView)
-            val shortName = try {
-                prefs.exchange.shortName
-            } catch (ignored: IllegalArgumentException) {
-                prefs.exchangeName
-            }
+            val shortName = prefs.exchange?.shortName ?: prefs.exchangeName
 
             if (!useAutoSizing) {
                 val availableSize = getLabelAvailableSize(context, prefs.widgetId)

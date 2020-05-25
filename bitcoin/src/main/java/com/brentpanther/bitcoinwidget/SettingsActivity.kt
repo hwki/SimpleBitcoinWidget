@@ -98,9 +98,13 @@ class SettingsActivity : AppCompatActivity() {
         val prefs = Prefs(widgetId)
         val views = LocalRemoteViews(this, prefs.themeLayout)
         if (refreshValue || currentValue.get() == null) {
-            Thread { currentValue.set(UpdatePriceService.updateValue(this@SettingsActivity, views, prefs)) }.start()
+            Thread {
+                val amount = UpdatePriceService.updateValue(prefs)
+                currentValue.set(amount)
+                WidgetViews.setText(applicationContext, views, prefs, amount)
+            }.start()
         } else {
-            WidgetViews.setText(this, views, currentValue.get() as String, prefs)
+            WidgetViews.setText(this, views, prefs, currentValue.get() as String)
         }
     }
 

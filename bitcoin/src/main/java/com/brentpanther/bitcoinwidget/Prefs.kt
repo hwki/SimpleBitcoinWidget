@@ -33,12 +33,13 @@ internal class Prefs(val widgetId: Int) {
     val interval: Int
         get() = getValue(REFRESH)?.toInt() ?: 30
 
-    val exchange: Exchange
+    val exchange: Exchange?
         get() {
             return try {
-                Exchange.valueOf(getValue(EXCHANGE) ?: return Exchange.values()[0])
+                val name = getValue(EXCHANGE) ?: return null
+                Exchange.valueOf(name)
             } catch (e: IllegalArgumentException) {
-                Exchange.values()[0]
+                null
             }
         }
 
