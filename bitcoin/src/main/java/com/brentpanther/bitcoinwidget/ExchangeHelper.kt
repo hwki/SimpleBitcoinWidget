@@ -60,7 +60,7 @@ internal object ExchangeHelper {
                 .readTimeout(8, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
-                .retryOnConnectionFailure(true)
+                .retryOnConnectionFailure(false)
                 .connectionPool(connectionPool)
                 .hostnameVerifier(HostnameVerifier { _, _ -> true }).build()
         var builder: Request.Builder = Request.Builder()
