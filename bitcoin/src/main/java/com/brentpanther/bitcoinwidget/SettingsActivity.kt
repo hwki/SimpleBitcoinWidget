@@ -101,10 +101,10 @@ class SettingsActivity : AppCompatActivity() {
             Thread {
                 val amount = UpdatePriceService.updateValue(prefs)
                 currentValue.set(amount)
-                WidgetViews.setText(applicationContext, views, prefs, amount)
+                WidgetViews.setText(applicationContext, views, prefs, amount, true)
             }.start()
         } else {
-            WidgetViews.setText(this, views, prefs, currentValue.get() as String)
+            WidgetViews.setText(this, views, prefs, currentValue.get() as String, true)
         }
     }
 

@@ -76,6 +76,8 @@ internal class Prefs(val widgetId: Int) {
     val showDecimals: Boolean
         get() = getValue(SHOW_DECIMALS)?.toBoolean() ?: true
 
+    fun exists(): Boolean = prefs.getString("" + widgetId, null) != null
+
     fun setLastUpdate() {
         setValue(LAST_UPDATE, "" + System.currentTimeMillis())
     }
@@ -108,6 +110,11 @@ internal class Prefs(val widgetId: Int) {
             addProperty(UNITS, unit)
         }
         prefs.edit().putString("" + widgetId, obj.toString()).apply()
+    }
+
+    fun move(newWidgetId: Int) {
+        prefs.edit().putString("" + newWidgetId, prefs.getString("" + widgetId, null)).apply()
+        delete()
     }
 
     fun delete() {
