@@ -19,7 +19,7 @@ internal object WidgetViews {
 
     private const val TEXT_HEIGHT = .70
 
-    fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?) {
+    fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?, isUpdate: Boolean) {
         if (amount == null) {
             val lastUpdate = prefs.lastUpdate
             // gray out older values
@@ -27,8 +27,14 @@ internal object WidgetViews {
             val value = prefs.lastValue ?: context.getString(R.string.value_unknown)
             putValue(context, views, value, prefs, isOld)
         } else {
-            prefs.lastValue = amount
-            putValue(context, views, buildText(amount, prefs), prefs)
+            if (isUpdate) {
+                // store the formatted value
+                val text = buildText(amount, prefs)
+                prefs.lastValue = text
+                putValue(context, views, text, prefs)
+            } else {
+                putValue(context, views, amount, prefs)
+            }
         }
     }
 

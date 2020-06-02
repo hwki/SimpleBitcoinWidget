@@ -1,12 +1,8 @@
 package com.brentpanther.bitcoinwidget
 
 
-import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_CANCEL_CURRENT
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.NonNull
 import androidx.core.app.JobIntentService
@@ -21,7 +17,7 @@ class UpdatePriceService : JobIntentService() {
 
         when (val amount = updateValue(prefs)) {
             INVALID -> WidgetViews.putValue(applicationContext, views, applicationContext.getString(R.string.value_exchange_removed), prefs)
-            else -> WidgetViews.setText(applicationContext, views, prefs, amount)
+            else -> WidgetViews.setText(applicationContext, views, prefs, amount, true)
         }
         val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
         PriceBroadcastReceiver.setOnClick(applicationContext, appWidgetId, views)

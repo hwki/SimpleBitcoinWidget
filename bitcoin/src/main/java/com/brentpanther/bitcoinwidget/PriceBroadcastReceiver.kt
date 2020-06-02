@@ -17,6 +17,7 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
         val manualRefresh = intent.getBooleanExtra(UpdatePriceService.EXTRA_MANUAL_REFRESH, false)
         val appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0)
         val prefs = Prefs(appWidgetId)
+        if (!prefs.exists()) return
         val views = RemoteViews(context.packageName, prefs.themeLayout)
 
         // we don't always need to download a new price, sometimes just the layout can be updated.
@@ -39,7 +40,7 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
             JobIntentService.enqueueWork(context, UpdatePriceService::class.java, 7384, i)
             setAlarm(context, appWidgetId)
         } else {
-            WidgetViews.setText(context, views, prefs, prefs.lastValue)
+            WidgetViews.setText(context, views, prefs, prefs.lastValue, false)
         }
         setOnClick(context, appWidgetId, views)
     }

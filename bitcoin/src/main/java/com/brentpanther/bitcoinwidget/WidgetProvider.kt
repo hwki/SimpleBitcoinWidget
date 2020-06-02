@@ -9,21 +9,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
-import java.util.*
 
 class WidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+    override fun onRestored(context: Context, oldWidgetIds: IntArray?, newWidgetIds: IntArray?) {
+        oldWidgetIds?.zip(newWidgetIds ?: IntArray(0))?.forEach { (old, new) ->
+            Prefs(old).move(new)
+        }
+    }
+
+    override fun onEnabled(context: Context) {
         DataMigration.migrate(context)
         refreshWidgets(context)
     }
 
-    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle) {
-        val prefs = Prefs(appWidgetId)
-        val layout = prefs.themeLayout
-        val views = RemoteViews(context.packageName, layout)
-        WidgetViews.setText(context, views, prefs, prefs.lastValue)
-        appWidgetManager.updateAppWidget(appWidgetId, views)
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        onEnabled(context)
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
@@ -49,12 +50,7 @@ class WidgetProvider : AppWidgetProvider() {
 
         fun refreshWidgets(context: Context, widgetId: Int? = null) {
             val widgetIds = WidgetApplication.instance.widgetIds
-            val refreshWidgetIds = ArrayList<Int>()
-            for (appWidgetId in widgetIds) {
-                if (appWidgetId == widgetId) continue
-                refreshWidgetIds.add(appWidgetId)
-            }
-            refreshWidgets(context, refreshWidgetIds)
+            refreshWidgets(context, widgetIds.filterNot { it == widgetId })
         }
 
         internal fun refreshWidgets(context: Context, widgetIds: List<Int>) {
