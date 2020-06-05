@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget
 
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
@@ -35,5 +36,15 @@ object NetworkStatusHelper {
         val checkBattery = checkBattery(context)
         if (checkBattery > 0) return checkBattery
         return checkBackgroundData(context)
+    }
+
+    fun checkThrottled(context: Context): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val usageManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+            if (usageManager.appStandbyBucket > UsageStatsManager.STANDBY_BUCKET_ACTIVE) {
+                return true
+            }
+        }
+        return false
     }
 }
