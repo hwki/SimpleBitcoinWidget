@@ -10,6 +10,7 @@ import android.os.SystemClock
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.app.JobIntentService
+import kotlin.concurrent.thread
 
 class PriceBroadcastReceiver : BroadcastReceiver() {
 
@@ -34,10 +35,27 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
                 setAlarm(context, appWidgetId)
                 return
             }
-            if (manualRefresh) WidgetViews.setLoading(views)
+            if (manualRefresh) {
+                WidgetViews.setLoading(views)
+                val throttled = NetworkStatusHelper.checkThrottled(context)
+                val since = System.currentTimeMillis() - prefs.lastUpdate
+                if (throttled || since < 120000) {
+                    // we are either throttled by the system, or are trying to refresh too often
+                    // and then we will not get scheduled
+                    // so don't enqueue any work, just "finish" after a few seconds
+                    thread(start = true) {
+                        Thread.sleep(1000)
+                        WidgetViews.setText(context, views, prefs, prefs.lastValue, false)
+                        setOnClick(context, appWidgetId, views)
+                    }
+                    val appWidgetManager = AppWidgetManager.getInstance(context)
+                    appWidgetManager.updateAppWidget(appWidgetId, views)
+                    return
+                }
+            }
             val i = Intent(context, UpdatePriceService::class.java)
             i.putExtras(intent)
-            JobIntentService.enqueueWork(context, UpdatePriceService::class.java, 7384, i)
+            JobIntentService.enqueueWork(context, UpdatePriceService::class.java, 7483, i)
             setAlarm(context, appWidgetId)
         } else {
             WidgetViews.setText(context, views, prefs, prefs.lastValue, false)
