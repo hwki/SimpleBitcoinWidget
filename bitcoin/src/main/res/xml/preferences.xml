@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     app:key="bitcoinwidget">
     <PreferenceCategory
         app:iconSpaceReserved="false"
         app:key="@string/key_data"
         app:title="@string/title_data">
         <ListPreference
-            app:iconSpaceReserved="false"
-            app:key="@string/key_refresh_interval"
+            app:defaultValue="30"
             app:entries="@array/intervals"
             app:entryValues="@array/intervalValues"
-            app:defaultValue="30"
+            app:iconSpaceReserved="false"
+            app:key="@string/key_refresh_interval"
             app:persistent="false"
             app:title="@string/title_refresh_interval" />
         <ListPreference
@@ -20,8 +19,16 @@
             app:persistent="false"
             app:title="@string/title_currency" />
         <ListPreference
+            app:defaultValue="LOCAL"
+            app:entries="@array/symbols"
+            app:entryValues="@array/symbolValues"
             app:iconSpaceReserved="false"
+            app:key="@string/key_symbol"
+            app:persistent="false"
+            app:title="@string/title_locale" />
+        <ListPreference
             app:defaultValue="0"
+            app:iconSpaceReserved="false"
             app:key="@string/key_exchange"
             app:persistent="false"
             app:title="@string/title_exchange" />
@@ -32,44 +39,43 @@
         app:title="@string/title_style">
         <ListPreference
             app:iconSpaceReserved="false"
-            app:key="@string/key_units"
             app:isPreferenceVisible="false"
+            app:key="@string/key_units"
             app:persistent="false"
-            app:title="@string/title_units"/>
+            app:title="@string/title_units" />
         <CheckBoxPreference
-            app:iconSpaceReserved="false"
             app:defaultValue="true"
+            app:iconSpaceReserved="false"
             app:key="@string/key_icon"
             app:persistent="false"
-            app:title="@string/title_icon"/>
+            app:title="@string/title_icon" />
         <CheckBoxPreference
-            app:iconSpaceReserved="false"
             app:defaultValue="false"
+            app:iconSpaceReserved="false"
             app:key="@string/key_decimals"
             app:persistent="false"
             app:title="@string/title_decimals" />
         <CheckBoxPreference
-            app:iconSpaceReserved="false"
             app:defaultValue="false"
+            app:iconSpaceReserved="false"
             app:key="@string/key_label"
             app:persistent="false"
             app:title="@string/title_label" />
         <ListPreference
-            app:iconSpaceReserved="false"
             app:defaultValue="Light"
             app:dialogTitle="@string/title_theme"
             app:entries="@array/themes"
             app:entryValues="@array/themeValues"
+            app:iconSpaceReserved="false"
             app:key="@string/key_theme"
             app:persistent="false"
             app:title="@string/title_theme" />
         <SwitchPreferenceCompat
+            app:defaultValue="false"
             app:iconSpaceReserved="false"
             app:key="@string/key_fixed_size"
-            app:defaultValue="false"
-            app:title="@string/title_fixed_size"
             app:summary="@string/summary_fixed_size"
-            />
+            app:title="@string/title_fixed_size" />
     </PreferenceCategory>
     <PreferenceCategory
         app:iconSpaceReserved="false"

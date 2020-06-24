@@ -42,9 +42,9 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
                 if (throttled || since < 120000) {
                     // we are either throttled by the system, or are trying to refresh too often
                     // and then we will not get scheduled
-                    // so don't enqueue any work, just "finish" after a few seconds
+                    // so don't enqueue any work, just "finish" after a short time
                     thread(start = true) {
-                        Thread.sleep(1000)
+                        Thread.sleep(750)
                         WidgetViews.setText(context, views, prefs, prefs.lastValue, false)
                         setOnClick(context, appWidgetId, views)
                     }

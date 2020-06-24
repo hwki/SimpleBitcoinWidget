@@ -176,24 +176,13 @@ internal object WidgetViews {
     }
 
     private fun buildText(amount: String, prefs: Prefs): String {
-        val currency = prefs.currency
         var adjustedAmount = amount.toDouble()
         val unit = prefs.unit
         if (unit != null) {
             adjustedAmount *= prefs.coin.getUnitAmount(unit)
         }
-        val nf: NumberFormat
-        if (Coin.COIN_NAMES.contains(currency)) {
-            // virtual currency
-            val format = Coin.getVirtualCurrencyFormat(currency!!)
-            nf = DecimalFormat(format)
-        } else {
-            nf = DecimalFormat.getCurrencyInstance()
-            nf.currency = Currency.getInstance(currency)
-            if (!prefs.showDecimals && adjustedAmount > 1) {
-                nf.maximumFractionDigits = 0
-            }
-        }
+
+        val nf = getFormat(prefs, adjustedAmount)
         if (adjustedAmount < 1) {
             // show at least 3 significant digits if small amount
             // e.g. show 0.00000000243 instead of 0.00 but still show 1.25 instead of 1.25000003
@@ -204,6 +193,36 @@ internal object WidgetViews {
             nf.maximumFractionDigits = zeroes
         }
         return nf.format(adjustedAmount)
+    }
+
+    private fun getFormat(prefs: Prefs, adjustedAmount: Double): NumberFormat {
+        val currency = prefs.currency ?: Currency.getInstance(Locale.getDefault()).currencyCode
+        val symbol = prefs.currencySymbol
+        if (Coin.COIN_NAMES.contains(currency)) {
+            // virtual currency
+            val format = Coin.getVirtualCurrencyFormat(currency, symbol == "none")
+            return DecimalFormat(format)
+        } else {
+            val nf = when (symbol) {
+                null -> {
+                    val nf = DecimalFormat.getCurrencyInstance()
+                    nf.currency = Currency.getInstance(currency)
+                    nf
+                }
+                "none" -> NumberFormat.getNumberInstance()
+                else -> {
+                    val nf = DecimalFormat.getCurrencyInstance() as DecimalFormat
+                    val decimalFormatSymbols = nf.decimalFormatSymbols
+                    decimalFormatSymbols.currencySymbol = symbol
+                    nf.decimalFormatSymbols = decimalFormatSymbols
+                    nf
+                }
+            }
+            if (!prefs.showDecimals && adjustedAmount > 1) {
+                nf.maximumFractionDigits = 0
+            }
+            return nf
+        }
     }
 
     fun setLoading(views: RemoteViews) {

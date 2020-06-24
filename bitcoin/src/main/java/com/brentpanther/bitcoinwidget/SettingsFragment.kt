@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.*
 import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
 import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
+import java.text.DecimalFormat
+import java.util.*
 
 
 class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.NoticeDialogListener {
@@ -25,6 +27,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private var widgetId: Int = 0
     private lateinit var refresh: ListPreference
     private lateinit var currency: ListPreference
+    private lateinit var symbol: ListPreference
     private lateinit var exchange: ListPreference
     private lateinit var icon: TwoStatePreference
     private lateinit var units: ListPreference
@@ -34,6 +37,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private var fixedSize: Boolean = false
     private var checkDataSaver: Boolean = true
     private var checkBatterySaver: Boolean = true
+    private var symbolValue: String? = null
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         saveAndUpdate(true)
@@ -65,6 +69,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             putBoolean("label", label.isChecked)
             putString("theme", theme.value)
             putString("units", units.value)
+            putString("symbol", symbol.value)
         }
         super.onSaveInstanceState(outState)
     }
@@ -80,6 +85,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private fun loadPreferences(bundle: Bundle?) {
         refresh = findPreference(getString(R.string.key_refresh_interval))!!
         currency = findPreference(getString(R.string.key_currency))!!
+        symbol = findPreference(getString(R.string.key_symbol))!!
         exchange = findPreference(getString(R.string.key_exchange))!!
         icon = findPreference(getString(R.string.key_icon))!!
         decimals = findPreference(getString(R.string.key_decimals))!!
@@ -111,13 +117,22 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             getString(R.string.summary_currency, (it as ListPreference).value)
         }
 
+        // symbol option
+        bundle?.getString("symbol")?.let { symbol.value = it}
+        symbol.setOnPreferenceChangeListener { _, newValue ->
+            saveAndUpdate(symbol, newValue,true)
+        }
+        symbol.setSummaryProvider {
+            (it as ListPreference).entry
+        }
+
         // exchange option
         setExchange(currency.value)
         bundle?.getString("exchange")?.let { exchange.value = it }
         currency.setOnPreferenceChangeListener { _, newValue ->
             setExchange(newValue as String)
             saveAndUpdate(currency, newValue, true)
-
+            true
         }
         exchange.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(exchange, newValue, true) }
         exchange.setSummaryProvider {
@@ -187,6 +202,30 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
     }
 
+    private fun setSymbol(value: String) {
+        symbolValue = when (value) {
+            "ISO" -> null
+            "LOCAL" -> getLocalSymbol(currency.value)
+            "NONE" -> "none"
+            else -> null
+        }
+    }
+
+    private fun getLocalSymbol(currencyCode: String): String? {
+        val locale = Locale.getAvailableLocales().filter {
+            // find all locales that match this currency code
+            try {
+                Currency.getInstance(it).currencyCode == currencyCode
+            } catch (ignored: Exception) {
+                false
+            }
+        }.minBy {
+            // pick the best currency symbol, which is probably the one that does not match the ISO symbol
+            val symbols = (DecimalFormat.getCurrencyInstance(it) as DecimalFormat).decimalFormatSymbols
+            if (symbols.currencySymbol == symbols.internationalCurrencySymbol) 1 else 0
+        } ?: return null
+        return (DecimalFormat.getCurrencyInstance(locale) as DecimalFormat).decimalFormatSymbols.currencySymbol
+    }
 
     private fun setRefresh(value: Int) {
         when {
@@ -203,8 +242,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
     }
 
-    private fun saveAndUpdate(pref: ListPreference, newValue: Any, refreshValue: Boolean): Boolean {
-        pref.value = newValue as String
+    private fun saveAndUpdate(pref: ListPreference, newValue: Any?, refreshValue: Boolean): Boolean {
+        pref.value = newValue as String?
         saveAndUpdate(refreshValue)
         return true
     }
@@ -222,9 +261,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
 
     private fun saveValues(temporary: Boolean) {
         val prefs = Prefs(widgetId)
+        setSymbol(symbol.value)
         prefs.setValues(data.coin.name, currency.value, (refresh.value).toInt(),
                 exchange.value, label.isChecked, theme.value, icon.isChecked,
-                decimals.isChecked, units.value)
+                decimals.isChecked, units.value, symbolValue)
         val exchangeCoinName = data.getExchangeCoinName(exchange.value, data.coin.name)
         val exchangeCurrencyName = data.getExchangeCurrencyName(exchange.value, currency.value)
         prefs.setExchangeValues(exchangeCoinName, exchangeCurrencyName)

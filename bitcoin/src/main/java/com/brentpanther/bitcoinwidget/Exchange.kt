@@ -116,7 +116,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BITHUMB("Bithumb") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.bithumb.com/public/ticker/$coin"
+            val url = "https://api.bithumb.com/public/ticker/${coin}_$currency"
             val data = getJsonObject(url).getAsJsonObject("data")
             val buy = data.get("opening_price").asString.toDouble()
             val sell = data.get("closing_price").asString.toDouble()
@@ -389,8 +389,8 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     COINTREE("Cointree") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin/$currency".toLowerCase(Locale.ROOT)
-            return getJsonObject("https://www.cointree.com.au/api/price/$pair").get("Spot").asString
+            val url = "https://trade.cointree.com/api/prices/AUD/change/24h?symbols=$coin"
+            return getJsonArray(url).get(0).asJsonObject.get("spot").asString
         }
     },
     COINSPH("Coins.ph") {
@@ -476,13 +476,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject("https://api.itbit.com/v1/markets/$coin$currency/ticker").get("lastPrice").asString
         }
     },
-    KOINEX("Koinex") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://koinex.in/api/ticker"
-            return getJsonObject(url).getAsJsonObject("prices").getAsJsonObject(currency.toLowerCase(Locale.ROOT)).get(coin).asString
-        }
-    },
     KORBIT("Korbit") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -528,8 +521,8 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String {
             val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
-            val url = "https://api.lbkex.com/v1/ticker.do?symbol=$pair"
-            return getJsonObject(url).getAsJsonObject("ticker").get("latest").asString
+            val url = "https://api.lbkex.com/v2/ticker.do?symbol=$pair"
+            return getJsonObject(url).getAsJsonArray("data").get(0).asJsonObject.getAsJsonObject("ticker").get("latest").asString
         }
     },
     LIQUID("Liquid") {
