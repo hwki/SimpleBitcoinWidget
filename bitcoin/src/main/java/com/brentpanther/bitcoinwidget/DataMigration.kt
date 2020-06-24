@@ -82,7 +82,6 @@ internal object DataMigration {
                 "COINSQUARE" -> prefs.setValue("coin_custom", "BAB")
                 "BTCMARKETS" -> prefs.setValue("coin_custom", "BCHABC")
                 "BIT2C" -> prefs.setValue("coin_custom", "Bchabc")
-                "KOINEX" -> prefs.setValue("coin_custom", "BCHABC")
             }
         }
     }
@@ -169,7 +168,6 @@ internal object DataMigration {
                     }
                     Exchange.INDEPENDENT_RESERVE -> if (BTC === coin) coinName = "xbt"
                     Exchange.ITBIT -> if (BTC === coin) coinName = "XBT"
-                    Exchange.KOINEX -> if (IOTA === coin) coinName = "MIOTA"
                     Exchange.KRAKEN -> if (BTC === coin) coinName = "XBT"
                     Exchange.LUNO -> if (BTC === coin) coinName = "XBT"
                     Exchange.PARIBU -> if ("TRY" == currency) currencyName = "TL"

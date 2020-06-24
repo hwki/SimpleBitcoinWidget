@@ -92,14 +92,20 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
 
         internal var COIN_NAMES: SortedSet<String> = values().map { it.name }.toSortedSet()
 
-        fun getVirtualCurrencyFormat(currency: String): String {
+        fun getVirtualCurrencyFormat(currency: String, hideSymbol: Boolean): String {
             return when (currency) {
                 "BTC" ->
                     // bitcoin symbol added in Oreo
                     if (Build.VERSION.SDK_INT >= 26) "₿ #,###" else "Ƀ #,###"
                 "LTC" -> "Ł #,###"
                 "DOGE" -> "Ð #,###"
-                else -> String.format("#,### %s", currency)
+                else -> {
+                    if (hideSymbol) {
+                        "#,###"
+                    } else {
+                        "#,### $currency"
+                    }
+                }
             }
         }
     }

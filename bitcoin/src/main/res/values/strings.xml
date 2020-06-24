@@ -18,6 +18,7 @@
     <string name="key_rate" translatable="false">rate</string>
     <string name="key_prefs" translatable="false">bitcoinwidget</string>
     <string name="key_fixed_size" translatable="false">fixed_size</string>
+    <string name="key_symbol" translatable="false">symbol</string>
 
     <string name="title_fixed_size">Fixed Text Size</string>
     <string name="title_data">Data</string>
@@ -33,6 +34,7 @@
     <string name="title_decimals">Always show decimals</string>
     <string name="title_units">Denomination</string>
     <string name="title_preview">Preview</string>
+    <string name="title_locale">Symbol</string>
 
     <string name="summary_fixed_size">Keep text size consistent across all widgets (global setting)</string>
     <plurals name="summary_refresh_interval_minute">
@@ -80,9 +82,19 @@
         <item>360</item>
         <item>1440</item>
     </string-array>
+    <string-array name="symbols">
+        <item>Show local currency symbol</item>
+        <item>Show ISO currency symbol</item>
+        <item>Do not show currency symbol</item>
+    </string-array>
+    <string-array name="symbolValues">
+        <item>LOCAL</item>
+        <item>ISO</item>
+        <item>NONE</item>
+    </string-array>
     <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
     <string name="value_exchange_removed" translatable="false">\u0020!\u0020</string>
-    <string name="json_last_modified" translatable="false">Sun, 24 May 2020 13:34:48 GMT</string>
+    <string name="json_last_modified" translatable="false">Wed, 24 Jun 2020 01:28:13 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>
