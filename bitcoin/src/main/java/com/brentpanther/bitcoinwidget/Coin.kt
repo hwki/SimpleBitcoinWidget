@@ -18,6 +18,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
 
     ADA("Cardano", ic_ada, mapOf(L to ic_ada, LO to ic_ada_gray)),
     ALGO("Algorand", ic_algo, mapOf(L to ic_algo, LO to ic_algo_gray, D to ic_algo_white)),
+    ARRR("Pirate Chain", ic_arrr, mapOf(L to ic_arrr, D to ic_arrr_gray)),
     ATOM("Cosmos", ic_atom, mapOf(L to ic_atom, LO to ic_atom_gray)),
     BAT("Basic Attention Token", ic_bat, mapOf(L to ic_bat, LO to ic_bat_gray)),
     BCD("Bitcoin Diamond", ic_bcd, mapOf(L to ic_bcd, LO to ic_bcd_gray, D to ic_bcd_white)),
