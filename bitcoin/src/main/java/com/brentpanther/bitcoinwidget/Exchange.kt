@@ -279,6 +279,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             val map = mapOf(
                     "ADA" to "cardano",
                     "ALGO" to "algorand",
+                    "ARRR" to "pirate-chain",
                     "ATOM" to "cosmos",
                     "BAT" to "basic-attention-token",
                     "BCD" to "bitcoin-diamond",
