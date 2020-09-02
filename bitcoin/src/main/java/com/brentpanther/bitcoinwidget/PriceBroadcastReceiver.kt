@@ -72,7 +72,7 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
         // cancel any existing alarms
         alarm.cancel(pendingIntent)
         val update = Prefs(widgetId).interval * 60000
-        alarm.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + update, pendingIntent);
+        alarm.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + update, pendingIntent)
     }
 
     companion object {

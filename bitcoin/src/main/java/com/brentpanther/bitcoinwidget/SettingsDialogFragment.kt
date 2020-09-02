@@ -26,12 +26,12 @@ class SettingsDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(requireActivity())
-                .setTitle(arguments!!.getInt("title"))
-                .setMessage(arguments!!.getInt("message"))
+                .setTitle(requireArguments().getInt("title"))
+                .setMessage(requireArguments().getInt("message"))
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                    mListener.onDialogPositiveClick(arguments!!.getInt("code"))
+                    mListener.onDialogPositiveClick(requireArguments().getInt("code"))
                 }
-        if (arguments!!.getBoolean("show_settings")) {
+        if (requireArguments().getBoolean("show_settings")) {
             dialog.setNegativeButton(R.string.button_settings) { _: DialogInterface, _: Int ->
                 mListener.onDialogNegativeClick()
             }

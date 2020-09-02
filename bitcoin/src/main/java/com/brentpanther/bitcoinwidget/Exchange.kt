@@ -293,6 +293,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "DASH" to "dash",
                     "DCR" to "decred",
                     "DOGE" to "dogecoin",
+                    "DOT" to "polkadot",
                     "ENJ" to "enjincoin",
                     "EOS" to "eos",
                     "ETC" to "ethereum-classic",
@@ -304,6 +305,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "ICX" to "icon",
                     "IOTA" to "iota",
                     "KMD" to "komodo",
+                    "KSM" to "kusama",
                     "LEO" to "leo-token",
                     "LINK" to "chainlink",
                     "LSK" to "lisk",
@@ -467,7 +469,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String {
             val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
-            val url = "https://indodax.com/api/$pair/ticker"
+            val url = "https://indodax.com/api/ticker/$pair"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },

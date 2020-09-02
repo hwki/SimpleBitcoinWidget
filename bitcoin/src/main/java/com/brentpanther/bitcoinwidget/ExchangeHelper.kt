@@ -6,7 +6,6 @@ import com.google.gson.JsonObject
 import okhttp3.*
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
 
 internal object ExchangeHelper {
 
@@ -62,7 +61,7 @@ internal object ExchangeHelper {
                 .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
                 .retryOnConnectionFailure(false)
                 .connectionPool(connectionPool)
-                .hostnameVerifier(HostnameVerifier { _, _ -> true }).build()
+                .hostnameVerifier { _, _ -> true }.build()
         var builder: Request.Builder = Request.Builder()
                 .url(url)
         if (headers != null) {

@@ -219,7 +219,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             } catch (ignored: Exception) {
                 false
             }
-        }.minBy {
+        }.minByOrNull {
             // pick the best currency symbol, which is probably the one that does not match the ISO symbol
             val symbols = (DecimalFormat.getCurrencyInstance(it) as DecimalFormat).decimalFormatSymbols
             if (symbols.currencySymbol == symbols.internationalCurrencySymbol) 1 else 0
