@@ -2,7 +2,6 @@ package com.brentpanther.bitcoinwidget
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 internal class CoinSelectionAdapter(private val listener: ((coin: Coin) -> kotlin.Unit)?) : RecyclerView.Adapter<CoinSelectionAdapter.ViewHolder>() {
 
@@ -11,7 +10,7 @@ internal class CoinSelectionAdapter(private val listener: ((coin: Coin) -> kotli
     internal class ViewHolder(v: CoinSelectionView) : RecyclerView.ViewHolder(v)
 
     init {
-        coins.sortWith(Comparator { o1, o2 -> o1.coinName.compareTo(o2.coinName) })
+        coins.sortWith { o1, o2 -> o1.coinName.compareTo(o2.coinName) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

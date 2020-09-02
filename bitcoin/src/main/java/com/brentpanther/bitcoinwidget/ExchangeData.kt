@@ -69,7 +69,7 @@ class ExchangeData(val coin: Coin, json: InputStream) {
         }
     }
 
-    internal inner class JsonCoin : Serializable {
+    internal class JsonCoin : Serializable {
         lateinit var name: String
         lateinit var currencies: List<String>
     }
