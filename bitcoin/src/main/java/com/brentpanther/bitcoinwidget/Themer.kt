@@ -18,6 +18,7 @@ object Themer {
     const val DARK_OLD = "Dark Old"
     const val DAY_NIGHT = "DayNight"
     const val TRANSPARENT = "Transparent"
+    @Suppress("MemberVisibilityCanBePrivate")
     const val TRANSPARENT_OLD = "Transparent Old"
     const val TRANSPARENT_DARK = "Transparent Dark"
     const val TRANSPARENT_DARK_OLD = "Transparent Dark Old"

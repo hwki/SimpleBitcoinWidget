@@ -34,7 +34,9 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     },
     BTG("Bitcoin Gold", ic_btg, mapOf(L to ic_btg, LO to ic_btg_gray, D to ic_btg_dark, DO to ic_btg_dark_gray)),
     BTM("Bytom", ic_btm, mapOf(L to ic_btm, LO to ic_btm_gray, D to ic_btm_gray)),
+    COMP("Compound", ic_comp_black, mapOf(L to ic_comp_black, LO to ic_comp_gray, D to ic_comp_white)),
     CRO("Crypto.com Coin", ic_cro, mapOf(L to ic_cro, LO to ic_cro_gray, D to ic_cro_white)),
+    DAI("Dai", ic_dai_color, mapOf(L to ic_dai_color, LO to ic_dai_gray)),
     DASH("Dash", ic_dash, mapOf(L to ic_dash, LO to ic_dash_gray, D to ic_dash_dark, DO to ic_dash_dark_gray)),
     DCR("Decred", ic_dcr, mapOf(L to ic_dcr, LO to ic_dcr_gray)),
     DOGE("Dogecoin", ic_doge, mapOf(L to ic_doge, LO to ic_doge_gray)),
@@ -44,6 +46,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ETC("Ethereum Classic", ic_etc, mapOf(L to ic_etc, LO to ic_etc_gray)),
     ETH("Ethereum", ic_eth, mapOf(L to ic_eth, LO to ic_eth_gray)),
     FTT("FTX Token", ic_ftt, mapOf(L to ic_ftt, LO to ic_ftt_gray)),
+    GNT("Golem", ic_gnt_blue, mapOf(L to ic_gnt_blue, LO to ic_gnt_gray)),
     HBAR("Hedera Hashgraph", ic_hbar, mapOf(L to ic_hbar, LO to ic_hbar_gray, D to ic_hbar_white)),
     HNS("Handshake", ic_hns, mapOf(L to ic_hns, LO to ic_hns_gray, D to ic_hns_dark)),
     HT("Huobi Token", ic_ht, mapOf(L to ic_ht, LO to ic_ht_gray)),
@@ -82,7 +85,8 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     XVG("Verge", ic_xvg, mapOf(L to ic_xvg, LO to ic_xvg_gray)),
     XZC("ZCoin", ic_xzc, mapOf(L to ic_xzc, LO to ic_xzc_gray)),
     ZEC("Zcash", ic_zec, mapOf(L to ic_zec, LO to ic_zec_gray, D to ic_zec_dark, DO to ic_zec_dark_gray,
-            TD to ic_zec, TDO to ic_zec));
+            TD to ic_zec, TDO to ic_zec)),
+    ZRX("0x", ic_zrx_black, mapOf(L to ic_zrx_black, LO to ic_zrx_gray, D to ic_zrx_white));
 
     protected open val units: List<Unit> = emptyList()
 
