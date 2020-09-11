@@ -304,6 +304,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "ICX" to "icon",
                     "IOTA" to "iota",
                     "KMD" to "komodo",
+                    "KNC" to "kyber-network",
                     "KSM" to "kusama",
                     "LEO" to "leo-token",
                     "LINK" to "chainlink",
@@ -391,6 +392,12 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://uat-api.3ona.co/v2/public/get-ticker?instrument_name=${coin}_$currency"
             return getJsonObject(url).getAsJsonObject("result").getAsJsonObject("data").get("a").asString
+        }
+    },
+    DUEDEX("DueDEX") {
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://api.duedex.com/v1/ticker/${coin}$currency"
+            return getJsonObject(url).getAsJsonObject("data").get("lastPrice").asString
         }
     },
     EXMO("Exmo") {
@@ -591,6 +598,14 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://paymium.com/api/v1/data/${currency.toLowerCase(Locale.ROOT)}/ticker"
             return getJsonObject(url).get("price").asString
+        }
+    },
+    PHEMEX("Phemex") {
+
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://api.phemex.com/md/spot/ticker/24hr?symbol=s${coin}$currency"
+            val value = getJsonObject(url).getAsJsonObject("result").get("lastEp").asString
+            return (value.toDouble() / (8 * 10)).toString()
         }
     },
     POLONIEX("Poloniex") {

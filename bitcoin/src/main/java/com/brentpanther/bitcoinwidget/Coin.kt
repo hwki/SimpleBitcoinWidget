@@ -53,6 +53,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ICX("Icon", ic_icx, mapOf(L to ic_icx, LO to ic_icx_gray)),
     IOTA("Iota", ic_iota, mapOf(L to ic_iota, LO to ic_iota_gray, D to ic_iota_white)),
     KMD("Komodo", ic_kmd, mapOf(L to ic_kmd, LO to ic_kmd_gray)),
+    KNC("Kyber Network", ic_kmd, mapOf(L to ic_kmd, LO to ic_kmd_gray)),
     KSM("Kusama", ic_ksm_black, mapOf(L to ic_ksm_black, LO to ic_ksm_gray, D to ic_ksm_white)),
     LEO("LEO Token", ic_leo, mapOf(L to ic_leo, LO to ic_leo_gray)),
     LINK("ChainLink", ic_link, mapOf(L to ic_link, LO to ic_link_gray)),
