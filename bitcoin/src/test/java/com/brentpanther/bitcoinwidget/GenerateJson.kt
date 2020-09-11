@@ -29,10 +29,10 @@ class GenerateJson {
                         this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coinegg, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-                        this::cryptocom, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
+                        this::cryptocom, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lakebtc, this::lbank, this::liquid, this::livecoin, this::luno, this::mercado,
-                        this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::poloniex,
+                        this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex, this::poloniex,
                         this::therock, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
                         this::zbg
                 ).zip(Exchange.values())
@@ -379,6 +379,10 @@ class GenerateJson {
         return parse("https://uat-api.3ona.co/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
     }
 
+    private fun duedex(): List<String> {
+        return parse("https://api.duedex.com/v1/ticker", "$.data[?(@.instrument != 'BTCUSD')].instrument")
+    }
+
     private fun exmo(): List<String> {
         return parseKeys("https://api.exmo.com/v1.1/ticker", "$")
     }
@@ -482,6 +486,10 @@ class GenerateJson {
 
     private fun paymium(): List<String> {
         return listOf("BTC_EUR", "BTC_")
+    }
+
+    private fun phemex(): List<String> {
+        return listOf("BTC_USDT", "XRP_USDT", "ETH_USDT", "LINK_USDT", "XTZ_USDT", "LTC_USDT")
     }
 
     private fun poloniex(): List<String> {
