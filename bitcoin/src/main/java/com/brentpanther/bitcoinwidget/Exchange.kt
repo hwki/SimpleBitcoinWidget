@@ -5,6 +5,7 @@ import com.brentpanther.bitcoinwidget.ExchangeHelper.getJsonObject
 import com.google.gson.JsonObject
 import okhttp3.Headers
 import java.util.*
+import kotlin.math.pow
 
 internal enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
@@ -605,7 +606,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.phemex.com/md/spot/ticker/24hr?symbol=s${coin}$currency"
             val value = getJsonObject(url).getAsJsonObject("result").get("lastEp").asString
-            return (value.toDouble() / (8 * 10)).toString()
+            return (value.toDouble() / 10.0.pow(8)).toString()
         }
     },
     POLONIEX("Poloniex") {
