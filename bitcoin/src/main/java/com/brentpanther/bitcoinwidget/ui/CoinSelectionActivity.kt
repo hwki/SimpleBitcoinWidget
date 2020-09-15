@@ -1,13 +1,16 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.ui
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.Repository
+import com.brentpanther.bitcoinwidget.WidgetProvider
 
 class CoinSelectionActivity : AppCompatActivity() {
 
@@ -16,6 +19,7 @@ class CoinSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coin)
+        Repository.data(this)
         title = getString(R.string.select_coin)
         val extras = intent.extras
         if (extras == null) {
@@ -26,7 +30,6 @@ class CoinSelectionActivity : AppCompatActivity() {
         val coinList = findViewById<RecyclerView>(R.id.coin_list)
         coinList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         coinList.adapter = CoinSelectionAdapter{ coin: Coin -> this.selected(coin) }
-        startService(Intent(this@CoinSelectionActivity, DownloadJSONService::class.java))
     }
 
     private fun selected(coin: Coin) {

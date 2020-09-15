@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.ui
 
 import android.app.Dialog
 import android.content.Context
@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
+import com.brentpanther.bitcoinwidget.R
 
 class SettingsDialogFragment : DialogFragment() {
 

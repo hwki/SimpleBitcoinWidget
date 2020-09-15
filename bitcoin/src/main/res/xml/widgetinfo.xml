@@ -10,4 +10,4 @@
     android:initialKeyguardLayout="@layout/widget_layout"
     android:resizeMode="vertical|horizontal"
     android:previewImage="@mipmap/ic_launcher"
-    android:configure="com.brentpanther.bitcoinwidget.CoinSelectionActivity" />
+    android:configure="com.brentpanther.bitcoinwidget.ui.CoinSelectionActivity" />

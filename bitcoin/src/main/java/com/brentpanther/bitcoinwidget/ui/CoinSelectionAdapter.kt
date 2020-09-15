@@ -1,9 +1,10 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.ui
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.brentpanther.bitcoinwidget.Coin
 
-internal class CoinSelectionAdapter(private val listener: ((coin: Coin) -> kotlin.Unit)?) : RecyclerView.Adapter<CoinSelectionAdapter.ViewHolder>() {
+internal class CoinSelectionAdapter(private val listener: ((coin: Coin) -> Unit)?) : RecyclerView.Adapter<CoinSelectionAdapter.ViewHolder>() {
 
     private val coins: MutableList<Coin> = Coin.values().toMutableList()
 

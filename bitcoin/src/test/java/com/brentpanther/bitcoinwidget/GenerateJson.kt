@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
 import java.util.*
+import kotlin.math.ceil
 
 class GenerateJson {
 
@@ -29,11 +30,11 @@ class GenerateJson {
                         this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coinegg, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-                        this::cryptocom, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
-                        this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
+                        this::cryptocom, this::deversifi, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
+                        this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lakebtc, this::lbank, this::liquid, this::livecoin, this::luno, this::mercado,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex, this::poloniex,
-                        this::therock, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
+                        this::probit, this::therock, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
                         this::zbg
                 ).zip(Exchange.values())
 
@@ -46,6 +47,9 @@ class GenerateJson {
                 val currencyOverrides = mutableMapOf<String, String>()
                 val existing = getExistingPairs(name.name)
                 var pairs = extractOverrides(normalize(exchange.invoke()), coinOverrides, currencyOverrides)
+                pairs = pairs.filterNot {
+                   it.substringBefore("_") == it.substringAfter("_")
+                }
                 val removed = existing.minus(pairs).sorted()
                 if (removed.isNotEmpty()) {
                     System.err.println("$name: Removed: ${removed.joinToString()}")
@@ -58,7 +62,7 @@ class GenerateJson {
                 }
                 jsonExchanges.add(buildExchange(name, pairs, currencyOverrides, coinOverrides))
             } catch (e: Exception) {
-                System.err.println("$name: Error!")
+                System.err.println("$name: Error: ${e.message}")
             }
         }
         jsonMap["exchanges"] = jsonExchanges
@@ -146,7 +150,10 @@ class GenerateJson {
                     if (it.size == 1) {
                         // some mash the coin and currency together, so we need to split it up
                         // based on any coin its found to start with, including overrides
-                        val coin = allCoins.plus(allCoinOverrides.keys).firstOrNull { coinName ->
+                        // sort by descending length so we don't skip say, PAXG by matching PAX
+                        val coin = allCoins.plus(allCoinOverrides.keys).sortedByDescending {
+                            c -> c.length }
+                                .firstOrNull { coinName ->
                             it[0].startsWith(coinName)
                         } ?: "XXXXX"
                         listOf(coin, it[0].substringAfter(coin))
@@ -379,6 +386,12 @@ class GenerateJson {
         return parse("https://uat-api.3ona.co/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
     }
 
+    private fun deversifi(): List<String> {
+        return parse("https://api.deversifi.com/bfx/v2/tickers?symbols=ALL", "$[*].[0]").map {
+            it.removePrefix("t")
+        }
+    }
+
     private fun duedex(): List<String> {
         return parse("https://api.duedex.com/v1/ticker", "$.data[?(@.instrument != 'BTCUSD')].instrument")
     }
@@ -407,6 +420,10 @@ class GenerateJson {
 
     private fun hitbtc(): List<String> {
         return parse("https://api.hitbtc.com/api/2/public/symbol", "$[*].id")
+    }
+
+    private fun huobi(): List<String> {
+        return parse("https://api.huobi.pro/market/tickers", "$.data[*].symbol")
     }
 
     private fun independent_reserve(): List<String> {
@@ -498,6 +515,10 @@ class GenerateJson {
         }
     }
 
+    private fun probit(): List<String> {
+        return parse("https://api.probit.com/api/exchange/v1/market", "$.data[*].id")
+    }
+
     private fun therock(): List<String> {
         return parse("https://api.therocktrading.com/v1/funds/tickers", "$.tickers[*].fund_id")
     }
@@ -537,7 +558,11 @@ class GenerateJson {
     }
 
     private fun wyre(): List<String> {
-        return parseKeys("https://api.sendwyre.com/v3/rates", "$")
+        // is in currency - coin format
+        val list = parseKeys("https://api.sendwyre.com/v3/rates", "$")
+        val split1 =  list.map { it.substring(it.length / 2, it.length) + "_" + it.substring(0, it.length / 2)  }
+        val split2 = list.map { it.substring(ceil(7.0 / 2).toInt(), it.length) + "_" + it.substring(0, ceil(7.0 / 2).toInt())  }
+        return split1.plus(split2).distinct()
     }
 
     private fun yobit(): List<String> {
