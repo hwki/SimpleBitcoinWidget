@@ -28,18 +28,6 @@ internal object ExchangeHelper {
 
     val connectionPool = ConnectionPool()
 
-    @Suppress("unused")
-    @Throws(IOException::class)
-    fun getFromBitcoinCharts(symbol: String): String? {
-        val array = getJsonArray("https://api.bitcoincharts.com/v1/markets.json")
-        for (obj in array) {
-            val o = obj.asJsonObject
-            if (symbol != o.get("symbol").asString) continue
-            return o.get("avg").asString
-        }
-        return null
-    }
-
     @Throws(IOException::class)
     @JvmOverloads
     fun getJsonObject(url: String, headers: Headers? = null): JsonObject {
@@ -56,19 +44,17 @@ internal object ExchangeHelper {
         val client = OkHttpClient.Builder()
                 .followRedirects(true)
                 .followSslRedirects(true)
-                .readTimeout(8, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
                 .retryOnConnectionFailure(false)
                 .connectionPool(connectionPool)
                 .hostnameVerifier { _, _ -> true }.build()
-        var builder: Request.Builder = Request.Builder()
-                .url(url)
-        if (headers != null) {
-            builder = builder.headers(headers)
+        var builder: Request.Builder = Request.Builder().url(url)
+        headers?.let {
+            builder = builder.headers(it)
         }
         val request = builder.build()
-
         val response = client.newCall(request).execute()
         return response.body!!.string()
     }

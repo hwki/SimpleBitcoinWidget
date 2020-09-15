@@ -42,15 +42,14 @@
             android:foregroundServiceType="dataSync"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <service android:name=".DownloadJSONService" />
 
         <activity
-            android:name=".CoinSelectionActivity">
+            android:name=".ui.CoinSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name="com.brentpanther.bitcoinwidget.SettingsActivity"/>
+        <activity android:name="com.brentpanther.bitcoinwidget.ui.SettingsActivity"/>
     </application>
 
 </manifest>

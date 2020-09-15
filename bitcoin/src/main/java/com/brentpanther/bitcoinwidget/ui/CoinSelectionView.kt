@@ -1,16 +1,18 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.ui
 
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.R
 
 
 class CoinSelectionView(context: Context) : LinearLayout(context) {
 
     private lateinit var coin: Coin
-    private var listener: ((coin: Coin) -> kotlin.Unit)? = null
+    private var listener: ((coin: Coin) -> Unit)? = null
 
     init {
         View.inflate(context, R.layout.view_coin_selector, this)
@@ -24,7 +26,7 @@ class CoinSelectionView(context: Context) : LinearLayout(context) {
         setBackgroundResource(R.drawable.bg_rounded)
     }
 
-    fun setCoin(coin: Coin, listener: ((coin: Coin) -> kotlin.Unit)?) {
+    fun setCoin(coin: Coin, listener: ((coin: Coin) -> Unit)?) {
         this.coin = coin
         this.listener = listener
         val name = findViewById<TextView>(R.id.coin_name)

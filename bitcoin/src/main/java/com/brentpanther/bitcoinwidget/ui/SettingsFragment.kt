@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.ui
 
 import android.app.Activity
 import android.app.UiModeManager
@@ -15,6 +15,10 @@ import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.preference.*
+import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.Exchange
+import com.brentpanther.bitcoinwidget.Prefs
+import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
 import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
 import java.text.DecimalFormat
@@ -40,7 +44,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private var symbolValue: String? = null
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        saveAndUpdate(true)
+        if (!requireActivity().isFinishing) {
+            saveAndUpdate(true)
+        }
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

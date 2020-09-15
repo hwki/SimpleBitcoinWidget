@@ -1,6 +1,5 @@
 package com.brentpanther.bitcoinwidget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.Pair
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 
-@SuppressLint("InflateParams")
 internal object TextSizer {
 
     fun getTextSize(context: Context, text: String, availableSize: Pair<Int, Int>, layout: Int): Float {
