@@ -53,9 +53,9 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
                     return
                 }
             }
-            val i = Intent(context, UpdatePriceService::class.java)
+            val i = Intent(context.applicationContext, UpdatePriceService::class.java)
             i.putExtras(intent)
-            JobIntentService.enqueueWork(context, UpdatePriceService::class.java, 7483, i)
+            JobIntentService.enqueueWork(context.applicationContext, UpdatePriceService::class.java, 7483, i)
             setAlarm(context, appWidgetId)
         } else {
             WidgetViews.setText(context, views, prefs, prefs.lastValue, false)
