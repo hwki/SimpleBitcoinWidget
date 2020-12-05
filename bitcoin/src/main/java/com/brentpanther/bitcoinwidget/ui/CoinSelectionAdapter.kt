@@ -6,13 +6,9 @@ import com.brentpanther.bitcoinwidget.Coin
 
 internal class CoinSelectionAdapter(private val listener: ((coin: Coin) -> Unit)?) : RecyclerView.Adapter<CoinSelectionAdapter.ViewHolder>() {
 
-    private val coins: MutableList<Coin> = Coin.values().toMutableList()
+    private val coins: List<Coin> = Coin.values().sortedWith { o1, o2 -> String.CASE_INSENSITIVE_ORDER.compare(o1.coinName, o2.coinName)}
 
     internal class ViewHolder(v: CoinSelectionView) : RecyclerView.ViewHolder(v)
-
-    init {
-        coins.sortWith { o1, o2 -> o1.coinName.compareTo(o2.coinName) }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(CoinSelectionView(parent.context))

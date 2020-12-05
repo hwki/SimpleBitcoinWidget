@@ -130,6 +130,13 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return ((buy + sell) / 2).toString()
         }
     },
+    BITHUMB_PRO("Bithumb Pro") {
+
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=$coin-$currency"
+            return getJsonObject(url).getAsJsonArray("data").get(0).asJsonObject.get("c").asString
+        }
+    },
     BITMAX("BitMax") {
         override fun getValue(coin: String, currency: String): String? {
             val obj = getJsonObject("https://bitmax.io/api/pro/v1/ticker?symbol=$coin/$currency")
@@ -274,6 +281,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String? {
             // hardcoded map to id
             val map = mapOf(
+                    "AAVE" to "aave",
                     "ADA" to "cardano",
                     "ALGO" to "algorand",
                     "ARRR" to "pirate-chain",
@@ -316,6 +324,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "LINK" to "chainlink",
                     "LSK" to "lisk",
                     "LTC" to "litecoin",
+                    "MANA" to "decentraland",
                     "MCO" to "monaco",
                     "MKR" to "maker",
                     "MLN" to "melon",
@@ -334,6 +343,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "RVN" to "ravencoin",
                     "SNX" to "havven",
                     "TRX" to "tron",
+                    "UNI" to "uniswap",
                     "VET" to "vechain",
                     "VTC" to "vertcoin",
                     "WAVES" to "waves",
@@ -345,6 +355,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "XTZ" to "tezos",
                     "XVG" to "verge",
                     "XZC" to "zcoin",
+                    "YFI" to "yearn-finance",
                     "ZEC" to "zcash",
                     "ZRX" to "0x")
             val id = map[coin]
