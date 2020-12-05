@@ -25,7 +25,7 @@ class GenerateJson {
         val exchanges =
                 listOf(this::abucoins, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude, this::bitcoinAverage, this::bitcoinAverageGlobal,
-                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitmax, this::bitmex,
+                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmax, this::bitmex,
                         this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bleutrade,
                         this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coinegg, this::coingecko,
@@ -58,11 +58,13 @@ class GenerateJson {
                 otherCoins(pairs, potentialCoinAdds)
                 pairs = removeUnknowns(pairs)
                 if (pairs.count() > existing.count()) {
-                    println("$name: ${pairs.count() - existing.count()} pairs added.")
+                    println("$name: ${pairs.count() - existing.count()} pairs added")
                 }
                 jsonExchanges.add(buildExchange(name, pairs, currencyOverrides, coinOverrides))
             } catch (e: Exception) {
                 System.err.println("$name: Error: ${e.message}")
+                // add previous exchange data
+                jsonExchanges.add(json.read("$.exchanges[?(@.name=='$name')]", List::class.java)[0] as Map<*, *>)
             }
         }
         jsonMap["exchanges"] = jsonExchanges
@@ -260,6 +262,10 @@ class GenerateJson {
         return parseKeys("https://api.bithumb.com/public/ticker/ALL", "$.data").map { "${it}_KRW" }
     }
 
+    private fun bithumbpro() : List<String> {
+        return parse("https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=ALL", "$.data[*].s")
+    }
+
     private fun bitmax(): List<String> {
         return parse("https://bitmax.io/api/pro/v1/products", "$.data[?(@.status=='Normal')].symbol")
     }
@@ -281,6 +287,8 @@ class GenerateJson {
     private fun bitstamp(): List<String> {
         return parse("https://www.bitstamp.net/api/v2/trading-pairs-info", "$[*].name")
     }
+
+
 
     private fun bittrex(): List<String> {
         return parse("https://api.bittrex.com/v3/markets", "$[*].symbol")

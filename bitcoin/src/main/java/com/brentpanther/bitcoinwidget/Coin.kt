@@ -16,6 +16,7 @@ import java.util.*
 
 enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal val icons: Map<String, Int>) {
 
+    AAVE("Aave", ic_aave, mapOf(L to ic_aave, LO to ic_aave_gray)),
     ADA("Cardano", ic_ada, mapOf(L to ic_ada, LO to ic_ada_gray)),
     ALGO("Algorand", ic_algo, mapOf(L to ic_algo, LO to ic_algo_gray, D to ic_algo_white)),
     ARRR("Pirate Chain", ic_arrr, mapOf(L to ic_arrr, D to ic_arrr_gray)),
@@ -59,7 +60,6 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     KMD("Komodo", ic_kmd, mapOf(L to ic_kmd, LO to ic_kmd_gray)),
     KNC("Kyber Network", ic_knc_color, mapOf(L to ic_knc_color, LO to ic_knc_gray)),
     KSM("Kusama", ic_ksm_black, mapOf(L to ic_ksm_black, LO to ic_ksm_gray, D to ic_ksm_white)),
-    LEND("Aave", ic_lend_color, mapOf(L to ic_lend_color, LO to ic_lend_gray)),
     LEO("LEO Token", ic_leo, mapOf(L to ic_leo, LO to ic_leo_gray)),
     LINK("ChainLink", ic_link, mapOf(L to ic_link, LO to ic_link_gray)),
     LSK("Lisk", ic_lsk, mapOf(L to ic_lsk, LO to ic_lsk_gray)),
@@ -67,6 +67,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
         override val units: List<Unit>
             get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
     },
+    MANA("Decentraland", ic_mana, mapOf(L to ic_mana, LO to ic_mana_gray)),
     MKR("Maker", ic_mkr, mapOf(L to ic_mkr, LO to ic_mkr_gray)),
     MCO("MCO", ic_mco, mapOf(L to ic_mco, LO to ic_mco_gray, D to ic_mco_white)),
     MLN("Melon", ic_mln, mapOf(L to ic_mln, LO to ic_mln_gray)),
@@ -85,6 +86,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     RVN("Ravencoin", ic_rvn, mapOf(L to ic_rvn, LO to ic_rvn_gray)),
     SNX("Synthetix Network Token", ic_snx, mapOf(L to ic_snx, LO to ic_snx_gray)),
     TRX("Tron", ic_trx, mapOf(L to ic_trx, LO to ic_trx_gray)),
+    UNI("Uniswap", ic_uni, mapOf(L to ic_uni, LO to ic_uni_gray)),
     VET("VeChain", ic_vet, mapOf(L to ic_vet, LO to ic_vet_gray)),
     VTC("Vertcoin", ic_vtc, mapOf(L to ic_vtc, LO to ic_vtc_gray)),
     WAVES("Waves", ic_waves, mapOf(L to ic_waves, LO to ic_waves_gray)),
@@ -96,6 +98,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     XTZ("Tezos", ic_xtz, mapOf(L to ic_xtz, LO to ic_xtz_gray)),
     XVG("Verge", ic_xvg, mapOf(L to ic_xvg, LO to ic_xvg_gray)),
     XZC("ZCoin", ic_xzc, mapOf(L to ic_xzc, LO to ic_xzc_gray)),
+    YFI("yearn.finance", ic_yfi, mapOf(L to ic_yfi, LO to ic_yfi_gray)),
     ZEC("Zcash", ic_zec, mapOf(L to ic_zec, LO to ic_zec_gray, D to ic_zec_dark, DO to ic_zec_dark_gray,
             TD to ic_zec, TDO to ic_zec)),
     ZRX("0x", ic_zrx_black, mapOf(L to ic_zrx_black, LO to ic_zrx_gray, D to ic_zrx_white));
@@ -109,7 +112,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
 
     companion object {
 
-        internal var COIN_NAMES: SortedSet<String> = values().map { it.name }.toSortedSet()
+        internal var COIN_NAMES: SortedSet<String> = values().map { it.name }.toSortedSet(String.CASE_INSENSITIVE_ORDER)
 
         fun getVirtualCurrencyFormat(currency: String, hideSymbol: Boolean): String {
             return when (currency) {
