@@ -262,6 +262,19 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).get("price").asString
         }
     },
+    COINBENE("CoinBene") {
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://openapi-exchange.coinbene.com/api/spot/market/summary"
+            val array = getJsonArray(url)
+            for (jsonElement in array) {
+                val obj = jsonElement as JsonObject
+                if (obj.get("trading_pairs").asString == "${coin}_$currency") {
+                    return obj.get("last_price").asString
+                }
+            }
+            return null
+        }
+    },
     COINDESK("Coindesk") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -286,6 +299,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "ALGO" to "algorand",
                     "ARRR" to "pirate-chain",
                     "ATOM" to "cosmos",
+                    "BAL" to "balancer",
                     "BAND" to "band-protocol",
                     "BAT" to "basic-attention-token",
                     "BCD" to "bitcoin-diamond",
@@ -295,6 +309,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "BTC" to "bitcoin",
                     "BTG" to "bitcoin-gold",
                     "BTM" to "bytom",
+                    "BTT" to "bittorrent-2",
                     "CEL" to "celsius-degree-token",
                     "COMP" to "compound-coin",
                     "CRO" to "crypto-com-chain",
@@ -307,6 +322,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "EOS" to "eos",
                     "ETC" to "ethereum-classic",
                     "ETH" to "ethereum",
+                    "FIL" to "filecoin",
                     "FTT" to "ftx-token",
                     "GNO" to "gnosis",
                     "GNT" to "golem",
@@ -319,7 +335,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "KMD" to "komodo",
                     "KNC" to "kyber-network",
                     "KSM" to "kusama",
-                    "LEND" to "ethlend",
                     "LEO" to "leo-token",
                     "LINK" to "chainlink",
                     "LSK" to "lisk",
@@ -339,6 +354,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "PPC" to "peercoin",
                     "QTUM" to "qtum",
                     "RDD" to "reddcoin",
+                    "REN" to "republic-protocol",
                     "REP" to "augur",
                     "RVN" to "ravencoin",
                     "SNX" to "havven",
@@ -357,6 +373,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "XZC" to "zcoin",
                     "YFI" to "yearn-finance",
                     "ZEC" to "zcash",
+                    "ZIL" to "zilliqa",
                     "ZRX" to "0x")
             val id = map[coin]
             val vs = currency.toLowerCase(Locale.ROOT)
@@ -570,13 +587,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                 }
             }
             return null
-        }
-    },
-    LIVECOIN("Livecoin") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.livecoin.net/exchange/ticker?currencyPair=$coin/$currency"
-            return getJsonObject(url).get("last").asString
         }
     },
     LUNO("Luno") {

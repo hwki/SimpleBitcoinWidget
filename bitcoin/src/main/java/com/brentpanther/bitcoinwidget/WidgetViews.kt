@@ -185,12 +185,13 @@ internal object WidgetViews {
         val nf = getFormat(prefs, adjustedAmount)
         if (adjustedAmount < 1) {
             // show at least 3 significant digits if small amount
-            // e.g. show 0.00000000243 instead of 0.00 but still show 1.25 instead of 1.25000003
+            // e.g. show 0.00000000243 instead of 0.00 but still show 1.250 instead of 1.25000003
             var zeroes = nf.maximumFractionDigits
             while (adjustedAmount * 10.0.pow((zeroes - 2).toDouble()) < 1) {
                 zeroes++
             }
             nf.maximumFractionDigits = zeroes
+            nf.minimumFractionDigits = zeroes
         }
         return nf.format(adjustedAmount)
     }

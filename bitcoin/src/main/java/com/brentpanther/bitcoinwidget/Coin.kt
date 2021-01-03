@@ -21,6 +21,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ALGO("Algorand", ic_algo, mapOf(L to ic_algo, LO to ic_algo_gray, D to ic_algo_white)),
     ARRR("Pirate Chain", ic_arrr, mapOf(L to ic_arrr, D to ic_arrr_gray)),
     ATOM("Cosmos", ic_atom, mapOf(L to ic_atom, LO to ic_atom_gray)),
+    BAL("Balancer", ic_bal, mapOf(L to ic_bal, LO to ic_bal_gray)),
     BAND("Band Protocol", ic_band_color, mapOf(L to ic_band_color, LO to ic_band_gray)),
     BAT("Basic Attention Token", ic_bat, mapOf(L to ic_bat, LO to ic_bat_gray)),
     BCD("Bitcoin Diamond", ic_bcd, mapOf(L to ic_bcd, LO to ic_bcd_gray, D to ic_bcd_white)),
@@ -36,6 +37,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     },
     BTG("Bitcoin Gold", ic_btg, mapOf(L to ic_btg, LO to ic_btg_gray, D to ic_btg_dark, DO to ic_btg_dark_gray)),
     BTM("Bytom", ic_btm, mapOf(L to ic_btm, LO to ic_btm_gray, D to ic_btm_gray)),
+    BTT("BitTorrent", ic_btt, mapOf(L to ic_btt, LO to ic_btt_gray)),
     CEL("Celsius", ic_cel, mapOf(L to ic_cel, LO to ic_cel_gray)),
     COMP("Compound", ic_comp_black, mapOf(L to ic_comp_black, LO to ic_comp_gray, D to ic_comp_white)),
     CRO("Crypto.com Coin", ic_cro, mapOf(L to ic_cro, LO to ic_cro_gray, D to ic_cro_white)),
@@ -48,6 +50,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     EOS("EOS", ic_eos_black, mapOf(L to ic_eos_black, LO to ic_eos_gray, T to ic_eos_white, D to ic_eos_white)),
     ETC("Ethereum Classic", ic_etc, mapOf(L to ic_etc, LO to ic_etc_gray)),
     ETH("Ethereum", ic_eth, mapOf(L to ic_eth, LO to ic_eth_gray)),
+    FIL("Filecoin", ic_fil, mapOf(L to ic_fil, LO to ic_fil_gray)),
     FTT("FTX Token", ic_ftt, mapOf(L to ic_ftt, LO to ic_ftt_gray)),
     GNO("Gnosis", ic_gno_color, mapOf(L to ic_gno_color, LO to ic_gno_gray)),
     GNT("Golem", ic_gnt_blue, mapOf(L to ic_gnt_blue, LO to ic_gnt_gray)),
@@ -68,8 +71,8 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
             get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
     },
     MANA("Decentraland", ic_mana, mapOf(L to ic_mana, LO to ic_mana_gray)),
-    MKR("Maker", ic_mkr, mapOf(L to ic_mkr, LO to ic_mkr_gray)),
     MCO("MCO", ic_mco, mapOf(L to ic_mco, LO to ic_mco_gray, D to ic_mco_white)),
+    MKR("Maker", ic_mkr, mapOf(L to ic_mkr, LO to ic_mkr_gray)),
     MLN("Melon", ic_mln, mapOf(L to ic_mln, LO to ic_mln_gray)),
     NANO("Nano", ic_nano, mapOf(L to ic_nano, LO to ic_nano_gray)),
     NEO("NEO", ic_neo, mapOf(L to ic_neo, LO to ic_neo_gray)),
@@ -82,6 +85,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     PPC("Peercoin", ic_ppc, mapOf(L to ic_ppc, LO to ic_ppc_gray)),
     QTUM("Qtum", ic_qtum, mapOf(L to ic_qtum, LO to ic_qtum_gray)),
     RDD("Reddcoin", ic_rdd, mapOf(L to ic_rdd, LO to ic_rdd_gray)),
+    REN("REN", ic_ren, mapOf(L to ic_ren, LO to ic_ren_gray)),
     REP("Augur", ic_rep, mapOf(L to ic_rep, LO to ic_rep_gray)),
     RVN("Ravencoin", ic_rvn, mapOf(L to ic_rvn, LO to ic_rvn_gray)),
     SNX("Synthetix Network Token", ic_snx, mapOf(L to ic_snx, LO to ic_snx_gray)),
@@ -101,6 +105,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     YFI("yearn.finance", ic_yfi, mapOf(L to ic_yfi, LO to ic_yfi_gray)),
     ZEC("Zcash", ic_zec, mapOf(L to ic_zec, LO to ic_zec_gray, D to ic_zec_dark, DO to ic_zec_dark_gray,
             TD to ic_zec, TDO to ic_zec)),
+    ZIL("Zilliqa", ic_zil, mapOf(L to ic_zil, LO to ic_zil_gray)),
     ZRX("0x", ic_zrx_black, mapOf(L to ic_zrx_black, LO to ic_zrx_gray, D to ic_zrx_white));
 
     protected open val units: List<Unit> = emptyList()

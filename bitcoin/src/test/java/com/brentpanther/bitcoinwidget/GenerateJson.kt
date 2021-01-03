@@ -28,11 +28,11 @@ class GenerateJson {
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmax, this::bitmex,
                         this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bleutrade,
                         this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
-                        this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coinegg, this::coingecko,
+                        this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coinegg, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
                         this::cryptocom, this::deversifi, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
-                        this::kuna, this::lakebtc, this::lbank, this::liquid, this::livecoin, this::luno, this::mercado,
+                        this::kuna, this::lakebtc, this::lbank, this::liquid, this::luno, this::mercado,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex, this::poloniex,
                         this::probit, this::therock, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
                         this::zbg
@@ -341,6 +341,10 @@ class GenerateJson {
 
     private fun coinbasepro(): List<String> {
         return parse("https://api.pro.coinbase.com/products", "$[*].id")
+    }
+
+    private fun coinbene() : List<String> {
+        return parse("https://openapi-exchange.coinbene.com/api/spot/market/summary", "$[*].trading_pairs")
     }
 
     private fun coindesk(): List<String> {
