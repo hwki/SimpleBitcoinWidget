@@ -1,0 +1,4 @@
+Added app images and description for F-Droid.
+Added option to show bitcoins in satoshis.
+New coins: Travala.com, Avalanche, Near, Energi.
+Migrated ZCoin to Firo.

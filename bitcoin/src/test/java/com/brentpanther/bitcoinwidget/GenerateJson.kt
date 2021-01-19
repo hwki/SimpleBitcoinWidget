@@ -15,7 +15,8 @@ class GenerateJson {
     private val json = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins.json"))
     private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",
             "XDG" to "DOGE", "MIOTA" to "IOTA", "STR" to "XLM", "DSH" to "DASH", "IOT" to "IOTA",
-            "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM")
+            "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM",
+            "XZC" to "FIRO")
     private val allCurrencyOverrides = mapOf("USDT" to "USD", "TUSD" to "USD", "TL" to "TRY", "NIS" to "ILS").plus(allCoinOverrides)
 
     @Test
@@ -57,8 +58,8 @@ class GenerateJson {
                 // remove coins and currencies we don't know about
                 otherCoins(pairs, potentialCoinAdds)
                 pairs = removeUnknowns(pairs)
-                if (pairs.count() > existing.count()) {
-                    println("$name: ${pairs.count() - existing.count()} pairs added")
+                if (pairs.count() > existing.count() - removed.count()) {
+                    println("$name: ${pairs.count() + removed.count() - existing.count()} pairs added")
                 }
                 jsonExchanges.add(buildExchange(name, pairs, currencyOverrides, coinOverrides))
             } catch (e: Exception) {

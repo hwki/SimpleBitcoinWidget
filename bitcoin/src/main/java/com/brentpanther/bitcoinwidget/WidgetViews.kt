@@ -183,7 +183,7 @@ internal object WidgetViews {
         }
 
         val nf = getFormat(prefs, adjustedAmount)
-        if (adjustedAmount < 1) {
+        if (adjustedAmount < 1000) {
             // show at least 3 significant digits if small amount
             // e.g. show 0.00000000243 instead of 0.00 but still show 1.250 instead of 1.25000003
             var zeroes = nf.maximumFractionDigits
@@ -219,7 +219,7 @@ internal object WidgetViews {
                     nf
                 }
             }
-            if (!prefs.showDecimals && adjustedAmount > 1) {
+            if (!prefs.showDecimals && adjustedAmount > 1000) {
                 nf.maximumFractionDigits = 0
             }
             return nf

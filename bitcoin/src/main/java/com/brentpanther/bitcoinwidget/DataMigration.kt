@@ -17,6 +17,7 @@ internal object DataMigration {
     private const val FIX_BCH_UNITS = "bch_units"
     private const val BCH_TO_ABC = "bch_abc"
     private const val INDODAX = "indodax"
+    private const val XZC_TO_FIRO = "firo"
 
     fun migrate(context: Context) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
@@ -54,6 +55,21 @@ internal object DataMigration {
         if (!hasIndoDax) {
             migrationIndodax()
             prefs.edit().putBoolean(INDODAX, true).apply()
+        }
+        val hasFiro = prefs.getBoolean(XZC_TO_FIRO, false)
+        if (!hasFiro) {
+            migrationFiro()
+            prefs.edit().putBoolean(XZC_TO_FIRO, true).apply()
+        }
+    }
+
+    private fun migrationFiro() {
+        val widgetIds = WidgetApplication.instance.widgetIds
+        for (widgetId in widgetIds) {
+            val prefs = Prefs(widgetId)
+            if ("XZC" == prefs.getValue("coin")) {
+                prefs.setValue("coin", "FIRO")
+            }
         }
     }
 
@@ -97,7 +113,6 @@ internal object DataMigration {
                 "mBTC" -> prefs.setValue("units", "mBCH")
                 "μBTC" -> prefs.setValue("units", "μBCH")
             }
-
         }
     }
 
