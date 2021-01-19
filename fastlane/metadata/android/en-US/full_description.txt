@@ -1,0 +1,9 @@
+A clean and simple cryptocurrency widget. Customizable refresh interval. Very light battery usage. Shows prices for 30 coins.
+
+Note: <b> This is only a widget. You must add the widget to your launcher, it will not appear in your apps list.</b>
+
+Shows the current price from over 80 different exchanges.
+
+If you'd like to see an exchange that is not in the list, please let me know!
+
+Feedback is welcome.

@@ -21,6 +21,8 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ALGO("Algorand", ic_algo, mapOf(L to ic_algo, LO to ic_algo_gray, D to ic_algo_white)),
     ARRR("Pirate Chain", ic_arrr, mapOf(L to ic_arrr, D to ic_arrr_gray)),
     ATOM("Cosmos", ic_atom, mapOf(L to ic_atom, LO to ic_atom_gray)),
+    AVA("Travala.com", ic_ava, mapOf(L to ic_ava, LO to ic_ava_gray)),
+    AVAX("Avalanche", ic_avax, mapOf(L to ic_avax, LO to ic_avax_gray, D to ic_avax_dark, DO to ic_avax_dark_gray)),
     BAL("Balancer", ic_bal, mapOf(L to ic_bal, LO to ic_bal_gray)),
     BAND("Band Protocol", ic_band_color, mapOf(L to ic_band_color, LO to ic_band_gray)),
     BAT("Basic Attention Token", ic_bat, mapOf(L to ic_bat, LO to ic_bat_gray)),
@@ -33,7 +35,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     BSV("Bitcoin SV", ic_bsv, mapOf(L to ic_bsv, LO to ic_bsv_gray, D to ic_bsv_dark, DO to ic_bsv_dark_gray)),
     BTC("Bitcoin", ic_btc, mapOf(L to ic_btc, LO to ic_btc_gray, D to ic_btc_dark, DO to ic_btc_dark_gray)) {
         override val units: List<Unit>
-            get() = listOf(Unit("BTC", 1.0), Unit("mBTC", .001), Unit("μBTC", .000001))
+            get() = listOf(Unit("BTC", 1.0), Unit("mBTC", .001), Unit("μBTC / bits", .000001), Unit("Satoshis", .00000001))
     },
     BTG("Bitcoin Gold", ic_btg, mapOf(L to ic_btg, LO to ic_btg_gray, D to ic_btg_dark, DO to ic_btg_dark_gray)),
     BTM("Bytom", ic_btm, mapOf(L to ic_btm, LO to ic_btm_gray, D to ic_btm_gray)),
@@ -51,6 +53,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ETC("Ethereum Classic", ic_etc, mapOf(L to ic_etc, LO to ic_etc_gray)),
     ETH("Ethereum", ic_eth, mapOf(L to ic_eth, LO to ic_eth_gray)),
     FIL("Filecoin", ic_fil, mapOf(L to ic_fil, LO to ic_fil_gray)),
+    FIRO("Firo", ic_firo, mapOf(L to ic_firo, LO to ic_firo_gray, D to ic_firo_dark, DO to ic_firo_dark_gray)),
     FTT("FTX Token", ic_ftt, mapOf(L to ic_ftt, LO to ic_ftt_gray)),
     GNO("Gnosis", ic_gno_color, mapOf(L to ic_gno_color, LO to ic_gno_gray)),
     GNT("Golem", ic_gnt_blue, mapOf(L to ic_gnt_blue, LO to ic_gnt_gray)),
@@ -75,7 +78,9 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     MKR("Maker", ic_mkr, mapOf(L to ic_mkr, LO to ic_mkr_gray)),
     MLN("Melon", ic_mln, mapOf(L to ic_mln, LO to ic_mln_gray)),
     NANO("Nano", ic_nano, mapOf(L to ic_nano, LO to ic_nano_gray)),
+    NEAR("Near", ic_near_black, mapOf(L to ic_near_black, LO to ic_near_gray, D to ic_near_white)),
     NEO("NEO", ic_neo, mapOf(L to ic_neo, LO to ic_neo_gray)),
+    NRG("Energi", ic_nrg, mapOf(L to ic_nrg, LO to ic_nrg_gray)),
     OKB("OKB", ic_okb, mapOf(L to ic_okb, LO to ic_okb_gray)),
     OMG("OMG", ic_omg, mapOf(L to ic_omg, LO to ic_omg_gray)),
     ONT("Ontology", ic_ont, mapOf(L to ic_ont, LO to ic_ont_gray)),
@@ -101,7 +106,6 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     XRP("Ripple", ic_xrp_black, mapOf(L to ic_xrp_black, LO to ic_xrp_gray, T to ic_xrp_white, D to ic_xrp_white)),
     XTZ("Tezos", ic_xtz, mapOf(L to ic_xtz, LO to ic_xtz_gray)),
     XVG("Verge", ic_xvg, mapOf(L to ic_xvg, LO to ic_xvg_gray)),
-    XZC("ZCoin", ic_xzc, mapOf(L to ic_xzc, LO to ic_xzc_gray)),
     YFI("yearn.finance", ic_yfi, mapOf(L to ic_yfi, LO to ic_yfi_gray)),
     ZEC("Zcash", ic_zec, mapOf(L to ic_zec, LO to ic_zec_gray, D to ic_zec_dark, DO to ic_zec_dark_gray,
             TD to ic_zec, TDO to ic_zec)),
