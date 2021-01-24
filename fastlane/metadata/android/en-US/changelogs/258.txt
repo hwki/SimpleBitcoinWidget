@@ -1,0 +1,2 @@
+Added Loopring, LTO Network, Solana, Sushi, Theta Network, THORChain.
+Better handle bad data returned from exchanges.

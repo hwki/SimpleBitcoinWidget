@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
+import java.lang.NumberFormatException
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -21,21 +22,29 @@ internal object WidgetViews {
 
     fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?, isUpdate: Boolean) {
         if (amount == null) {
-            val lastUpdate = prefs.lastUpdate
-            // gray out older values
-            val isOld = System.currentTimeMillis() - lastUpdate > 60000 * prefs.interval * 1.5
-            val value = prefs.lastValue ?: context.getString(R.string.value_unknown)
-            putValue(context, views, value, prefs, isOld)
+            setUnknownAmount(context, views, prefs)
         } else {
             if (isUpdate) {
                 // store the formatted value
-                val text = buildText(amount, prefs)
-                prefs.lastValue = text
-                putValue(context, views, text, prefs)
+                try {
+                    val text = buildText(amount, prefs)
+                    prefs.lastValue = text
+                    putValue(context, views, text, prefs)
+                } catch (e: NumberFormatException) {
+                    setUnknownAmount(context, views, prefs)
+                }
             } else {
                 putValue(context, views, amount, prefs)
             }
         }
+    }
+
+    private fun setUnknownAmount(context: Context, views: RemoteViews, prefs: Prefs) {
+        val lastUpdate = prefs.lastUpdate
+        // gray out older values
+        val isOld = System.currentTimeMillis() - lastUpdate > 60000 * prefs.interval * 1.5
+        val value = prefs.lastValue ?: context.getString(R.string.value_unknown)
+        putValue(context, views, value, prefs, isOld)
     }
 
     fun putValue(context: Context, views: RemoteViews, text: String, prefs: Prefs, isOld: Boolean = false): Float {

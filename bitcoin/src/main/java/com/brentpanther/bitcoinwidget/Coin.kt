@@ -68,11 +68,13 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     KSM("Kusama", ic_ksm_black, mapOf(L to ic_ksm_black, LO to ic_ksm_gray, D to ic_ksm_white)),
     LEO("LEO Token", ic_leo, mapOf(L to ic_leo, LO to ic_leo_gray)),
     LINK("ChainLink", ic_link, mapOf(L to ic_link, LO to ic_link_gray)),
+    LRC("Loopring", ic_lrc, mapOf(L to ic_lrc, LO to ic_lrc_gray)),
     LSK("Lisk", ic_lsk, mapOf(L to ic_lsk, LO to ic_lsk_gray)),
     LTC("Litecoin", ic_ltc, mapOf(L to ic_ltc, LO to ic_ltc_gray)) {
         override val units: List<Unit>
             get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
     },
+    LTO("LTO Network", ic_lto, mapOf(L to ic_lto, LO to ic_lto_gray)),
     MANA("Decentraland", ic_mana, mapOf(L to ic_mana, LO to ic_mana_gray)),
     MCO("MCO", ic_mco, mapOf(L to ic_mco, LO to ic_mco_gray, D to ic_mco_white)),
     MKR("Maker", ic_mkr, mapOf(L to ic_mkr, LO to ic_mkr_gray)),
@@ -92,8 +94,12 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     RDD("Reddcoin", ic_rdd, mapOf(L to ic_rdd, LO to ic_rdd_gray)),
     REN("REN", ic_ren, mapOf(L to ic_ren, LO to ic_ren_gray)),
     REP("Augur", ic_rep, mapOf(L to ic_rep, LO to ic_rep_gray)),
+    RUNE("THORChain", ic_rune, mapOf(L to ic_rune, LO to ic_rune_gray)),
     RVN("Ravencoin", ic_rvn, mapOf(L to ic_rvn, LO to ic_rvn_gray)),
     SNX("Synthetix Network Token", ic_snx, mapOf(L to ic_snx, LO to ic_snx_gray)),
+    SOL("Solana", ic_sol, mapOf(L to ic_sol, LO to ic_sol_gray)),
+    SUSHI("Sushi", ic_sushi, mapOf(L to ic_sushi, LO to ic_sushi_gray)),
+    THETA("Theta Network", ic_theta, mapOf(L to ic_theta, LO to ic_theta_gray)),
     TRX("Tron", ic_trx, mapOf(L to ic_trx, LO to ic_trx_gray)),
     UNI("Uniswap", ic_uni, mapOf(L to ic_uni, LO to ic_uni_gray)),
     VET("VeChain", ic_vet, mapOf(L to ic_vet, LO to ic_vet_gray)),
