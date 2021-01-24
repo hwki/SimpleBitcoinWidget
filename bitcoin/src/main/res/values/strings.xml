@@ -94,7 +94,7 @@
     </string-array>
     <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
     <string name="value_exchange_removed" translatable="false">\u0020!\u0020</string>
-    <string name="json_last_modified" translatable="false">Tue, 19 Jan 2021 14:40:52 GMT</string>
+    <string name="json_last_modified" translatable="false">Sun, 24 Jan 2021 19:43:28 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>
