@@ -1,0 +1,2 @@
+This release includes partial support for thousands of new coins (powered by CoinGecko) and an updated UI.
+Fixed F-Droid metadata.

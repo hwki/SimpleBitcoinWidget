@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    tools:targetApi="o"
+    android:clickable="true"
     android:focusable="true"
-    android:clickable="true">
+    tools:targetApi="o">
 
     <ProgressBar
         android:id="@+id/loading"
@@ -28,23 +28,23 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:paddingEnd="2dp"
             android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:src="@drawable/ic_placeholder"
             android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <LinearLayout
-            android:layout_weight="3"
             android:layout_width="0dp"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/top_space"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="15"
-                />
+                android:layout_weight="15" />
 
             <TextView
                 android:id="@+id/price"
@@ -53,12 +53,12 @@
                 android:layout_weight="70"
                 android:gravity="center"
                 android:lines="1"
-                android:textColor="#fff"
-                android:textIsSelectable="false"
                 android:shadowColor="#000"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="0.5"
+                android:textColor="#fff"
+                android:textIsSelectable="false"
                 android:typeface="sans"
                 android:visibility="invisible" />
 
@@ -67,15 +67,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="70"
-                android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="6sp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:lines="1"
-                android:textColor="#fff"
                 android:shadowColor="#000"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
+                android:textColor="#fff"
                 android:textIsSelectable="false"
                 android:typeface="sans"
                 android:visibility="gone" />

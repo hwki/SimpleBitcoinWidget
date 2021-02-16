@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import com.brentpanther.bitcoinwidget.Themer.DARK
 import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
 import com.brentpanther.bitcoinwidget.Themer.LIGHT
@@ -10,6 +11,7 @@ import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DARK
 import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import java.io.File
 
 
 internal class Prefs(val widgetId: Int) {
@@ -89,6 +91,8 @@ internal class Prefs(val widgetId: Int) {
         return getValue(HIDE_ICON)?.toBoolean()?.not() ?: true
     }
 
+    fun getIcon() = getValue(CUSTOM_ICON)?.substringBefore("/")
+
     fun setValue(key: String, value: String?) {
         val string = prefs.getString("" + widgetId, null)
         val obj = string?.let {
@@ -99,7 +103,8 @@ internal class Prefs(val widgetId: Int) {
     }
 
     fun setValues(coin: String, currency: String, refreshValue: Int, exchange: String, checked: Boolean,
-                  theme: String, iconChecked: Boolean, showDecimals: Boolean, unit: String?, symbol: String?) {
+                theme: String, iconChecked: Boolean, showDecimals: Boolean, unit: String?, symbol: String?,
+                  iconUrl: String?) {
         val obj = JsonObject()
         with(obj) {
             addProperty(COIN, coin)
@@ -112,6 +117,7 @@ internal class Prefs(val widgetId: Int) {
             addProperty(SHOW_DECIMALS, "" + showDecimals)
             addProperty(UNITS, unit)
             addProperty(CURRENCY_SYMBOL, symbol)
+            addProperty(CUSTOM_ICON, iconUrl)
         }
         prefs.edit().putString("" + widgetId, obj.toString()).apply()
     }
@@ -181,5 +187,6 @@ internal class Prefs(val widgetId: Int) {
         private const val LANDSCAPE_TEXT_SIZE = "landscape_text_size"
         private const val TEMPORARY = "temp"
         private const val CURRENCY_SYMBOL = "currency_symbol"
+        private const val CUSTOM_ICON = "custom_icon"
     }
 }

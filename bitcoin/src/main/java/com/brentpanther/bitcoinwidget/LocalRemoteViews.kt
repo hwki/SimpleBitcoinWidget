@@ -1,6 +1,8 @@
 package com.brentpanther.bitcoinwidget
 
 import android.app.Activity
+import android.graphics.Bitmap
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -30,6 +32,8 @@ class LocalRemoteViews(activity: Activity, layoutId: Int) : RemoteViews(activity
     override fun setViewVisibility(viewId: Int, visibility: Int) = invokeOn<View>(viewId) { it.visibility = visibility }
 
     override fun setImageViewResource(viewId: Int, srcId: Int) = invokeOn<ImageView>(viewId) { it.setImageResource(srcId) }
+
+    override fun setImageViewBitmap(viewId: Int, bitmap: Bitmap) = invokeOn<ImageView>(viewId) { it.setImageBitmap(bitmap) }
 
     override fun setTextViewTextSize(viewId: Int, units: Int, size: Float) = invokeOn<TextView>(viewId) { it.setTextSize(units, size) }
 

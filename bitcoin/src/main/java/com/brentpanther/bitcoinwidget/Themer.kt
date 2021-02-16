@@ -2,9 +2,13 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.FileProvider
+import java.io.File
+
 
 /**
  * Set the colors of the widget programmatically, to better handle
@@ -60,10 +64,24 @@ object Themer {
         }
     }
 
+
     private fun updateIcon(context: Context, views: RemoteViews, prefs: Prefs, isOld: Boolean) {
         views.setViewVisibility(R.id.icon, if (prefs.showIcon()) View.VISIBLE else View.GONE)
-        val icon = getIcon(context, prefs.coin, prefs.theme, isOld)
-        views.setImageViewResource(R.id.icon, icon)
+        val iconId = prefs.getIcon()
+        if (iconId != null) {
+            val path = File(File(context.filesDir, "icons"), iconId)
+            val uriForFile = FileProvider.getUriForFile(context,
+                "com.brentpanther.bitcoinwidget.fileprovider", path)
+            try {
+                val stream = context.contentResolver.openInputStream(uriForFile)
+                val bitmap = BitmapFactory.decodeStream(stream)
+                views.setImageViewBitmap(R.id.icon, bitmap)
+            } catch (ignored: Exception) {
+            }
+        } else {
+            val icon = getIcon(context, prefs.coin, prefs.theme, isOld)
+            views.setImageViewResource(R.id.icon, icon)
+        }
     }
 
     /**

@@ -44,12 +44,24 @@
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".ui.CoinSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name="com.brentpanther.bitcoinwidget.ui.SettingsActivity"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name="com.brentpanther.bitcoinwidget.ui.SettingsActivity"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.brentpanther.bitcoinwidget.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import okhttp3.*
 import java.io.IOException
+import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
 internal object ExchangeHelper {
@@ -39,24 +40,26 @@ internal object ExchangeHelper {
         return Gson().fromJson(getString(url), JsonArray::class.java)
     }
 
-    @Throws(IOException::class)
-    private fun getString(url: String, headers: Headers? = null): String {
+    fun getStream(url: String): InputStream = get(url).body!!.byteStream()
+
+    private fun getString(url: String, headers: Headers? = null) = get(url, headers).body!!.string()
+
+    private fun get(url: String, headers: Headers? = null): Response {
         val client = OkHttpClient.Builder()
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
-                .retryOnConnectionFailure(false)
-                .connectionPool(connectionPool)
-                .hostnameVerifier { _, _ -> true }.build()
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
+            .retryOnConnectionFailure(false)
+            .connectionPool(connectionPool)
+            .hostnameVerifier { _, _ -> true }.build()
         var builder: Request.Builder = Request.Builder().url(url)
         headers?.let {
             builder = builder.headers(it)
         }
         val request = builder.build()
-        val response = client.newCall(request).execute()
-        return response.body!!.string()
+        return client.newCall(request).execute()
     }
 
 }

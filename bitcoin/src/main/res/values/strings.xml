@@ -19,6 +19,7 @@
     <string name="key_prefs" translatable="false">bitcoinwidget</string>
     <string name="key_fixed_size" translatable="false">fixed_size</string>
     <string name="key_symbol" translatable="false">symbol</string>
+    <string name="key_custom_coin" translatable="false">custom_coin</string>
 
     <string name="title_fixed_size">Fixed Text Size</string>
     <string name="title_data">Data</string>
@@ -49,6 +50,7 @@
     <string name="summary_exchange">Get data from %s</string>
     <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
+    <string name="summary_custom_coin">Use %s as coin</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Light</item>
@@ -108,5 +110,6 @@
     <string name="title_warning">Warning</string>
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently on.</string>
+    <string name="coin_search_hint">Search by name or symbol</string>
 
 </resources>

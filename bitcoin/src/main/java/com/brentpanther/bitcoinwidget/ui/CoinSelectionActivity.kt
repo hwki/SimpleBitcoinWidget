@@ -4,15 +4,21 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
+import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Repository
 import com.brentpanther.bitcoinwidget.WidgetProvider
 
 class CoinSelectionActivity : AppCompatActivity() {
+
+    private lateinit var adapter: CoinSelectionAdapter
+    private val viewModel: CoinSelectionViewModel by viewModels()
 
     private var widgetId: Int = 0
 
@@ -20,7 +26,6 @@ class CoinSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coin)
         Repository.data(this)
-        title = getString(R.string.select_coin)
         val extras = intent.extras
         if (extras == null) {
             finish()
@@ -29,12 +34,21 @@ class CoinSelectionActivity : AppCompatActivity() {
         widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         val coinList = findViewById<RecyclerView>(R.id.coin_list)
         coinList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        coinList.adapter = CoinSelectionAdapter{ coin: Coin -> this.selected(coin) }
+        adapter = CoinSelectionAdapter { this.selected(it) }
+        coinList.adapter = adapter
+        viewModel.coins.observe(this, {
+            adapter.coins = it
+            adapter.notifyDataSetChanged()
+        })
+        val search = findViewById<EditText>(R.id.search)
+        search.doAfterTextChanged {
+            adapter.filter.filter(it)
+        }
     }
 
-    private fun selected(coin: Coin) {
+    private fun selected(coin: CoinEntry) {
         val intent = Intent(this, SettingsActivity::class.java)
-        intent.putExtra(SettingsActivity.EXTRA_COIN, coin.name)
+        intent.putExtra(SettingsActivity.EXTRA_COIN, coin)
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
         startActivityForResult(intent, 1)
     }

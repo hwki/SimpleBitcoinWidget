@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget
 
+import com.brentpanther.bitcoinwidget.ui.CoinEntry
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.InputStream
@@ -10,13 +11,18 @@ import java.util.HashMap
 import kotlin.Comparator
 
 
-class ExchangeData(val coin: Coin, json: InputStream) {
+open class ExchangeData(val coin: CoinEntry, json: InputStream) {
 
-    private val obj: JsonExchangeObject
-    private var currencyExchange: MutableMap<String, ArrayList<String>> = HashMap()
+    protected var obj: JsonExchangeObject? = null
+    protected var currencyExchange: MutableMap<String, MutableList<String>> = HashMap()
+
+    init {
+        this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
+        loadCurrencies(coin.coin.name)
+    }
 
     // only return currencies that we know about
-    val currencies: Array<String>
+    open val currencies: Array<String>
         get() {
             val currencyNames = Currency.getAvailableCurrencies().map { it.currencyCode}.toMutableList()
             currencyNames.addAll(Coin.COIN_NAMES)
@@ -32,7 +38,7 @@ class ExchangeData(val coin: Coin, json: InputStream) {
             return currencyNames.toTypedArray()
         }
 
-    val defaultCurrency: String?
+    open val defaultCurrency: String?
         get() {
             if (currencyExchange.containsKey("USD")) return "USD"
             if (currencyExchange.containsKey("EUR")) return "EUR"
@@ -58,7 +64,7 @@ class ExchangeData(val coin: Coin, json: InputStream) {
     inner class JsonExchange {
 
         lateinit var name: String
-        private lateinit var coins: List<JsonCoin>
+        lateinit var coins: List<JsonCoin>
         @SerializedName("currency_overrides")
         var currencyOverrides: Map<String, String>? = null
         @SerializedName("coin_overrides")
@@ -69,14 +75,9 @@ class ExchangeData(val coin: Coin, json: InputStream) {
         }
     }
 
-    internal class JsonCoin : Serializable {
+    public class JsonCoin : Serializable {
         lateinit var name: String
         lateinit var currencies: List<String>
-    }
-
-    init {
-        this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
-        loadCurrencies(coin.name)
     }
 
     fun getExchanges(currency: String): Array<String> {
@@ -90,21 +91,21 @@ class ExchangeData(val coin: Coin, json: InputStream) {
     fun getDefaultExchange(currency: String): String {
         val exchanges = currencyExchange[currency]
         exchanges?.let {
-            if (!exchanges.contains(Exchange.COINBASE.name)) return exchanges[0]
+            if (!exchanges.contains(Exchange.COINGECKO.name)) return exchanges[0]
         }
-        return Exchange.COINBASE.name
+        return Exchange.COINGECKO.name
     }
 
-    fun getExchangeCoinName(exchange: String, coin: String): String? {
-        return obj.getExchangeCoinName(exchange, coin)
+    open fun getExchangeCoinName(exchange: String): String? {
+        return obj?.getExchangeCoinName(exchange, coin.name)
     }
 
-    fun getExchangeCurrencyName(exchange: String, currency: String): String? {
-        return obj.getExchangeCurrencyName(exchange, currency)
+    open fun getExchangeCurrencyName(exchange: String, currency: String): String? {
+        return obj?.getExchangeCurrencyName(exchange, currency)
     }
 
     private fun loadCurrencies(coin: String) {
-        for (exchange in obj.exchanges) {
+        obj?.exchanges?.forEach { exchange ->
             for (currency in exchange.loadExchange(coin)) {
                 currencyExchange.getOrPut(currency) { arrayListOf() }
                 currencyExchange[currency]?.add(exchange.name)
