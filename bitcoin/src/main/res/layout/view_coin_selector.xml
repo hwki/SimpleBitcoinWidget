@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:clickable="true"
+    android:focusable="true"
+    android:padding="4dp"
     android:foreground="?android:attr/selectableItemBackground"
-    android:focusable="true">
+    tools:targetApi="m">
 
     <ImageView
         android:id="@+id/coin_icon"
-        android:layout_width="0dp"
-        android:layout_weight="20"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:adjustViewBounds="true"
-        android:layout_margin="4dp"
-        tools:ignore="ContentDescription" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="Icon"
+        app:layout_constraintBottom_toBottomOf="@id/coin_symbol"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/coin_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_weight="80"
         android:fontFamily="sans-serif-light"
-        android:gravity="center_vertical"
         android:textColor="#000"
-        android:textSize="24sp" />
+        android:textSize="18sp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@id/coin_symbol"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/coin_icon"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</merge>
+    <TextView
+        android:id="@+id/coin_symbol"
+        android:layout_width="0dp"
+        android:textSize="12sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/coin_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/coin_icon"
+        app:layout_constraintTop_toBottomOf="@id/coin_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

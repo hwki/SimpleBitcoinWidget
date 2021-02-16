@@ -16,6 +16,7 @@ import java.util.*
 
 enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal val icons: Map<String, Int>) {
 
+    CUSTOM("Custom", ic_placeholder, mapOf(L to ic_placeholder)),
     AAVE("Aave", ic_aave, mapOf(L to ic_aave, LO to ic_aave_gray)),
     ADA("Cardano", ic_ada, mapOf(L to ic_ada, LO to ic_ada_gray)),
     ALGO("Algorand", ic_algo, mapOf(L to ic_algo, LO to ic_algo_gray, D to ic_algo_white)),

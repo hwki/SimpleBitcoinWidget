@@ -8,6 +8,9 @@ import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.brentpanther.bitcoinwidget.*
@@ -21,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private var dialog: ProgressDialog? = null
     private var widgetId: Int = 0
-    private lateinit var coin: Coin
+    private lateinit var coin: CoinEntry
     private lateinit var currentValue: AtomicReference<String?>
     private val viewModel by viewModels<SettingsViewModel>()
 
@@ -44,8 +47,8 @@ class SettingsActivity : AppCompatActivity() {
         setResult(Activity.RESULT_CANCELED)
         val extras = intent.extras!!
         widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
-        coin = Coin.valueOf(extras.getString(EXTRA_COIN, "BTC"))
-        title = getString(R.string.new_widget, coin.coinName)
+        coin = extras.getParcelable(EXTRA_COIN) ?: throw IllegalArgumentException()
+        findViewById<TextView>(R.id.labelSave).text = getString(R.string.new_widget, coin.name)
         currentValue = AtomicReference(null)
         viewModel.data.observe(this, {
             if (this.isDestroyed) return@observe
@@ -56,6 +59,10 @@ class SettingsActivity : AppCompatActivity() {
                 true -> {
                     dialog?.dismiss()
                     populateData()
+                    findViewById<ImageButton>(R.id.save).setOnClickListener {
+                        val fragment = supportFragmentManager.findFragmentByTag("settings") as SettingsFragment
+                        fragment.save()
+                    }
                 }
             }
         })
@@ -69,7 +76,12 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun populateData() {
         ExchangeDataHelper.data = try {
-            ExchangeData(coin, coinJSON)
+            // if custom coin, make custom data
+            if (coin.coin == Coin.CUSTOM) {
+                CustomExchangeData(coin, coinJSON)
+            } else {
+                ExchangeData(coin, coinJSON)
+            }
         } catch (e: JsonSyntaxException) {
             // if any error parsing JSON, fall back to raw resource
             Log.e(TAG, "Error parsing JSON file, falling back to original.", e)

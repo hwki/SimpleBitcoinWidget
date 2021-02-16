@@ -6,6 +6,17 @@
         app:key="@string/key_data"
         app:title="@string/title_data">
         <ListPreference
+            app:defaultValue="0"
+            app:iconSpaceReserved="false"
+            app:key="@string/key_exchange"
+            app:persistent="false"
+            app:title="@string/title_exchange" />
+        <ListPreference
+            app:iconSpaceReserved="false"
+            app:key="@string/key_currency"
+            app:persistent="false"
+            app:title="@string/title_currency" />
+        <ListPreference
             app:defaultValue="30"
             app:entries="@array/intervals"
             app:entryValues="@array/intervalValues"
@@ -14,11 +25,6 @@
             app:persistent="false"
             app:title="@string/title_refresh_interval" />
         <ListPreference
-            app:iconSpaceReserved="false"
-            app:key="@string/key_currency"
-            app:persistent="false"
-            app:title="@string/title_currency" />
-        <ListPreference
             app:defaultValue="LOCAL"
             app:entries="@array/symbols"
             app:entryValues="@array/symbolValues"
@@ -26,12 +32,6 @@
             app:key="@string/key_symbol"
             app:persistent="false"
             app:title="@string/title_locale" />
-        <ListPreference
-            app:defaultValue="0"
-            app:iconSpaceReserved="false"
-            app:key="@string/key_exchange"
-            app:persistent="false"
-            app:title="@string/title_exchange" />
     </PreferenceCategory>
     <PreferenceCategory
         app:iconSpaceReserved="false"

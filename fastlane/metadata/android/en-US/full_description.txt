@@ -1,4 +1,4 @@
-A clean and simple cryptocurrency widget. Customizable refresh interval. Very light battery usage. Shows prices for 30 coins.
+A clean and simple cryptocurrency widget. Customizable refresh interval. Very light battery usage.
 
 Note: <b> This is only a widget. You must add the widget to your launcher, it will not appear in your apps list.</b>
 

@@ -8,9 +8,9 @@ import org.junit.Test
 import java.util.*
 import kotlin.math.ceil
 
-class GenerateJson {
+class GenerateSupportedCoinsJson {
 
-    private val allCoins = Coin.values().map { it.name }
+    private val allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.name }
     private var allCurrencies = setOf<String>()
     private val json = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins.json"))
     private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",

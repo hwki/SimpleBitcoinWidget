@@ -5,10 +5,13 @@ import android.app.UiModeManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.NonNull
@@ -17,10 +20,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.*
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.Exchange
-import com.brentpanther.bitcoinwidget.Prefs
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
 import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.DecimalFormat
 import java.util.*
 
@@ -59,12 +67,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         loadPreferences(savedInstanceState)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        val menuItem = menu.add(0, 0, 0, R.string.save)
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-    }
-
     override fun onSaveInstanceState(@NonNull outState: Bundle) {
         with(outState) {
             putString("refresh", refresh.value)
@@ -78,14 +80,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             putString("symbol", symbol.value)
         }
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == 0) {
-            save()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun loadPreferences(bundle: Bundle?) {
@@ -147,7 +141,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
 
         // icon
-        icon.title = getString(R.string.title_icon, data.coin.coinName)
+        icon.title = getString(R.string.title_icon, data.coin.name)
         bundle?.getBoolean("icon")?.let { icon.isChecked = it }
         icon.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(icon, newValue, false) }
 
@@ -184,7 +178,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
 
         // units
-        val unitNames = data.coin.unitNames
+        val unitNames = data.coin.coin.unitNames
         if (unitNames.isNotEmpty()) {
             findPreference<Preference>(getString(R.string.key_units))?.isVisible = true
             units.value = bundle?.getString("units") ?: unitNames[0]
@@ -268,16 +262,39 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private fun saveValues(temporary: Boolean) {
         val prefs = Prefs(widgetId)
         setSymbol(symbol.value)
-        prefs.setValues(data.coin.name, currency.value, (refresh.value).toInt(),
+        prefs.setValues(data.coin.coin.name, currency.value, (refresh.value).toInt(),
                 exchange.value, label.isChecked, theme.value, icon.isChecked,
-                decimals.isChecked, units.value, symbolValue)
-        val exchangeCoinName = data.getExchangeCoinName(exchange.value, data.coin.name)
+                decimals.isChecked, units.value, symbolValue, data.coin.iconUrl)
+        setCustomIcon(prefs)
+        val exchangeCoinName = data.getExchangeCoinName(exchange.value)
         val exchangeCurrencyName = data.getExchangeCurrencyName(exchange.value, currency.value)
         prefs.setExchangeValues(exchangeCoinName, exchangeCurrencyName)
         prefs.setTemporary(temporary)
     }
 
-    private fun save() {
+    private fun setCustomIcon(prefs: Prefs) {
+        data.coin.getFullIconUrl()?.let {
+            val dir = File(requireContext().filesDir, "icons")
+            if (!dir.exists()) {
+                dir.mkdir()
+            }
+            val file = File(dir, prefs.getIcon()!!)
+            if (!file.exists()) {
+                GlobalScope.launch(Dispatchers.IO) {
+                    val os = ByteArrayOutputStream()
+                    val stream = ExchangeHelper.getStream(it)
+                    val image = BitmapFactory.decodeStream(stream)
+                    image.compress(Bitmap.CompressFormat.PNG, 100, os)
+                    file.writeBytes(os.toByteArray())
+                    MainScope().launch {
+                        (activity as SettingsActivity).updateWidget(true)
+                    }
+                }
+            }
+        }
+    }
+
+    fun save() {
         if (checkDataSaver && !checkDataSaver()) return
         if (checkBatterySaver && !checkBatterySaver()) return
         saveValues(false)
@@ -292,23 +309,21 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     }
 
     private fun checkBatterySaver(): Boolean {
-        if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
+        return if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
             // user has battery saver on, warn that widget will be affected
             val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_battery_saver, CODE_BATTERY_SAVER, false)
             dialogFragment.show(parentFragmentManager, "dialog")
-            return false
-        }
-        return true
+            false
+        } else true
     }
 
     private fun checkDataSaver(): Boolean {
-        if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
+        return if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
             // user has data saver on, show dialog asking for permission to whitelist
             val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
             dialogFragment.show(parentFragmentManager, "dialog")
-            return false
-        }
-        return true
+            false
+        } else true
     }
 
     override fun onDialogPositiveClick(code: Int) {

@@ -385,7 +385,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                     "ZEC" to "zcash",
                     "ZIL" to "zilliqa",
                     "ZRX" to "0x")
-            val id = map[coin]
+            val id = map[coin] ?: coin
             val vs = currency.toLowerCase(Locale.ROOT)
             val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"
             return getJsonObject(url).getAsJsonObject(id).get(vs).asString
