@@ -191,6 +191,14 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).get("lastTradeRate").asString
         }
     },
+    BITVAVO ("Bitvavo") {
+
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://api.bitvavo.com/v2/ticker/price?market=$coin-$currency"
+            return getJsonObject(url).get("price").asString
+        }
+
+    },
     BLEUTRADE("Bleutrade") {
 
         override fun getValue(coin: String, currency: String): String {

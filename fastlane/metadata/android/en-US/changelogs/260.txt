@@ -1,0 +1,2 @@
+Add exchange Bitvavo.
+Update list of available coins.
