@@ -48,6 +48,8 @@ class GeneratePartiallySupportedCoinsJson {
             addCoin(coin, coins, failed)
         }
         println("Found ${coins.size} total coins.")
+        println("Found ${coins.count { it["score"]?.toDouble() ?: 0.0 > 1 }} total coins greater than 1.")
+        println("Found ${coins.count { it["score"]?.toDouble() ?: 0.0 > 2 }} total coins greater than 2.")
         println("Failed: ${failed.joinToString { it.get("id").asString }}")
         println(Gson().toJson(coins))
     }
@@ -80,7 +82,7 @@ class GeneratePartiallySupportedCoinsJson {
         val id = it.get("id").asString
         val name = it.get("name").asString
         val obj = Gson().fromJson(get(dataUrl + id + dataUrl2), JsonObject::class.java)
-        val score = obj.get("community_score").asDouble
+        val score = obj.get("coingecko_score").asDouble
         val symbol = it.get("symbol").asString
         val icon = obj.get("image").asJsonObject.get("large").asString
         return CoinGeckoCoin(id, symbol, name, icon, score)

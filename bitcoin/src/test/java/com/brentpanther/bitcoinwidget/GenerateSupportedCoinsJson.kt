@@ -27,7 +27,7 @@ class GenerateSupportedCoinsJson {
                 listOf(this::abucoins, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude, this::bitcoinAverage, this::bitcoinAverageGlobal,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmax, this::bitmex,
-                        this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bleutrade,
+                        this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
                         this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coinegg, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
@@ -289,10 +289,12 @@ class GenerateSupportedCoinsJson {
         return parse("https://www.bitstamp.net/api/v2/trading-pairs-info", "$[*].name")
     }
 
-
-
     private fun bittrex(): List<String> {
         return parse("https://api.bittrex.com/v3/markets", "$[*].symbol")
+    }
+
+    private fun bitvavo(): List<String> {
+        return parse("https://api.bitvavo.com/v2/markets", "$[*].market")
     }
 
     private fun bleutrade(): List<String> {
