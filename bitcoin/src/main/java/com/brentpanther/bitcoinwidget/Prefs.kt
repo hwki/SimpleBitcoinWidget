@@ -81,6 +81,12 @@ internal class Prefs(val widgetId: Int) {
     val currencySymbol: String?
         get() = getValue(CURRENCY_SYMBOL)
 
+    val holdings: Double
+        get() = getValue(HOLDINGS)?.toDouble() ?: 0.0
+
+    val buyingPrice: Double
+        get() = getValue(BUYING_PRICE)?.toDouble() ?: 100.0
+
     fun exists(): Boolean = prefs.getString("" + widgetId, null) != null
 
     fun setLastUpdate() {
@@ -188,5 +194,7 @@ internal class Prefs(val widgetId: Int) {
         private const val TEMPORARY = "temp"
         private const val CURRENCY_SYMBOL = "currency_symbol"
         private const val CUSTOM_ICON = "custom_icon"
+        private const val HOLDINGS = "holdings"
+        private const val BUYING_PRICE = "buyingPrice"
     }
 }
