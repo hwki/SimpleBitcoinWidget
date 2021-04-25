@@ -81,6 +81,14 @@
         app:iconSpaceReserved="false"
         app:key="@string/key_other"
         app:title="@string/title_other">
+        <EditTextPreference
+            app:title="Holdings"
+            app:key="holdings"
+            app:summary="Please provide the amount of coins you own"/>
+        <EditTextPreference
+            app:title="Buying Price"
+            app:key="buyingPrice"
+            app:summary="Please provide the average price you bought the coins for"/>
         <Preference
             app:iconSpaceReserved="false"
             app:key="@string/key_rate"

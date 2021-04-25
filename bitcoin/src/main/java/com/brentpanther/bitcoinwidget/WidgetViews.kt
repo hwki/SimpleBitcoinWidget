@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import android.util.Pair
 import android.util.TypedValue
 import android.view.View
@@ -30,6 +31,22 @@ internal object WidgetViews {
                     val text = buildText(amount, prefs)
                     prefs.lastValue = text
                     putValue(context, views, text, prefs)
+                    if (prefs.holdings > 0.0) {
+                        val decimalFormat = DecimalFormat("#.##")
+                        views.setTextViewText(
+                            R.id.percentageGain,
+                            decimalFormat.format(Gain().calculatePercentageGain(amount.toDouble(), prefs.buyingPrice))
+                                .toString() + "%"
+                        )
+                        views.setTextViewText(
+                            R.id.gain,
+                            decimalFormat.format(Gain().calculateGain(
+                                prefs.holdings,
+                                amount.toDouble(),
+                                prefs.buyingPrice
+                            )).toString()
+                        )
+                    }
                 } catch (e: NumberFormatException) {
                     setUnknownAmount(context, views, prefs)
                 }

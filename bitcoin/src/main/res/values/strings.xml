@@ -16,6 +16,8 @@
     <string name="key_label" translatable="false">label</string>
     <string name="key_theme" translatable="false">theme</string>
     <string name="key_rate" translatable="false">rate</string>
+    <string name="holdings" translatable="false">holdings</string>
+    <string name="buyingPrice" translatable="false">buyingPrice</string>
     <string name="key_prefs" translatable="false">bitcoinwidget</string>
     <string name="key_fixed_size" translatable="false">fixed_size</string>
     <string name="key_symbol" translatable="false">symbol</string>
