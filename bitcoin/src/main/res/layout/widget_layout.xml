@@ -82,29 +82,18 @@
                     android:typeface="sans"
                     android:visibility="gone" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_weight="3"
-                    android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/percentageGain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="15"
-                    android:gravity="left|center"
-                    android:textColor="#888" />
-
                 <TextView
                     android:id="@+id/gain"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="15"
-                    android:gravity="right"
+                    android:autoSizeMinTextSize="4sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center_horizontal"
+                    android:paddingStart="1dp"
+                    android:paddingEnd="1dp"
                     android:textColor="#888" />
 
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/exchange"
