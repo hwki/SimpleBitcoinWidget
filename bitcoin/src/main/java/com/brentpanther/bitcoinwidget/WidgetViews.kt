@@ -34,14 +34,7 @@ internal object WidgetViews {
                         val decimalFormat = DecimalFormat("#.##")
                         views.setTextViewText(
                                 R.id.gain,
-                                prefs.currencySymbol
-                                        + decimalFormat.format(Gain().calculateGain(
-                                        prefs.holdings,
-                                        amount.toDouble(),
-                                        prefs.buyingPrice)).toString()
-                                        + " ("
-                                        + decimalFormat.format(Gain().calculatePercentageGain(amount.toDouble(), prefs.buyingPrice))
-                                        .toString() + "%)"
+                                generateGainString(prefs, decimalFormat, amount)
                         )
                     }
                 } catch (e: NumberFormatException) {
@@ -52,6 +45,16 @@ internal object WidgetViews {
             }
         }
     }
+
+    private fun generateGainString(prefs: Prefs, decimalFormat: DecimalFormat, amount: String) =
+            (prefs.currencySymbol
+                    + decimalFormat.format(Gain().calculateGain(
+                    prefs.holdings,
+                    amount.toDouble(),
+                    prefs.buyingPrice)).toString()
+                    + " ("
+                    + decimalFormat.format(Gain().calculatePercentageGain(amount.toDouble(), prefs.buyingPrice))
+                    .toString() + "%)")
 
     private fun setUnknownAmount(context: Context, views: RemoteViews, prefs: Prefs) {
         val lastUpdate = prefs.lastUpdate
