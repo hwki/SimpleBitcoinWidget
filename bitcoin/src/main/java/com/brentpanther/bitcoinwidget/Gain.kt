@@ -2,12 +2,12 @@ package com.brentpanther.bitcoinwidget
 
 class Gain {
 
-    fun calculatePercentageGain(currentPrice: Double, buyingPrice: Double): Double {
-        return ((currentPrice - buyingPrice) / buyingPrice) * 100.0;
+    fun calculatePercentageGain(price: Double, referencePrice: Double): Double {
+        return ((price - referencePrice) / referencePrice) * 100.0;
     }
 
-    fun calculateGain(holdings: Double, currentPrice: Double, buyingPrice: Double): Double {
-        return  (currentPrice - buyingPrice) * holdings;
+    fun calculateGain(holdings: Double, price: Double, referencePrice: Double): Double {
+        return  (price - referencePrice) * holdings;
     }
 
 }
