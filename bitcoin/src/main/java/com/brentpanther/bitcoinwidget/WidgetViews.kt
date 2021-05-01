@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.util.Log
 import android.util.Pair
 import android.util.TypedValue
 import android.view.View
@@ -12,7 +13,9 @@ import androidx.preference.PreferenceManager
 import java.lang.NumberFormatException
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.time.Instant
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import kotlin.math.pow
 
@@ -23,26 +26,30 @@ internal object WidgetViews {
     fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?, isUpdate: Boolean) {
         if (amount == null) {
             setUnknownAmount(context, views, prefs)
-        } else {
-            if (isUpdate) {
-                // store the formatted value
-                try {
-                    val text = buildText(amount, prefs)
-                    prefs.lastValue = text
-                    putValue(context, views, text, prefs)
-                    if (prefs.holdings > 0.0) {
-                        val decimalFormat = DecimalFormat("#.##")
-                        views.setTextViewText(
-                                R.id.gain,
-                                generateGainString(prefs, decimalFormat, amount)
-                        )
-                    }
-                } catch (e: NumberFormatException) {
-                    setUnknownAmount(context, views, prefs)
-                }
-            } else {
-                putValue(context, views, amount, prefs)
+            return
+        }
+        if (!isUpdate) {
+            putValue(context, views, amount, prefs)
+            return
+        }
+        try {
+            Log.d("Trend", "is update with amount: $amount")
+            val text = buildText(amount, prefs)
+            prefs.lastValue = text
+            setTrendReferenceValue(prefs, amount.toDouble())
+            putValue(context, views, text, prefs)
+            val trendText = Gain().calculatePercentageGain(amount.toDouble(), prefs.trendReferenceValue).toString()
+            Log.d("Trend", "set trend text with: $trendText")
+            views.setTextViewText(R.id.trend, trendText)
+            if (prefs.holdings > 0.0) {
+                val decimalFormat = DecimalFormat("#.##")
+                views.setTextViewText(
+                        R.id.gain,
+                        generateGainString(prefs, decimalFormat, amount)
+                )
             }
+        } catch (e: NumberFormatException) {
+            setUnknownAmount(context, views, prefs)
         }
     }
 
@@ -263,6 +270,21 @@ internal object WidgetViews {
 
     private fun RemoteViews.show(vararg ids: Int) {
         for (id in ids) setViewVisibility(id, View.VISIBLE)
+    }
+
+    private fun setTrendReferenceValue(prefs: Prefs, amount: Double) {
+
+        if ( prefs.trendReferenceValue == null || prefs.trendReferenceSavedAt == null) {
+            prefs.setLongValue("trend_reference_value_saved_at", Instant.now().toEpochMilli())
+            prefs.setDoubleValue("trend_reference_value", amount)
+        }
+        val newTrendDue = Trend().isNewTrendDue(prefs.trendReferenceSavedAt!!, TimeUnit.MINUTES.toMillis(2))
+        Log.d("Trend", "isDue: $newTrendDue")
+        if (newTrendDue) {
+            prefs.setLongValue("trend_reference_value_saved_at", Instant.now().toEpochMilli())
+            prefs.setDoubleValue("trend_reference_value", amount)
+        }
+
     }
 
 }

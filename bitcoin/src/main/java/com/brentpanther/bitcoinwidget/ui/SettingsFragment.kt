@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -184,7 +183,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             saveAndUpdate(fixedSize, newValue, false)
         }
 
-        holdings.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(); }
+        holdings.setOnPreferenceChangeListener { _, _ -> saveAndUpdate(); }
 
         // units
         val unitNames = exchangeData.coin.coin.unitNames
@@ -280,8 +279,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         prefs.setValues(exchangeData.coin.coin.name, currency.value, (refresh.value).toInt(),
                 exchange.value, label.isChecked, theme.value, icon.isChecked,
                 decimals.isChecked, units.value, symbolValue, exchangeData.coin.iconUrl)
-        prefs.setValue(getString(R.string.holdings), holdings.text)
-        prefs.setValue(getString(R.string.buyingPrice), buyingPrice.text)
+        prefs.setStringValue(getString(R.string.holdings), holdings.text)
+        prefs.setStringValue(getString(R.string.buyingPrice), buyingPrice.text)
         setCustomIcon(prefs)
         val exchangeCoinName = exchangeData.getExchangeCoinName(exchange.value)
         val exchangeCurrencyName = exchangeData.getExchangeCurrencyName(exchange.value, currency.value)
