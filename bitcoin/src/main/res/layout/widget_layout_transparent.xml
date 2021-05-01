@@ -92,6 +92,17 @@
                 android:textColor="#fff" />
 
 
+            <TextView
+                android:id="@+id/trend"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:autoSizeMinTextSize="4sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center_horizontal"
+                android:paddingStart="1dp"
+                android:paddingEnd="1dp"
+                android:textColor="#666" />
 
             <TextView
                 android:id="@+id/exchange"

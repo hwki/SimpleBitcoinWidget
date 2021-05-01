@@ -67,6 +67,7 @@
         <item>Transparent Dark</item>
     </string-array>
     <string-array name="intervals">
+        <item>1min</item>
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>15 minutes</item>
@@ -77,6 +78,7 @@
         <item>24 hours</item>
     </string-array>
     <string-array name="intervalValues">
+        <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>

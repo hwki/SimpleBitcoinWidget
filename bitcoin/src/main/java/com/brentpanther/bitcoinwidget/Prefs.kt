@@ -2,7 +2,7 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
+import android.util.Log
 import com.brentpanther.bitcoinwidget.Themer.DARK
 import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
 import com.brentpanther.bitcoinwidget.Themer.LIGHT
@@ -11,7 +11,8 @@ import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DARK
 import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import java.io.File
+import java.time.Instant.now
+import java.util.concurrent.TimeUnit
 
 
 internal class Prefs(val widgetId: Int) {
@@ -21,7 +22,7 @@ internal class Prefs(val widgetId: Int) {
         get() = context.getSharedPreferences(context.getString(R.string.key_prefs), Context.MODE_PRIVATE)
 
     val coin: Coin
-        get() = getValue(COIN)?.let { Coin.valueOf(it)} ?: Coin.BTC
+        get() = getValue(COIN)?.let { Coin.valueOf(it) } ?: Coin.BTC
 
     val exchangeCoinName: String
         get() = getValue(COIN_CUSTOM) ?: this.coin.name
@@ -70,7 +71,13 @@ internal class Prefs(val widgetId: Int) {
 
     var lastValue: String?
         get() = getValue(LAST_VALUE)
-        set(value) = setValue(LAST_VALUE, value!!)
+        set(value) = setStringValue(LAST_VALUE, value!!)
+
+    val trendReferenceValue: Double
+        get() = getDoubleValue(TREND_REFERENCE_VALUE) ?: 1.0
+
+    val trendReferenceSavedAt: Long?
+        get() = getLongValue(TREND_REFERENCE_VALUE_SAVED_AT)
 
     val label: Boolean
         get() = getValue(SHOW_LABEL)?.toBoolean() ?: false
@@ -90,7 +97,7 @@ internal class Prefs(val widgetId: Int) {
     fun exists(): Boolean = prefs.getString("" + widgetId, null) != null
 
     fun setLastUpdate() {
-        setValue(LAST_UPDATE, "" + System.currentTimeMillis())
+        setStringValue(LAST_UPDATE, "" + System.currentTimeMillis())
     }
 
     fun showIcon(): Boolean {
@@ -99,7 +106,25 @@ internal class Prefs(val widgetId: Int) {
 
     fun getIcon() = getValue(CUSTOM_ICON)?.substringBefore("/")
 
-    fun setValue(key: String, value: String?) {
+    fun setStringValue(key: String, value: String) {
+        val string = prefs.getString("" + widgetId, null)
+        val obj = string?.let {
+            Gson().fromJson(it, JsonObject::class.java)
+        } ?: JsonObject()
+        obj.addProperty(key, value)
+        prefs.edit().putString("" + widgetId, obj.toString()).apply()
+    }
+
+    fun setDoubleValue(key: String, value: Double) {
+        val string = prefs.getString("" + widgetId, null)
+        val obj = string?.let {
+            Gson().fromJson(it, JsonObject::class.java)
+        } ?: JsonObject()
+        obj.addProperty(key, value)
+        prefs.edit().putString("" + widgetId, obj.toString()).apply()
+    }
+
+    fun setLongValue(key: String, value: Long) {
         val string = prefs.getString("" + widgetId, null)
         val obj = string?.let {
             Gson().fromJson(it, JsonObject::class.java)
@@ -109,7 +134,7 @@ internal class Prefs(val widgetId: Int) {
     }
 
     fun setValues(coin: String, currency: String, refreshValue: Int, exchange: String, checked: Boolean,
-                theme: String, iconChecked: Boolean, showDecimals: Boolean, unit: String?, symbol: String?,
+                  theme: String, iconChecked: Boolean, showDecimals: Boolean, unit: String?, symbol: String?,
                   iconUrl: String?) {
         val obj = JsonObject()
         with(obj) {
@@ -145,12 +170,29 @@ internal class Prefs(val widgetId: Int) {
         return if (el.isJsonNull) null else el.asString
     }
 
+    private fun getDoubleValue(key: String): Double? {
+        val string = prefs.getString("" + widgetId, null) ?: return null
+        val obj = Gson().fromJson(string, JsonObject::class.java)
+        if (!obj.has(key)) return null
+        val el = obj.get(key)
+        return if (el.isJsonNull) null else el.asDouble
+    }
+
+    private fun getLongValue(key: String): Long? {
+        val string = prefs.getString("" + widgetId, null) ?: return null
+        val obj = Gson().fromJson(string, JsonObject::class.java)
+        if (!obj.has(key)) return null
+        val el = obj.get(key)
+        return if (el.isJsonNull) null else el.asLong
+    }
+
     fun setTextSize(size: Float, portrait: Boolean) {
-        setValue(if (portrait) PORTRAIT_TEXT_SIZE else LANDSCAPE_TEXT_SIZE, size.toString())
+        setStringValue(if (portrait) PORTRAIT_TEXT_SIZE else LANDSCAPE_TEXT_SIZE, size.toString())
     }
 
     fun getTextSize(portrait: Boolean): Float {
-        val size = getValue(if (portrait) PORTRAIT_TEXT_SIZE else LANDSCAPE_TEXT_SIZE)?.toFloat() ?: Float.MAX_VALUE
+        val size = getValue(if (portrait) PORTRAIT_TEXT_SIZE else LANDSCAPE_TEXT_SIZE)?.toFloat()
+                ?: Float.MAX_VALUE
         return if (size > 0) size else Float.MAX_VALUE
     }
 
@@ -160,22 +202,24 @@ internal class Prefs(val widgetId: Int) {
     }
 
     fun setExchangeValues(exchangeCoinName: String?, exchangeCurrencyName: String?) {
-        if (exchangeCoinName != null) setValue(COIN_CUSTOM, exchangeCoinName)
-        if (exchangeCurrencyName != null) setValue(CURRENCY_CUSTOM, exchangeCurrencyName)
+        if (exchangeCoinName != null) setStringValue(COIN_CUSTOM, exchangeCoinName)
+        if (exchangeCurrencyName != null) setStringValue(CURRENCY_CUSTOM, exchangeCurrencyName)
     }
 
     fun setTemporary(temporary: Boolean) {
-        setValue(TEMPORARY, if (temporary) "true" else null)
+        setStringValue(TEMPORARY, if (temporary) "true" else "false")
     }
 
     fun deleteIfTemporary() {
-        if (getValue(TEMPORARY) != null) {
+        if (getValue(TEMPORARY) == "true") {
             delete()
         }
     }
 
     companion object {
 
+        private const val TREND_REFERENCE_VALUE_SAVED_AT = "trend_reference_value_saved_at"
+        private const val TREND_REFERENCE_VALUE = "trend_reference_value"
         private const val LAST_UPDATE = "last_update"
         private const val CURRENCY = "currency"
         private const val CURRENCY_CUSTOM = "currency_custom"

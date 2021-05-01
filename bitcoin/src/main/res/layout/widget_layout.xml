@@ -41,7 +41,7 @@
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
                 android:src="@drawable/ic_placeholder"
-                android:visibility="gone"
+                android:visibility="visible"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -79,8 +79,7 @@
                     android:lines="1"
                     android:textColor="#888"
                     android:textIsSelectable="false"
-                    android:typeface="sans"
-                    android:visibility="gone" />
+                    android:typeface="sans" />
 
                 <TextView
                     android:id="@+id/gain"
@@ -94,6 +93,18 @@
                     android:paddingEnd="1dp"
                     android:textColor="#888" />
 
+                <TextView
+                    android:id="@+id/trend"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="15"
+                    android:autoSizeMinTextSize="4sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center_horizontal"
+                    android:paddingStart="1dp"
+                    android:paddingEnd="1dp"
+                    android:textColor="#000000"/>
+
 
                 <TextView
                     android:id="@+id/exchange"
@@ -101,7 +112,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="15"
                     android:gravity="center_horizontal"
-                    android:textColor="#888" />
+                    android:textColor="#000000" />
 
                 <TextView
                     android:id="@+id/exchangeAutoSize"

@@ -68,7 +68,7 @@ internal object DataMigration {
         for (widgetId in widgetIds) {
             val prefs = Prefs(widgetId)
             if ("XZC" == prefs.getValue("coin")) {
-                prefs.setValue("coin", "FIRO")
+                prefs.setStringValue("coin", "FIRO")
             }
         }
     }
@@ -78,7 +78,7 @@ internal object DataMigration {
         for (widgetId in widgetIds) {
             val prefs = Prefs(widgetId)
             if ("BITCOINCOID" == prefs.exchangeName) {
-                prefs.setValue("exchange", "INDODAX")
+                prefs.setStringValue("exchange", "INDODAX")
             }
         }
     }
@@ -90,14 +90,14 @@ internal object DataMigration {
             if (prefs.coin !== BCH) continue
             when (prefs.getValue("exchange")) {
                 "BITFINEX" -> when (prefs.coin) {
-                    BCH -> prefs.setValue("coin_custom", "BAB")
-                    DASH -> prefs.setValue("coin_custom", "DSH")
-                    IOTA -> prefs.setValue("coin_custom", "IOT")
+                    BCH -> prefs.setStringValue("coin_custom", "BAB")
+                    DASH -> prefs.setStringValue("coin_custom", "DSH")
+                    IOTA -> prefs.setStringValue("coin_custom", "IOT")
                     else -> {}
                 }
-                "COINSQUARE" -> prefs.setValue("coin_custom", "BAB")
-                "BTCMARKETS" -> prefs.setValue("coin_custom", "BCHABC")
-                "BIT2C" -> prefs.setValue("coin_custom", "Bchabc")
+                "COINSQUARE" -> prefs.setStringValue("coin_custom", "BAB")
+                "BTCMARKETS" -> prefs.setStringValue("coin_custom", "BCHABC")
+                "BIT2C" -> prefs.setStringValue("coin_custom", "Bchabc")
             }
         }
     }
@@ -109,9 +109,9 @@ internal object DataMigration {
             val prefs = Prefs(widgetId)
             if (prefs.coin !== BCH) continue
             when (prefs.unit) {
-                "BTC" -> prefs.setValue("units", "BCH")
-                "mBTC" -> prefs.setValue("units", "mBCH")
-                "μBTC" -> prefs.setValue("units", "μBCH")
+                "BTC" -> prefs.setStringValue("units", "BCH")
+                "mBTC" -> prefs.setStringValue("units", "mBCH")
+                "μBTC" -> prefs.setStringValue("units", "μBCH")
             }
         }
     }
@@ -122,7 +122,7 @@ internal object DataMigration {
         for (widgetId in widgetIds) {
             val prefs = Prefs(widgetId)
             if ("XRB" == prefs.exchangeCoinName) {
-                prefs.setValue("coin_custom", "NANO")
+                prefs.setStringValue("coin_custom", "NANO")
             }
         }
     }
@@ -133,7 +133,7 @@ internal object DataMigration {
             val prefs = Prefs(widgetId)
             val exchange = prefs.getValue("exchange")
             if ("GDAX" == exchange) {
-                prefs.setValue("exchange", "COINBASEPRO")
+                prefs.setStringValue("exchange", "COINBASEPRO")
             }
         }
     }
@@ -147,7 +147,7 @@ internal object DataMigration {
             if ("BITTREX" == exchange) {
                 val exchangeCoinName = prefs.exchangeCoinName
                 if ("BCC" == exchangeCoinName) {
-                    prefs.setValue("coin_custom", "BCH")
+                    prefs.setStringValue("coin_custom", "BCH")
                 }
             }
         }
