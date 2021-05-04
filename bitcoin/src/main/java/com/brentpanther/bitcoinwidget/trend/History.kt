@@ -2,8 +2,9 @@ package com.brentpanther.bitcoinwidget.trend
 
 import java.time.Instant.now
 
-class History(var maximumAge: Long = 0L) {
-    val coinValues: ArrayList<CoinValue> = ArrayList()
+class History(var maximumAge: Long = 0L, var coinValues: ArrayList<CoinValue>) {
+
+    constructor(maximumAge: Long = 0L) : this(maximumAge, ArrayList<CoinValue>())
 
     fun addCoinValue(coinValue: CoinValue) {
         purgeOutdatedValues()
@@ -26,6 +27,10 @@ class History(var maximumAge: Long = 0L) {
         return coinValues.size
     }
 
+    fun getEvents(): ArrayList<CoinValue> {
+        return coinValues
+    }
+
     private fun purgeOutdatedValues() {
         if (this.maximumAge == 0L) {
             return
@@ -39,9 +44,5 @@ class History(var maximumAge: Long = 0L) {
             }
         }
     }
-
-
-
-
 
 }
