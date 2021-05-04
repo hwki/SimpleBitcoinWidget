@@ -6,15 +6,15 @@ class History(var maximumAge: Long = 0L) {
     val coinValues: ArrayList<CoinValue> = ArrayList()
 
     fun addCoinValue(coinValue: CoinValue) {
-        coinValues.add(coinValue)
         purgeOutdatedValues()
+        coinValues.add(coinValue)
     }
 
     fun getValueWhen(timestampInMillis: Long): Double {
         val iterator = coinValues.iterator()
         while(iterator.hasNext()) {
             val coinValue = iterator.next()
-            if (coinValue.timestamp == timestampInMillis) {
+            if (coinValue.timestamp >= timestampInMillis) {
                 return coinValue.value;
             }
         }
@@ -35,7 +35,7 @@ class History(var maximumAge: Long = 0L) {
         while(iterator.hasNext()) {
             val coinValue = iterator.next()
             if (coinValue.timestamp < now().toEpochMilli() - maximumAge) {
-                coinValues.remove(coinValue);
+                iterator.remove();
             }
         }
     }
