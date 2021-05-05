@@ -49,6 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private lateinit var theme: ListPreference
     private lateinit var holdings: EditTextPreference
     private lateinit var buyingPrice: EditTextPreference
+    private lateinit var showTrend: TwoStatePreference
 
     private var checkBatterySaver: Boolean = true
     private var fixedSize: Boolean = false
@@ -100,6 +101,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         val rate = findPreference(getString(R.string.key_rate)) as? Preference
         holdings = findPreference(getString(R.string.holdings))!!
         buyingPrice = findPreference(getString(R.string.buyingPrice))!!
+        showTrend = findPreference(getString(R.string.key_show_trend))!!
 
         // refresh option
         bundle?.getString("refresh")?.let {refresh.value = it}
@@ -158,6 +160,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         // exchange label
         bundle?.getBoolean("label")?.let { label.isChecked = it }
         label.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(label, newValue, false) }
+        showTrend.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(showTrend, newValue, false) }
 
         // theme
         bundle?.getString("theme")?.let { theme.value = it }
@@ -278,7 +281,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         setSymbol(symbol.value)
         prefs.setValues(exchangeData.coin.coin.name, currency.value, (refresh.value).toInt(),
                 exchange.value, label.isChecked, theme.value, icon.isChecked,
-                decimals.isChecked, units.value, symbolValue, exchangeData.coin.iconUrl)
+                decimals.isChecked, units.value, symbolValue, exchangeData.coin.iconUrl, showTrend.isChecked)
         prefs.setStringValue(getString(R.string.holdings), holdings.text)
         prefs.setStringValue(getString(R.string.buyingPrice), buyingPrice.text)
         setCustomIcon(prefs)

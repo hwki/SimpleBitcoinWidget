@@ -115,5 +115,8 @@
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently on.</string>
     <string name="coin_search_hint">Search by name or symbol</string>
+    <string name="statistics">Statistics</string>
+    <string name="key_show_trend">show_trend</string>
+    <string name="title_show_trend">Show trend</string>
 
 </resources>
