@@ -94,6 +94,9 @@ internal class Prefs(val widgetId: Int) {
     val buyingPrice: Double
         get() = getValue(BUYING_PRICE)?.toDouble() ?: 100.0
 
+    val showTrend: Boolean
+        get() = getValue(SHOW_TREND)?.toBoolean() ?: false
+
     fun exists(): Boolean = prefs.getString("" + widgetId, null) != null
 
     fun setLastUpdate() {
@@ -135,7 +138,7 @@ internal class Prefs(val widgetId: Int) {
 
     fun setValues(coin: String, currency: String, refreshValue: Int, exchange: String, checked: Boolean,
                   theme: String, iconChecked: Boolean, showDecimals: Boolean, unit: String?, symbol: String?,
-                  iconUrl: String?) {
+                  iconUrl: String?, showTrendChecked: Boolean?) {
         val obj = JsonObject()
         with(obj) {
             addProperty(COIN, coin)
@@ -143,6 +146,7 @@ internal class Prefs(val widgetId: Int) {
             addProperty(REFRESH, "" + refreshValue)
             addProperty(EXCHANGE, exchange)
             addProperty(SHOW_LABEL, "" + checked)
+            addProperty(SHOW_TREND, "" + showTrendChecked)
             addProperty(THEME, theme)
             addProperty(HIDE_ICON, "" + !iconChecked)
             addProperty(SHOW_DECIMALS, "" + showDecimals)
@@ -240,5 +244,6 @@ internal class Prefs(val widgetId: Int) {
         private const val CUSTOM_ICON = "custom_icon"
         private const val HOLDINGS = "holdings"
         private const val BUYING_PRICE = "buyingPrice"
+        private const val SHOW_TREND = "show_trend"
     }
 }

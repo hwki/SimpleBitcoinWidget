@@ -79,8 +79,14 @@
     </PreferenceCategory>
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:key="@string/key_other"
-        app:title="@string/title_other">
+        app:key="statistics"
+        app:title="@string/statistics" >
+        <CheckBoxPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="@string/key_show_trend"
+            app:persistent="false"
+            app:title="@string/title_show_trend" />
         <EditTextPreference
             app:title="Holdings"
             app:key="holdings"
@@ -91,6 +97,11 @@
             app:key="buyingPrice"
             app:summary="Please provide the average price you bought the coins for"
             app:defaultValue="1.0"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:key="@string/key_other"
+        app:title="@string/title_other">
         <Preference
             app:iconSpaceReserved="false"
             app:key="@string/key_rate"

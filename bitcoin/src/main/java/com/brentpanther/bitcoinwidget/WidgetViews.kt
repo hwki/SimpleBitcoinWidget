@@ -133,6 +133,10 @@ internal object WidgetViews {
         } else {
             views.hide(exchangeView, exchangeAutoSizeView, R.id.top_space)
         }
+
+        if(!prefs.showTrend) {
+            views.hide(R.id.trend)
+        }
         views.hide(R.id.loading)
         return textSize
     }
