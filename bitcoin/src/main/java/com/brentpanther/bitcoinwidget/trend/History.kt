@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget.trend
 
 import java.time.Instant.now
+import kotlin.collections.ArrayList
 
 class History(var maximumAge: Long = 0L, var coinValues: ArrayList<CoinValue>) {
 
@@ -25,6 +26,10 @@ class History(var maximumAge: Long = 0L, var coinValues: ArrayList<CoinValue>) {
 
     fun getHistoryEventCount(): Int {
         return coinValues.size
+    }
+
+    fun getMaximumHistoryAge(): Long {
+        return maximumAge
     }
 
     fun getEvents(): ArrayList<CoinValue> {

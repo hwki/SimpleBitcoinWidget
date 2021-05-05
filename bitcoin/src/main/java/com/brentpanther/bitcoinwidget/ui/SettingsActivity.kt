@@ -8,16 +8,18 @@ import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.trend.History
+import com.brentpanther.bitcoinwidget.trend.HistoryToPreference
 import com.google.gson.JsonSyntaxException
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 
 class SettingsActivity : AppCompatActivity() {
@@ -50,6 +52,9 @@ class SettingsActivity : AppCompatActivity() {
         coin = extras.getParcelable(EXTRA_COIN) ?: throw IllegalArgumentException()
         findViewById<TextView>(R.id.labelSave).text = getString(R.string.new_widget, coin.name)
         currentValue = AtomicReference(null)
+
+        HistoryToPreference(this).saveToPreferences(widgetId, History())
+
         viewModel.data.observe(this, {
             if (this.isDestroyed) return@observe
             when(it) {
@@ -61,6 +66,8 @@ class SettingsActivity : AppCompatActivity() {
                     populateData()
                     findViewById<ImageButton>(R.id.save).setOnClickListener {
                         val fragment = supportFragmentManager.findFragmentByTag("settings") as SettingsFragment
+                        val history = History(TimeUnit.HOURS.toMillis(24))
+                        HistoryToPreference(this).saveToPreferences(widgetId, history)
                         fragment.save()
                     }
                 }

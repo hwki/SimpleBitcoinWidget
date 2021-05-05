@@ -4,16 +4,18 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.util.Log
 import android.util.Pair
 import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
+import com.brentpanther.bitcoinwidget.trend.CoinHistoryWriter
+import com.brentpanther.bitcoinwidget.trend.History
+import com.brentpanther.bitcoinwidget.trend.HistoryToPreference
 import java.lang.NumberFormatException
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.time.Instant
+import java.time.Instant.now
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.min
@@ -22,6 +24,7 @@ import kotlin.math.pow
 internal object WidgetViews {
 
     private const val TEXT_HEIGHT = .70
+    private val decimalFormat = DecimalFormat("#.##")
 
     fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?, isUpdate: Boolean) {
         if (amount == null) {
@@ -33,19 +36,21 @@ internal object WidgetViews {
             return
         }
         try {
-            Log.d("Trend", "is update with amount: $amount")
             val text = buildText(amount, prefs)
             prefs.lastValue = text
-            setTrendReferenceValue(prefs, amount.toDouble())
+
+            val history = HistoryToPreference(context).retrieveFromPreferences(prefs.widgetId)
+            CoinHistoryWriter(history).addCoinValue(amount.toDouble())
+            HistoryToPreference(context).saveToPreferences(prefs.widgetId, history)
+
             putValue(context, views, text, prefs)
-            val trendText = Gain().calculatePercentageGain(amount.toDouble(), prefs.trendReferenceValue).toString()
-            Log.d("Trend", "set trend text with: $trendText")
+            val millis24hAgo = now().toEpochMilli() - TimeUnit.HOURS.toMillis(24)
+            val trendText = generateTrendString(amount, history, millis24hAgo)
             views.setTextViewText(R.id.trend, trendText)
             if (prefs.holdings > 0.0) {
-                val decimalFormat = DecimalFormat("#.##")
                 views.setTextViewText(
                         R.id.gain,
-                        generateGainString(prefs, decimalFormat, amount)
+                        generateGainString(prefs, amount)
                 )
             }
         } catch (e: NumberFormatException) {
@@ -53,7 +58,17 @@ internal object WidgetViews {
         }
     }
 
-    private fun generateGainString(prefs: Prefs, decimalFormat: DecimalFormat, amount: String) =
+    private fun generateTrendString(
+        amount: String,
+        history: History,
+        millis24hAgo: Long
+    ) = decimalFormat.format(
+        Gain().calculatePercentageGain(
+            amount.toDouble(), history.getValueWhen(millis24hAgo)
+        )
+    ).toString() + "%"
+
+    private fun generateGainString(prefs: Prefs, amount: String) =
             (prefs.currencySymbol
                     + decimalFormat.format(Gain().calculateGain(
                     prefs.holdings,
@@ -272,19 +287,5 @@ internal object WidgetViews {
         for (id in ids) setViewVisibility(id, View.VISIBLE)
     }
 
-    private fun setTrendReferenceValue(prefs: Prefs, amount: Double) {
-
-        if ( prefs.trendReferenceValue == null || prefs.trendReferenceSavedAt == null) {
-            prefs.setLongValue("trend_reference_value_saved_at", Instant.now().toEpochMilli())
-            prefs.setDoubleValue("trend_reference_value", amount)
-        }
-        val newTrendDue = Trend().isNewTrendDue(prefs.trendReferenceSavedAt!!, TimeUnit.MINUTES.toMillis(2))
-        Log.d("Trend", "isDue: $newTrendDue")
-        if (newTrendDue) {
-            prefs.setLongValue("trend_reference_value_saved_at", Instant.now().toEpochMilli())
-            prefs.setDoubleValue("trend_reference_value", amount)
-        }
-
-    }
 
 }
