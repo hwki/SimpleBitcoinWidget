@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
 import com.brentpanther.bitcoinwidget.trend.CoinHistoryWriter
+import com.brentpanther.bitcoinwidget.trend.Gain
 import com.brentpanther.bitcoinwidget.trend.History
 import com.brentpanther.bitcoinwidget.trend.HistoryToPreference
 import java.lang.NumberFormatException
@@ -44,8 +45,7 @@ internal object WidgetViews {
             HistoryToPreference(context).saveToPreferences(prefs.widgetId, history)
 
             putValue(context, views, text, prefs)
-            val millis24hAgo = now().toEpochMilli() - TimeUnit.HOURS.toMillis(24)
-            val trendText = generateTrendString(amount, history, millis24hAgo)
+            val trendText = generateTrendString24HoursSpan(amount, history)
             views.setTextViewText(R.id.trend, trendText)
             if (prefs.holdings > 0.0) {
                 views.setTextViewText(
@@ -58,15 +58,17 @@ internal object WidgetViews {
         }
     }
 
-    private fun generateTrendString(
+    private fun generateTrendString24HoursSpan(
         amount: String,
         history: History,
-        millis24hAgo: Long
-    ) = decimalFormat.format(
-        Gain().calculatePercentageGain(
-            amount.toDouble(), history.getValueWhen(millis24hAgo)
-        )
-    ).toString() + "%"
+    ): String {
+        val millis24hAgo = now().toEpochMilli() - TimeUnit.HOURS.toMillis(24)
+        return decimalFormat.format(
+            Gain().calculatePercentageGain(
+                amount.toDouble(), history.getValueWhen(millis24hAgo)
+            )
+        ).toString() + "%"
+    }
 
     private fun generateGainString(prefs: Prefs, amount: String) =
             (prefs.currencySymbol
