@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.trend
 
 class Gain {
 
