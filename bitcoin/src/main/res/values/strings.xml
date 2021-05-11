@@ -16,6 +16,8 @@
     <string name="key_label" translatable="false">label</string>
     <string name="key_theme" translatable="false">theme</string>
     <string name="key_rate" translatable="false">rate</string>
+    <string name="holdings" translatable="false">holdings</string>
+    <string name="buyingPrice" translatable="false">buyingPrice</string>
     <string name="key_prefs" translatable="false">bitcoinwidget</string>
     <string name="key_fixed_size" translatable="false">fixed_size</string>
     <string name="key_symbol" translatable="false">symbol</string>
@@ -65,6 +67,7 @@
         <item>Transparent Dark</item>
     </string-array>
     <string-array name="intervals">
+        <item>1min</item>
         <item>5 minutes</item>
         <item>10 minutes</item>
         <item>15 minutes</item>
@@ -75,6 +78,7 @@
         <item>24 hours</item>
     </string-array>
     <string-array name="intervalValues">
+        <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
@@ -111,5 +115,8 @@
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently on.</string>
     <string name="coin_search_hint">Search by name or symbol</string>
+    <string name="statistics">Statistics</string>
+    <string name="key_show_trend">show_trend</string>
+    <string name="title_show_trend">Show trend</string>
 
 </resources>

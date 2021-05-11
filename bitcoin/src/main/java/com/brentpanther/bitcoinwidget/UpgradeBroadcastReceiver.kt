@@ -20,8 +20,8 @@ class UpgradeBroadcastReceiver : BroadcastReceiver() {
 
                 // clear out last update values
                 val prefs = Prefs(widgetId)
-                prefs.setValue("LAST_VALUE", null)
-                prefs.setValue("last_update", "0")
+                prefs.setStringValue("LAST_VALUE", "0")
+                prefs.setStringValue("last_update", "0")
             }
         }
         WidgetProvider.refreshWidgets(context)

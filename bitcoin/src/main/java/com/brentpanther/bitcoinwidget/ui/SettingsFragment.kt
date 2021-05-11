@@ -11,8 +11,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
@@ -35,7 +36,7 @@ import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.NoticeDialogListener {
 
-    private lateinit var data: ExchangeData
+    private lateinit var exchangeData: ExchangeData
     private var widgetId: Int = 0
     private lateinit var refresh: ListPreference
     private lateinit var currency: ListPreference
@@ -46,9 +47,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private lateinit var decimals: TwoStatePreference
     private lateinit var label: TwoStatePreference
     private lateinit var theme: ListPreference
+    private lateinit var holdings: EditTextPreference
+    private lateinit var buyingPrice: EditTextPreference
+    private lateinit var showTrend: TwoStatePreference
+
+    private var checkBatterySaver: Boolean = true
     private var fixedSize: Boolean = false
     private var checkDataSaver: Boolean = true
-    private var checkBatterySaver: Boolean = true
     private var symbolValue: String? = null
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +67,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         setPreferencesFromResource(R.xml.preferences, rootKey)
         fixedSize = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(getString(R.string.key_fixed_size), false)
         setHasOptionsMenu(true)
-        data = ExchangeDataHelper.data!!
+        exchangeData = ExchangeDataHelper.data!!
         widgetId = arguments?.getInt("widgetId")!!
         loadPreferences(savedInstanceState)
     }
@@ -94,6 +99,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         val fixedSize = findPreference(getString(R.string.key_fixed_size)) as? TwoStatePreference
         units = findPreference(getString(R.string.key_units))!!
         val rate = findPreference(getString(R.string.key_rate)) as? Preference
+        holdings = findPreference(getString(R.string.holdings))!!
+        buyingPrice = findPreference(getString(R.string.buyingPrice))!!
+        showTrend = findPreference(getString(R.string.key_show_trend))!!
 
         // refresh option
         bundle?.getString("refresh")?.let {refresh.value = it}
@@ -104,9 +112,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
 
         // currency option
-        currency.entries = data.currencies
-        currency.entryValues = data.currencies
-        val defaultCurrency = data.defaultCurrency
+        currency.entries = exchangeData.currencies
+        currency.entryValues = exchangeData.currencies
+        val defaultCurrency = exchangeData.defaultCurrency
         if (defaultCurrency == null) {
             Toast.makeText(context, R.string.error_no_currencies, Toast.LENGTH_LONG).show()
             requireActivity().finish()
@@ -141,7 +149,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
 
         // icon
-        icon.title = getString(R.string.title_icon, data.coin.name)
+        icon.title = getString(R.string.title_icon, exchangeData.coin.name)
         bundle?.getBoolean("icon")?.let { icon.isChecked = it }
         icon.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(icon, newValue, false) }
 
@@ -152,6 +160,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         // exchange label
         bundle?.getBoolean("label")?.let { label.isChecked = it }
         label.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(label, newValue, false) }
+        showTrend.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(showTrend, newValue, false) }
 
         // theme
         bundle?.getString("theme")?.let { theme.value = it }
@@ -177,8 +186,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             saveAndUpdate(fixedSize, newValue, false)
         }
 
+        holdings.setOnPreferenceChangeListener { _, _ -> saveAndUpdate(); }
+
         // units
-        val unitNames = data.coin.coin.unitNames
+        val unitNames = exchangeData.coin.coin.unitNames
         if (unitNames.isNotEmpty()) {
             findPreference<Preference>(getString(R.string.key_units))?.isVisible = true
             units.value = bundle?.getString("units") ?: unitNames[0]
@@ -200,6 +211,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             }
             true
         }
+
+    }
+
+    private fun saveAndUpdate(): Boolean {
+        saveAndUpdate(true);
+        return true
     }
 
     private fun setSymbol(value: String) {
@@ -236,9 +253,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
 
     private fun setExchange(currency: String) {
         with (exchange) {
-            entryValues = data.getExchanges(currency)
+            entryValues = exchangeData.getExchanges(currency)
             entries = entryValues.map { Exchange.valueOf(it.toString()).exchangeName }.toTypedArray()
-            value = data.getDefaultExchange(currency)
+            value = exchangeData.getDefaultExchange(currency)
         }
     }
 
@@ -262,18 +279,20 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private fun saveValues(temporary: Boolean) {
         val prefs = Prefs(widgetId)
         setSymbol(symbol.value)
-        prefs.setValues(data.coin.coin.name, currency.value, (refresh.value).toInt(),
+        prefs.setValues(exchangeData.coin.coin.name, currency.value, (refresh.value).toInt(),
                 exchange.value, label.isChecked, theme.value, icon.isChecked,
-                decimals.isChecked, units.value, symbolValue, data.coin.iconUrl)
+                decimals.isChecked, units.value, symbolValue, exchangeData.coin.iconUrl, showTrend.isChecked)
+        prefs.setStringValue(getString(R.string.holdings), holdings.text)
+        prefs.setStringValue(getString(R.string.buyingPrice), buyingPrice.text)
         setCustomIcon(prefs)
-        val exchangeCoinName = data.getExchangeCoinName(exchange.value)
-        val exchangeCurrencyName = data.getExchangeCurrencyName(exchange.value, currency.value)
+        val exchangeCoinName = exchangeData.getExchangeCoinName(exchange.value)
+        val exchangeCurrencyName = exchangeData.getExchangeCurrencyName(exchange.value, currency.value)
         prefs.setExchangeValues(exchangeCoinName, exchangeCurrencyName)
         prefs.setTemporary(temporary)
     }
 
     private fun setCustomIcon(prefs: Prefs) {
-        data.coin.getFullIconUrl()?.let {
+        exchangeData.coin.getFullIconUrl()?.let {
             val dir = File(requireContext().filesDir, "icons")
             if (!dir.exists()) {
                 dir.mkdir()

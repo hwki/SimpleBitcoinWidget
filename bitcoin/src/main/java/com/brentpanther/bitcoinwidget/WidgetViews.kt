@@ -9,35 +9,76 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
+import com.brentpanther.bitcoinwidget.trend.CoinHistoryWriter
+import com.brentpanther.bitcoinwidget.trend.Gain
+import com.brentpanther.bitcoinwidget.trend.History
+import com.brentpanther.bitcoinwidget.trend.HistoryToPreference
 import java.lang.NumberFormatException
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.time.Instant.now
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import kotlin.math.pow
 
 internal object WidgetViews {
 
     private const val TEXT_HEIGHT = .70
+    private val decimalFormat = DecimalFormat("#.##")
 
     fun setText(context: Context, views: RemoteViews, prefs: Prefs, amount: String?, isUpdate: Boolean) {
         if (amount == null) {
             setUnknownAmount(context, views, prefs)
-        } else {
-            if (isUpdate) {
-                // store the formatted value
-                try {
-                    val text = buildText(amount, prefs)
-                    prefs.lastValue = text
-                    putValue(context, views, text, prefs)
-                } catch (e: NumberFormatException) {
-                    setUnknownAmount(context, views, prefs)
-                }
-            } else {
-                putValue(context, views, amount, prefs)
+            return
+        }
+        if (!isUpdate) {
+            putValue(context, views, amount, prefs)
+            return
+        }
+        try {
+            val text = buildText(amount, prefs)
+            prefs.lastValue = text
+
+            val history = HistoryToPreference(context).retrieveFromPreferences(prefs.widgetId)
+            CoinHistoryWriter(history).addCoinValue(amount.toDouble())
+            HistoryToPreference(context).saveToPreferences(prefs.widgetId, history)
+
+            putValue(context, views, text, prefs)
+            val trendText = generateTrendString24HoursSpan(amount, history)
+            views.setTextViewText(R.id.trend, trendText)
+            if (prefs.holdings > 0.0) {
+                views.setTextViewText(
+                        R.id.gain,
+                        generateGainString(prefs, amount)
+                )
             }
+        } catch (e: NumberFormatException) {
+            setUnknownAmount(context, views, prefs)
         }
     }
+
+    private fun generateTrendString24HoursSpan(
+        amount: String,
+        history: History,
+    ): String {
+        val millis24hAgo = now().toEpochMilli() - TimeUnit.HOURS.toMillis(24)
+        return decimalFormat.format(
+            Gain().calculatePercentageGain(
+                amount.toDouble(), history.getValueWhen(millis24hAgo)
+            )
+        ).toString() + "%"
+    }
+
+    private fun generateGainString(prefs: Prefs, amount: String) =
+            (prefs.currencySymbol
+                    + decimalFormat.format(Gain().calculateGain(
+                    prefs.holdings,
+                    amount.toDouble(),
+                    prefs.buyingPrice)).toString()
+                    + " ("
+                    + decimalFormat.format(Gain().calculatePercentageGain(amount.toDouble(), prefs.buyingPrice))
+                    .toString() + "%)")
 
     private fun setUnknownAmount(context: Context, views: RemoteViews, prefs: Prefs) {
         val lastUpdate = prefs.lastUpdate
@@ -93,6 +134,10 @@ internal object WidgetViews {
             }
         } else {
             views.hide(exchangeView, exchangeAutoSizeView, R.id.top_space)
+        }
+
+        if(!prefs.showTrend) {
+            views.hide(R.id.trend)
         }
         views.hide(R.id.loading)
         return textSize
@@ -247,5 +292,6 @@ internal object WidgetViews {
     private fun RemoteViews.show(vararg ids: Int) {
         for (id in ids) setViewVisibility(id, View.VISIBLE)
     }
+
 
 }
