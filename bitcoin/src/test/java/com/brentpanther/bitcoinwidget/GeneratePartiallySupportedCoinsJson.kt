@@ -3,26 +3,30 @@ package com.brentpanther.bitcoinwidget
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
+import com.jayway.jsonpath.Configuration
 import com.jayway.jsonpath.JsonPath
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
-import java.lang.Exception
+import java.io.InputStreamReader
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
-class GeneratePartiallySupportedCoinsJson {
+class GeneratePartiallySupportedCoins {
 
+    private val configuration = Configuration.defaultConfiguration().mappingProvider(GsonMappingProvider())
     private val allSupportedCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.name }
 
-    data class CoinGeckoCoin(val id: String, val symbol: String, val name: String, val icon: String, val score: Double) {
+    private val fullySupportedCoinsJsonPath = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins.json"))
 
-        fun toMap() : Map<String, String> =
-            mapOf("id" to id,
-                "symbol" to symbol,
-                "name" to name,
-                "score" to score.toString(),
-                "icon" to icon.replace("https://assets.coingecko.com/coins/images/", ""))
+    class CoinGeckoCoin(val id: String, val symbol: String, val name: String, var icon: String, val score: Double) {
+
+        init {
+            icon = icon.replace("https://assets.coingecko.com/coins/images/", "")
+        }
     }
 
     private val listUrl = "https://api.coingecko.com/api/v3/coins/list?include_platform=false"
@@ -33,48 +37,66 @@ class GeneratePartiallySupportedCoinsJson {
     @Test
     fun generate() {
         val allCoins = Gson().fromJson(get(listUrl), JsonArray::class.java)
-        println("Filtering ${allCoins.size()} coins..")
-        val coins = mutableListOf<Map<String, String>>()
+        val existing = getExistingCoins()
+        val initialCount = existing.count()
+        println("Filtering coins..")
         val failed = mutableListOf<JsonObject>()
-        for (it in allCoins.withIndex().map { IndexedValue(it.index, it.value as JsonObject) }) {
-            if (it.index % 100 == 0) {
-                println(it.index)
+        val total = allCoins.count()
+        var index = 0
+        for (obj in allCoins.map { it.asJsonObject }.stream()) {
+            index++
+            if (index % 100 == 0) {
+                println("${(index * 100.0 / total).roundToInt()}%")
             }
-            addCoin(it.value, coins, failed)
+            val id = obj.get("id").asString
+            if (existing.containsKey(id)) {
+                continue
+            }
+            getCoin(obj)?.let {
+                if (it.second) {
+                    existing[it.first.id] = it.first
+                }
+            } ?: failed.add(obj)
         }
-        val retryFailed = ArrayList(failed)
-        failed.clear()
-        for (coin in retryFailed) {
-            addCoin(coin, coins, failed)
+        println("Finished processing. Retrying ${failed.count()} failed counts.")
+        val stillFailed = mutableListOf<JsonObject>()
+        for (obj in failed) {
+            getCoin(obj)?.let {
+                if (it.second) {
+                    existing[it.first.id] = it.first
+                }
+            } ?: stillFailed.add(obj)
         }
-        println("Found ${coins.size} total coins.")
-        println("Found ${coins.count { it["score"]?.toDouble() ?: 0.0 > 1 }} total coins greater than 1.")
-        println("Found ${coins.count { it["score"]?.toDouble() ?: 0.0 > 2 }} total coins greater than 2.")
+        println("Found ${existing.count() - initialCount} new coins.")
         println("Failed: ${failed.joinToString { it.get("id").asString }}")
-        println(Gson().toJson(coins))
+        println("json:")
+        println(Gson().toJson(existing.values))
     }
 
-    private fun addCoin(obj: JsonObject, coins: MutableList<Map<String, String>>, failed: MutableList<JsonObject>) {
+    private fun getExistingCoins(): MutableMap<String, CoinGeckoCoin> {
+        val existingCoins = ClassLoader.getSystemResourceAsStream("raw/othercoins.json")
+        val coins : List<CoinGeckoCoin> = Gson().fromJson(InputStreamReader(existingCoins), object : TypeToken<List<CoinGeckoCoin>>() {}.type)
+        return coins.associateBy { it.id }.toMutableMap()
+    }
+
+    private fun getCoin(obj: JsonObject): Pair<CoinGeckoCoin, Boolean>? {
         var coin: CoinGeckoCoin? = null
         var tries = 0
         while (coin == null) {
+            Thread.sleep(1500)
             try {
                 coin = getCoinData(obj)
-                if (coin.score >= scoreLimit) {
-                    coins.add(coin.toMap())
-                }
+                return Pair(coin, coin.score >= scoreLimit)
             } catch (ignored: SocketTimeoutException) {
                 if (tries++ == 3) {
-                    failed.add(obj)
-                    return
+                    return null
                 }
             } catch (e: Exception) {
-                println("Unknown exception: ${e.message}")
-                failed.add(obj)
-                return
+                println("Failure with coin ${obj.get("id").asString}: ${e.message}")
+                return null
             }
-            Thread.sleep(2000)
         }
+        return null
     }
 
 
@@ -85,7 +107,7 @@ class GeneratePartiallySupportedCoinsJson {
         val score = obj.get("coingecko_score").asDouble
         val symbol = it.get("symbol").asString
         val icon = obj.get("image").asJsonObject.get("large").asString
-        return CoinGeckoCoin(id, symbol, name, icon, score)
+        return CoinGeckoCoin(id, symbol, name,icon, score)
     }
 
     private fun parse(url: String, path: String) = JsonPath.read(get(url), path) as List<String>
@@ -94,5 +116,4 @@ class GeneratePartiallySupportedCoinsJson {
             .connectTimeout(0, TimeUnit.SECONDS).callTimeout(0, TimeUnit.SECONDS)
             .writeTimeout(0, TimeUnit.SECONDS).build()
             .newCall(Request.Builder().url(value).build()).execute().body!!.string()
-
 }

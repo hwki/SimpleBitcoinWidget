@@ -5,7 +5,6 @@ import com.jayway.jsonpath.JsonPath
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
-import java.util.*
 import kotlin.math.ceil
 
 class GenerateSupportedCoinsJson {
@@ -35,7 +34,7 @@ class GenerateSupportedCoinsJson {
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lakebtc, this::lbank, this::liquid, this::luno, this::mercado,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex, this::poloniex,
-                        this::probit, this::therock, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
+                        this::probit, this::therock, this::tradeogre, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
                         this::zbg
                 ).zip(Exchange.values())
 
@@ -147,7 +146,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun normalize(pairs: List<String>): List<String> {
-        return pairs.asSequence().map { it.toUpperCase(Locale.ROOT) }
+        return pairs.asSequence().map { it.uppercase() }
                 .map { it.split("-", "/", "_") }
                 .map {
                     if (it.size == 1) {
@@ -356,10 +355,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun coinegg(): List<String> {
-        val usdPairs = parse("https://trade.coinegg.com/web/symbol/ticker?right_coin=usdt", "$.data[*].symbol")
-        val btcPairs = parse("https://trade.coinegg.com/web/symbol/ticker?right_coin=btc", "$.data[*].symbol")
-        val ethPairs = parse("https://trade.coinegg.com/web/symbol/ticker?right_coin=eth", "$.data[*].symbol")
-        return usdPairs + btcPairs + ethPairs
+        return parse("https://api.coinegg.fun/openapi/quote/v1/ticker/price", "$[*].symbol")
     }
 
     private fun coingecko(): List<String> {
@@ -444,7 +440,7 @@ class GenerateSupportedCoinsJson {
     private fun independent_reserve(): List<String> {
         val coins = parse("https://api.independentreserve.com/Public/GetValidPrimaryCurrencyCodes", "$[*]")
         val currencies = parse("https://api.independentreserve.com/Public/GetValidSecondaryCurrencyCodes", "$[*]")
-        return coins.map { coin -> currencies.map { "${coin.toUpperCase()}_${it.toUpperCase()}" } }.flatten()
+        return coins.map { coin -> currencies.map { "${coin.uppercase()}_${it.uppercase()}" } }.flatten()
     }
 
     private fun indodax(): List<String> {
@@ -517,7 +513,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun paymium(): List<String> {
-        return listOf("BTC_EUR", "BTC_")
+        return listOf("BTC_EUR")
     }
 
     private fun phemex(): List<String> {
@@ -536,6 +532,11 @@ class GenerateSupportedCoinsJson {
 
     private fun therock(): List<String> {
         return parse("https://api.therocktrading.com/v1/funds/tickers", "$.tickers[*].fund_id")
+    }
+
+    private fun tradeogre(): List<String> {
+        val list = JsonPath.read(get("https://tradeogre.com/api/v1/markets"), "$[*]") as List<Map<String, *>>
+        return list.map { it.keys.first().split("-").reversed().joinToString("_") }
     }
 
     @Suppress("UNCHECKED_CAST")

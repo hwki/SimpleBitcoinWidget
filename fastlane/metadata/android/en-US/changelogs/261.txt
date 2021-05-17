@@ -1,0 +1,3 @@
+Added TradeOgre.
+Fixed Coinegg exchange.
+Updated partially supported coins.

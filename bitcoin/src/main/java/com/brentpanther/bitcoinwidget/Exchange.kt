@@ -55,7 +55,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     BITBANK("Bitbank") {
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://public.bitbank.cc/$pair/ticker"
             return getJsonObject(url).getAsJsonObject("data").get("last").asString
         }
@@ -78,7 +78,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://api.bitclude.com/stats/ticker.json"
             val obj = getJsonObject(url)
-            return obj.getAsJsonObject("${coin.toLowerCase(Locale.ROOT)}_${currency.toLowerCase(Locale.ROOT)}").get("last").asString
+            return obj.getAsJsonObject("${coin.lowercase(Locale.ROOT)}_${currency.lowercase(Locale.ROOT)}").get("last").asString
         }
     },
     BITCOIN_AVERAGE("Bitcoin Average", "BTC avg") {
@@ -166,8 +166,9 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BITSO("Bitso") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val payload = getJsonObject("https://api.bitso.com/v3/ticker/").getAsJsonArray("payload")
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val payload =
+                getJsonObject("https://api.bitso.com/v3/ticker/").getAsJsonArray("payload")
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             for (jsonElement in payload) {
                 val obj = jsonElement as JsonObject
                 if (obj.get("book").asString == pair) {
@@ -180,7 +181,9 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BITSTAMP("Bitstamp") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://www.bitstamp.net/api/v2/ticker/${coin.toLowerCase(Locale.ROOT)}${currency.toLowerCase(Locale.ROOT)}"
+            val url = "https://www.bitstamp.net/api/v2/ticker/${coin.lowercase(Locale.ROOT)}${
+                currency.lowercase(Locale.ROOT)
+            }"
             return getJsonObject(url).get("last").asString
         }
     },
@@ -211,7 +214,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BRAZILIEX("Braziliex") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://braziliex.com/api/v1/public/ticker/$pair"
             return getJsonObject(url).get("last").asString
         }
@@ -219,7 +222,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     BTCBOX("BTC Box") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://www.btcbox.co.jp/api/v1/ticker/?coin=${coin.toLowerCase(Locale.ROOT)}"
+            val url = "https://www.btcbox.co.jp/api/v1/ticker/?coin=${coin.lowercase(Locale.ROOT)}"
             return getJsonObject(url).get("last").asString
         }
     },
@@ -293,8 +296,8 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     COINEGG("CoinEgg") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.coinegg.vip/api/v1/ticker/region/${currency.toLowerCase(Locale.ROOT)}?coin=${coin.toLowerCase(Locale.ROOT)}"
-            return getJsonObject(url).get("last").asString
+            val url = "https://api.coinegg.fun/openapi/quote/v1/ticker/price?symbol=$coin$currency"
+            return getJsonObject(url).get("price").asString
         }
     },
     COINGECKO("CoinGecko") {
@@ -302,99 +305,100 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String? {
             // hardcoded map to id
             val map = mapOf(
-                    "AAVE" to "aave",
-                    "ADA" to "cardano",
-                    "ALGO" to "algorand",
-                    "ARRR" to "pirate-chain",
-                    "ATOM" to "cosmos",
-                    "AVA" to "concierge-io",
-                    "AVAX" to "avalanche-2",
-                    "BAL" to "balancer",
-                    "BAND" to "band-protocol",
-                    "BAT" to "basic-attention-token",
-                    "BCD" to "bitcoin-diamond",
-                    "BCH" to "bitcoin-cash",
-                    "BNB" to "binancecoin",
-                    "BSV" to "bitcoin-cash-sv",
-                    "BTC" to "bitcoin",
-                    "BTG" to "bitcoin-gold",
-                    "BTM" to "bytom",
-                    "BTT" to "bittorrent-2",
-                    "CEL" to "celsius-degree-token",
-                    "COMP" to "compound-coin",
-                    "CRO" to "crypto-com-chain",
-                    "DAI" to "dai",
-                    "DASH" to "dash",
-                    "DCR" to "decred",
-                    "DOGE" to "dogecoin",
-                    "DOT" to "polkadot",
-                    "ENJ" to "enjincoin",
-                    "EOS" to "eos",
-                    "ETC" to "ethereum-classic",
-                    "ETH" to "ethereum",
-                    "FIL" to "filecoin",
-                    "FIRO" to "zcoin",
-                    "FTT" to "ftx-token",
-                    "GNO" to "gnosis",
-                    "GNT" to "golem",
-                    "GRIN" to "grin",
-                    "HBAR" to "hedera-hashgraph",
-                    "HNS" to "handshake",
-                    "HT" to "huobi-token",
-                    "ICX" to "icon",
-                    "IOTA" to "iota",
-                    "KMD" to "komodo",
-                    "KNC" to "kyber-network",
-                    "KSM" to "kusama",
-                    "LEO" to "leo-token",
-                    "LINK" to "chainlink",
-                    "LRC" to "loopring",
-                    "LSK" to "lisk",
-                    "LTC" to "litecoin",
-                    "LTO" to "lto-network",
-                    "MANA" to "decentraland",
-                    "MCO" to "monaco",
-                    "MKR" to "maker",
-                    "MLN" to "melon",
-                    "NANO" to "nano",
-                    "NEAR" to "near",
-                    "NEO" to "neo",
-                    "NRG" to "energi",
-                    "OKB" to "okb",
-                    "OMG" to "omg-network",
-                    "ONT" to "ontology",
-                    "PAX" to "paxos-standard",
-                    "PAXG" to "pax-gold",
-                    "POWR" to "power-ledger",
-                    "PPC" to "peercoin",
-                    "QTUM" to "qtum",
-                    "RDD" to "reddcoin",
-                    "REN" to "republic-protocol",
-                    "REP" to "augur",
-                    "RUNE" to "thorchain",
-                    "RVN" to "ravencoin",
-                    "SNX" to "havven",
-                    "SOL" to "solana",
-                    "SUSHI" to "sushi",
-                    "THETA" to "theta-token",
-                    "TRX" to "tron",
-                    "UNI" to "uniswap",
-                    "VET" to "vechain",
-                    "VTC" to "vertcoin",
-                    "WAVES" to "waves",
-                    "XAUT" to "tether-gold",
-                    "XEM" to "nem",
-                    "XLM" to "stellar",
-                    "XMR" to "monero",
-                    "XRP" to "ripple",
-                    "XTZ" to "tezos",
-                    "XVG" to "verge",
-                    "YFI" to "yearn-finance",
-                    "ZEC" to "zcash",
-                    "ZIL" to "zilliqa",
-                    "ZRX" to "0x")
+                "AAVE" to "aave",
+                "ADA" to "cardano",
+                "ALGO" to "algorand",
+                "ARRR" to "pirate-chain",
+                "ATOM" to "cosmos",
+                "AVA" to "concierge-io",
+                "AVAX" to "avalanche-2",
+                "BAL" to "balancer",
+                "BAND" to "band-protocol",
+                "BAT" to "basic-attention-token",
+                "BCD" to "bitcoin-diamond",
+                "BCH" to "bitcoin-cash",
+                "BNB" to "binancecoin",
+                "BSV" to "bitcoin-cash-sv",
+                "BTC" to "bitcoin",
+                "BTG" to "bitcoin-gold",
+                "BTM" to "bytom",
+                "BTT" to "bittorrent-2",
+                "CEL" to "celsius-degree-token",
+                "COMP" to "compound-coin",
+                "CRO" to "crypto-com-chain",
+                "DAI" to "dai",
+                "DASH" to "dash",
+                "DCR" to "decred",
+                "DOGE" to "dogecoin",
+                "DOT" to "polkadot",
+                "ENJ" to "enjincoin",
+                "EOS" to "eos",
+                "ETC" to "ethereum-classic",
+                "ETH" to "ethereum",
+                "FIL" to "filecoin",
+                "FIRO" to "zcoin",
+                "FTT" to "ftx-token",
+                "GNO" to "gnosis",
+                "GNT" to "golem",
+                "GRIN" to "grin",
+                "HBAR" to "hedera-hashgraph",
+                "HNS" to "handshake",
+                "HT" to "huobi-token",
+                "ICX" to "icon",
+                "IOTA" to "iota",
+                "KMD" to "komodo",
+                "KNC" to "kyber-network",
+                "KSM" to "kusama",
+                "LEO" to "leo-token",
+                "LINK" to "chainlink",
+                "LRC" to "loopring",
+                "LSK" to "lisk",
+                "LTC" to "litecoin",
+                "LTO" to "lto-network",
+                "MANA" to "decentraland",
+                "MCO" to "monaco",
+                "MKR" to "maker",
+                "MLN" to "melon",
+                "NANO" to "nano",
+                "NEAR" to "near",
+                "NEO" to "neo",
+                "NRG" to "energi",
+                "OKB" to "okb",
+                "OMG" to "omg-network",
+                "ONT" to "ontology",
+                "PAX" to "paxos-standard",
+                "PAXG" to "pax-gold",
+                "POWR" to "power-ledger",
+                "PPC" to "peercoin",
+                "QTUM" to "qtum",
+                "RDD" to "reddcoin",
+                "REN" to "republic-protocol",
+                "REP" to "augur",
+                "RUNE" to "thorchain",
+                "RVN" to "ravencoin",
+                "SNX" to "havven",
+                "SOL" to "solana",
+                "SUSHI" to "sushi",
+                "THETA" to "theta-token",
+                "TRX" to "tron",
+                "UNI" to "uniswap",
+                "VET" to "vechain",
+                "VTC" to "vertcoin",
+                "WAVES" to "waves",
+                "XAUT" to "tether-gold",
+                "XEM" to "nem",
+                "XLM" to "stellar",
+                "XMR" to "monero",
+                "XRP" to "ripple",
+                "XTZ" to "tezos",
+                "XVG" to "verge",
+                "YFI" to "yearn-finance",
+                "ZEC" to "zcash",
+                "ZIL" to "zilliqa",
+                "ZRX" to "0x"
+            )
             val id = map[coin] ?: coin
-            val vs = currency.toLowerCase(Locale.ROOT)
+            val vs = currency.lowercase(Locale.ROOT)
             val url = "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=$vs"
             return getJsonObject(url).getAsJsonObject(id).get(vs).asString
         }
@@ -503,7 +507,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     GEMINI("Gemini") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
+            val pair = "$coin$currency".lowercase(Locale.ROOT)
             return getJsonObject("https://api.gemini.com/v1/pubticker/$pair").get("last").asString
         }
     },
@@ -519,7 +523,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     HUOBI("Huobi") {
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}$currency".lowercase(Locale.ROOT)
             val url = "https://api.huobi.pro/market/detail/merged?symbol=$pair"
             return getJsonObject(url).getAsJsonObject("tick").get("close").asString
         }
@@ -527,14 +531,17 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     INDEPENDENT_RESERVE("Independent Reserve", "Ind. Reserve") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=${coin.toLowerCase(Locale.ROOT)}&secondaryCurrencyCode=${currency.toLowerCase(Locale.ROOT)}"
+            val url =
+                "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=${
+                    coin.lowercase(Locale.ROOT)
+                }&secondaryCurrencyCode=${currency.lowercase(Locale.ROOT)}"
             return getJsonObject(url).get("LastPrice").asString
         }
     },
     INDODAX("Indodax") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://indodax.com/api/$pair/ticker"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
@@ -549,7 +556,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
 
         override fun getValue(coin: String, currency: String): String {
             val headers = Headers.headersOf("User-Agent", "")
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://api.korbit.co.kr/v1/ticker?currency_pair=$pair"
             return getJsonObject(url, headers).get("last").asString
         }
@@ -573,7 +580,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     KUNA("KunaBTC") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
+            val pair = "$coin$currency".lowercase(Locale.ROOT)
             val obj = getJsonObject("https://kuna.io/api/v2/tickers/$pair")
             return obj.getAsJsonObject("ticker").get("last").asString
         }
@@ -581,7 +588,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     LAKEBTC("LakeBTC") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".toLowerCase(Locale.ROOT)
+            val pair = "$coin$currency".lowercase(Locale.ROOT)
             val obj = getJsonObject("https://api.lakebtc.com/api_v2/ticker")
             return obj.getAsJsonObject(pair).get("last").asString
         }
@@ -589,9 +596,10 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     LBANK("LBank") {
 
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://api.lbkex.com/v2/ticker.do?symbol=$pair"
-            return getJsonObject(url).getAsJsonArray("data").get(0).asJsonObject.getAsJsonObject("ticker").get("latest").asString
+            return getJsonObject(url).getAsJsonArray("data")
+                .get(0).asJsonObject.getAsJsonObject("ticker").get("latest").asString
         }
     },
     LIQUID("Liquid") {
@@ -661,7 +669,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     PAYMIUM("Paymium") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://paymium.com/api/v1/data/${currency.toLowerCase(Locale.ROOT)}/ticker"
+            val url = "https://paymium.com/api/v1/data/${currency.lowercase(Locale.ROOT)}/ticker"
             return getJsonObject(url).get("price").asString
         }
     },
@@ -692,6 +700,12 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.therocktrading.com/v1/funds/$coin$currency/ticker"
             return getJsonObject(url).get("last").asString
+        }
+    },
+    TRADEOGRE("TradeOgre") {
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://tradeogre.com/api/v1/ticker/$currency-$coin"
+            return getJsonObject(url).get("price").asString
         }
     },
     UPHOLD("Uphold") {
@@ -733,7 +747,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     },
     YOBIT("YoBit") {
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://yobit.net/api/3/ticker/$pair"
             return getJsonObject(url).getAsJsonObject(pair).get("last").asString
         }
@@ -741,13 +755,15 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     ZB("ZB") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "http://api.zb.live/data/v1/ticker?market=${coin.toLowerCase(Locale.ROOT)}_${currency.toLowerCase(Locale.ROOT)}"
+            val url = "http://api.zb.live/data/v1/ticker?market=${coin.lowercase(Locale.ROOT)}_${
+                currency.lowercase(Locale.ROOT)
+            }"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
         }
     },
     ZBG("ZBG") {
         override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".toLowerCase(Locale.ROOT)
+            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://kline.zbg.com/api/data/v1/ticker?marketName=$pair"
             return getJsonObject(url).getAsJsonArray("datas")[1].asString
         }

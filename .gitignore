@@ -63,28 +63,24 @@ obj/
 *.iws
 /out/
 
-# User-specific configurations
-.idea/caches/
-.idea/libraries/
-.idea/shelf/
+# User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
-.idea/.name
-.idea/compiler.xml
-.idea/copyright/profiles_settings.xml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/scopes/scope_settings.xml
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
-.idea/datasources.xml
+
+# Sensitive or high-churn files:
 .idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
-.idea/assetWizardSettings.xml
+
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
 
 # OS-specific files
 .DS_Store
