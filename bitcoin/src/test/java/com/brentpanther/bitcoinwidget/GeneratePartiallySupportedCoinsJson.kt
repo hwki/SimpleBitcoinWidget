@@ -32,12 +32,13 @@ class GeneratePartiallySupportedCoins {
     private val listUrl = "https://api.coingecko.com/api/v3/coins/list?include_platform=false"
     private val dataUrl = "https://api.coingecko.com/api/v3/coins/"
     private val dataUrl2 = "?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false"
-    private val scoreLimit = 1
+    private val scoreLimit = 3
 
     @Test
     fun generate() {
         val allCoins = Gson().fromJson(get(listUrl), JsonArray::class.java)
         val existing = getExistingCoins()
+        existing.clear()
         val initialCount = existing.count()
         println("Filtering coins..")
         val failed = mutableListOf<JsonObject>()

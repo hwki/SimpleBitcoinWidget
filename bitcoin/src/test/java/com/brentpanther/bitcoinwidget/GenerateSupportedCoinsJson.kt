@@ -24,7 +24,7 @@ class GenerateSupportedCoinsJson {
 
         val exchanges =
                 listOf(this::abucoins, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
-                        this::bitbank, this::bitbay, this::bitcambio, this::bitclude, this::bitcoinAverage, this::bitcoinAverageGlobal,
+                        this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmax, this::bitmex,
                         this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
                         this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
@@ -33,7 +33,8 @@ class GenerateSupportedCoinsJson {
                         this::cryptocom, this::deversifi, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lakebtc, this::lbank, this::liquid, this::luno, this::mercado,
-                        this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex, this::poloniex,
+                        this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex,
+                        this::pocketbits, this::poloniex,
                         this::probit, this::therock, this::tradeogre, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
                         this::zbg
                 ).zip(Exchange.values())
@@ -230,14 +231,6 @@ class GenerateSupportedCoinsJson {
 
     private fun bitclude(): List<String> {
         return parseKeys("https://api.bitclude.com/stats/ticker.json", "$")
-    }
-
-    private fun bitcoinAverage(): List<String> {
-        return parse("https://apiv2.bitcoinaverage.com/info/indices/ticker/local", "$.symbols[*]")
-    }
-
-    private fun bitcoinAverageGlobal(): List<String> {
-        return parse("https://apiv2.bitcoinaverage.com/info/indices/ticker/global", "$.symbols[*]")
     }
 
     private fun bitcoinde(): List<String> {
@@ -520,6 +513,10 @@ class GenerateSupportedCoinsJson {
         return listOf("BTC_USDT", "XRP_USDT", "ETH_USDT", "LINK_USDT", "XTZ_USDT", "LTC_USDT")
     }
 
+    private fun pocketbits(): List<String> {
+        return parse("https://ticker.pocketbits.in/api/v1/ticker", "$[*].symbol")
+    }
+
     private fun poloniex(): List<String> {
         return parseKeys("https://poloniex.com/public?command=returnTicker", "$").map {
             it.split("_").reversed().joinToString("_")
@@ -576,8 +573,8 @@ class GenerateSupportedCoinsJson {
     private fun wyre(): List<String> {
         // is in currency - coin format
         val list = parseKeys("https://api.sendwyre.com/v3/rates", "$")
-        val split1 =  list.map { it.substring(it.length / 2, it.length) + "_" + it.substring(0, it.length / 2)  }
-        val split2 = list.map { it.substring(ceil(7.0 / 2).toInt(), it.length) + "_" + it.substring(0, ceil(7.0 / 2).toInt())  }
+        val split1 =  list.map { it.substring(3, it.length) + "_" + it.substring(0, 3)  }
+        val split2 = list.map { it.substring(4, it.length) + "_" + it.substring(0, 4)  }
         return split1.plus(split2).distinct()
     }
 

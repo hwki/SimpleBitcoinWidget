@@ -77,6 +77,7 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     },
     LTO("LTO Network", ic_lto, mapOf(L to ic_lto, LO to ic_lto_gray)),
     MANA("Decentraland", ic_mana, mapOf(L to ic_mana, LO to ic_mana_gray)),
+    MATIC("Polygon", ic_matic, mapOf(L to ic_matic, LO to ic_matic_gray)),
     MCO("MCO", ic_mco, mapOf(L to ic_mco, LO to ic_mco_gray, D to ic_mco_white)),
     MKR("Maker", ic_mkr, mapOf(L to ic_mkr, LO to ic_mkr_gray)),
     MLN("Melon", ic_mln, mapOf(L to ic_mln, LO to ic_mln_gray)),

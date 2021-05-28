@@ -81,22 +81,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return obj.getAsJsonObject("${coin.lowercase(Locale.ROOT)}_${currency.lowercase(Locale.ROOT)}").get("last").asString
         }
     },
-    BITCOIN_AVERAGE("Bitcoin Average", "BTC avg") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://apiv2.bitcoinaverage.com/indices/local/ticker/short?crypto=$coin&fiats=$currency"
-            val obj = getJsonObject(url)
-            return obj.getAsJsonObject("$coin$currency").get("last").asString
-        }
-    },
-    BITCOIN_AVERAGE_GLOBAL("Bitcoin Average (global)", "BTC avg global") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://apiv2.bitcoinaverage.com/indices/global/ticker/short?crypto=$coin&fiats=$currency"
-            val obj = getJsonObject(url)
-            return obj.getAsJsonObject("$coin$currency").get("last").asString
-        }
-    },
     BITCOINDE("Bitcoin.de") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -356,6 +340,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
                 "LTC" to "litecoin",
                 "LTO" to "lto-network",
                 "MANA" to "decentraland",
+                "MATIC" to "matic-network",
                 "MCO" to "monaco",
                 "MKR" to "maker",
                 "MLN" to "melon",
@@ -679,6 +664,18 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             val url = "https://api.phemex.com/md/spot/ticker/24hr?symbol=s${coin}$currency"
             val value = getJsonObject(url).getAsJsonObject("result").get("lastEp").asString
             return (value.toDouble() / 10.0.pow(8)).toString()
+        }
+    },
+    POCKETBITS("Pocketbits") {
+
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://ticker.pocketbits.in/api/v1/ticker"
+            val obj = getJsonArray(url).firstOrNull {
+                it.asJsonObject.get("symbol").asString == "$coin$currency"
+            }?.asJsonObject ?: return null
+            val buy = obj.get("buy").asString.toDouble()
+            val sell = obj.get("sell").asString.toDouble()
+            return ((buy + sell) / 2).toString()
         }
     },
     POLONIEX("Poloniex") {

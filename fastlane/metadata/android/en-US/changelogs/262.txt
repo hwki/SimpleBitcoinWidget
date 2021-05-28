@@ -1,0 +1,3 @@
+Added Pocketbits exchange.
+Added Polygon coin.
+Removed Bitcoin Average, as their API is no longer public.

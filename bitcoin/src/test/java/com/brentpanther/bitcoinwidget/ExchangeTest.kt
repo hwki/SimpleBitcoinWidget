@@ -22,9 +22,6 @@ class ExchangeTest {
             val data = ExchangeData(entry, loadJSON())
             for (currency in data.currencies.sorted()) {
                 for (exchange in data.getExchanges(currency).toList().parallelStream()) {
-                    // ignore exchanges that get grumpy for too many requests
-                    if (exchange == "BITCOIN_AVERAGE") continue
-                    if (exchange == "BITCOIN_AVERAGE_GLOBAL") continue
                     try {
                         var coinName = data.getExchangeCoinName(exchange)
                         var currencyName = data.getExchangeCurrencyName(exchange, currency)
