@@ -38,7 +38,6 @@ class GeneratePartiallySupportedCoins {
     fun generate() {
         val allCoins = Gson().fromJson(get(listUrl), JsonArray::class.java)
         val existing = getExistingCoins()
-        existing.clear()
         val initialCount = existing.count()
         println("Filtering coins..")
         val failed = mutableListOf<JsonObject>()

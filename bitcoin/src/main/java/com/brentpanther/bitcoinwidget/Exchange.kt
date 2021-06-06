@@ -195,14 +195,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return result.get("Last").asString
         }
     },
-    BRAZILIEX("Braziliex") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency".lowercase(Locale.ROOT)
-            val url = "https://braziliex.com/api/v1/public/ticker/$pair"
-            return getJsonObject(url).get("last").asString
-        }
-    },
     BTCBOX("BTC Box") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -612,6 +604,13 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String {
             val url = "https://www.mercadobitcoin.net/api/$coin/ticker/"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString
+        }
+    },
+    NDAX("NDAX") {
+
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://core.ndax.io/v1/ticker"
+            return getJsonObject(url).getAsJsonObject("${coin}_$currency").get("last").asString
         }
     },
     NEXCHANGE("Nexchange") {

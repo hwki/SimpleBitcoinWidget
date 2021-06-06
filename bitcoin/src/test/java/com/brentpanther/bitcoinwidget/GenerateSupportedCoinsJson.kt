@@ -5,7 +5,6 @@ import com.jayway.jsonpath.JsonPath
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
-import kotlin.math.ceil
 
 class GenerateSupportedCoinsJson {
 
@@ -27,16 +26,15 @@ class GenerateSupportedCoinsJson {
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmax, this::bitmex,
                         this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
-                        this::braziliex, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
+                        this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coinegg, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
                         this::cryptocom, this::deversifi, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
-                        this::kuna, this::lakebtc, this::lbank, this::liquid, this::luno, this::mercado,
+                        this::kuna, this::lakebtc, this::lbank, this::liquid, this::luno, this::mercado, this::ndax,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex,
-                        this::pocketbits, this::poloniex,
-                        this::probit, this::therock, this::tradeogre, this::uphold, this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb,
-                        this::zbg
+                        this::pocketbits, this::poloniex, this::probit, this::therock, this::tradeogre, this::uphold,
+                        this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb, this::zbg
                 ).zip(Exchange.values())
 
         val jsonMap = mutableMapOf<String, List<*>>()
@@ -293,10 +291,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://bleutrade.com/api/v3/public/getmarkets", "$.result[*].MarketName")
     }
 
-    private fun braziliex(): List<String> {
-        return parse("https://braziliex.com/api/v1/public/ticker", "$..market")
-    }
-
     private fun btcbox(): List<String> {
         return parseKeys("https://www.btcbox.co.jp/api/v1/tickers", "$")
     }
@@ -483,6 +477,10 @@ class GenerateSupportedCoinsJson {
 
     private fun mercado(): List<String> {
         return listOf("BCH_BRL", "BTC_BRL", "ETH_BRL", "LTC_BRL", "XRP_BRL")
+    }
+
+    private fun ndax(): List<String> {
+        return parseKeys("https://core.ndax.io/v1/ticker", "$")
     }
 
     private fun nexchange(): List<String> {
