@@ -1,0 +1,3 @@
+Migrate Bitmax to Ascendex.
+Fix ZB Exchange.
+Remove LakeBTC.

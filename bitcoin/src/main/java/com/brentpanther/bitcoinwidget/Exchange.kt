@@ -16,6 +16,12 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return getJsonObject(url).get("last").asString
         }
     },
+    ASCENDEX("AscendEX") {
+        override fun getValue(coin: String, currency: String): String? {
+            val obj = getJsonObject("https://ascendex.com/api/pro/v1/ticker?symbol=$coin/$currency")
+            return obj.getAsJsonObject("data").get("close").asString
+        }
+    },
     BIBOX("Bibox") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -119,12 +125,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=$coin-$currency"
             return getJsonObject(url).getAsJsonArray("data").get(0).asJsonObject.get("c").asString
-        }
-    },
-    BITMAX("BitMax") {
-        override fun getValue(coin: String, currency: String): String? {
-            val obj = getJsonObject("https://bitmax.io/api/pro/v1/ticker?symbol=$coin/$currency")
-            return obj.getAsJsonObject("data").get("close").asString
         }
     },
     BITMEX("BitMEX") {
@@ -562,14 +562,6 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
             return obj.getAsJsonObject("ticker").get("last").asString
         }
     },
-    LAKEBTC("LakeBTC") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val pair = "$coin$currency".lowercase(Locale.ROOT)
-            val obj = getJsonObject("https://api.lakebtc.com/api_v2/ticker")
-            return obj.getAsJsonObject(pair).get("last").asString
-        }
-    },
     LBANK("LBank") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -751,7 +743,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     ZB("ZB") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "http://api.zb.live/data/v1/ticker?market=${coin.lowercase(Locale.ROOT)}_${
+            val url = "http://api.zb.land/data/v1/ticker?market=${coin.lowercase(Locale.ROOT)}_${
                 currency.lowercase(Locale.ROOT)
             }"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString

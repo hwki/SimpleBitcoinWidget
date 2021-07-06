@@ -22,16 +22,16 @@ class GenerateSupportedCoinsJson {
         allCurrencies = (json.read("$..currencies.*") as List<String>).toSortedSet()
 
         val exchanges =
-                listOf(this::abucoins, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
+                listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
-                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmax, this::bitmex,
+                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmex,
                         this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coinegg, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
                         this::cryptocom, this::deversifi, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
-                        this::kuna, this::lakebtc, this::lbank, this::liquid, this::luno, this::mercado, this::ndax,
+                        this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::ndax,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex,
                         this::pocketbits, this::poloniex, this::probit, this::therock, this::tradeogre, this::uphold,
                         this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb, this::zbg
@@ -193,6 +193,10 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.abucoins.com/products", "$[*].id")
     }
 
+    private fun ascendex(): List<String> {
+        return parse("https://ascendex.com/api/pro/v1/products", "$.data[?(@.status=='Normal')].symbol")
+    }
+
     private fun bibox(): List<String> {
         return parse("https://api.bibox.com/v1/mdata?cmd=pairList", "$.result[*].pair")
     }
@@ -255,10 +259,6 @@ class GenerateSupportedCoinsJson {
 
     private fun bithumbpro() : List<String> {
         return parse("https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=ALL", "$.data[*].s")
-    }
-
-    private fun bitmax(): List<String> {
-        return parse("https://bitmax.io/api/pro/v1/products", "$.data[?(@.status=='Normal')].symbol")
     }
 
     private fun bitmex(): List<String> {
@@ -455,10 +455,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.kuna.io/v3/markets", "$[*].id")
     }
 
-    private fun lakebtc(): List<String> {
-        return parseKeys("https://api.lakebtc.com/api_v2/ticker", "$")
-    }
-
     private fun lbank(): List<String> {
         return parse("https://api.lbkex.com/v2/currencyPairs.do", "$.data[*]")
     }
@@ -581,7 +577,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun zb(): List<String> {
-        return parseKeys("http://api.zb.live/data/v1/markets", "$")
+        return parseKeys("http://api.zb.land/data/v1/markets", "$")
     }
 
     private fun zbg(): List<String> {
