@@ -6,6 +6,10 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class UpgradeBroadcastReceiver : BroadcastReceiver() {
 
@@ -17,13 +21,13 @@ class UpgradeBroadcastReceiver : BroadcastReceiver() {
                 // remove any recurring alarms from previous versions
                 val i = Intent(context, PriceBroadcastReceiver::class.java)
                 alarm.cancel(PendingIntent.getBroadcast(context, widgetId + 1000, i, 0))
-
-                // clear out last update values
-                val prefs = Prefs(widgetId)
-                prefs.setValue("LAST_VALUE", null)
-                prefs.setValue("last_update", "0")
             }
         }
-        WidgetProvider.refreshWidgets(context)
+        CoroutineScope(Dispatchers.IO).launch {
+            WidgetDatabase.getInstance(context).widgetDao().apply {
+                resetWidgets()
+            }
+            WidgetProvider.refreshWidgets(context)
+        }
     }
 }

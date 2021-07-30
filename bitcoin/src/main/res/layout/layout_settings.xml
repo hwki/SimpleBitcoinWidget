@@ -90,7 +90,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/bg_fab"
             android:elevation="4dp"
-            android:tint="@android:color/white"
+            app:tint="@android:color/white"
             android:layout_margin="16dp"
             android:contentDescription="Save" />
 

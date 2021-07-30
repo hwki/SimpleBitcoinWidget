@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.ui
+package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -22,6 +22,7 @@ class CoinSelectionViewModel(application: Application) : AndroidViewModel(applic
     private val resource = application.resources.openRawResource(R.raw.othercoins)
 
     val coins = liveData(Dispatchers.IO) {
+        // TODO: load coins in parallel
         emit(fullCoins)
         loadOtherCoins()
         emit(coinList)
@@ -34,7 +35,7 @@ class CoinSelectionViewModel(application: Application) : AndroidViewModel(applic
             CoinEntry(
                 obj.get("id").asString,
                 obj.get("name").asString,
-                obj.get("symbol").asString.toUpperCase(Locale.ROOT),
+                obj.get("symbol").asString.uppercase(Locale.ROOT),
                 Coin.CUSTOM,
                 obj.get("icon").asString
             )

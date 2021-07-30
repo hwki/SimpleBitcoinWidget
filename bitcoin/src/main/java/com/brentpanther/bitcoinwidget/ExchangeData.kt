@@ -1,6 +1,6 @@
 package com.brentpanther.bitcoinwidget
 
-import com.brentpanther.bitcoinwidget.ui.CoinEntry
+import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.InputStream
@@ -75,7 +75,7 @@ open class ExchangeData(val coin: CoinEntry, json: InputStream) {
         }
     }
 
-    public class JsonCoin : Serializable {
+    class JsonCoin : Serializable {
         lateinit var name: String
         lateinit var currencies: List<String>
     }
@@ -97,7 +97,7 @@ open class ExchangeData(val coin: CoinEntry, json: InputStream) {
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
-        return obj?.getExchangeCoinName(exchange, coin.name)
+        return obj?.getExchangeCoinName(exchange, coin.coin.name)
     }
 
     open fun getExchangeCurrencyName(exchange: String, currency: String): String? {

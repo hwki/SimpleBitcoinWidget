@@ -6,6 +6,7 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlin.math.roundToLong
 
 internal object TextSizer {
 
@@ -30,12 +31,13 @@ internal object TextSizer {
         var dp = 6f
         val step = 0.5f
         while (true) {
+            //TODO: this isn't working right
             paint.textSize = dp
             paint.getTextBounds(text, 0, text.length, rect) // does not give accurate width
             val measuredHeight = rect.height().toFloat()
             val measuredWidth = paint.measureText(text)
             if (measuredHeight > heightPx || measuredWidth >= widthPx) {
-                return dp - step
+                return (2 * (dp - step)).roundToLong() / 2.0f
             }
             dp += step
         }

@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.ui
+package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,6 @@ import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 
 internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEntry) -> Unit)) :

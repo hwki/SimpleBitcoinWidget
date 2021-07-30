@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.view.View
 import android.widget.RemoteViews
 import androidx.core.content.FileProvider
+import com.brentpanther.bitcoinwidget.Theme.*
+import com.brentpanther.bitcoinwidget.db.Widget
 import java.io.File
 
 
@@ -16,24 +18,12 @@ import java.io.File
  */
 object Themer {
 
-    const val LIGHT = "Light"
-    const val LIGHT_OLD = "Light Old"
-    const val DARK = "Dark"
-    const val DARK_OLD = "Dark Old"
-    const val DAY_NIGHT = "DayNight"
-    const val TRANSPARENT = "Transparent"
-    @Suppress("MemberVisibilityCanBePrivate")
-    const val TRANSPARENT_OLD = "Transparent Old"
-    const val TRANSPARENT_DARK = "Transparent Dark"
-    const val TRANSPARENT_DARK_OLD = "Transparent Dark Old"
-    const val TRANSPARENT_DAY_NIGHT = "Transparent DayNight"
-
-    internal fun updateTheme(context: Context, views: RemoteViews, prefs: Prefs, isOld: Boolean) {
-        updateLayout(context, views, prefs)
-        updateIcon(context, views, prefs, isOld)
+    internal fun updateTheme(context: Context, views: RemoteViews, settings: Widget, isOld: Boolean) {
+        updateLayout(context, views, settings)
+        updateIcon(context, views, settings, isOld)
     }
 
-    private fun updateLayout(context: Context, views: RemoteViews, prefs: Prefs) {
+    private fun updateLayout(context: Context, views: RemoteViews, settings: Widget) {
         val isNight = (context.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         var bgOuter = R.drawable.bg_outer
@@ -41,7 +31,7 @@ object Themer {
         var textColor = Color.parseColor("#888888")
 
         var bgParent = R.drawable.transparent
-        val theme = prefs.theme
+        val theme = settings.theme
         if (theme == DARK || (theme == DAY_NIGHT && isNight)) {
             bgOuter = R.drawable.bg_outer_dark
             bgInner = R.drawable.bg_inner_dark
@@ -65,11 +55,11 @@ object Themer {
     }
 
 
-    private fun updateIcon(context: Context, views: RemoteViews, prefs: Prefs, isOld: Boolean) {
-        views.setViewVisibility(R.id.icon, if (prefs.showIcon()) View.VISIBLE else View.GONE)
-        val iconId = prefs.getIcon()
-        if (iconId != null) {
-            val path = File(File(context.filesDir, "icons"), iconId)
+    private fun updateIcon(context: Context, views: RemoteViews, settings: Widget, isOld: Boolean) {
+        views.setViewVisibility(R.id.icon, if (settings.showIcon) View.VISIBLE else View.GONE)
+        val customIcon = settings.customIcon
+        if (customIcon != null) {
+            val path = File(File(context.filesDir, "icons"), customIcon)
             val uriForFile = FileProvider.getUriForFile(context,
                 "com.brentpanther.bitcoinwidget.fileprovider", path)
             try {
@@ -79,7 +69,7 @@ object Themer {
             } catch (ignored: Exception) {
             }
         } else {
-            val icon = getIcon(context, prefs.coin, prefs.theme, isOld)
+            val icon = getIcon(context, settings.coin, settings.theme, isOld)
             views.setImageViewResource(R.id.icon, icon)
         }
     }
@@ -87,26 +77,19 @@ object Themer {
     /**
      * Find the icon to show based on the current theme, and whether or not the value is old.
      */
-    private fun getIcon(context: Context, coin: Coin, theme: String, isOld: Boolean = false) : Int {
+    private fun getIcon(context: Context, coin: Coin, theme: Theme, isOld: Boolean = false) : Int {
         val isNight = (context.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
-        var key = if (theme == DAY_NIGHT) {
-            if (isNight) DARK else LIGHT
-        } else if (theme == TRANSPARENT_DAY_NIGHT) {
-            if (isNight) TRANSPARENT_DARK else TRANSPARENT
-        } else {
-            theme
+        val key = when (theme) {
+            DAY_NIGHT -> if (isNight) DARK else LIGHT
+            TRANSPARENT_DAY_NIGHT -> if (isNight) TRANSPARENT_DARK else TRANSPARENT
+            else -> theme
         }
-        if (isOld) key += " Old"
-        val fallback = fallbacks[key] ?: LIGHT
-        return coin.icons.getOrElse(key, { getIcon(context, coin, fallback) })
+        var name = key.name
+        if (isOld) name += "_OLD"
+        val iconTheme = IconTheme.valueOf(name)
+        return coin.icons.getOrElse(iconTheme, { getIcon(context, coin, iconTheme.fallback, isOld)})
     }
-
-    // if an icon is not defined for a theme, fallback to another icon
-    private val fallbacks = mapOf(LIGHT_OLD to LIGHT, DARK_OLD to LIGHT_OLD,
-            TRANSPARENT_DARK_OLD to DARK_OLD, TRANSPARENT_OLD to LIGHT_OLD,
-            TRANSPARENT_DARK to DARK, TRANSPARENT to LIGHT, DARK to LIGHT)
-
 
 }

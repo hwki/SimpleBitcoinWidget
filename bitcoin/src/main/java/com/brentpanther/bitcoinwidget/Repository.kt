@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,9 +28,9 @@ object Repository {
         if (!downloading) {
             downloading = true
             data.postValue(false)
-            GlobalScope.launch(Dispatchers.IO) {
+            CoroutineScope(Dispatchers.IO).launch {
                 Log.d(TAG, "starting download")
-                downloadJSON(context)
+                downloadJSON(context.applicationContext)
             }
         }
         return data

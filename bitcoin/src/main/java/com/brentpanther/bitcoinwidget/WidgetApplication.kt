@@ -3,15 +3,12 @@ package com.brentpanther.bitcoinwidget
 import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.core.content.FileProvider
-import androidx.preference.PreferenceManager
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import java.io.File
 
 
@@ -27,7 +24,6 @@ class WidgetApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        registerReceiver(MyBroadcastReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
         grantUriAccessToWidget()
     }
 
@@ -44,8 +40,7 @@ class WidgetApplication : Application() {
     }
 
     fun useAutoSizing(): Boolean {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val fixedSize = sharedPrefs.getBoolean(getString(R.string.key_fixed_size), false)
+        val fixedSize = WidgetDatabase.getInstance(this).widgetDao().config().consistentSize
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !fixedSize
     }
 

@@ -62,7 +62,7 @@
             app:persistent="false"
             app:title="@string/title_label" />
         <ListPreference
-            app:defaultValue="Light"
+            app:defaultValue="LIGHT"
             app:dialogTitle="@string/title_theme"
             app:entries="@array/themes"
             app:entryValues="@array/themeValues"

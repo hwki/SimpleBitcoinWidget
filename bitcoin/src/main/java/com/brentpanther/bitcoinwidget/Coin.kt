@@ -4,17 +4,17 @@ import android.os.Build
 
 import androidx.annotation.DrawableRes
 import com.brentpanther.bitcoinwidget.R.drawable.*
-import com.brentpanther.bitcoinwidget.Themer.LIGHT as L
-import com.brentpanther.bitcoinwidget.Themer.LIGHT_OLD as LO
-import com.brentpanther.bitcoinwidget.Themer.DARK as D
-import com.brentpanther.bitcoinwidget.Themer.DARK_OLD as DO
-import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT as T
-import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DARK as TD
-import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DARK_OLD as TDO
+import com.brentpanther.bitcoinwidget.IconTheme.LIGHT as L
+import com.brentpanther.bitcoinwidget.IconTheme.LIGHT_OLD as LO
+import com.brentpanther.bitcoinwidget.IconTheme.DARK as D
+import com.brentpanther.bitcoinwidget.IconTheme.DARK_OLD as DO
+import com.brentpanther.bitcoinwidget.IconTheme.TRANSPARENT as T
+import com.brentpanther.bitcoinwidget.IconTheme.TRANSPARENT_DARK as TD
+import com.brentpanther.bitcoinwidget.IconTheme.TRANSPARENT_DARK_OLD as TDO
 import java.io.Serializable
 import java.util.*
 
-enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal val icons: Map<String, Int>) {
+enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal val icons: Map<IconTheme, Int>) {
 
     CUSTOM("Custom", ic_placeholder, mapOf(L to ic_placeholder)),
     AAVE("Aave", ic_aave, mapOf(L to ic_aave, LO to ic_aave_gray)),

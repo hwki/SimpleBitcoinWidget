@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.ui
+package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.app.Activity
 import android.app.UiModeManager
@@ -11,30 +11,31 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.*
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.Exchange
 import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.Themer.DAY_NIGHT
-import com.brentpanther.bitcoinwidget.Themer.TRANSPARENT_DAY_NIGHT
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import com.brentpanther.bitcoinwidget.db.Configuration
+import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.min
 
 
 class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.NoticeDialogListener {
 
+    private val viewModel: SettingsViewModel by activityViewModels()
     private lateinit var data: ExchangeData
     private var widgetId: Int = 0
     private lateinit var refresh: ListPreference
@@ -46,10 +47,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private lateinit var decimals: TwoStatePreference
     private lateinit var label: TwoStatePreference
     private lateinit var theme: ListPreference
-    private var fixedSize: Boolean = false
+    private lateinit var fixedSize: TwoStatePreference
     private var checkDataSaver: Boolean = true
     private var checkBatterySaver: Boolean = true
     private var symbolValue: String? = null
+    private lateinit var widget : Widget
+    private lateinit var configuration: Configuration
+
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!requireActivity().isFinishing) {
@@ -60,7 +64,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
-        fixedSize = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(getString(R.string.key_fixed_size), false)
         setHasOptionsMenu(true)
         data = ExchangeDataHelper.data!!
         widgetId = arguments?.getInt("widgetId")!!
@@ -91,7 +94,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         decimals = findPreference(getString(R.string.key_decimals))!!
         label = findPreference(getString(R.string.key_label))!!
         theme = findPreference(getString(R.string.key_theme))!!
-        val fixedSize = findPreference(getString(R.string.key_fixed_size)) as? TwoStatePreference
+        fixedSize = findPreference(getString(R.string.key_fixed_size))!!
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dao = WidgetDatabase.getInstance(requireContext()).widgetDao()
+            fixedSize.isChecked = dao.config().consistentSize
+        }
         units = findPreference(getString(R.string.key_units))!!
         val rate = findPreference(getString(R.string.key_rate)) as? Preference
 
@@ -119,9 +126,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
 
         // symbol option
         bundle?.getString("symbol")?.let { symbol.value = it}
-        symbol.setOnPreferenceChangeListener { _, newValue ->
-            saveAndUpdate(symbol, newValue,true)
-        }
+        symbol.onUpdate {  saveAndUpdate(true) }
         symbol.setSummaryProvider {
             (it as ListPreference).entry
         }
@@ -129,12 +134,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         // exchange option
         setExchange(currency.value)
         bundle?.getString("exchange")?.let { exchange.value = it }
-        currency.setOnPreferenceChangeListener { _, newValue ->
-            setExchange(newValue as String)
-            saveAndUpdate(currency, newValue, true)
-            true
+        currency.onUpdate {
+            setExchange(it)
+            saveAndUpdate(true)
         }
-        exchange.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(exchange, newValue, true) }
+
+        exchange.onUpdate { saveAndUpdate(true) }
         exchange.setSummaryProvider {
             val exchange = Exchange.valueOf((it as ListPreference).value)
             getString(R.string.summary_exchange, exchange.exchangeName)
@@ -143,39 +148,30 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         // icon
         icon.title = getString(R.string.title_icon, data.coin.name)
         bundle?.getBoolean("icon")?.let { icon.isChecked = it }
-        icon.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(icon, newValue, false) }
+        icon.onUpdate { saveAndUpdate(false) }
 
         // decimals
         bundle?.getBoolean("decimals")?.let { decimals.isChecked = it }
-        decimals.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(decimals, newValue, true) }
+        decimals.onUpdate { saveAndUpdate(true) }
 
         // exchange label
         bundle?.getBoolean("label")?.let { label.isChecked = it }
-        label.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(label, newValue, false) }
+        label.onUpdate { saveAndUpdate(true) }
 
         // theme
         bundle?.getString("theme")?.let { theme.value = it }
-        theme.setOnPreferenceChangeListener { _, newValue ->
-            if (DAY_NIGHT == newValue || TRANSPARENT_DAY_NIGHT == newValue) {
+        theme.onUpdate {
+            if (Theme.DAY_NIGHT.name == it || Theme.TRANSPARENT_DAY_NIGHT.name == it) {
                 val service = requireActivity().getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
                 service.nightMode = UiModeManager.MODE_NIGHT_AUTO
             }
-            saveAndUpdate(theme, newValue, false)
+            saveAndUpdate(false)
         }
         theme.setSummaryProvider {
             (it as ListPreference).entry
         }
 
-        fixedSize?.setOnPreferenceChangeListener { _, newValue ->
-            // if we are switching fixed text size on, clear out any pre-existing values
-            if (newValue.toString().toBoolean()) {
-                val widgetIds = WidgetApplication.instance.widgetIds
-                for (widgetId in widgetIds) {
-                    Prefs(widgetId).clearTextSize()
-                }
-            }
-            saveAndUpdate(fixedSize, newValue, false)
-        }
+        fixedSize.onUpdate { saveAndUpdate(true) }
 
         // units
         val unitNames = data.coin.coin.unitNames
@@ -184,7 +180,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             units.value = bundle?.getString("units") ?: unitNames[0]
             units.entries = unitNames
             units.entryValues = unitNames
-            units.setOnPreferenceChangeListener { _, newValue -> saveAndUpdate(units, newValue, true) }
+            units.onUpdate { saveAndUpdate(true) }
             units.setSummaryProvider {
                 getString(R.string.summary_units, (it as ListPreference).value)
             }
@@ -200,6 +196,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             }
             true
         }
+
+        widget = Widget(
+            0, widgetId = widgetId, exchange = Exchange.valueOf(exchange.value),
+            coin = data.coin.coin, currency = currency.value, coinCustomName = null,
+            currencyCustomName = null, showLabel = label.isChecked,
+            showIcon = icon.isChecked, showDecimals = decimals.isChecked,
+            currencySymbol = symbolValue, theme = Theme.valueOf(theme.value),
+            unit = units.value, customIcon = data.coin.iconUrl?.substringBefore("/"),
+            lastUpdated = 0
+        )
     }
 
     private fun setSymbol(value: String) {
@@ -242,76 +248,80 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
     }
 
-    private fun saveAndUpdate(pref: ListPreference, newValue: Any?, refreshValue: Boolean): Boolean {
-        pref.value = newValue as String?
-        saveAndUpdate(refreshValue)
-        return true
+    private fun saveAndUpdate(refresh: Boolean) {
+        updateWidget()
+        downloadCustomIcon(widget.customIcon)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dao = WidgetDatabase.getInstance(requireContext()).widgetDao()
+            val globalSettings = dao.config()
+            val smallestWidgetSizes = dao.getSmallestSizes()
+            viewModel.widgetData.postValue(com.brentpanther.bitcoinwidget.db.WidgetSettings(widget, globalSettings, smallestWidgetSizes, refresh))
+        }
     }
 
-    private fun saveAndUpdate(pref: TwoStatePreference, newValue: Any, refreshValue: Boolean): Boolean {
-        pref.isChecked = newValue as Boolean
-        saveAndUpdate(refreshValue)
-        return true
-    }
-
-    private fun saveAndUpdate(refreshValue: Boolean) {
-        saveValues(true)
-        (activity as SettingsActivity).updateWidget(refreshValue)
-    }
-
-    private fun saveValues(temporary: Boolean) {
-        val prefs = Prefs(widgetId)
-        setSymbol(symbol.value)
-        prefs.setValues(data.coin.coin.name, currency.value, (refresh.value).toInt(),
-                exchange.value, label.isChecked, theme.value, icon.isChecked,
-                decimals.isChecked, units.value, symbolValue, data.coin.iconUrl)
-        setCustomIcon(prefs)
+    private fun updateWidget() {
         val exchangeCoinName = data.getExchangeCoinName(exchange.value)
         val exchangeCurrencyName = data.getExchangeCurrencyName(exchange.value, currency.value)
-        prefs.setExchangeValues(exchangeCoinName, exchangeCurrencyName)
-        prefs.setTemporary(temporary)
+        val symbolValue = when (symbol.value) {
+            "LOCAL" -> getLocalSymbol(currency.value)
+            "NONE" -> "none"
+            else -> null
+        }
+        widget = widget.copy(exchange = Exchange.valueOf(exchange.value),
+            coin = data.coin.coin, currency = currency.value, coinCustomName = exchangeCoinName,
+            currencyCustomName = exchangeCurrencyName, showLabel = label.isChecked,
+            showIcon = icon.isChecked, showDecimals = decimals.isChecked,
+            currencySymbol = symbolValue, theme = Theme.valueOf(theme.value),
+            unit = units.value, customIcon = data.coin.iconUrl?.substringBefore("/"))
     }
 
-    private fun setCustomIcon(prefs: Prefs) {
+    private fun downloadCustomIcon(customIcon: String?) = CoroutineScope(Dispatchers.IO).launch {
+        if (customIcon == null) return@launch
         data.coin.getFullIconUrl()?.let {
             val dir = File(requireContext().filesDir, "icons")
             if (!dir.exists()) {
                 dir.mkdir()
             }
-            val file = File(dir, prefs.getIcon()!!)
-            if (!file.exists()) {
-                GlobalScope.launch(Dispatchers.IO) {
-                    val os = ByteArrayOutputStream()
-                    val stream = ExchangeHelper.getStream(it)
-                    val image = BitmapFactory.decodeStream(stream)
-                    image.compress(Bitmap.CompressFormat.PNG, 100, os)
-                    file.writeBytes(os.toByteArray())
-                    MainScope().launch {
-                        (activity as SettingsActivity).updateWidget(true)
-                    }
-                }
+            val file = File(dir, customIcon)
+            if (file.exists()) {
+                return@launch
             }
+
+            val os = ByteArrayOutputStream()
+            val stream = ExchangeHelper.getStream(it)
+            val image = BitmapFactory.decodeStream(stream)
+            image.compress(Bitmap.CompressFormat.PNG, 100, os)
+            file.writeBytes(os.toByteArray())
         }
     }
 
     fun save() {
         if (checkDataSaver && !checkDataSaver()) return
         if (checkBatterySaver && !checkBatterySaver()) return
-        saveValues(false)
-        requireActivity().setResult(Activity.RESULT_OK)
-        val newFixedSize = PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(getString(R.string.key_fixed_size), false)
-        if (fixedSize && !newFixedSize) {
-            WidgetProvider.refreshWidgets(requireActivity(), widgetId)
-        } else {
+        updateWidget()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dao = WidgetDatabase.getInstance(requireContext()).widgetDao()
+            widget.lastUpdated = 0
+            dao.insert(widget)
+            val globalSettings = dao.config()
+            globalSettings.refresh = min(globalSettings.refresh, refresh.value.toInt())
+            globalSettings.consistentSize = fixedSize.isChecked
+            dao.update(globalSettings)
             WidgetProvider.refreshWidgets(requireActivity(), listOf(widgetId))
         }
+        requireActivity().setResult(Activity.RESULT_OK)
         requireActivity().finish()
     }
 
     private fun checkBatterySaver(): Boolean {
         return if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
             // user has battery saver on, warn that widget will be affected
-            val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_battery_saver, CODE_BATTERY_SAVER, false)
+            val dialogFragment = SettingsDialogFragment.newInstance(
+                R.string.title_warning,
+                R.string.warning_battery_saver,
+                CODE_BATTERY_SAVER,
+                false
+            )
             dialogFragment.show(parentFragmentManager, "dialog")
             false
         } else true
@@ -320,7 +330,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
     private fun checkDataSaver(): Boolean {
         return if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
             // user has data saver on, show dialog asking for permission to whitelist
-            val dialogFragment = SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
+            val dialogFragment =
+                SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
             dialogFragment.show(parentFragmentManager, "dialog")
             false
         } else true

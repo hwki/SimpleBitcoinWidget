@@ -9,11 +9,11 @@
         <item>Transparent Light/Dark</item>
     </string-array>
     <string-array name="themeValues" tools:ignore="InconsistentArrays">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>Transparent</item>
-        <item>Transparent Dark</item>
-        <item>DayNight</item>
-        <item>Transparent DayNight</item>
+        <item>LIGHT</item>
+        <item>DARK</item>
+        <item>TRANSPARENT</item>
+        <item>TRANSPARENT_DARK</item>
+        <item>DAY_NIGHT</item>
+        <item>TRANSPARENT_DAY_NIGHT</item>
     </string-array>
 </resources>

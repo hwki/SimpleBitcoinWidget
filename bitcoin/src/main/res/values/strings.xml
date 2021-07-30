@@ -59,10 +59,10 @@
         <item>Transparent Dark</item>
     </string-array>
     <string-array name="themeValues" tools:ignore="InconsistentArrays">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>Transparent</item>
-        <item>Transparent Dark</item>
+        <item>LIGHT</item>
+        <item>DARK</item>
+        <item>TRANSPARENT</item>
+        <item>TRANSPARENT_DARK</item>
     </string-array>
     <string-array name="intervals">
         <item>5 minutes</item>

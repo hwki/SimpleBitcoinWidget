@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.ui
+package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.app.Dialog
 import android.content.Context
