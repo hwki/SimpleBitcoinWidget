@@ -743,7 +743,7 @@ internal enum class Exchange(val exchangeName: String, shortName: String? = null
     ZB("ZB") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "http://api.zb.land/data/v1/ticker?market=${coin.lowercase(Locale.ROOT)}_${
+            val url = "https://api.zb.land/data/v1/ticker?market=${coin.lowercase(Locale.ROOT)}_${
                 currency.lowercase(Locale.ROOT)
             }"
             return getJsonObject(url).getAsJsonObject("ticker").get("last").asString

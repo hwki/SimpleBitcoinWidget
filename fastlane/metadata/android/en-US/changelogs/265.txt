@@ -1,0 +1,1 @@
+Fixed a bug preventing data from being loaded for certain exchanges and coins.
