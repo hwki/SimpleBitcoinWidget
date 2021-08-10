@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.ui.selection
+package com.brentpanther.bitcoinwidget
 
 import android.os.Parcelable
 import com.brentpanther.bitcoinwidget.Coin

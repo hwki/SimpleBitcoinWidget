@@ -17,14 +17,13 @@ import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.databinding.LayoutSettingsBinding
 import com.brentpanther.bitcoinwidget.db.*
 import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
-import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
+import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.*
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {

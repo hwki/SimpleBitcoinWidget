@@ -15,7 +15,7 @@ import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
 import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
-import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
+import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
 import com.google.gson.JsonSyntaxException

@@ -79,6 +79,8 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/assetWizardSettings.xml
+.idea/render.experimental.xml
+.idea/misc.xml
 
 # Gradle:
 .idea/gradle.xml

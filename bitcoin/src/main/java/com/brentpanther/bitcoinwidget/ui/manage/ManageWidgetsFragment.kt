@@ -1,11 +1,16 @@
 package com.brentpanther.bitcoinwidget.ui.manage
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +20,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
-import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
+import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
+import com.brentpanther.bitcoinwidget.CoinEntry
+import com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsActivity
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -45,13 +52,32 @@ class ManageWidgetsFragment : Fragment() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getWidgets().distinctUntilChanged().collect {
                     adapter.widgets = it
-                    adapter.notifyItemRangeChanged(0, it.count())
+                    adapter.notifyDataSetChanged()
                     binding.empty.isVisible = it.isEmpty()
                     binding.listWidgets.isVisible = it.isNotEmpty()
                 }
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setupPinButton()
+        }
+
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupPinButton() {
+        val appWidgetManager: AppWidgetManager = requireContext().getSystemService(Context.APPWIDGET_SERVICE) as AppWidgetManager
+        if (appWidgetManager.isRequestPinAppWidgetSupported) {
+            binding.add.isVisible = true
+            binding.add.setOnClickListener {
+                val myProvider = ComponentName(requireContext(), WidgetProvider::class.java)
+                val intent = Intent(requireContext().applicationContext, CoinSelectionActivity::class.java)
+                val pendingIntent = PendingIntent.getActivity(requireContext().applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                appWidgetManager.requestPinAppWidget(myProvider, null, pendingIntent)
+            }
+        }
     }
 
     override fun onDestroyView() {

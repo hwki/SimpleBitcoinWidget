@@ -1,6 +1,6 @@
 package com.brentpanther.bitcoinwidget.exchange
 
-import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
+import com.brentpanther.bitcoinwidget.CoinEntry
 import java.io.InputStream
 
 class CustomExchangeData(coinEntry: CoinEntry, json: InputStream) : ExchangeData(coinEntry, json) {

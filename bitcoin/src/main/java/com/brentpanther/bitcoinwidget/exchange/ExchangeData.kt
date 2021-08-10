@@ -1,7 +1,7 @@
 package com.brentpanther.bitcoinwidget.exchange
 
 import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
+import com.brentpanther.bitcoinwidget.CoinEntry
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.InputStream

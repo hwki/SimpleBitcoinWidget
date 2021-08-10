@@ -3,6 +3,7 @@ package com.brentpanther.bitcoinwidget.ui.selection
 import android.app.Application
 import androidx.lifecycle.*
 import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.R
 import com.google.gson.Gson
 import com.google.gson.JsonArray
