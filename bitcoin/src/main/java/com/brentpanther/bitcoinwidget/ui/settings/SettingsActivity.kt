@@ -6,69 +6,72 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.databinding.LayoutSettingsBinding
 import com.brentpanther.bitcoinwidget.db.*
+import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
 import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
-import com.google.gson.JsonSyntaxException
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.*
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.InputStream
 
 class SettingsActivity : AppCompatActivity() {
 
     private var dialog: ProgressDialog? = null
-    private var widgetId: Int = 0
     private lateinit var coin: CoinEntry
     private val viewModel by viewModels<SettingsViewModel>()
     private lateinit var binding: LayoutSettingsBinding
-
-    private val coinJSON: InputStream
-        get() {
-            try {
-                return if (File(filesDir, Repository.CURRENCY_FILE_NAME).exists()) {
-                    openFileInput(Repository.CURRENCY_FILE_NAME)
-                } else {
-                    resources.openRawResource(R.raw.cryptowidgetcoins)
-                }
-            } catch (e: FileNotFoundException) {
-                throw RuntimeException(e)
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LayoutSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         setResult(Activity.RESULT_CANCELED)
         val extras = intent.extras!!
-        widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
+        viewModel.widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         coin = extras.getParcelable(EXTRA_COIN) ?: throw IllegalArgumentException()
-        binding.labelSave.text = getString(R.string.new_widget, coin.name)
-        viewModel.data.observe(this, {
-            if (this.isDestroyed) return@observe
-            when(it) {
-                false -> {
-                    dialog = ProgressDialog.show(this, getString(R.string.dialog_update_title), getString(R.string.dialog_update_message), true)
-                }
-                true -> {
-                    dialog?.dismiss()
-                    populateData()
-                    binding.save.setOnClickListener {
-                        // TODO: move fragment logic here
-                        (supportFragmentManager.findFragmentByTag("settings") as SettingsFragment).save()
+        if (extras.getBoolean(EXTRA_EDIT_WIDGET)) {
+            title = getString(R.string.edit_widget, coin.name)
+            binding.save.text = getString(R.string.settings_update)
+        } else {
+            title = getString(R.string.new_widget, coin.name)
+            binding.save.text = getString(R.string.settings_create)
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.settingsData(coin, applicationContext).collect {
+                    when(it) {
+                        is Downloading -> {
+                            dialog = ProgressDialog.show(this@SettingsActivity, getString(R.string.dialog_update_title),
+                                getString(R.string.dialog_update_message), true)
+                        }
+                        is Success -> {
+                            binding.labelPreview.isVisible = true
+                            binding.widgetPreview.previewLayout.isVisible = true
+                            binding.save.setOnClickListener { viewModel.save() }
+                            dialog?.dismiss()
+                        }
                     }
                 }
+                viewModel.widgetPreviewFlow.collectLatest {
+                    updateWidget(it)
+                }
             }
-        })
+        }
     }
 
     override fun onStop() {
@@ -76,50 +79,24 @@ class SettingsActivity : AppCompatActivity() {
         dialog?.dismiss()
     }
 
-    private fun populateData() {
-        ExchangeDataHelper.data = try {
-            // if custom coin, make custom data
-            if (coin.coin == Coin.CUSTOM) {
-                CustomExchangeData(coin, coinJSON)
-            } else {
-                ExchangeData(coin, coinJSON)
-            }
-        } catch (e: JsonSyntaxException) {
-            // if any error parsing JSON, fall back to raw resource
-            Log.e(TAG, "Error parsing JSON file, falling back to original.", e)
-            deleteFile(Repository.CURRENCY_FILE_NAME)
-            ExchangeData(coin, coinJSON)
-        }
-
-        binding.previewLabel.visibility = View.VISIBLE
-        binding.previewLayout.visibility = View.VISIBLE
-        if (supportFragmentManager.findFragmentByTag("settings") == null) {
-            val settingsFragment = SettingsFragment.newInstance(widgetId)
-            supportFragmentManager.commit {
-                add(R.id.fragmentContainer, settingsFragment, "settings")
-            }
-        }
-        viewModel.widgetData.observe(this) {
-            updateWidget(it)
-        }
-    }
-
-    private fun updateWidget(widgetSettings: WidgetSettings) {
-        val views = LocalRemoteViews(this@SettingsActivity, widgetSettings.widget.theme.layout)
+    private suspend fun updateWidget(widgetSettings: WidgetSettings) {
+        binding.widgetPreview.widgetContainer.removeAllViews()
+        View.inflate(this, widgetSettings.widget.theme.layout, binding.widgetPreview.widgetContainer)
+        val views = LocalWidgetPreview(binding.widgetPreview)
         val widgetViews = WidgetViews(applicationContext, views, widgetSettings)
-        lifecycleScope.launch(Dispatchers.IO) {
-            if (widgetSettings.refresh) {
-                val amount = UpdatePriceService.updateValue(widgetSettings.widget)
-                widgetViews.setText(amount, true)
-            } else {
-                widgetViews.setText(widgetSettings.widget.lastValue, true)
+        if (widgetSettings.refreshPrice) {
+            val amount = lifecycleScope.async(Dispatchers.IO) {
+                UpdatePriceService.updateValue(widgetSettings.widget)
             }
+            widgetViews.setText(amount.await(), true)
+        } else {
+            widgetViews.setText(widgetSettings.widget.lastValue, true)
         }
     }
 
     companion object {
 
-        private val TAG = SettingsActivity::class.java.name
+        const val EXTRA_EDIT_WIDGET = "edit_widget"
         const val EXTRA_COIN = "coin"
     }
 }

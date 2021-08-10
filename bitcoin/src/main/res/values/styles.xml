@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="app_theme" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">14sp</item>
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     </style>
 </resources>

@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brentpanther.bitcoinwidget.Repository
-import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.databinding.ActivityCoinBinding
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsActivity
 
@@ -33,7 +31,6 @@ class CoinSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Repository.data(this)
         val extras = intent.extras
         if (extras == null) {
             finish()

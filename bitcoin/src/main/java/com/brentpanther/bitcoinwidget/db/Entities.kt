@@ -1,11 +1,12 @@
 package com.brentpanther.bitcoinwidget.db
 
+import android.os.Build
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.Exchange
 import com.brentpanther.bitcoinwidget.Theme
+import com.brentpanther.bitcoinwidget.exchange.Exchange
 
 @Entity(indices = [Index(value=["widgetId"], unique=true)])
 data class Widget(
@@ -37,11 +38,12 @@ data class Configuration(
     var dataMigrationVersion: Int
 )
 
-data class SmallestWidgetSizes(var portrait: Float, val landscape: Float)
+data class ConfigurationWithSizes(var refresh: Int, var consistentSize: Boolean, var portrait: Float, val landscape: Float)
 
-data class WidgetSettings(val widget: Widget, val config: Configuration, val sizes: SmallestWidgetSizes,
-                          val refresh: Boolean = true)  {
-    fun isOld() = System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * 1.5)
+data class WidgetSettings(val widget: Widget, val config: ConfigurationWithSizes, val refreshPrice: Boolean = true,
+                          val alwaysCurrent: Boolean = false)  {
+    fun isOld() = !alwaysCurrent && System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * 1.5)
     fun shouldRefresh() = System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * .25)
     fun throttled() = System.currentTimeMillis() - widget.lastUpdated < 120000
+    fun useAutoSizing() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !config.consistentSize
 }

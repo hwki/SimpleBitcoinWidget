@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.exchange
 
 import com.google.gson.Gson
 import com.google.gson.JsonArray

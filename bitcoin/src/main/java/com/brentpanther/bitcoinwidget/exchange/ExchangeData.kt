@@ -1,5 +1,6 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.exchange
 
+import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -11,14 +12,14 @@ import java.util.HashMap
 import kotlin.Comparator
 
 
-open class ExchangeData(val coin: CoinEntry, json: InputStream) {
+open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
 
     protected var obj: JsonExchangeObject? = null
     protected var currencyExchange: MutableMap<String, MutableList<String>> = HashMap()
 
     init {
         this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
-        loadCurrencies(coin.coin.name)
+        loadCurrencies(coinEntry.coin.name)
     }
 
     // only return currencies that we know about
@@ -88,6 +89,7 @@ open class ExchangeData(val coin: CoinEntry, json: InputStream) {
         return exchangeNames.toTypedArray()
     }
 
+    //TODO: change to use exchange
     fun getDefaultExchange(currency: String): String {
         val exchanges = currencyExchange[currency]
         exchanges?.let {
@@ -97,7 +99,7 @@ open class ExchangeData(val coin: CoinEntry, json: InputStream) {
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
-        return obj?.getExchangeCoinName(exchange, coin.coin.name)
+        return obj?.getExchangeCoinName(exchange, coinEntry.name)
     }
 
     open fun getExchangeCurrencyName(exchange: String, currency: String): String? {
@@ -117,11 +119,5 @@ open class ExchangeData(val coin: CoinEntry, json: InputStream) {
 
         private val CURRENCY_TOP_ORDER = listOf("USD", "EUR", "BTC")
     }
-
-}
-
-object ExchangeDataHelper {
-
-    var data: ExchangeData? = null
 
 }

@@ -1,7 +1,7 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.exchange
 
-import com.brentpanther.bitcoinwidget.ExchangeHelper.getJsonArray
-import com.brentpanther.bitcoinwidget.ExchangeHelper.getJsonObject
+import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonArray
+import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonObject
 import com.google.gson.JsonObject
 import okhttp3.Headers
 import java.util.*

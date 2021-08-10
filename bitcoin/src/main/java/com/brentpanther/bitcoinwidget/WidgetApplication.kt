@@ -6,9 +6,9 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.core.content.FileProvider
-import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.receiver.ConfigChangeReceiver
+import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
 import java.io.File
 
 
@@ -24,6 +24,7 @@ class WidgetApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        registerReceiver(ConfigChangeReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
         grantUriAccessToWidget()
     }
 
@@ -37,11 +38,6 @@ class WidgetApplication : Application() {
             Intent.FLAG_GRANT_READ_URI_PERMISSION
                     or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
                     or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-    }
-
-    fun useAutoSizing(): Boolean {
-        val fixedSize = WidgetDatabase.getInstance(this).widgetDao().config().consistentSize
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !fixedSize
     }
 
     companion object {

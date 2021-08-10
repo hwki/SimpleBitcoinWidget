@@ -4,11 +4,10 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.view.View
-import android.widget.RemoteViews
 import androidx.core.content.FileProvider
 import com.brentpanther.bitcoinwidget.Theme.*
 import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.ui.preview.WidgetPreview
 import java.io.File
 
 
@@ -18,12 +17,12 @@ import java.io.File
  */
 object Themer {
 
-    internal fun updateTheme(context: Context, views: RemoteViews, settings: Widget, isOld: Boolean) {
+    internal fun updateTheme(context: Context, views: WidgetPreview, settings: Widget, isOld: Boolean) {
         updateLayout(context, views, settings)
         updateIcon(context, views, settings, isOld)
     }
 
-    private fun updateLayout(context: Context, views: RemoteViews, settings: Widget) {
+    private fun updateLayout(context: Context, views: WidgetPreview, settings: Widget) {
         val isNight = (context.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         var bgOuter = R.drawable.bg_outer
@@ -42,21 +41,21 @@ object Themer {
         }
         when (theme) {
             LIGHT, DARK, DAY_NIGHT -> {
-                views.setInt(R.id.outerParent, "setBackgroundResource", bgOuter)
-                views.setInt(R.id.parent, "setBackgroundResource", bgInner)
+                views.setBackground(R.id.outerParent, bgOuter)
+                views.setBackground(R.id.parent, bgInner)
                 for (view in arrayOf(R.id.price, R.id.priceAutoSize, R.id.exchange, R.id.exchangeAutoSize)) {
                     views.setTextColor(view, textColor)
                 }
             }
             TRANSPARENT, TRANSPARENT_DARK, TRANSPARENT_DAY_NIGHT -> {
-                views.setInt(R.id.parent, "setBackgroundResource", bgParent)
+                views.setBackground(R.id.parent, bgParent)
             }
         }
     }
 
 
-    private fun updateIcon(context: Context, views: RemoteViews, settings: Widget, isOld: Boolean) {
-        views.setViewVisibility(R.id.icon, if (settings.showIcon) View.VISIBLE else View.GONE)
+    private fun updateIcon(context: Context, views: WidgetPreview, settings: Widget, isOld: Boolean) {
+        if (settings.showIcon) views.show(R.id.icon) else views.hide(R.id.icon)
         val customIcon = settings.customIcon
         if (customIcon != null) {
             val path = File(File(context.filesDir, "icons"), customIcon)

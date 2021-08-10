@@ -8,6 +8,9 @@ import androidx.core.app.JobIntentService
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
+import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
+import com.brentpanther.bitcoinwidget.receiver.PriceBroadcastReceiver
+import com.brentpanther.bitcoinwidget.ui.preview.RemoteWidgetPreview
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,8 +24,8 @@ class UpdatePriceService : JobIntentService() {
         val widget = dao.getByWidgetId(widgetId) ?: return
         val views = RemoteViews(applicationContext.packageName, widget.theme.layout)
 
-        val widgetSettings = WidgetSettings(widget, dao.config(), dao.getSmallestSizes())
-        val widgetViews = WidgetViews(applicationContext, views, widgetSettings)
+        val widgetSettings = WidgetSettings(widget, dao.configWithSizes())
+        val widgetViews = WidgetViews(applicationContext, RemoteWidgetPreview(views), widgetSettings)
         when (val amount = updateValue(widget)) {
             INVALID -> widgetViews.putValue(applicationContext.getString(R.string.value_exchange_removed))
             else -> {

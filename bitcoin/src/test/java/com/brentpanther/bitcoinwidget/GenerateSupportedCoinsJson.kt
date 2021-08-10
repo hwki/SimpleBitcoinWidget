@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget
 
+import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.google.gson.Gson
 import com.jayway.jsonpath.JsonPath
 import okhttp3.OkHttpClient

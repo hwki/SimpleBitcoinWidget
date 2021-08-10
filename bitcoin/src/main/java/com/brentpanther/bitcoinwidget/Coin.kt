@@ -1,20 +1,22 @@
 package com.brentpanther.bitcoinwidget
 
 import android.os.Build
-
+import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.brentpanther.bitcoinwidget.R.drawable.*
-import com.brentpanther.bitcoinwidget.IconTheme.LIGHT as L
-import com.brentpanther.bitcoinwidget.IconTheme.LIGHT_OLD as LO
+import kotlinx.parcelize.Parcelize
+import java.util.*
 import com.brentpanther.bitcoinwidget.IconTheme.DARK as D
 import com.brentpanther.bitcoinwidget.IconTheme.DARK_OLD as DO
+import com.brentpanther.bitcoinwidget.IconTheme.LIGHT as L
+import com.brentpanther.bitcoinwidget.IconTheme.LIGHT_OLD as LO
 import com.brentpanther.bitcoinwidget.IconTheme.TRANSPARENT as T
 import com.brentpanther.bitcoinwidget.IconTheme.TRANSPARENT_DARK as TD
 import com.brentpanther.bitcoinwidget.IconTheme.TRANSPARENT_DARK_OLD as TDO
-import java.io.Serializable
-import java.util.*
 
-enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal val icons: Map<IconTheme, Int>) {
+@Parcelize
+enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal val icons: Map<IconTheme, Int>) :
+    Parcelable {
 
     CUSTOM("Custom", ic_placeholder, mapOf(L to ic_placeholder)),
     AAVE("Aave", ic_aave, mapOf(L to ic_aave, LO to ic_aave_gray)),
@@ -29,14 +31,16 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     BAT("Basic Attention Token", ic_bat, mapOf(L to ic_bat, LO to ic_bat_gray)),
     BCD("Bitcoin Diamond", ic_bcd, mapOf(L to ic_bcd, LO to ic_bcd_gray, D to ic_bcd_white)),
     BCH("Bitcoin Cash", ic_bch, mapOf(L to ic_bch, LO to ic_bch_gray, D to ic_bch_dark, DO to ic_bch_dark_gray)) {
-        override val units: List<Unit>
-            get() = listOf(Unit("BCH", 1.0), Unit("mBCH", .001), Unit("μBCH", .000001))
+        override fun getUnits(): List<CoinUnit> {
+            return listOf(CoinUnit("BCH", 1.0), CoinUnit("mBCH", .001), CoinUnit("μBCH", .000001))
+        }
     },
     BNB("Binance Coin", ic_bnb, mapOf(L to ic_bnb, LO to ic_bnb_gray)),
     BSV("Bitcoin SV", ic_bsv, mapOf(L to ic_bsv, LO to ic_bsv_gray, D to ic_bsv_dark, DO to ic_bsv_dark_gray)),
     BTC("Bitcoin", ic_btc, mapOf(L to ic_btc, LO to ic_btc_gray, D to ic_btc_dark, DO to ic_btc_dark_gray)) {
-        override val units: List<Unit>
-            get() = listOf(Unit("BTC", 1.0), Unit("mBTC", .001), Unit("μBTC / bits", .000001), Unit("Satoshis", .00000001))
+        override fun getUnits(): List<CoinUnit> {
+            return listOf(CoinUnit("BTC", 1.0), CoinUnit("mBTC", .001), CoinUnit("μBTC / bits", .000001), CoinUnit("Satoshis", .00000001))
+        }
     },
     BTG("Bitcoin Gold", ic_btg, mapOf(L to ic_btg, LO to ic_btg_gray, D to ic_btg_dark, DO to ic_btg_dark_gray)),
     BTM("Bytom", ic_btm, mapOf(L to ic_btm, LO to ic_btm_gray, D to ic_btm_gray)),
@@ -72,8 +76,9 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     LRC("Loopring", ic_lrc, mapOf(L to ic_lrc, LO to ic_lrc_gray)),
     LSK("Lisk", ic_lsk, mapOf(L to ic_lsk, LO to ic_lsk_gray)),
     LTC("Litecoin", ic_ltc, mapOf(L to ic_ltc, LO to ic_ltc_gray)) {
-        override val units: List<Unit>
-            get() = listOf(Unit("LTC", 1.0), Unit("lites", .001))
+        override fun getUnits(): List<CoinUnit> {
+            return listOf(CoinUnit("LTC", 1.0), CoinUnit("lites", .001))
+        }
     },
     LTO("LTO Network", ic_lto, mapOf(L to ic_lto, LO to ic_lto_gray)),
     MANA("Decentraland", ic_mana, mapOf(L to ic_mana, LO to ic_mana_gray)),
@@ -120,12 +125,9 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
     ZIL("Zilliqa", ic_zil, mapOf(L to ic_zil, LO to ic_zil_gray)),
     ZRX("0x", ic_zrx_black, mapOf(L to ic_zrx_black, LO to ic_zrx_gray, D to ic_zrx_white));
 
-    protected open val units: List<Unit> = emptyList()
+    open fun getUnits() = emptyList<CoinUnit>()
 
-    val unitNames: Array<String>
-        get() = units.map { it.text}.toTypedArray()
-
-    fun getUnitAmount(text: String) = units.firstOrNull { it.text == text }?.amount ?: 1.0
+    fun getUnitAmount(text: String) = getUnits().firstOrNull { it.text == text }?.amount ?: 1.0
 
     companion object {
 
@@ -151,4 +153,5 @@ enum class Coin(val coinName: String, @param:DrawableRes val icon: Int, internal
 
 }
 
-class Unit(val text: String, val amount: Double) : Serializable
+@Parcelize
+class CoinUnit(val text: String, val amount: Double) : Parcelable

@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -9,11 +10,20 @@ interface WidgetDao {
     @Query("SELECT * FROM configuration LIMIT 1")
     fun config() : Configuration
 
+    @Query("SELECT refresh, consistentSize, MIN(portraitTextSize) AS portrait, MIN(landscapeTextSize) AS landscape FROM configuration, widget LIMIT 1")
+    fun configWithSizes() : ConfigurationWithSizes
+
+    @Query("SELECT refresh, consistentSize, MIN(portraitTextSize) AS portrait, MIN(landscapeTextSize) AS landscape FROM configuration, widget LIMIT 1")
+    fun configWithSizesAsFlow() : Flow<ConfigurationWithSizes>
+
+    @Query("SELECT * FROM configuration LIMIT 1")
+    fun configAsFlow(): Flow<Configuration>
+
     @Query("SELECT * FROM widget WHERE widgetId = :widgetId")
     fun getByWidgetId(widgetId: Int): Widget?
 
-    @Query("SELECT MIN(portraitTextSize) AS portrait, MIN(landscapeTextSize) AS landscape FROM widget")
-    fun getSmallestSizes() : SmallestWidgetSizes
+    @Query("SELECT * FROM widget WHERE widgetId = :widgetId")
+    fun getByWidgetIdFlow(widgetId: Int): LiveData<Widget?>
 
     @Update
     suspend fun update(widget: Widget)
@@ -38,5 +48,6 @@ interface WidgetDao {
 
     @Update
     suspend fun update(config: Configuration)
+
 
 }

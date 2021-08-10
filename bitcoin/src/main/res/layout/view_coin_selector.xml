@@ -15,7 +15,6 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="4dp"
-        android:contentDescription="Icon"
         app:layout_constraintBottom_toBottomOf="@id/coin_symbol"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="widget_name">Widget Simples</string>
     <string name="new_widget">Novo %s Widget</string>
+    <string name="edit_widget">Editar %s Widget</string>
 
     <string name="select_coin">Selecione Moeda</string>
 
@@ -14,26 +15,18 @@
     <string name="title_label">Mostar marcador de exchange</string>
     <string name="title_theme">Tema</string>
     <string name="title_rate">Nota</string>
-    <string name="title_icon">Mostrar %s ícone</string>
+    <string name="title_icon">Mostrar ícone</string>
     <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
     <string name="title_preview">Prévia</string>
     <string name="title_locale">Símbolo</string>
 
-    <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
-    <plurals name="summary_refresh_interval_minute">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Todo minuto</item>
-        <item quantity="other">A cada %d minutos</item>
-    </plurals>
-    <plurals name="summary_refresh_interval_hour">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Toda hora</item>
-        <item quantity="other">A cada %d horas</item>
-    </plurals>
+    <string name="summary_fixed_size">Manter o texto consistente em todos os widgets</string>
+    <string name="summary_refresh_interval">A cada %s</string>
     <string name="summary_currency">Usar %s como moeda</string>
     <string name="summary_exchange">Pegar data de %s</string>
     <string name="summary_rate">Avalie na Google Play</string>
     <string name="summary_units">Mostrar em %s</string>
-    <string name="summary_custom_coin">Usar %s</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Tema Claro</item>
@@ -51,16 +44,6 @@
         <item>6 horas</item>
         <item>24 horas</item>
     </string-array>
-    <string-array name="intervalValues">
-        <item>5</item>
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>60</item>
-        <item>120</item>
-        <item>360</item>
-        <item>1440</item>
-    </string-array>
     <string-array name="symbols">
         <item>Mostrar símbolo da moeda local</item>
         <item>Mostrar símbolo de moeda ISO</item>
@@ -73,11 +56,17 @@
     <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
 
-    <string name="save">Salve</string>
     <string name="button_settings">Preferências</string>
     <string name="title_warning">Aviso</string>
     <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
     <string name="warning_battery_saver">O aplicativo não será atualizado porque o protetor de bateria está ativado no momento.</string>
     <string name="coin_search_hint">Pesquise por nome ou símbolo</string>
+
+    <string name="settings_update">Atualizo</string>
+    <string name="settings_create">Crio</string>
+    <string name="nav_title_manage_widgets">Gerenciar Widgets</string>
+    <string name="nav_title_settings">Configurações</string>
+    <string name="manage_widgets_empty">Você ainda não criou nenhum widget. Depois de adicionados, eles aparecerão aqui.</string>
+    <string name="widget_list_title">%1$s / %2$s</string>
 
 </resources>

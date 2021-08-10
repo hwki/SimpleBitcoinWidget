@@ -78,6 +78,7 @@ obj/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/assetWizardSettings.xml
 
 # Gradle:
 .idea/gradle.xml

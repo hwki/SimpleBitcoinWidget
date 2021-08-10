@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_manage">
+    <item
+        android:id="@+id/action_list_widgets"
+        android:icon="@drawable/ic_outline_widgets_24"
+        android:title="@string/nav_title_manage_widgets" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_outline_settings_24"
+        android:title="@string/nav_title_settings" />
+</menu>

@@ -1,14 +1,12 @@
 package com.brentpanther.bitcoinwidget.ui.selection
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.databinding.ViewCoinSelectorBinding
 
 internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEntry) -> Unit)) :
     RecyclerView.Adapter<CoinSelectionAdapter.MyViewHolder>(), Filterable {
@@ -22,7 +20,8 @@ internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEnt
     private val myFilter = MyFilter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_coin_selector, parent, false))
+        val binding = ViewCoinSelectorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -31,18 +30,15 @@ internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEnt
 
     override fun getItemCount() = filteredCoins.size
 
-    internal class MyViewHolder(private val view: View) :
-        RecyclerView.ViewHolder(view) {
-
-        val icon: ImageView = view.findViewById(R.id.coin_icon)
-        val name: TextView = view.findViewById(R.id.coin_name)
-        val symbol: TextView = view.findViewById(R.id.coin_symbol)
+    internal class MyViewHolder(private val binding: ViewCoinSelectorBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(entry: CoinEntry, onClickListener: ((coin: CoinEntry) -> Unit)) {
-            icon.setImageResource(entry.coin.icon)
-            name.text = entry.name
-            symbol.text = entry.symbol
-            view.setOnClickListener { onClickListener.invoke(entry) }
+            with(binding) {
+                coinIcon.setImageResource(entry.coin.icon)
+                coinName.text = entry.name
+                coinSymbol.text = entry.symbol
+                root.setOnClickListener { onClickListener(entry) }
+            }
         }
     }
 
@@ -60,6 +56,7 @@ internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEnt
             return results
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         override fun publishResults(value: CharSequence, results: FilterResults) {
             filteredCoins = results.values as List<CoinEntry>
             notifyDataSetChanged()

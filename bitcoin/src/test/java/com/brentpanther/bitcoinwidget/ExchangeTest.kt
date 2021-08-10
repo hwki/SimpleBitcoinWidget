@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget
 
-import com.brentpanther.bitcoinwidget.Exchange.valueOf
+import com.brentpanther.bitcoinwidget.exchange.Exchange.valueOf
+import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.ui.selection.CoinEntry
 import org.junit.Test
 import java.io.InputStream

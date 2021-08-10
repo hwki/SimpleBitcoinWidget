@@ -2,24 +2,13 @@
     <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
     <string name="widget_name">Simple Widget</string>
     <string name="new_widget">New %s Widget</string>
+    <string name="edit_widget">Edit %s Widget</string>
     <string name="select_coin">Select Coin</string>
 
-    <string name="key_other" translatable="false">other</string>
-    <string name="key_style" translatable="false">style</string>
-    <string name="key_data" translatable="false">data</string>
-    <string name="key_refresh_interval" translatable="false">refresh_interval</string>
     <string name="key_currency" translatable="false">currency</string>
     <string name="key_exchange" translatable="false">exchange</string>
     <string name="key_units" translatable="false">units</string>
-    <string name="key_icon" translatable="false">icon</string>
-    <string name="key_decimals" translatable="false">decimals</string>
-    <string name="key_label" translatable="false">label</string>
-    <string name="key_theme" translatable="false">theme</string>
     <string name="key_rate" translatable="false">rate</string>
-    <string name="key_prefs" translatable="false">bitcoinwidget</string>
-    <string name="key_fixed_size" translatable="false">fixed_size</string>
-    <string name="key_symbol" translatable="false">symbol</string>
-    <string name="key_custom_coin" translatable="false">custom_coin</string>
 
     <string name="title_fixed_size">Fixed Text Size</string>
     <string name="title_data">Data</string>
@@ -31,26 +20,18 @@
     <string name="title_label">Show exchange label</string>
     <string name="title_theme">Theme</string>
     <string name="title_rate">Rate</string>
-    <string name="title_icon">Show %s icon</string>
+    <string name="title_icon">Show icon</string>
     <string name="title_decimals">Always show decimals</string>
     <string name="title_units">Denomination</string>
     <string name="title_preview">Preview</string>
     <string name="title_locale">Symbol</string>
 
-    <string name="summary_fixed_size">Keep text size consistent across all widgets (global setting)</string>
-    <plurals name="summary_refresh_interval_minute">
-        <item quantity="one">Every minute</item>
-        <item quantity="other">Every %d minutes</item>
-    </plurals>
-    <plurals name="summary_refresh_interval_hour">
-        <item quantity="one">Every hour</item>
-        <item quantity="other">Every %d hours</item>
-    </plurals>
+    <string name="summary_fixed_size">Keep text size consistent across all widgets</string>
+    <string name="summary_refresh_interval" >Every %s</string>
     <string name="summary_currency">Use %s as currency</string>
     <string name="summary_exchange">Get data from %s</string>
     <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
-    <string name="summary_custom_coin">Use %s as coin</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Light</item>
@@ -105,11 +86,17 @@
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
     <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
 
-    <string name="save">Save</string>
     <string name="button_settings">Settings</string>
     <string name="title_warning">Warning</string>
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently on.</string>
     <string name="coin_search_hint">Search by name or symbol</string>
+
+    <string name="settings_update">Update</string>
+    <string name="settings_create">Create</string>
+    <string name="nav_title_manage_widgets">Manage Widgets</string>
+    <string name="nav_title_settings">Settings</string>
+    <string name="manage_widgets_empty">You haven\'t created any widgets yet. Once added they will appear here.</string>
+    <string name="widget_list_title">%1$s / %2$s</string>
 
 </resources>

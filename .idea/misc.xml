@@ -3,9 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/activity_manage_widgets.xml" value="0.33125" />
-        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/layout_settings.xml" value="0.33177083333333335" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_baseline_label_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_bitcoin.xml" value="0.3614583333333333" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_decimal.xml" value="0.3614583333333333" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_decimal_comma.xml" value="0.3619791666666667" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_outline_label_24.xml" value="0.3614583333333333" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_outline_settings_24.xml" value="0.3619791666666667" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_percent_outline.xml" value="0.3619791666666667" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/drawable/ic_save.xml" value="0.39947916666666666" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/activity_manage_widgets.xml" value="0.1" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/fragment_manage_settings.xml" value="0.3848958333333333" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/fragment_manage_widgets.xml" value="0.3848958333333333" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/layout_settings.xml" value="0.1" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/layout_widget_preview.xml" value="0.25" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/list_item_manage_widget.xml" value="0.5" />
         <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/view_coin_selector.xml" value="0.33177083333333335" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/widget_layout.xml" value="0.18632478632478633" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/layout/widget_layout_transparent.xml" value="0.375" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/menu/nav_manage.xml" value="0.3307291666666667" />
+        <entry key="..\:/SimpleBitcoinWidget/bitcoin/src/main/res/xml/global_preferences.xml" value="0.3410565338276182" />
       </map>
     </option>
   </component>

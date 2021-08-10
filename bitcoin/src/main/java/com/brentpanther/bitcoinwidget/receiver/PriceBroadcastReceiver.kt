@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget
+package com.brentpanther.bitcoinwidget.receiver
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -10,9 +10,14 @@ import android.os.SystemClock
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.app.JobIntentService
-import com.brentpanther.bitcoinwidget.db.Configuration
+import com.brentpanther.bitcoinwidget.NetworkStatusHelper
+import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.UpdatePriceService
+import com.brentpanther.bitcoinwidget.WidgetViews
+import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
+import com.brentpanther.bitcoinwidget.ui.preview.RemoteWidgetPreview
 import kotlinx.coroutines.*
 
 class PriceBroadcastReceiver : BroadcastReceiver() {
@@ -23,13 +28,14 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
         val dao = WidgetDatabase.getInstance(context).widgetDao()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val config = dao.config()
+            val config = dao.configWithSizes()
             val widget = dao.getByWidgetId(widgetId) ?: return@launch
-            val views = RemoteViews(context.packageName, widget.theme.layout)
+            val remoteViews = RemoteViews(context.packageName, widget.theme.layout)
+            val views = RemoteWidgetPreview(remoteViews)
 
             // we don't always need to download a new price, sometimes just the layout can be updated.
             // only update the price if its a manual refresh, or if we are close to the interval
-            val widgetSettings = WidgetSettings(widget, config, dao.getSmallestSizes())
+            val widgetSettings = WidgetSettings(widget, config)
             val updatePrice = manualRefresh || widgetSettings.shouldRefresh()
 
             val widgetViews = WidgetViews(context, views, widgetSettings)
@@ -54,10 +60,10 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
                         CoroutineScope(Dispatchers.IO).launch {
                             delay(750)
                             widgetViews.setText(widget.lastValue, false)
-                            setOnClick(context, widgetId, views)
+                            setOnClick(context, widgetId, remoteViews)
                         }
                         val appWidgetManager = AppWidgetManager.getInstance(context)
-                        appWidgetManager.updateAppWidget(widgetId, views)
+                        appWidgetManager.updateAppWidget(widgetId, remoteViews)
                         return@launch
                     }
                 }
@@ -68,12 +74,12 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
             } else {
                 widgetViews.setText(widget.lastValue, false)
             }
-            setOnClick(context, widgetId, views)
+            setOnClick(context, widgetId, remoteViews)
         }
 
     }
 
-    private fun setAlarm(context: Context, configuration: Configuration, widgetId: Int) {
+    private fun setAlarm(context: Context, configuration: ConfigurationWithSizes, widgetId: Int) {
         val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val widgetUpdateIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, PriceBroadcastReceiver::class.java)
         widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
