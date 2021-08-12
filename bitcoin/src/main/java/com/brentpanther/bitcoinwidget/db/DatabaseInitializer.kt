@@ -3,7 +3,10 @@ package com.brentpanther.bitcoinwidget.db
 import android.content.ContentValues
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
+import android.util.Log
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.brentpanther.bitcoinwidget.NightMode
+import com.brentpanther.bitcoinwidget.NightMode.*
 import com.brentpanther.bitcoinwidget.Theme.*
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.google.gson.Gson
@@ -17,12 +20,17 @@ object DatabaseInitializer {
         val widgets = WidgetApplication.instance.widgetIds
         var minRefresh = Int.MAX_VALUE
         for (widgetId in widgets) {
+            Log.e("TEST", "found widget $widgetId")
             val string = prefs.getString(widgetId.toString(), null) ?: continue
             try {
                 val obj = Gson().fromJson(string, JsonObject::class.java)
                 val themeMap = mapOf(
-                    "Light" to LIGHT, "Dark" to DARK, "DayNight" to DAY_NIGHT, "Transparent" to TRANSPARENT,
-                    "Transparent Dark" to TRANSPARENT_DARK, "Transparent DayNight" to TRANSPARENT_DAY_NIGHT
+                    "Light" to SOLID, "Dark" to SOLID, "DayNight" to SOLID, "Transparent" to TRANSPARENT,
+                    "Transparent Dark" to TRANSPARENT, "Transparent DayNight" to TRANSPARENT
+                )
+                val nightModeMap = mapOf(
+                    "Light" to LIGHT, "Dark" to DARK, "DayNight" to SYSTEM, "Transparent" to LIGHT,
+                    "Transparent Dark" to DARK, "Transparent DayNight" to SYSTEM
                 )
                 val values = ContentValues().apply {
                     put("widgetId", widgetId)
@@ -35,7 +43,8 @@ object DatabaseInitializer {
                     put("showIcon", getString(obj, "icon")?.equals("false") ?: true)
                     put("showDecimals", getString(obj, "show_decimals") == "true")
                     put("currencySymbol", getString(obj, "currency_symbol"))
-                    put("theme", themeMap[getString(obj, "theme") ?: LIGHT.name]!!.name)
+                    put("theme", themeMap[getString(obj, "theme") ?: SOLID.name]!!.name)
+                    put("nightMode", nightModeMap[getString(obj, "theme") ?: SYSTEM.name]!!.name)
                     put("unit", getString(obj, "units"))
                     put("customIcon", getString(obj, "custom_icon")?.substringBefore("/"))
                     put("lastValue", getString(obj, "last_value"))
@@ -44,6 +53,7 @@ object DatabaseInitializer {
                 }
                 db.insert("widget", CONFLICT_REPLACE, values)
             } catch (ignored: Exception) {
+                Log.e("TEST", "exception ignored...")
             }
         }
         val values = ContentValues().apply {

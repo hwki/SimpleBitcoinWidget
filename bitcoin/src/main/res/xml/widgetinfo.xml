@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:updatePeriodMillis="3600000"
     android:minWidth="110dp"
     android:minHeight="40dp"
@@ -10,4 +11,6 @@
     android:initialKeyguardLayout="@layout/widget_layout"
     android:resizeMode="vertical|horizontal"
     android:previewImage="@mipmap/ic_launcher"
-    android:configure="com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity" />
+    android:widgetFeatures="reconfigurable"
+    android:configure="com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity"
+    tools:targetApi="p" />

@@ -8,7 +8,6 @@ import android.util.Pair
 import android.util.TypedValue
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
-import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
 import com.brentpanther.bitcoinwidget.ui.preview.WidgetPreview
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -129,7 +128,7 @@ class WidgetViews(private val context: Context, private val views: WidgetPreview
         var width = size.first
         var height = size.second
 
-        if (!settings.widget.theme.isTransparent()) {
+        if (settings.widget.theme != Theme.TRANSPARENT) {
             // light and dark themes have 5dp padding all around
             width -= 10.toPx()
             height -= 10.toPx()
@@ -153,7 +152,7 @@ class WidgetViews(private val context: Context, private val views: WidgetPreview
         val size = getWidgetSize()
         var height = size.second
         var width = size.first
-        if (!settings.widget.theme.isTransparent()) {
+        if (settings.widget.theme != Theme.TRANSPARENT) {
             // light and dark themes have 5dp padding all around
             height -= 10.toPx()
         }

@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import androidx.core.content.FileProvider
 import com.brentpanther.bitcoinwidget.receiver.ConfigChangeReceiver
-import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
 import java.io.File
 
 

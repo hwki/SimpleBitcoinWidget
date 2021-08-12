@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "27d6b37fd0e09b89ea1f8365eb7f30bf",
+    "identityHash": "9d11411050e68d98ec08f263c29b7808",
     "entities": [
       {
         "tableName": "Widget",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `exchange` TEXT NOT NULL, `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `showDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, `unit` TEXT, `customIcon` TEXT, `portraitTextSize` REAL, `landscapeTextSize` REAL, `lastValue` TEXT, `lastUpdated` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `exchange` TEXT NOT NULL, `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `showDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, `nightMode` TEXT NOT NULL, `unit` TEXT, `customIcon` TEXT, `portraitTextSize` REAL, `landscapeTextSize` REAL, `lastValue` TEXT, `lastUpdated` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -77,6 +77,12 @@
           {
             "fieldPath": "theme",
             "columnName": "theme",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nightMode",
+            "columnName": "nightMode",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -177,7 +183,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '27d6b37fd0e09b89ea1f8365eb7f30bf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9d11411050e68d98ec08f263c29b7808')"
     ]
   }
 }

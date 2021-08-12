@@ -36,7 +36,7 @@
 
         <receiver android:name=".receiver.PriceBroadcastReceiver" />
         <receiver
-            android:name=".receiver.WidgetProvider"
+            android:name=".WidgetProvider"
             android:label="@string/widget_name"
             android:exported="true">
             <intent-filter>

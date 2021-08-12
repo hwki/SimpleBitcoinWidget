@@ -31,6 +31,7 @@ class CoinSelectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCoinBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setResult(Activity.RESULT_CANCELED)
         val extras = intent.extras
         if (extras == null) {
             finish()

@@ -14,6 +14,7 @@
     <string name="title_exchange">Exchange</string>
     <string name="title_label">Mostar marcador de exchange</string>
     <string name="title_theme">Tema</string>
+    <string name="title_night_mode">Modo Noturno</string>
     <string name="title_rate">Nota</string>
     <string name="title_icon">Mostrar ícone</string>
     <string name="title_decimals">Sempre Mostrar Decimais</string>
@@ -29,10 +30,13 @@
     <string name="summary_units">Mostrar em %s</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
-        <item>Tema Claro</item>
-        <item>Tema Escuro</item>
+        <item>Tema Sólida</item>
         <item>Transparente</item>
-        <item>Transparente Escuro</item>
+    </string-array>
+    <string-array name="nightModes">
+        <item>Claro</item>
+        <item>Escuro</item>
+        <item>Sistema</item>
     </string-array>
     <string-array name="intervals">
         <item>5 minutos</item>

@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.receiver
+package com.brentpanther.bitcoinwidget
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,9 +6,8 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import com.brentpanther.bitcoinwidget.DataMigration
-import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.receiver.PriceBroadcastReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

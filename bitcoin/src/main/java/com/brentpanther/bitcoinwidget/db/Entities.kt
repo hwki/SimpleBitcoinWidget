@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 
@@ -22,6 +23,7 @@ data class Widget(
     var showDecimals: Boolean,
     var currencySymbol: String?,
     var theme: Theme,
+    var nightMode: NightMode,
     var unit: String?,
     var customIcon: String?,
     var portraitTextSize: Float? = null,
@@ -42,7 +44,7 @@ data class ConfigurationWithSizes(var refresh: Int, var consistentSize: Boolean,
 
 data class WidgetSettings(val widget: Widget, val config: ConfigurationWithSizes, val refreshPrice: Boolean = true,
                           val alwaysCurrent: Boolean = false)  {
-    fun isOld() = !alwaysCurrent && System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * 1.5)
+    fun isOld(): Boolean = !alwaysCurrent && System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * 1.5)
     fun shouldRefresh() = System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * .25)
     fun throttled() = System.currentTimeMillis() - widget.lastUpdated < 120000
     fun useAutoSizing() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !config.consistentSize

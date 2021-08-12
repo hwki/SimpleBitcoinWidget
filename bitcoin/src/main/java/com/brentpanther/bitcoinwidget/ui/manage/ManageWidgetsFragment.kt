@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget.ui.manage
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
@@ -20,7 +21,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
-import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsActivity
@@ -34,6 +35,7 @@ class ManageWidgetsFragment : Fragment() {
     private var _binding: FragmentManageWidgetsBinding? = null
     private val binding get() = _binding!!
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentManageWidgetsBinding.inflate(layoutInflater)
 
@@ -68,7 +70,7 @@ class ManageWidgetsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupPinButton() {
-        val appWidgetManager: AppWidgetManager = requireContext().getSystemService(Context.APPWIDGET_SERVICE) as AppWidgetManager
+        val appWidgetManager = requireContext().getSystemService(AppWidgetManager::class.java)
         if (appWidgetManager.isRequestPinAppWidgetSupported) {
             binding.add.isVisible = true
             binding.add.setOnClickListener {

@@ -7,6 +7,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.CoinEntry
+import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.databinding.ViewCoinSelectorBinding
 
 internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEntry) -> Unit)) :
@@ -35,7 +36,7 @@ internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEnt
 
         fun bind(entry: CoinEntry, onClickListener: ((coin: CoinEntry) -> Unit)) {
             with(binding) {
-                coinIcon.setImageResource(entry.coin.icon)
+                coinIcon.setImageResource(entry.coin.getIcon(Theme.SOLID, dark =false, old = false))
                 coinName.text = entry.name
                 coinSymbol.text = entry.symbol
                 root.setOnClickListener { onClickListener(entry) }

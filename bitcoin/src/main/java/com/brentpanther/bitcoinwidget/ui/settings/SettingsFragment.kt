@@ -26,7 +26,7 @@ import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
-import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import java.io.ByteArrayOutputStream
@@ -73,7 +73,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             showIcon = true,
             showDecimals = false,
             currencySymbol = null,
-            theme = Theme.LIGHT,
+            theme = Theme.SOLID,
+            nightMode = NightMode.SYSTEM,
             unit = data.coinEntry.coin.getUnits().firstOrNull()?.text,
             customIcon = data.coinEntry.iconUrl?.substringBefore("/"),
             lastUpdated = 0
@@ -169,6 +170,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 "exchange" -> widget.exchange.name
                 "units" -> widget.unit
                 "theme" -> widget.theme.name
+                "nightMode" -> widget.nightMode.name
                 else -> throw IllegalArgumentException()
             }
         }
@@ -197,8 +199,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     true
                 }
                 "theme" -> {
-                    widget.theme = Theme.valueOf(value ?: Theme.LIGHT.name)
-                    if (widget.theme in listOf(Theme.DAY_NIGHT, Theme.TRANSPARENT_DAY_NIGHT)) {
+                    widget.theme = Theme.valueOf(value ?: Theme.SOLID.name)
+                    false
+                }
+                "nightMode" -> {
+                    widget.nightMode = NightMode.valueOf(value ?: NightMode.SYSTEM.name)
+                    if (widget.nightMode == NightMode.SYSTEM) {
                         val service = requireActivity().getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
                         service.nightMode = UiModeManager.MODE_NIGHT_AUTO
                     }

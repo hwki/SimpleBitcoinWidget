@@ -27,7 +27,7 @@
     <PreferenceCategory
         app:title="@string/title_style">
         <ListPreference
-            app:defaultValue="LIGHT"
+            app:defaultValue="SOLID"
             app:dialogTitle="@string/title_theme"
             app:entries="@array/themes"
             app:entryValues="@array/themeValues"
@@ -35,6 +35,15 @@
             app:icon="@drawable/ic_outline_color_lens_24"
             app:key="theme"
             app:title="@string/title_theme" />
+        <ListPreference
+            app:defaultValue="LIGHT"
+            app:dialogTitle="@string/title_night_mode"
+            app:entries="@array/nightModes"
+            app:entryValues="@array/nightModeValues"
+            app:useSimpleSummaryProvider="true"
+            app:icon="@drawable/ic_outline_nightlight_24"
+            app:key="nightMode"
+            app:title="@string/title_night_mode" />
         <ListPreference
             app:isPreferenceVisible="false"
             android:summary="@string/summary_units"

@@ -101,7 +101,7 @@ class PriceBroadcastReceiver : BroadcastReceiver() {
             val priceUpdate = Intent(context, PriceBroadcastReceiver::class.java)
             priceUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
             priceUpdate.putExtra(EXTRA_MANUAL_REFRESH, true)
-            val pendingPriceUpdate = PendingIntent.getBroadcast(context, widgetId, priceUpdate, PendingIntent.FLAG_CANCEL_CURRENT)
+            val pendingPriceUpdate = PendingIntent.getBroadcast(context, widgetId, priceUpdate, PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
             views.setOnClickPendingIntent(R.id.parent, pendingPriceUpdate)
             val appWidgetManager = AppWidgetManager.getInstance(context)
             appWidgetManager.updateAppWidget(widgetId, views)

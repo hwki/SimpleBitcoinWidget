@@ -12,11 +12,9 @@ import android.os.PowerManager
 object NetworkStatusHelper {
 
     fun checkBattery(context: Context): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-            if (powerManager.isPowerSaveMode && !powerManager.isIgnoringBatteryOptimizations(context.packageName)) {
-                return R.string.error_restricted_battery_saver
-            }
+        val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (powerManager.isPowerSaveMode && !powerManager.isIgnoringBatteryOptimizations(context.packageName)) {
+            return R.string.error_restricted_battery_saver
         }
         return 0
     }

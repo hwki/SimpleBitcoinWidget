@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
     <string name="widget_name">Simple Widget</string>
     <string name="new_widget">New %s Widget</string>
@@ -19,6 +19,7 @@
     <string name="title_exchange">Exchange</string>
     <string name="title_label">Show exchange label</string>
     <string name="title_theme">Theme</string>
+    <string name="title_night_mode">Night Mode</string>
     <string name="title_rate">Rate</string>
     <string name="title_icon">Show icon</string>
     <string name="title_decimals">Always show decimals</string>
@@ -33,17 +34,23 @@
     <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
 
-    <string-array name="themes" tools:ignore="InconsistentArrays">
+    <string-array name="themes">
+        <item>Solid</item>
+        <item>Transparent</item>
+    </string-array>
+    <string-array name="themeValues">
+        <item>SOLID</item>
+        <item>TRANSPARENT</item>
+    </string-array>
+    <string-array name="nightModes">
         <item>Light</item>
         <item>Dark</item>
-        <item>Transparent</item>
-        <item>Transparent Dark</item>
+        <item>System</item>
     </string-array>
-    <string-array name="themeValues" tools:ignore="InconsistentArrays">
+    <string-array name="nightModeValues">
         <item>LIGHT</item>
         <item>DARK</item>
-        <item>TRANSPARENT</item>
-        <item>TRANSPARENT_DARK</item>
+        <item>SYSTEM</item>
     </string-array>
     <string-array name="intervals">
         <item>5 minutes</item>

@@ -12,7 +12,7 @@ import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.db.Configuration
-import com.brentpanther.bitcoinwidget.receiver.WidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
