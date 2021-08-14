@@ -1,8 +1,5 @@
 package com.brentpanther.bitcoinwidget.ui.manage
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +7,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
+import com.brentpanther.bitcoinwidget.BuildConfig
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.db.Configuration
 import com.brentpanther.bitcoinwidget.WidgetProvider
@@ -18,7 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
-class ManageSettingsFragment : PreferenceFragmentCompat() {
+open class BaseManageSettingsFragment : PreferenceFragmentCompat() {
 
     private val viewModel : ManageWidgetsViewModel by viewModels()
 
@@ -35,20 +33,16 @@ class ManageSettingsFragment : PreferenceFragmentCompat() {
     private fun loadPreferences(config: Configuration, rootKey: String?) {
         preferenceManager.preferenceDataStore = ConfigDataStore(config)
         setPreferencesFromResource(R.xml.global_preferences, rootKey)
-        findPreference<Preference>(getString(R.string.key_rate))?.setOnPreferenceClickListener {
-            val appPackageName = requireActivity().packageName
-            try {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
-            } catch (e: ActivityNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=$appPackageName")))
-            }
-            true
-        }
+        addPreferencesFromResource(R.xml.additional_global_preferences)
+        loadAdditionalPreferences()
+        findPreference<Preference>("build_info")?.title = "v${BuildConfig.VERSION_NAME}"
         findPreference<ListPreference>("refresh_interval")?.setSummaryProvider {
             val pref = (it as ListPreference)
             getString(R.string.summary_refresh_interval, pref.entries[pref.findIndexOfValue(pref.value)])
         }
     }
+
+    protected open fun loadAdditionalPreferences() {}
 
     inner class ConfigDataStore(private val config: Configuration) : PreferenceDataStore() {
         override fun getBoolean(key: String?, defValue: Boolean): Boolean {

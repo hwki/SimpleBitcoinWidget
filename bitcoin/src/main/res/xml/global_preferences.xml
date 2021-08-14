@@ -18,12 +18,4 @@
         app:summary="@string/summary_fixed_size"
         app:title="@string/title_fixed_size" />
     </PreferenceCategory>
-    <PreferenceCategory
-        app:title="@string/title_other">
-        <Preference
-            android:icon="@drawable/ic_outline_star_outline_24"
-            app:key="rate"
-            app:summary="@string/summary_rate"
-            app:title="@string/title_rate" />
-    </PreferenceCategory>
 </PreferenceScreen>

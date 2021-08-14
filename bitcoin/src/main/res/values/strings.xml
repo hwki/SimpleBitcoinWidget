@@ -8,7 +8,6 @@
     <string name="key_currency" translatable="false">currency</string>
     <string name="key_exchange" translatable="false">exchange</string>
     <string name="key_units" translatable="false">units</string>
-    <string name="key_rate" translatable="false">rate</string>
 
     <string name="title_fixed_size">Fixed Text Size</string>
     <string name="title_data">Data</string>
@@ -20,7 +19,7 @@
     <string name="title_label">Show exchange label</string>
     <string name="title_theme">Theme</string>
     <string name="title_night_mode">Night Mode</string>
-    <string name="title_rate">Rate</string>
+
     <string name="title_icon">Show icon</string>
     <string name="title_decimals">Always show decimals</string>
     <string name="title_units">Denomination</string>
@@ -31,7 +30,6 @@
     <string name="summary_refresh_interval" >Every %s</string>
     <string name="summary_currency">Use %s as currency</string>
     <string name="summary_exchange">Get data from %s</string>
-    <string name="summary_rate">Rate on Google Play</string>
     <string name="summary_units">Show in %s</string>
 
     <string-array name="themes">

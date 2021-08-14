@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_donate">Support the Developer</string>
+    <string name="summary_donate">Donate Bitcoin</string>
+    <string name="error_donate">No wallet found</string>
+    <string name="btc_address" translatable="false">bitcoin:194QqhXirp21F5fJVaqviMeHkzZzkZKyi8</string>
+</resources>

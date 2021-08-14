@@ -15,7 +15,7 @@
     <string name="title_label">Mostar marcador de exchange</string>
     <string name="title_theme">Tema</string>
     <string name="title_night_mode">Modo Noturno</string>
-    <string name="title_rate">Nota</string>
+
     <string name="title_icon">Mostrar ícone</string>
     <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
@@ -26,7 +26,6 @@
     <string name="summary_refresh_interval">A cada %s</string>
     <string name="summary_currency">Usar %s como moeda</string>
     <string name="summary_exchange">Pegar data de %s</string>
-    <string name="summary_rate">Avalie na Google Play</string>
     <string name="summary_units">Mostrar em %s</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">

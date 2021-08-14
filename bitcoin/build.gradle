@@ -48,6 +48,15 @@ android {
     }
 
     sourceSets.test.resources.srcDirs += ["src/main/res"]
+    flavorDimensions 'distribution'
+    productFlavors {
+        playstore {
+            dimension 'distribution'
+        }
+        fdroid {
+            dimension 'distribution'
+        }
+    }
 
 }
 

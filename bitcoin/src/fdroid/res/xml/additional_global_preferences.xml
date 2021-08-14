@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/title_other">
+        <Preference
+            android:icon="@drawable/ic_outline_info_24"
+            android:key="build_info"/>
+        <Preference
+            android:icon="@drawable/ic_bitcoin"
+            android:key="donate"
+            android:summary="@string/summary_donate"
+            android:title="@string/title_donate" />
+    </PreferenceCategory>
+</PreferenceScreen>
