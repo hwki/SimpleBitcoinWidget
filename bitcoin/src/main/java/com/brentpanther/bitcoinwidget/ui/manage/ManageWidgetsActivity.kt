@@ -25,7 +25,6 @@ class ManageWidgetsActivity : AppCompatActivity() {
             supportFragmentManager.commit { replace(R.id.fragment_container_view, fragment) }
             true
         }
-
-
+        binding.navigation.setOnItemReselectedListener {  }
     }
 }

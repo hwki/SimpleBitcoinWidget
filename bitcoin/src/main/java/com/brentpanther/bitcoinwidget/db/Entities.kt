@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.exchange.Exchange
@@ -30,7 +31,11 @@ data class Widget(
     var landscapeTextSize: Float? = null,
     var lastValue: String? = null,
     var lastUpdated: Long
-)
+) {
+    fun toCoinEntry(): CoinEntry {
+        return CoinEntry(coin.name, coin.coinName, coin.name, coin)
+    }
+}
 
 @Entity
 data class Configuration(

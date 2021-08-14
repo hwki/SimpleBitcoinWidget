@@ -41,7 +41,7 @@ class ManageWidgetsFragment : Fragment() {
 
         val adapter = WidgetAdapter {
             val intent = Intent(requireContext(), SettingsActivity::class.java)
-            val coinEntry = CoinEntry(it.widget.coin.name, it.widget.coin.coinName, it.widget.coin.name, it.widget.coin)
+            val coinEntry = it.widget.toCoinEntry()
             intent.putExtra(SettingsActivity.EXTRA_COIN, coinEntry)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, it.widget.widgetId)
             intent.putExtra(SettingsActivity.EXTRA_EDIT_WIDGET, true)

@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,8 @@ import java.io.InputStreamReader
 import java.util.*
 
 class CoinSelectionViewModel(application: Application) : AndroidViewModel(application) {
+
+    fun getWidget(widgetId: Int) = WidgetDatabase.getInstance(getApplication()).widgetDao().getByWidgetIdFlow(widgetId)
 
     private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.name }
     private var fullCoins: List<CoinEntry> = allCoins.map {

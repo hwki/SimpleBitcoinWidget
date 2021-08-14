@@ -23,7 +23,7 @@ interface WidgetDao {
     fun getByWidgetId(widgetId: Int): Widget?
 
     @Query("SELECT * FROM widget WHERE widgetId = :widgetId")
-    fun getByWidgetIdFlow(widgetId: Int): LiveData<Widget?>
+    fun getByWidgetIdFlow(widgetId: Int): Flow<Widget?>
 
     @Update
     suspend fun update(widget: Widget)
