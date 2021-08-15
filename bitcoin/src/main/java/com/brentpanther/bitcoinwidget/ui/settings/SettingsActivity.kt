@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.app.Activity
@@ -18,7 +16,6 @@ import com.brentpanther.bitcoinwidget.databinding.LayoutSettingsBinding
 import com.brentpanther.bitcoinwidget.db.*
 import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
 import com.brentpanther.bitcoinwidget.CoinEntry
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.*
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -28,7 +25,6 @@ import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {
 
-    private var dialog: ProgressDialog? = null
     private lateinit var coin: CoinEntry
     private val viewModel by viewModels<SettingsViewModel>()
     private lateinit var binding: LayoutSettingsBinding
@@ -53,16 +49,19 @@ class SettingsActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.settingsData(coin, applicationContext).collect {
-                    when(it) {
-                        is Downloading -> {
-                            dialog = ProgressDialog.show(this@SettingsActivity, getString(R.string.dialog_update_title),
-                                getString(R.string.dialog_update_message), true)
-                        }
-                        is Success -> {
-                            binding.labelPreview.isVisible = true
-                            binding.widgetPreview.previewLayout.isVisible = true
-                            binding.save.setOnClickListener { viewModel.save() }
-                            dialog?.dismiss()
+                    binding.apply {
+                        when(it) {
+                            is Downloading -> {
+                                progress.isVisible = true
+                                empty.isVisible = true
+                            }
+                            is Success -> {
+                                progress.isVisible = false
+                                empty.isVisible = false
+                                labelPreview.isVisible = true
+                                widgetPreview.previewLayout.isVisible = true
+                                save.setOnClickListener { viewModel.save() }
+                            }
                         }
                     }
                 }
@@ -71,11 +70,6 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        dialog?.dismiss()
     }
 
     private suspend fun updateWidget(widgetSettings: WidgetSettings) {

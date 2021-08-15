@@ -53,6 +53,7 @@ class ManageWidgetsFragment : Fragment() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getWidgets().distinctUntilChanged().collect {
+                    binding.progress.isVisible = false
                     adapter.widgets = it
                     adapter.notifyDataSetChanged()
                     binding.empty.isVisible = it.isEmpty()

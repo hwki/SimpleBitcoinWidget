@@ -4,6 +4,7 @@
     <string name="new_widget">New %s Widget</string>
     <string name="edit_widget">Edit %s Widget</string>
     <string name="select_coin">Select Coin</string>
+    <string name="add_widget">Add Widget</string>
 
     <string name="key_currency" translatable="false">currency</string>
     <string name="key_exchange" translatable="false">exchange</string>
@@ -86,7 +87,7 @@
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="dialog_update_title">Updating</string>
-    <string name="dialog_update_message">Updating coin data…</string>
+    <string name="settings_updating_data">Updating coin data…</string>
     <string name="error_no_currencies">No currencies/exchanges found for this coin!</string>
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
     <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
@@ -99,9 +100,11 @@
 
     <string name="settings_update">Update</string>
     <string name="settings_create">Create</string>
+    <string name="coin_icon">Icon</string>
     <string name="nav_title_manage_widgets">Manage Widgets</string>
     <string name="nav_title_settings">Settings</string>
     <string name="manage_widgets_empty">You haven\'t created any widgets yet. Once added they will appear here.</string>
     <string name="widget_list_title">%1$s / %2$s</string>
+
 
 </resources>

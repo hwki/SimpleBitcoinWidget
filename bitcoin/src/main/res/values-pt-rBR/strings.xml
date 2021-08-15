@@ -2,6 +2,7 @@
     <string name="widget_name">Widget Simples</string>
     <string name="new_widget">Novo %s Widget</string>
     <string name="edit_widget">Editar %s Widget</string>
+    <string name="add_widget">Adicionar Widget</string>
 
     <string name="select_coin">Selecione Moeda</string>
 
@@ -54,7 +55,7 @@
     </string-array>
 
     <string name="dialog_update_title">Atualizando</string>
-    <string name="dialog_update_message">Atualizando dados da moeda…</string>
+    <string name="settings_updating_data">Atualizando dados da moeda…</string>
     <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
     <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
@@ -67,6 +68,7 @@
 
     <string name="settings_update">Atualizo</string>
     <string name="settings_create">Crio</string>
+    <string name="coin_icon">Icone</string>
     <string name="nav_title_manage_widgets">Gerenciar Widgets</string>
     <string name="nav_title_settings">Configurações</string>
     <string name="manage_widgets_empty">Você ainda não criou nenhum widget. Depois de adicionados, eles aparecerão aqui.</string>

@@ -40,6 +40,7 @@ class CoinSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCoinBinding.inflate(layoutInflater)
+        setSupportActionBar(binding.toolbar)
         if (intent.extras == null) {
             finish()
         }

@@ -16,11 +16,12 @@ import kotlin.math.min
 
 object DatabaseInitializer {
 
+    val TAG = DatabaseInitializer::class.simpleName
+
     fun create(db: SupportSQLiteDatabase, globalPrefs: SharedPreferences, prefs: SharedPreferences) {
         val widgets = WidgetApplication.instance.widgetIds
         var minRefresh = Int.MAX_VALUE
         for (widgetId in widgets) {
-            Log.e("TEST", "found widget $widgetId")
             val string = prefs.getString(widgetId.toString(), null) ?: continue
             try {
                 val obj = Gson().fromJson(string, JsonObject::class.java)
@@ -52,8 +53,8 @@ object DatabaseInitializer {
                     minRefresh = min(minRefresh, getString(obj, "refresh")?.toInt() ?: 30)
                 }
                 db.insert("widget", CONFLICT_REPLACE, values)
-            } catch (ignored: Exception) {
-                Log.e("TEST", "exception ignored...")
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception caught when migrating to database.", e)
             }
         }
         val values = ContentValues().apply {
@@ -62,6 +63,8 @@ object DatabaseInitializer {
             put("dataMigrationVersion", 1)
         }
         db.insert("configuration", CONFLICT_REPLACE, values)
+        prefs.edit().clear().apply()
+        globalPrefs.edit().clear().apply()
     }
 
     private fun getString(obj: JsonObject, key: String): String? {

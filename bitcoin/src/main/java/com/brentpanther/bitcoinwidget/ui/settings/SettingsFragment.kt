@@ -115,6 +115,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 entryValues = unitNames
             }
         }
+        downloadCustomIcon()
         viewModel.updateWidget(true)
     }
 
@@ -126,6 +127,87 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 value = data.getDefaultExchange(widget.currency)
             }
         }
+    }
+
+
+    private fun getLocalSymbol(currencyCode: String): String? {
+        val locale = Locale.getAvailableLocales().filter {
+            // find all locales that match this currency code
+            try {
+                Currency.getInstance(it).currencyCode == currencyCode
+            } catch (ignored: Exception) {
+                false
+            }
+        }.minByOrNull {
+            // pick the best currency symbol, which is probably the one that does not match the ISO symbol
+            val symbols = (DecimalFormat.getCurrencyInstance(it) as DecimalFormat).decimalFormatSymbols
+            if (symbols.currencySymbol == symbols.internationalCurrencySymbol) 1 else 0
+        } ?: return null
+        return (DecimalFormat.getCurrencyInstance(locale) as DecimalFormat).decimalFormatSymbols.currencySymbol
+    }
+
+    private fun downloadCustomIcon() = CoroutineScope(Dispatchers.IO).launch {
+        data.coinEntry.getFullIconUrl()?.let {
+            val dir = File(requireContext().filesDir, "icons")
+            if (!dir.exists()) {
+                dir.mkdir()
+            }
+            val file = File(dir, data.coinEntry.iconUrl!!.substringBefore("/"))
+            if (file.exists()) {
+                return@launch
+            }
+
+            val os = ByteArrayOutputStream()
+            val stream = ExchangeHelper.getStream(it)
+            val image = BitmapFactory.decodeStream(stream)
+            image.compress(Bitmap.CompressFormat.PNG, 100, os)
+            file.writeBytes(os.toByteArray())
+            viewModel.updateWidget(false)
+        }
+    }
+
+    //TODO: move these checks
+    private fun checkBatterySaver(): Boolean {
+        return if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
+            // user has battery saver on, warn that widget will be affected
+            val dialogFragment = SettingsDialogFragment.newInstance(
+                R.string.title_warning,
+                R.string.warning_battery_saver,
+                CODE_BATTERY_SAVER,
+                false
+            )
+            dialogFragment.show(parentFragmentManager, "dialog")
+            false
+        } else true
+    }
+
+    private fun checkDataSaver(): Boolean {
+        return if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
+            // user has data saver on, show dialog asking for permission to whitelist
+            val dialogFragment =
+                SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
+            dialogFragment.show(parentFragmentManager, "dialog")
+            false
+        } else true
+    }
+
+    override fun onDialogPositiveClick(code: Int) {
+        (parentFragmentManager.findFragmentByTag("dialog") as DialogFragment).dismissAllowingStateLoss()
+        when (code) {
+            CODE_BATTERY_SAVER -> checkBatterySaver = false
+            CODE_DATA_SAVER -> checkDataSaver = false
+        }
+        viewModel.save()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onDialogNegativeClick() {
+        startActivity(
+            Intent(
+                Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
+                Uri.parse("package:" + requireActivity().packageName)
+            )
+        )
     }
 
     inner class WidgetDataStore(val widget: Widget) : PreferenceDataStore() {
@@ -214,87 +296,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             }
             viewModel.updateWidget(updatePrice)
         }
-    }
-
-
-    private fun getLocalSymbol(currencyCode: String): String? {
-        val locale = Locale.getAvailableLocales().filter {
-            // find all locales that match this currency code
-            try {
-                Currency.getInstance(it).currencyCode == currencyCode
-            } catch (ignored: Exception) {
-                false
-            }
-        }.minByOrNull {
-            // pick the best currency symbol, which is probably the one that does not match the ISO symbol
-            val symbols = (DecimalFormat.getCurrencyInstance(it) as DecimalFormat).decimalFormatSymbols
-            if (symbols.currencySymbol == symbols.internationalCurrencySymbol) 1 else 0
-        } ?: return null
-        return (DecimalFormat.getCurrencyInstance(locale) as DecimalFormat).decimalFormatSymbols.currencySymbol
-    }
-
-    private fun downloadCustomIcon(customIcon: String?) = CoroutineScope(Dispatchers.IO).launch {
-        if (customIcon == null) return@launch
-        data.coinEntry.getFullIconUrl()?.let {
-            val dir = File(requireContext().filesDir, "icons")
-            if (!dir.exists()) {
-                dir.mkdir()
-            }
-            val file = File(dir, customIcon)
-            if (file.exists()) {
-                return@launch
-            }
-
-            val os = ByteArrayOutputStream()
-            val stream = ExchangeHelper.getStream(it)
-            val image = BitmapFactory.decodeStream(stream)
-            image.compress(Bitmap.CompressFormat.PNG, 100, os)
-            file.writeBytes(os.toByteArray())
-        }
-    }
-
-    //TODO: move these checks
-    private fun checkBatterySaver(): Boolean {
-        return if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
-            // user has battery saver on, warn that widget will be affected
-            val dialogFragment = SettingsDialogFragment.newInstance(
-                R.string.title_warning,
-                R.string.warning_battery_saver,
-                CODE_BATTERY_SAVER,
-                false
-            )
-            dialogFragment.show(parentFragmentManager, "dialog")
-            false
-        } else true
-    }
-
-    private fun checkDataSaver(): Boolean {
-        return if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
-            // user has data saver on, show dialog asking for permission to whitelist
-            val dialogFragment =
-                SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
-            dialogFragment.show(parentFragmentManager, "dialog")
-            false
-        } else true
-    }
-
-    override fun onDialogPositiveClick(code: Int) {
-        (parentFragmentManager.findFragmentByTag("dialog") as DialogFragment).dismissAllowingStateLoss()
-        when (code) {
-            CODE_BATTERY_SAVER -> checkBatterySaver = false
-            CODE_DATA_SAVER -> checkDataSaver = false
-        }
-        viewModel.save()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onDialogNegativeClick() {
-        startActivity(
-            Intent(
-                Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
-                Uri.parse("package:" + requireActivity().packageName)
-            )
-        )
     }
 
     companion object {

@@ -83,7 +83,7 @@ class GeneratePartiallySupportedCoins {
         var coin: CoinGeckoCoin? = null
         var tries = 0
         while (coin == null) {
-            Thread.sleep(1500)
+            Thread.sleep(1300)
             try {
                 coin = getCoinData(obj)
                 return Pair(coin, coin.score >= scoreLimit)

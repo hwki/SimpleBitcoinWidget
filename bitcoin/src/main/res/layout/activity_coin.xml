@@ -7,23 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/labelSearch"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@android:color/black"
-            android:text="@string/select_coin"
-            android:textAppearance="@android:style/TextAppearance.Material.Medium"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/search"
