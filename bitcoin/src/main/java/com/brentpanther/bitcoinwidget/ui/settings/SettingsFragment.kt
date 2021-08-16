@@ -26,7 +26,6 @@ import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
-import com.brentpanther.bitcoinwidget.WidgetProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import java.io.ByteArrayOutputStream
@@ -75,7 +74,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             currencySymbol = null,
             theme = Theme.SOLID,
             nightMode = NightMode.SYSTEM,
-            unit = data.coinEntry.coin.getUnits().firstOrNull()?.text,
+            coinUnit = data.coinEntry.coin.getUnits().firstOrNull()?.text,
+            currencyUnit = null,
             customIcon = data.coinEntry.iconUrl?.substringBefore("/"),
             lastUpdated = 0
         )
@@ -107,12 +107,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             entryValues = data.currencies
         }
         updateExchangeValues()
-        if (viewModel.widget?.unit != null) {
+        updateCurrencyUnits()
+        if (viewModel.widget?.coinUnit != null) {
             val unitNames = data.coinEntry.coin.getUnits().map { it.text }.toTypedArray()
-            findPreference<ListPreference>(getString(R.string.key_units))?.apply {
+            findPreference<ListPreference>("units_coin")?.apply {
                 isVisible = true
                 entries = unitNames
                 entryValues = unitNames
+                setSummaryProvider {
+                    getString(R.string.summary_units, data.coinEntry.name, value)
+                }
             }
         }
         downloadCustomIcon()
@@ -125,6 +129,31 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 entryValues = data.getExchanges(widget.currency)
                 entries = entryValues.map { Exchange.valueOf(it.toString()).exchangeName }.toTypedArray()
                 value = data.getDefaultExchange(widget.currency)
+            }
+        }
+    }
+
+    private fun updateCurrencyUnits() {
+        findPreference<ListPreference>("units_currency")?.apply {
+            viewModel.widget?.let {
+                val units = if (it.currency in Coin.COIN_NAMES) {
+                    Coin.valueOf(it.currency).getUnits()
+                } else {
+                    emptyList()
+                }
+                isVisible = if (units.isNotEmpty()) {
+                    val unitNames = units.map { u -> u.text }.toTypedArray()
+                    entries = unitNames
+                    entryValues = unitNames
+                    value = unitNames[0]
+                    setSummaryProvider { _ ->
+                        getString(R.string.summary_units, it.currency, value)
+                    }
+                    true
+                } else {
+                    value = null
+                    false
+                }
             }
         }
     }
@@ -250,7 +279,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     }
                 }
                 "exchange" -> widget.exchange.name
-                "units" -> widget.unit
+                "units_coin" -> widget.coinUnit
+                "units_currency" -> widget.currencyUnit
                 "theme" -> widget.theme.name
                 "nightMode" -> widget.nightMode.name
                 else -> throw IllegalArgumentException()
@@ -262,6 +292,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 "currency" -> {
                     widget.currency = value ?: widget.currency
                     updateExchangeValues()
+                    updateCurrencyUnits()
                     true
                 }
                 "symbol" -> {
@@ -276,8 +307,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     widget.exchange = Exchange.valueOf(value ?: Exchange.COINGECKO.name)
                     true
                 }
-                "units" -> {
-                    widget.unit = value
+                "units_coin" -> {
+                    widget.coinUnit = value
+                    true
+                }
+                "units_currency" -> {
+                    widget.currencyUnit = value
                     true
                 }
                 "theme" -> {

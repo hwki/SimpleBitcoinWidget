@@ -32,7 +32,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     BSV("Bitcoin SV", IconTheme(SOLID, ic_bsv, ic_bsv_gray, ic_bsv_dark, ic_bsv_dark_gray), IconTheme(TRANSPARENT, ic_bsv, ic_bsv_gray, ic_bsv_dark, ic_bsv_dark_gray)),
     BTC("Bitcoin", IconTheme(SOLID, ic_btc, ic_btc_gray, ic_btc_dark, ic_btc_dark_gray), IconTheme(TRANSPARENT, ic_btc, ic_btc_gray, ic_btc_dark, ic_btc_dark_gray)) {
         override fun getUnits(): List<CoinUnit> {
-            return listOf(CoinUnit("BTC", 1.0), CoinUnit("mBTC", .001), CoinUnit("μBTC / bits", .000001), CoinUnit("Satoshis", .00000001))
+            return listOf(CoinUnit("BTC", 1.0), CoinUnit("mBTC", .001), CoinUnit("Bit", .000001), CoinUnit("Sat", .00000001))
         }
     },
     BTG("Bitcoin Gold", IconTheme(SOLID, ic_btg, ic_btg_gray, ic_btg_dark, ic_btg_dark_gray), IconTheme(TRANSPARENT, ic_btg, ic_btg_gray, ic_btg_dark, ic_btg_dark_gray)),
@@ -70,7 +70,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     LSK("Lisk", IconTheme(SOLID, ic_lsk, ic_lsk_gray), IconTheme(TRANSPARENT, ic_lsk, ic_lsk_gray)),
     LTC("Litecoin", IconTheme(SOLID, ic_ltc, ic_ltc_gray), IconTheme(TRANSPARENT, ic_ltc, ic_ltc_gray)) {
         override fun getUnits(): List<CoinUnit> {
-            return listOf(CoinUnit("LTC", 1.0), CoinUnit("lites", .001))
+            return listOf(CoinUnit("LTC", 1.0), CoinUnit("mŁ", .001), CoinUnit("μŁ", .0000001))
         }
     },
     LTO("LTO Network", IconTheme(SOLID, ic_lto, ic_lto_gray), IconTheme(TRANSPARENT, ic_lto, ic_lto_gray)),

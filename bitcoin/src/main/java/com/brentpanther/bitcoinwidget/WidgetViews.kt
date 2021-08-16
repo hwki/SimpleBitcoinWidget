@@ -176,9 +176,11 @@ class WidgetViews(private val context: Context, private val views: WidgetPreview
 
     private fun buildText(amount: String): String {
         var adjustedAmount = amount.toDouble()
-        val unit = settings.widget.unit
-        if (unit != null) {
-            adjustedAmount *= settings.widget.coin.getUnitAmount(unit)
+        settings.widget.coinUnit?.let {
+            adjustedAmount *= settings.widget.coin.getUnitAmount(it)
+        }
+        settings.widget.currencyUnit?.let {
+            adjustedAmount /= Coin.valueOf(settings.widget.currency).getUnitAmount(it)
         }
 
         val nf = getFormat(adjustedAmount)

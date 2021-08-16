@@ -5,9 +5,9 @@ import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
 import android.util.Log
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.NightMode.*
-import com.brentpanther.bitcoinwidget.Theme.*
+import com.brentpanther.bitcoinwidget.Theme.SOLID
+import com.brentpanther.bitcoinwidget.Theme.TRANSPARENT
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -33,6 +33,8 @@ object DatabaseInitializer {
                     "Light" to LIGHT, "Dark" to DARK, "DayNight" to SYSTEM, "Transparent" to LIGHT,
                     "Transparent Dark" to DARK, "Transparent DayNight" to SYSTEM
                 )
+                val unitMap = mapOf("μBTC / bits" to "Bit", "Satoshis" to "Sat", "lites" to "mŁ")
+                val unit = unitMap[getString(obj, "units")] ?: getString(obj, "units")
                 val values = ContentValues().apply {
                     put("widgetId", widgetId)
                     put("exchange", getString(obj, "exchange"))
@@ -46,7 +48,7 @@ object DatabaseInitializer {
                     put("currencySymbol", getString(obj, "currency_symbol"))
                     put("theme", themeMap[getString(obj, "theme") ?: SOLID.name]!!.name)
                     put("nightMode", nightModeMap[getString(obj, "theme") ?: SYSTEM.name]!!.name)
-                    put("unit", getString(obj, "units"))
+                    put("coinUnit", unit)
                     put("customIcon", getString(obj, "custom_icon")?.substringBefore("/"))
                     put("lastValue", getString(obj, "last_value"))
                     put("lastUpdated", 0)

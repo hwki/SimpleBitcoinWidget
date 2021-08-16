@@ -46,9 +46,13 @@
             app:title="@string/title_night_mode" />
         <ListPreference
             app:isPreferenceVisible="false"
-            android:summary="@string/summary_units"
             android:icon="@drawable/ic_decimal_comma"
-            app:key="units"
+            app:key="units_coin"
+            app:title="@string/title_units" />
+        <ListPreference
+            app:isPreferenceVisible="false"
+            android:icon="@drawable/ic_decimal_comma"
+            app:key="units_currency"
             app:title="@string/title_units" />
         <SwitchPreferenceCompat
             app:defaultValue="true"

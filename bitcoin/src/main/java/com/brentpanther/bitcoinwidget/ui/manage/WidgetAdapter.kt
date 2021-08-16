@@ -38,12 +38,16 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
             with(binding) {
                 val preview = LocalWidgetPreview(widgetPreview)
                 val widgetViews = WidgetViews(root.context, preview, widgetSettings)
-                widgetViews.setText(widgetSettings.widget.lastValue, true)
-                // need to find at runtime since view hierarchy updated after binding
-                binding.root.findViewById<View>(R.id.parent).isClickable = false
-                binding.labelCoin.text = root.context.getString(R.string.widget_list_title, widgetSettings.widget.coin.name, widgetSettings.widget.currency)
-                binding.labelExchange.text = widgetSettings.widget.exchange.exchangeName
-                root.setOnClickListener { onClickListener(widgetSettings) }
+                with(widgetSettings.widget) {
+                    widgetViews.setText(lastValue, true)
+                    // need to find at runtime since view hierarchy updated after binding
+                    binding.root.findViewById<View>(R.id.parent).isClickable = false
+                    val coinName = coinUnit ?: currencySymbol ?: coin.name
+                    binding.labelCoin.text = root.context.getString(R.string.widget_list_title, coinName, currency)
+                    binding.labelExchange.text = widgetSettings.widget.exchange.exchangeName
+                    root.setOnClickListener { onClickListener(widgetSettings) }
+                }
+
             }
          
         }

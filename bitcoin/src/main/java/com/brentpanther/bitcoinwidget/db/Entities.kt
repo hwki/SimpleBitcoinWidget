@@ -25,7 +25,8 @@ data class Widget(
     var currencySymbol: String?,
     var theme: Theme,
     var nightMode: NightMode,
-    var unit: String?,
+    var coinUnit: String?,
+    var currencyUnit: String?,
     var customIcon: String?,
     var portraitTextSize: Float? = null,
     var landscapeTextSize: Float? = null,
@@ -33,6 +34,9 @@ data class Widget(
     var lastUpdated: Long
 ) {
     fun toCoinEntry(): CoinEntry {
+        if (coin == Coin.CUSTOM) {
+            return CoinEntry(coin.name, coinCustomName ?: "", coin.name, coin, customIcon)
+        }
         return CoinEntry(coin.name, coin.coinName, coin.name, coin)
     }
 }

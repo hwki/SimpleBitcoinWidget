@@ -8,7 +8,6 @@
 
     <string name="key_currency" translatable="false">currency</string>
     <string name="key_exchange" translatable="false">exchange</string>
-    <string name="key_units" translatable="false">units</string>
 
     <string name="title_fixed_size">Fixed Text Size</string>
     <string name="title_data">Data</string>
@@ -28,10 +27,10 @@
     <string name="title_locale">Symbol</string>
 
     <string name="summary_fixed_size">Keep text size consistent across all widgets</string>
-    <string name="summary_refresh_interval" >Every %s</string>
+    <string name="summary_refresh_interval">Every %s</string>
     <string name="summary_currency">Use %s as currency</string>
     <string name="summary_exchange">Get data from %s</string>
-    <string name="summary_units">Show in %s</string>
+    <string name="summary_units">Show %s as %s</string>
 
     <string-array name="themes">
         <item>Solid</item>

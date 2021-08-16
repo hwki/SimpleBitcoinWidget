@@ -1,7 +1,6 @@
 package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import android.view.View
@@ -11,12 +10,15 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.brentpanther.bitcoinwidget.*
-import com.brentpanther.bitcoinwidget.databinding.LayoutSettingsBinding
-import com.brentpanther.bitcoinwidget.db.*
-import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
 import com.brentpanther.bitcoinwidget.CoinEntry
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.*
+import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.UpdatePriceService
+import com.brentpanther.bitcoinwidget.WidgetViews
+import com.brentpanther.bitcoinwidget.databinding.LayoutSettingsBinding
+import com.brentpanther.bitcoinwidget.db.WidgetSettings
+import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
