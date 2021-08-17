@@ -25,12 +25,25 @@
     <string name="title_units">Denomination</string>
     <string name="title_preview">Preview</string>
     <string name="title_locale">Symbol</string>
+    <string name="title_about">About</string>
 
     <string name="summary_fixed_size">Keep text size consistent across all widgets</string>
     <string name="summary_refresh_interval">Every %s</string>
     <string name="summary_currency">Use %s as currency</string>
     <string name="summary_exchange">Get data from %s</string>
     <string name="summary_units">Show %s as %s</string>
+
+    <string name="licenses" translatable="false"><![CDATA[
+      Licenses:<br/><br/>
+        • AndroidX - Apache 2.0<br/>
+        • Android Material Components - Apache 2.0<br/>
+        • Gson - Apache 2.0<br/>
+        • JsonPath - Apache 2.0<br/>
+        • OkHttp - Apache 2.0<br/><br/>
+        Partial coin data provided by <a href="https://www.coingecko.com">CoinGecko</a>
+    ]]>
+
+    </string>
 
     <string-array name="themes">
         <item>Solid</item>
@@ -99,6 +112,7 @@
 
     <string name="settings_update">Update</string>
     <string name="settings_create">Create</string>
+    <string name="version">Version %s</string>
     <string name="coin_icon">Icon</string>
     <string name="nav_title_manage_widgets">Manage Widgets</string>
     <string name="nav_title_settings">Settings</string>

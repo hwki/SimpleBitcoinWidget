@@ -3,12 +3,13 @@
     <PreferenceCategory
         android:title="@string/title_other">
         <Preference
-            android:icon="@drawable/ic_outline_info_24"
-            android:key="build_info"/>
-        <Preference
             android:icon="@drawable/ic_bitcoin"
             android:key="donate"
             android:summary="@string/summary_donate"
             android:title="@string/title_donate" />
+        <Preference
+            android:title="@string/title_about"
+            android:icon="@drawable/ic_outline_info_24"
+            android:key="build_info"/>
     </PreferenceCategory>
 </PreferenceScreen>

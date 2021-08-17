@@ -5,7 +5,10 @@
         <Preference
             android:icon="@drawable/ic_outline_star_outline_24"
             app:key="rate"
-            app:summary="@string/summary_rate"
-            app:title="@string/title_rate" />
+            app:title="@string/summary_rate" />
+        <Preference
+            android:title="@string/title_about"
+            android:icon="@drawable/ic_outline_info_24"
+            android:key="build_info"/>
     </PreferenceCategory>
 </PreferenceScreen>

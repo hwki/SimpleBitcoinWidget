@@ -1,6 +1,10 @@
 package com.brentpanther.bitcoinwidget.ui.manage
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
@@ -9,8 +13,9 @@ import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import com.brentpanther.bitcoinwidget.BuildConfig
 import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.db.Configuration
 import com.brentpanther.bitcoinwidget.WidgetProvider
+import com.brentpanther.bitcoinwidget.db.Configuration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -30,12 +35,25 @@ open class BaseManageSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    @SuppressLint("InflateParams")
     private fun loadPreferences(config: Configuration, rootKey: String?) {
         preferenceManager.preferenceDataStore = ConfigDataStore(config)
         setPreferencesFromResource(R.xml.global_preferences, rootKey)
         addPreferencesFromResource(R.xml.additional_global_preferences)
         loadAdditionalPreferences()
-        findPreference<Preference>("build_info")?.title = "v${BuildConfig.VERSION_NAME}"
+        findPreference<Preference>("build_info")?.apply {
+            summary = getString(R.string.version, BuildConfig.VERSION_NAME)
+            setOnPreferenceClickListener {
+                MaterialAlertDialogBuilder(requireContext()).apply {
+                    val view = layoutInflater.inflate(R.layout.layout_license, null) as TextView
+                    view.movementMethod = LinkMovementMethod.getInstance()
+                    view.setText(HtmlCompat.fromHtml(getString(R.string.licenses), HtmlCompat.FROM_HTML_MODE_COMPACT), TextView.BufferType.SPANNABLE)
+                    setView(view)
+                    show()
+                }
+                true
+            }
+        }
         findPreference<ListPreference>("refresh_interval")?.setSummaryProvider {
             val pref = (it as ListPreference)
             getString(R.string.summary_refresh_interval, pref.entries[pref.findIndexOfValue(pref.value)])

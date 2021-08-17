@@ -22,6 +22,7 @@
     <string name="title_units">Denominação</string>
     <string name="title_preview">Prévia</string>
     <string name="title_locale">Símbolo</string>
+    <string name="title_about">Acerca</string>
 
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets</string>
     <string name="summary_refresh_interval">A cada %s</string>
@@ -68,6 +69,7 @@
 
     <string name="settings_update">Atualizo</string>
     <string name="settings_create">Crio</string>
+    <string name="version">Versão %s</string>
     <string name="coin_icon">Icone</string>
     <string name="nav_title_manage_widgets">Gerenciar Widgets</string>
     <string name="nav_title_settings">Configurações</string>
