@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="widget_name">Widget Simples</string>
+    <string name="widget_price_name">Widget Preço</string>
     <string name="new_widget">Novo %s Widget</string>
     <string name="edit_widget">Editar %s Widget</string>
     <string name="add_widget">Adicionar Widget</string>
@@ -78,5 +78,6 @@
 
     <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
     <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
+    <string name="description_price_widget">Preço Atual</string>
 
 </resources>

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
-    <string name="widget_name">Simple Widget</string>
+    <string name="widget_price_name">Price Widget</string>
     <string name="new_widget">New %s Widget</string>
     <string name="edit_widget">Edit %s Widget</string>
     <string name="select_coin">Select Coin</string>
@@ -121,6 +121,7 @@
 
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
     <string name="state_error">Unable to update price. This may an issue with the exchange.</string>
-    <string name="placeholder_price" translatable="false">$-,---</string>
+    <string name="placeholder_price" translatable="false">$1,000</string>
+    <string name="description_price_widget">Current Price</string>
 
 </resources>

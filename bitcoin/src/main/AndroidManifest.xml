@@ -38,7 +38,7 @@
 
         <receiver
             android:name=".WidgetProvider"
-            android:label="@string/widget_name"
+            android:label="@string/widget_price_name"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -46,7 +46,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widgetinfo" />
+                android:resource="@xml/widget_price" />
         </receiver>
 
         <activity

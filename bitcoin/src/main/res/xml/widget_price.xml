@@ -6,11 +6,15 @@
     android:minHeight="40dp"
     android:minResizeWidth="40dp"
     android:minResizeHeight="40dp"
+    android:targetCellHeight="1"
+    android:targetCellWidth="2"
     android:initialLayout="@layout/widget_solid_light"
     android:widgetCategory="home_screen|keyguard"
     android:initialKeyguardLayout="@layout/widget_solid_light"
     android:resizeMode="vertical|horizontal"
     android:previewImage="@mipmap/ic_launcher"
+    android:previewLayout="@layout/widget_solid_light"
     android:widgetFeatures="reconfigurable"
     android:configure="com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity"
-    tools:targetApi="p" />
+    android:description="@string/description_price_widget"
+    tools:targetApi="s" />

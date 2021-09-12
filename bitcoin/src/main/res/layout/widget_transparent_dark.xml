@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#88000000">
+    android:theme="@style/Theme.MyApp.WidgetContainer.Dark.Transparent">
 
     <LinearLayout
         android:id="@+id/parent"
