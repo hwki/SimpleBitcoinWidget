@@ -90,7 +90,7 @@ open class BaseManageSettingsFragment : PreferenceFragmentCompat() {
                 "refresh_interval" -> config.refresh = value?.toInt() ?: 30
             }
             viewModel.updateGlobalSettings(config)
-            WidgetProvider.refreshWidgets(requireContext())
+            WidgetProvider.refreshWidgets(requireContext(), restart = true)
         }
     }
 

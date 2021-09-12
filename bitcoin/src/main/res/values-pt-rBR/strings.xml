@@ -76,4 +76,7 @@
     <string name="manage_widgets_empty">Você ainda não criou nenhum widget. Depois de adicionados, eles aparecerão aqui.</string>
     <string name="widget_list_title">%1$s / %2$s</string>
 
+    <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
+    <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
+
 </resources>

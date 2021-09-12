@@ -382,7 +382,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun cryptocom(): List<String> {
-        return parse("https://uat-api.3ona.co/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
+        return parse("https://api.crypto.com/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
     }
 
     private fun deversifi(): List<String> {

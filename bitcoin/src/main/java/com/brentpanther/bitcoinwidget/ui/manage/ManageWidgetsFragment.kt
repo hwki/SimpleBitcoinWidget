@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -20,9 +19,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
 import com.brentpanther.bitcoinwidget.WidgetProvider
-import com.brentpanther.bitcoinwidget.CoinEntry
+import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
 import com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsActivity
 import kotlinx.coroutines.flow.collect
@@ -77,7 +75,12 @@ class ManageWidgetsFragment : Fragment() {
             binding.add.setOnClickListener {
                 val myProvider = ComponentName(requireContext(), WidgetProvider::class.java)
                 val intent = Intent(requireContext().applicationContext, CoinSelectionActivity::class.java)
-                val pendingIntent = PendingIntent.getActivity(requireContext().applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+                } else {
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                }
+                val pendingIntent = PendingIntent.getActivity(requireContext().applicationContext, 123, intent, flags)
                 appWidgetManager.requestPinAppWidget(myProvider, null, pendingIntent)
             }
         }

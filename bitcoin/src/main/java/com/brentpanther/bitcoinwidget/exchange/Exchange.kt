@@ -429,7 +429,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     CRYPTO("Crypto.com") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://uat-api.3ona.co/v2/public/get-ticker?instrument_name=${coin}_$currency"
+            val url = "https://api.crypto.com/v2/public/get-ticker?instrument_name=${coin}_$currency"
             return getJsonObject(url).getAsJsonObject("result").getAsJsonObject("data").get("a").asString
         }
     },

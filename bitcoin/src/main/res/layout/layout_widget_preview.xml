@@ -31,7 +31,9 @@
         app:layout_constraintWidth_percent=".4">
 
         <include
-            android:id="@+id/widgetLayout" layout="@layout/widget_layout"/>
+            android:id="@+id/widgetLayout"
+            layout="@layout/widget_solid_light"
+            android:visibility="gone" />
 
     </FrameLayout>
 

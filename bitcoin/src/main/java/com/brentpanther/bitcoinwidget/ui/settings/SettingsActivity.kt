@@ -3,7 +3,6 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -12,15 +11,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.UpdatePriceService
-import com.brentpanther.bitcoinwidget.WidgetViews
+import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.databinding.LayoutSettingsBinding
-import com.brentpanther.bitcoinwidget.db.WidgetSettings
-import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
+import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.strategy.PreviewWidgetPresenter
+import com.brentpanther.bitcoinwidget.strategy.PriceWidgetDataStrategy
+import com.brentpanther.bitcoinwidget.strategy.SolidPriceWidgetDisplayStrategy
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -68,25 +66,24 @@ class SettingsActivity : AppCompatActivity() {
                     }
                 }
                 viewModel.widgetPreviewFlow.collectLatest {
-                    updateWidget(it)
+                    updateWidget(it.widget, it.refreshPrice)
                 }
             }
         }
     }
 
-    private suspend fun updateWidget(widgetSettings: WidgetSettings) {
-        binding.widgetPreview.widgetContainer.removeAllViews()
-        View.inflate(this, widgetSettings.widget.theme.layout, binding.widgetPreview.widgetContainer)
-        val views = LocalWidgetPreview(binding.widgetPreview)
-        val widgetViews = WidgetViews(applicationContext, views, widgetSettings)
-        if (widgetSettings.refreshPrice) {
-            val amount = lifecycleScope.async(Dispatchers.IO) {
-                UpdatePriceService.updateValue(widgetSettings.widget)
-            }
-            widgetViews.setText(amount.await(), true)
-        } else {
-            widgetViews.setText(widgetSettings.widget.lastValue, true)
+    private suspend fun updateWidget(widget: Widget, refreshPrice: Boolean) {
+        if (refreshPrice) {
+            val strategy = PriceWidgetDataStrategy(this, 0)
+            strategy.widget = widget
+            strategy.loadData(manual = false, force = true)
         }
+        if (widget.state != WidgetState.CURRENT) {
+            widget.lastValue = null
+        }
+        val widgetPresenter = PreviewWidgetPresenter(widget, binding.widgetPreview)
+        val displayStrategy = SolidPriceWidgetDisplayStrategy(this, widget, widgetPresenter)
+        displayStrategy.refresh()
     }
 
     companion object {

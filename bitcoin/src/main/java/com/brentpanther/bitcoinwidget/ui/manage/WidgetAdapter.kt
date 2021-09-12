@@ -3,12 +3,14 @@ package com.brentpanther.bitcoinwidget.ui.manage
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.WidgetViews
 import com.brentpanther.bitcoinwidget.databinding.ListItemManageWidgetBinding
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
-import com.brentpanther.bitcoinwidget.ui.preview.LocalWidgetPreview
+import com.brentpanther.bitcoinwidget.strategy.PreviewWidgetPresenter
+import com.brentpanther.bitcoinwidget.strategy.SolidPriceWidgetDisplayStrategy
 
 class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> Unit)) :
     RecyclerView.Adapter<WidgetAdapter.MyViewHolder>() {
@@ -27,7 +29,7 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return widgets[position].widget.theme.layout
+        return widgets[position].widget.theme.light
     }
 
     override fun getItemCount() = widgets.count()
@@ -36,18 +38,19 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
 
         fun bind(widgetSettings: WidgetSettings, onClickListener: (settings: WidgetSettings) -> Unit) {
             with(binding) {
-                val preview = LocalWidgetPreview(widgetPreview)
-                val widgetViews = WidgetViews(root.context, preview, widgetSettings)
-                with(widgetSettings.widget) {
-                    widgetViews.setText(lastValue, true)
-                    // need to find at runtime since view hierarchy updated after binding
-                    binding.root.findViewById<View>(R.id.parent).isClickable = false
-                    val coinName = coinUnit ?: currencySymbol ?: coin.name
-                    binding.labelCoin.text = root.context.getString(R.string.widget_list_title, coinName, currency)
-                    binding.labelExchange.text = widgetSettings.widget.exchange.exchangeName
-                    root.setOnClickListener { onClickListener(widgetSettings) }
-                }
+                val widget = widgetSettings.widget
+                val widgetPresenter = PreviewWidgetPresenter(widget, this.widgetPreview)
+                val strategy = SolidPriceWidgetDisplayStrategy(binding.root.context, widget, widgetPresenter)
+                strategy.refresh()
 
+                // need to find at runtime since view hierarchy updated after binding
+                binding.root.findViewById<View>(R.id.parent).isClickable = false
+                val coinName = widget.coinUnit ?: widget.currencySymbol ?: widget.coin.name
+                val price = binding.root.findViewById<TextView>(R.id.price)
+                TextViewCompat.setAutoSizeTextTypeWithDefaults(price, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                binding.labelCoin.text = root.context.getString(R.string.widget_list_title, coinName, widget.currency)
+                binding.labelExchange.text = widget.exchange.exchangeName
+                root.setOnClickListener { onClickListener(widgetSettings) }
             }
          
         }

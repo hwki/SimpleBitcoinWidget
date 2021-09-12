@@ -77,7 +77,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             coinUnit = data.coinEntry.coin.getUnits().firstOrNull()?.text,
             currencyUnit = null,
             customIcon = data.coinEntry.iconUrl?.substringBefore("/"),
-            lastUpdated = 0
+            lastUpdated = 0,
+            state = WidgetState.CURRENT
         )
         viewModel.widget?.let {
             preferenceManager.preferenceDataStore = WidgetDataStore(it)
@@ -94,8 +95,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     it.lastUpdated = 0
                     WidgetDatabase.getInstance(requireContext()).widgetDao().insert(it)
                 }
+                WidgetProvider.refreshWidgets(requireContext())
             }
-            WidgetProvider.refreshWidgets(requireActivity(), listOf(viewModel.widgetId))
             requireActivity().setResult(Activity.RESULT_OK)
             requireActivity().finish()
         }
@@ -128,7 +129,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             viewModel.widget?.let { widget ->
                 entryValues = data.getExchanges(widget.currency)
                 entries = entryValues.map { Exchange.valueOf(it.toString()).exchangeName }.toTypedArray()
-                value = data.getDefaultExchange(widget.currency)
+                if (!entryValues.contains(value)) {
+                    value = data.getDefaultExchange(widget.currency)
+                }
             }
         }
     }
@@ -193,31 +196,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             file.writeBytes(os.toByteArray())
             viewModel.updateWidget(false)
         }
-    }
-
-    //TODO: move these checks
-    private fun checkBatterySaver(): Boolean {
-        return if (NetworkStatusHelper.checkBattery(requireContext()) > 0) {
-            // user has battery saver on, warn that widget will be affected
-            val dialogFragment = SettingsDialogFragment.newInstance(
-                R.string.title_warning,
-                R.string.warning_battery_saver,
-                CODE_BATTERY_SAVER,
-                false
-            )
-            dialogFragment.show(parentFragmentManager, "dialog")
-            false
-        } else true
-    }
-
-    private fun checkDataSaver(): Boolean {
-        return if (NetworkStatusHelper.checkBackgroundData(requireContext()) > 0) {
-            // user has data saver on, show dialog asking for permission to whitelist
-            val dialogFragment =
-                SettingsDialogFragment.newInstance(R.string.title_warning, R.string.warning_data_saver, CODE_DATA_SAVER)
-            dialogFragment.show(parentFragmentManager, "dialog")
-            false
-        } else true
     }
 
     override fun onDialogPositiveClick(code: Int) {
@@ -301,7 +279,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                         "NONE" -> "none"
                         else -> getLocalSymbol(widget.currency)
                     }
-                    true
+                    false
                 }
                 "exchange" -> {
                     widget.exchange = Exchange.valueOf(value ?: Exchange.COINGECKO.name)

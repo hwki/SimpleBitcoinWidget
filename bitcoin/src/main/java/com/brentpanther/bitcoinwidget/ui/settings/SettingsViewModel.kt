@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Repository
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
@@ -15,7 +16,6 @@ import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
 import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
-import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
 import com.google.gson.JsonSyntaxException
@@ -93,9 +93,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun save() {
-//        viewModelScope.launch {
-            saveWidgetFlow.postValue(true)
-//        }
+        saveWidgetFlow.postValue(true)
     }
 
     sealed class DataState {

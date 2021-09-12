@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6cc610988f69ef1e8327d3f08512b623",
+    "identityHash": "2288296edd8c56ee1af77a005e69e509",
     "entities": [
       {
         "tableName": "Widget",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `exchange` TEXT NOT NULL, `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `showDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, `nightMode` TEXT NOT NULL, `coinUnit` TEXT, `currencyUnit` TEXT, `customIcon` TEXT, `portraitTextSize` REAL, `landscapeTextSize` REAL, `lastValue` TEXT, `lastUpdated` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `exchange` TEXT NOT NULL, `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `showDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, `nightMode` TEXT NOT NULL, `coinUnit` TEXT, `currencyUnit` TEXT, `customIcon` TEXT, `portraitTextSize` INTEGER, `landscapeTextSize` INTEGER, `lastValue` TEXT, `lastUpdated` INTEGER NOT NULL, `state` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -107,13 +107,13 @@
           {
             "fieldPath": "portraitTextSize",
             "columnName": "portraitTextSize",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
             "fieldPath": "landscapeTextSize",
             "columnName": "landscapeTextSize",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -126,6 +126,12 @@
             "fieldPath": "lastUpdated",
             "columnName": "lastUpdated",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -189,7 +195,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6cc610988f69ef1e8327d3f08512b623')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2288296edd8c56ee1af77a005e69e509')"
     ]
   }
 }

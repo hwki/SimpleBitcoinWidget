@@ -9,6 +9,7 @@ import com.brentpanther.bitcoinwidget.NightMode.*
 import com.brentpanther.bitcoinwidget.Theme.SOLID
 import com.brentpanther.bitcoinwidget.Theme.TRANSPARENT
 import com.brentpanther.bitcoinwidget.WidgetApplication
+import com.brentpanther.bitcoinwidget.WidgetState
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import java.util.*
@@ -52,6 +53,7 @@ object DatabaseInitializer {
                     put("customIcon", getString(obj, "custom_icon")?.substringBefore("/"))
                     put("lastValue", getString(obj, "last_value"))
                     put("lastUpdated", 0)
+                    put("state", WidgetState.CURRENT.name)
                     minRefresh = min(minRefresh, getString(obj, "refresh")?.toInt() ?: 30)
                 }
                 db.insert("widget", CONFLICT_REPLACE, values)

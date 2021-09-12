@@ -1,6 +1,5 @@
 package com.brentpanther.bitcoinwidget.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -34,12 +33,6 @@ interface WidgetDao {
     @Query("SELECT * FROM widget ORDER BY widgetId")
     fun getAllAsFlow() : Flow<List<Widget>>
 
-    @Query("UPDATE widget SET lastUpdated = :time WHERE widgetId = :widgetId")
-    suspend fun markUpdated(widgetId: Int, time: Long = System.currentTimeMillis())
-
-    @Query("UPDATE widget SET lastValue = null AND lastUpdated = 0")
-    suspend fun resetWidgets()
-
     @Query("DELETE FROM widget WHERE widgetId IN(:widgetIds)")
     suspend fun delete(widgetIds: IntArray)
 
@@ -48,6 +41,9 @@ interface WidgetDao {
 
     @Update
     suspend fun update(config: Configuration)
+
+    @Query("DELETE FROM widget")
+    suspend fun clear()
 
 
 }

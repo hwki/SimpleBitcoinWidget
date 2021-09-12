@@ -6,10 +6,12 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import androidx.core.content.FileProvider
-import com.brentpanther.bitcoinwidget.receiver.ConfigChangeReceiver
-import java.io.File
-
+import androidx.core.net.toUri
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.receiver.WidgetBroadcastReceiver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WidgetApplication : Application() {
 
@@ -23,13 +25,18 @@ class WidgetApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        registerReceiver(ConfigChangeReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
+        registerReceiver(WidgetBroadcastReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
         grantUriAccessToWidget()
+        // in case of stuck entries in the database
+        if (widgetIds.isEmpty()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                WidgetDatabase.getInstance(this@WidgetApplication).widgetDao().clear()
+            }
+        }
     }
 
     private fun grantUriAccessToWidget() {
-        val path = File(File(filesDir, "icons"), "1")
-        val uri = FileProvider.getUriForFile(this, "com.brentpanther.bitcoinwidget.fileprovider", path)
+        val uri = "content://${packageName}.fileprovider/icons/".toUri()
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
         val launcher = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#111">
+
+    <LinearLayout
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/space_top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="15"
+            android:scrollbars="none"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="17"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_btc_dark"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="80"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/placeholder_price"
+                android:textColor="#777"
+                android:textIsSelectable="false"
+                android:typeface="sans"
+                android:visibility="gone"
+                tools:targetApi="o" />
+
+            <!-- needed because we can't turn off autosizing via remoteviews -->
+            <TextView
+                android:id="@+id/priceAutoSize"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="80"
+                android:autoSizeMinTextSize="4sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/placeholder_price"
+                android:textColor="#777"
+                android:textIsSelectable="false"
+                android:typeface="sans"
+                tools:targetApi="o" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="15"
+            android:autoSizeMinTextSize="4sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center|top"
+            tools:text="coingecko"
+            android:textColor="#777"
+            android:visibility="visible"
+            tools:targetApi="o" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/state"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_outline_stale"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="4dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"
+        android:visibility="gone" />
+
+</FrameLayout>

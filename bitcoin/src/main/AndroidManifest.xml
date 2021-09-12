@@ -34,7 +34,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receiver.PriceBroadcastReceiver" />
+        <receiver android:name=".receiver.WidgetBroadcastReceiver"/>
+
         <receiver
             android:name=".WidgetProvider"
             android:label="@string/widget_name"
@@ -47,20 +48,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
         </receiver>
-        <receiver
-            android:name=".receiver.UpgradeBroadcastReceiver"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name=".UpdatePriceService"
-            android:exported="true"
-            android:foregroundServiceType="dataSync"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:exported="false"
@@ -74,13 +61,14 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.brentpanther.bitcoinwidget.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
     </application>
 
 </manifest>

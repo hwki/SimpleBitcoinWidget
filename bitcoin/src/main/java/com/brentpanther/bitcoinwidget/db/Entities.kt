@@ -1,13 +1,9 @@
 package com.brentpanther.bitcoinwidget.db
 
-import android.os.Build
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.CoinEntry
-import com.brentpanther.bitcoinwidget.NightMode
-import com.brentpanther.bitcoinwidget.Theme
+import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 
 @Entity(indices = [Index(value=["widgetId"], unique=true)])
@@ -28,16 +24,26 @@ data class Widget(
     var coinUnit: String?,
     var currencyUnit: String?,
     var customIcon: String?,
-    var portraitTextSize: Float? = null,
-    var landscapeTextSize: Float? = null,
+    var portraitTextSize: Int? = null,
+    var landscapeTextSize: Int? = null,
     var lastValue: String? = null,
-    var lastUpdated: Long
+    var lastUpdated: Long,
+    var state: WidgetState
 ) {
-    fun toCoinEntry(): CoinEntry {
-        if (coin == Coin.CUSTOM) {
-            return CoinEntry(coin.name, coinCustomName ?: "", coin.name, coin, customIcon)
+    fun toCoinEntry() = CoinEntry(coin.name, coinCustomName ?: coin.coinName, coin.name, coin, customIcon)
+
+    fun isOld(refresh: Int) = System.currentTimeMillis() - lastUpdated > (60000 * refresh * 1.5)
+
+    fun shouldRefresh(refresh: Int, manual: Boolean): Boolean {
+        // if this is a manual refresh, don't pull down new data if its been less than
+        // 60 seconds since last time, to avoid HTTP 429 errors
+        // otherwise, refresh if its close enough to the scheduled refresh time
+        val since = System.currentTimeMillis() - lastUpdated
+        return if (manual) {
+            since > 60000
+        } else {
+            since > (60000 * refresh * .25)
         }
-        return CoinEntry(coin.name, coin.coinName, coin.name, coin)
     }
 }
 
@@ -49,12 +55,11 @@ data class Configuration(
     var dataMigrationVersion: Int
 )
 
-data class ConfigurationWithSizes(var refresh: Int, var consistentSize: Boolean, var portrait: Float, val landscape: Float)
+data class ConfigurationWithSizes(var refresh: Int, var consistentSize: Boolean, var portrait: Int, val landscape: Int)
 
 data class WidgetSettings(val widget: Widget, val config: ConfigurationWithSizes, val refreshPrice: Boolean = true,
                           val alwaysCurrent: Boolean = false)  {
-    fun isOld(): Boolean = !alwaysCurrent && System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * 1.5)
     fun shouldRefresh() = System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * .25)
     fun throttled() = System.currentTimeMillis() - widget.lastUpdated < 120000
-    fun useAutoSizing() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !config.consistentSize
+
 }

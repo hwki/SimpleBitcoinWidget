@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -35,8 +36,9 @@ internal class CoinSelectionAdapter(private val onClickListener: ((coin: CoinEnt
     internal class MyViewHolder(private val binding: ViewCoinSelectorBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(entry: CoinEntry, onClickListener: ((coin: CoinEntry) -> Unit)) {
+            val isNightMode = (binding.root.context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
             with(binding) {
-                coinIcon.setImageResource(entry.coin.getIcon(Theme.SOLID, dark =false, old = false))
+                coinIcon.setImageResource(entry.coin.getIcon(Theme.SOLID, isNightMode))
                 coinName.text = entry.name
                 coinSymbol.text = entry.symbol
                 root.setOnClickListener { onClickListener(entry) }

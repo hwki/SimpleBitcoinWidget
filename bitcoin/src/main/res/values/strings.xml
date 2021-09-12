@@ -119,5 +119,8 @@
     <string name="manage_widgets_empty">You haven\'t created any widgets yet. Once added they will appear here.</string>
     <string name="widget_list_title">%1$s / %2$s</string>
 
+    <string name="state_stale">Price is outdated. Check your internet connection.</string>
+    <string name="state_error">Unable to update price. This may an issue with the exchange.</string>
+    <string name="placeholder_price" translatable="false">$-,---</string>
 
 </resources>
