@@ -34,7 +34,7 @@ class SettingsActivity : AppCompatActivity() {
         binding = LayoutSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        setResult(Activity.RESULT_CANCELED)
+        setResult(Activity.RESULT_CANCELED, intent)
         val extras = intent.extras!!
         viewModel.widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)
         coin = extras.getParcelable(EXTRA_COIN) ?: throw IllegalArgumentException()

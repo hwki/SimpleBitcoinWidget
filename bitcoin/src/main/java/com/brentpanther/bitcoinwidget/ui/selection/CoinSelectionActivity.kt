@@ -29,11 +29,16 @@ class CoinSelectionActivity : AppCompatActivity() {
 
     private val activityLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
+            // user updated widget
             Intent().apply {
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
                 setResult(Activity.RESULT_OK, this)
                 finish()
             }
+        } else if (it.data?.getBooleanExtra(SettingsActivity.EXTRA_EDIT_WIDGET, false) == true) {
+            // user pressed back after reconfiguring widget
+            setResult(Activity.RESULT_CANCELED)
+            finish()
         }
     }
 
@@ -48,7 +53,6 @@ class CoinSelectionActivity : AppCompatActivity() {
         job = lifecycleScope.launch {
             viewModel.getWidget(widgetId).collect {
                 if (it != null) {
-                    finish()
                     coinSelected(it.toCoinEntry(), true)
                 } else {
                     setContentView(binding.root)
@@ -74,14 +78,15 @@ class CoinSelectionActivity : AppCompatActivity() {
     }
 
     private fun coinSelected(it: CoinEntry, edit: Boolean) {
-        val intent = Intent(this, SettingsActivity::class.java)
-        intent.putExtra(SettingsActivity.EXTRA_COIN, it)
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        if (edit) {
-            intent.putExtra(SettingsActivity.EXTRA_EDIT_WIDGET, true)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+        Intent(this, SettingsActivity::class.java).apply {
+            putExtra(SettingsActivity.EXTRA_COIN, it)
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            if (edit) {
+                putExtra(SettingsActivity.EXTRA_EDIT_WIDGET, true)
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY
+            }
+            activityLaunch.launch(this)
         }
-        this.activityLaunch.launch(intent)
     }
 
 }
