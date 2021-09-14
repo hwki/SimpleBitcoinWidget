@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="appWidgetRadius" format="dimension"/>
-    <attr name="appBackgroundColor" format="color"/>
+    <attr name="appWidgetBackgroundColor" format="color"/>
+    <attr name="appWidgetDefaultIcon" format="reference"/>
+    <attr name="appWidgetLoadingColor" format="color"/>
+    <attr name="appWidgetTextStyle" format="reference"/>
+    <attr name="appWidgetSecondaryTextStyle" format="reference"/>
 </resources>

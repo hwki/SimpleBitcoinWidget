@@ -3,9 +3,11 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -84,6 +86,8 @@ class SettingsActivity : AppCompatActivity() {
         val widgetPresenter = PreviewWidgetPresenter(widget, binding.widgetPreview)
         val displayStrategy = SolidPriceWidgetDisplayStrategy(this, widget, widgetPresenter)
         displayStrategy.refresh()
+        val price = binding.root.findViewById<TextView>(R.id.price)
+        TextViewCompat.setAutoSizeTextTypeWithDefaults(price, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
     }
 
     companion object {

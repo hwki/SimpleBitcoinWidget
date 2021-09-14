@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SolidWidgetText">
+        <item name="android:textColor">#777</item>
+    </style>
+
+    <style name="SolidWidgetText.DarkTransparent">
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="SolidWidgetText.Transparent">
+        <item name="android:shadowColor">#333</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">6</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+</resources>

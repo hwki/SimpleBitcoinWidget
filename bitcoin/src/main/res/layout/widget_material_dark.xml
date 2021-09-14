@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_widget_solid"
-    android:theme="@style/Theme.MyApp.WidgetContainer.Dark.Transparent">
+    android:theme="@style/Theme.MyApp.WidgetContainer.Dark.Material">
 
     <include layout="@layout/widget_solid" />
 

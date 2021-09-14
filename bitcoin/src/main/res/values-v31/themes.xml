@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.MyApp.WidgetContainer" parent="@android:style/Theme.DeviceDefault">
+
+    <style name="Theme.MyApp.WidgetContainer" parent="@android:style/Theme.DeviceDefault.DayNight">
         <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText</item>
     </style>
+
+    <style name="Theme.MyApp.WidgetContainer.Light.Material">
+        <item name="appWidgetBackgroundColor">@android:color/system_accent2_50</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText.LightMaterial</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.LightMaterial.Secondary</item>
+        <item name="appWidgetLoadingColor">@android:color/system_accent2_600</item>
+    </style>
+
+
 </resources>

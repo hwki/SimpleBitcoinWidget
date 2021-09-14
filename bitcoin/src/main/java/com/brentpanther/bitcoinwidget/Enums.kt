@@ -11,7 +11,8 @@ import kotlinx.parcelize.Parcelize
 enum class Theme(@LayoutRes val light: Int, @LayoutRes val dark: Int) : Parcelable {
 
     SOLID(R.layout.widget_solid_light, R.layout.widget_solid_dark),
-    TRANSPARENT(R.layout.widget_transparent_light, R.layout.widget_transparent_dark);
+    TRANSPARENT(R.layout.widget_transparent_light, R.layout.widget_transparent_dark),
+    MATERIAL(R.layout.widget_material_light, R.layout.widget_material_dark);
 
     fun getLayout(isDark: Boolean) = if (isDark) dark else light
 }
