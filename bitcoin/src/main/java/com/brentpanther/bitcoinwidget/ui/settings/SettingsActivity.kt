@@ -19,6 +19,7 @@ import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.PreviewWidgetPresenter
 import com.brentpanther.bitcoinwidget.strategy.PriceWidgetDataStrategy
 import com.brentpanther.bitcoinwidget.strategy.SolidPriceWidgetDisplayStrategy
+import com.brentpanther.bitcoinwidget.ui.BannerInflater
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
 import kotlinx.coroutines.flow.collect

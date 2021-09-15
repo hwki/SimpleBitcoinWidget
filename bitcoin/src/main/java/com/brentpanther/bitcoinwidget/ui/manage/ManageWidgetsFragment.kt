@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
+import com.brentpanther.bitcoinwidget.ui.BannerInflater
 import com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsActivity
 import kotlinx.coroutines.flow.collect

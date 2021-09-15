@@ -1,7 +1,8 @@
 package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.liveData
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.R

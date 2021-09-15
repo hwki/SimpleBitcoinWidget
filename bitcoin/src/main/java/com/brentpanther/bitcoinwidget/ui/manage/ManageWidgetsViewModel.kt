@@ -8,7 +8,6 @@ import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine

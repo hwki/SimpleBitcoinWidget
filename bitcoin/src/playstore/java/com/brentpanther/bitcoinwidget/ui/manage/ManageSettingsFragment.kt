@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.core.net.toUri
 import androidx.preference.Preference
-import com.brentpanther.bitcoinwidget.R
 
 class ManageSettingsFragment : BaseManageSettingsFragment() {
 

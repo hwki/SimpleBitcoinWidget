@@ -1,7 +1,6 @@
 package com.brentpanther.bitcoinwidget
 
 import android.os.Parcelable
-import com.brentpanther.bitcoinwidget.Coin
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
