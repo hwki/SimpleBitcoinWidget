@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.strategy
+package com.brentpanther.bitcoinwidget.strategy.data
 
 import android.content.Context
 import android.util.Log
@@ -49,6 +49,6 @@ class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrat
     }
 
     companion object {
-        private val TAG = this::class.java.simpleName
+        private val TAG = PriceWidgetDataStrategy::class.java.simpleName
     }
 }

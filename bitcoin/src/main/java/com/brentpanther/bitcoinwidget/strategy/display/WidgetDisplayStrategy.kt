@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.strategy
+package com.brentpanther.bitcoinwidget.strategy.display
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -9,6 +9,7 @@ import android.util.TypedValue
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 

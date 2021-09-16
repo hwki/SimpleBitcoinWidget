@@ -13,7 +13,7 @@ object Repository {
 
     private const val LAST_MODIFIED = "last_modified"
     const val CURRENCY_FILE_NAME = "coins.json"
-    private val TAG = this::class.java.simpleName
+    private val TAG = Repository::class.java.simpleName
 
     fun downloadJSON(context: Context) {
         try {

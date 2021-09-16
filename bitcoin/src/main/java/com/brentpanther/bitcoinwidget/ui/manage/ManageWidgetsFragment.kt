@@ -44,6 +44,7 @@ class ManageWidgetsFragment : Fragment() {
             intent.putExtra(SettingsActivity.EXTRA_COIN, coinEntry)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, it.widget.widgetId)
             intent.putExtra(SettingsActivity.EXTRA_EDIT_WIDGET, true)
+            intent.putExtra(SettingsActivity.EXTRA_FROM_MANAGE, true)
             startActivity(intent)
         }
         binding.listWidgets.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -51,6 +52,7 @@ class ManageWidgetsFragment : Fragment() {
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                BannerInflater().inflate(layoutInflater, binding.layoutBanners)
                 viewModel.getWidgets().distinctUntilChanged().collect {
                     binding.progress.isVisible = false
                     adapter.widgets = it

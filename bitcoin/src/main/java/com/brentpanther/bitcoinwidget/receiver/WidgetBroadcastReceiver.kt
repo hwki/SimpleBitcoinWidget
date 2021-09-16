@@ -10,7 +10,7 @@ import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.WidgetUpdater
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
-import com.brentpanther.bitcoinwidget.strategy.RemoteWidgetPresenter
+import com.brentpanther.bitcoinwidget.strategy.presenter.RemoteWidgetPresenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

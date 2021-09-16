@@ -1,8 +1,9 @@
-package com.brentpanther.bitcoinwidget.strategy
+package com.brentpanther.bitcoinwidget.strategy.display
 
 import android.content.Context
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*

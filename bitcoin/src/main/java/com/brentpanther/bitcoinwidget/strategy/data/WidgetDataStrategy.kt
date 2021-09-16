@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.strategy
+package com.brentpanther.bitcoinwidget.strategy.data
 
 import android.content.Context
 import com.brentpanther.bitcoinwidget.db.Widget

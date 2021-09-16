@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.strategy
+package com.brentpanther.bitcoinwidget.strategy.presenter
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager

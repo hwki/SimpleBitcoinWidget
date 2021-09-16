@@ -1,4 +1,4 @@
-package com.brentpanther.bitcoinwidget.strategy
+package com.brentpanther.bitcoinwidget.strategy.display
 
 import android.content.Context
 import android.content.res.Configuration
@@ -14,6 +14,8 @@ import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.WidgetState.*
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.strategy.TextViewAutoSizeHelper
+import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
 import kotlin.math.min
 
 

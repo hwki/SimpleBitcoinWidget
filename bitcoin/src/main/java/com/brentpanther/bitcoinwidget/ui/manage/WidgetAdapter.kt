@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.databinding.ListItemManageWidgetBinding
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
-import com.brentpanther.bitcoinwidget.strategy.PreviewWidgetPresenter
-import com.brentpanther.bitcoinwidget.strategy.SolidPriceWidgetDisplayStrategy
+import com.brentpanther.bitcoinwidget.strategy.display.SolidPriceWidgetDisplayStrategy
+import com.brentpanther.bitcoinwidget.strategy.presenter.PreviewWidgetPresenter
 
 class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> Unit)) :
     RecyclerView.Adapter<WidgetAdapter.MyViewHolder>() {

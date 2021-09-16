@@ -1,9 +1,9 @@
 package com.brentpanther.bitcoinwidget
 
 import android.content.Context
-import com.brentpanther.bitcoinwidget.strategy.PriceWidgetDataStrategy
-import com.brentpanther.bitcoinwidget.strategy.RemoteWidgetPresenter
-import com.brentpanther.bitcoinwidget.strategy.WidgetDisplayStrategy
+import com.brentpanther.bitcoinwidget.strategy.data.PriceWidgetDataStrategy
+import com.brentpanther.bitcoinwidget.strategy.display.WidgetDisplayStrategy
+import com.brentpanther.bitcoinwidget.strategy.presenter.RemoteWidgetPresenter
 import kotlinx.coroutines.coroutineScope
 
 object WidgetUpdater {

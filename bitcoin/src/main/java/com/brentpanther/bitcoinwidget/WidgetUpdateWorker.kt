@@ -18,7 +18,7 @@ class WidgetUpdateWorker(context: Context, params: WorkerParameters) : Coroutine
     }
 
     companion object {
-        private val TAG = this::class.java.simpleName
+        private val TAG = WidgetUpdateWorker::class.java.simpleName
     }
 
 }
