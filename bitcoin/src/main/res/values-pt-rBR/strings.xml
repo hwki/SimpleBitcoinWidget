@@ -4,8 +4,6 @@
     <string name="edit_widget">Editar %s Widget</string>
     <string name="add_widget">Adicionar Widget</string>
 
-    <string name="select_coin">Selecione Moeda</string>
-
     <string name="title_fixed_size">Tamanho De Texto Fixo</string>
     <string name="title_data">Data</string>
     <string name="title_style">Estilo</string>
@@ -13,10 +11,12 @@
     <string name="title_refresh_interval">Atualizar Intervalo</string>
     <string name="title_currency">Moeda</string>
     <string name="title_exchange">Exchange</string>
-    <string name="title_label">Mostar marcador de exchange</string>
+    <string name="title_coin_label">Mostrar etiqueta de moeda</string>
+    <string name="title_exchange_label">Mostrar etiqueta de troca</string>
     <string name="title_theme">Tema</string>
     <string name="title_night_mode">Modo Noturno</string>
-
+    <string name="title_format">Formato</string>
+    <string name="title_display">Aparência</string>
     <string name="title_icon">Mostrar ícone</string>
     <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
@@ -55,14 +55,12 @@
         <item>Não mostrar símbolo de moeda</item>
     </string-array>
 
-    <string name="dialog_update_title">Atualizando</string>
     <string name="settings_updating_data">Atualizando dados da moeda…</string>
     <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
     <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
 
     <string name="button_settings">Abrir Configurações</string>
-    <string name="title_warning">Aviso</string>
     <string name="coin_search_hint">Pesquise por nome ou símbolo</string>
 
     <string name="settings_update">Atualizo</string>

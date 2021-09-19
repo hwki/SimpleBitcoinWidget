@@ -4,6 +4,7 @@
     <style name="Theme.MyApp.WidgetContainer" parent="@android:style/Theme.DeviceDefault.DayNight">
         <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
         <item name="appWidgetTextStyle">@style/SolidWidgetText</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Light.Material">
@@ -11,7 +12,15 @@
         <item name="appWidgetTextStyle">@style/SolidWidgetText.LightMaterial</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.LightMaterial.Secondary</item>
         <item name="appWidgetLoadingColor">@android:color/system_accent2_600</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_btc</item>
     </style>
 
+    <style name="Theme.MyApp.WidgetContainer.Dark.Material">
+        <item name="appWidgetBackgroundColor">@android:color/system_accent2_800</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText.DarkMaterial</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.DarkMaterial.Secondary</item>
+        <item name="appWidgetLoadingColor">@android:color/system_accent1_600</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_btc_dark</item>
+    </style>
 
 </resources>

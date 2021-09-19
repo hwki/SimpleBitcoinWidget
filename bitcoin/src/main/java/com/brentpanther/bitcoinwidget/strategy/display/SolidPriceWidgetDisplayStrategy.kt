@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget.strategy.display
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.os.Build
 import android.util.TypedValue
@@ -9,13 +10,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.IdRes
-import androidx.core.net.toUri
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.WidgetState.*
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.TextViewAutoSizeHelper
 import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
+import java.io.File
 import kotlin.math.min
 
 
@@ -25,11 +26,12 @@ class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
     override fun refresh() {
         updateIcon()
         val widgetSize = getWidgetSize()
+        // add padding
+        widgetSize.bottom -= 16.dpToPx()
+        widgetSize.right -= 16.dpToPx()
         updateLabel(RectF(widgetSize))
         updatePrice(RectF(widgetSize))
         updateState()
-        widgetPresenter.hide(R.id.loading)
-        widgetPresenter.setOnClickRefresh(appContext, widget.widgetId)
     }
 
     private fun updateState() {
@@ -51,34 +53,50 @@ class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
     }
 
     private fun updateLabel(rectF: RectF) {
-        if (!widget.showLabel) {
-            widgetPresenter.hide(R.id.label, R.id.space_top)
-            return
+        if (!widget.showExchangeLabel && !widget.showCoinLabel) {
+            widgetPresenter.hide(R.id.exchangeLabel, R.id.coinLabel)
         }
-        widgetPresenter.show(R.id.label, R.id.space_top)
-        rectF.bottom *= .15F
+        widgetPresenter.show(R.id.exchangeLabel, R.id.coinLabel)
         val adjustSize = Build.VERSION.SDK_INT < Build.VERSION_CODES.O
         if (adjustSize) {
-            getView(R.id.label).let {
-                it.text = widget.exchange.shortName
-                val labelSize = TextViewAutoSizeHelper.findLargestTextSizeWhichFits(it, rectF)
-                widgetPresenter.setTextViewTextSize(R.id.label, TypedValue.COMPLEX_UNIT_PX, labelSize.toFloat())
+            rectF.bottom *= .22F
+            if (widget.showExchangeLabel) {
+                getView(R.id.exchangeLabel).let {
+                    it.text = widget.exchange.shortName
+                    val labelSize = TextViewAutoSizeHelper.findLargestTextSizeWhichFits(it, rectF)
+                    widgetPresenter.setTextViewTextSize(
+                        R.id.exchangeLabel,
+                        TypedValue.COMPLEX_UNIT_PX,
+                        labelSize.toFloat()
+                    )
+                }
+            }
+            if (widget.showCoinLabel) {
+                getView(R.id.coinLabel).let {
+                    it.text = widget.coinName()
+                    val labelSize = TextViewAutoSizeHelper.findLargestTextSizeWhichFits(it, rectF)
+                    widgetPresenter.setTextViewTextSize(R.id.coinLabel, TypedValue.COMPLEX_UNIT_PX, labelSize.toFloat())
+                }
             }
         }
-        widgetPresenter.setTextViewText(R.id.label, widget.exchange.shortName)
+        widgetPresenter.setTextViewText(R.id.exchangeLabel, if (widget.showExchangeLabel) widget.exchange.shortName else "")
+        widgetPresenter.setTextViewText(R.id.coinLabel, if (widget.showCoinLabel) widget.coinName() else "")
     }
 
     private fun updateIcon() {
-        if (widget.showIcon) {
-            widgetPresenter.show(R.id.icon)
-        } else {
+        if (!widget.showIcon) {
             widgetPresenter.hide(R.id.icon)
             return
         }
+        widgetPresenter.show(R.id.icon)
         val customIcon = widget.customIcon
         if (customIcon != null) {
-            val uri = "content://${appContext.packageName}.fileprovider/icons/$customIcon".toUri()
-            widgetPresenter.setImageViewUri(R.id.icon, uri)
+            val file = File(appContext.filesDir, "icons/$customIcon")
+            if (file.exists()) {
+                val stream = file.inputStream()
+                val bitmap = BitmapFactory.decodeStream(stream)
+                widgetPresenter.setImageViewBitmap(R.id.icon, bitmap)
+            }
         } else {
             val isDark = widget.nightMode.isDark(appContext)
             val icon = widget.coin.getIcon(widget.theme, isDark)
@@ -87,7 +105,7 @@ class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
     }
 
     private fun updatePrice(rectF: RectF) {
-        val heightPercent = if (widget.showLabel) .70F else 1F
+        val heightPercent = if (widget.showExchangeLabel) .56F else .95F
         val widthPercent = if (widget.showIcon) .80F else 1F
         rectF.right *= widthPercent
         rectF.bottom *= heightPercent

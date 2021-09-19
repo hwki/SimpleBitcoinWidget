@@ -13,9 +13,11 @@ data class Widget(
     var exchange: Exchange,
     var coin: Coin,
     var currency: String,
+    var coinCustomId: String?,
     var coinCustomName: String?,
     var currencyCustomName: String?,
-    var showLabel: Boolean,
+    var showExchangeLabel: Boolean,
+    var showCoinLabel: Boolean,
     var showIcon: Boolean,
     var showDecimals: Boolean,
     var currencySymbol: String?,
@@ -30,7 +32,9 @@ data class Widget(
     var lastUpdated: Long,
     var state: WidgetState
 ) {
-    fun toCoinEntry() = CoinEntry(coin.name, coinCustomName ?: coin.coinName, coin.name, coin, customIcon)
+    fun toCoinEntry() = CoinEntry(coinCustomId ?: coin.coinName, coinName(), coin.name, coin, customIcon)
+
+    fun coinName() = coinCustomName ?: coin.coinName
 
     fun isOld(refresh: Int) = System.currentTimeMillis() - lastUpdated > (60000 * refresh * 1.5)
 

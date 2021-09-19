@@ -12,7 +12,7 @@ class CustomExchangeData(coinEntry: CoinEntry, json: InputStream) : ExchangeData
                 .toMutableMap()
     }
 
-    override fun getExchangeCoinName(exchange: String) = coinEntry.id
+    override fun getExchangeCoinName(exchange: String) = coinEntry.name
 
     override fun getExchangeCurrencyName(exchange: String, currency: String): String? = null
 }

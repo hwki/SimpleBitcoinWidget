@@ -42,7 +42,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         lifecycleScope.launch(Dispatchers.Main) {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.exchangeDataFlow.collect { (widget, data) ->
                     updateWidget(data, widget, rootKey)
                 }
@@ -66,13 +66,15 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             exchange = Exchange.valueOf(defaultExchange),
             coin = data.coinEntry.coin,
             currency = defaultCurrency,
-            coinCustomName = data.getExchangeCoinName(defaultExchange),
+            coinCustomId = if (data.coinEntry.coin == Coin.CUSTOM) data.coinEntry.id else null,
+            coinCustomName = if (data.coinEntry.coin == Coin.CUSTOM) data.coinEntry.name else null,
             currencyCustomName = null,
-            showLabel = false,
+            showExchangeLabel = false,
+            showCoinLabel = false,
             showIcon = true,
             showDecimals = false,
             currencySymbol = null,
-            theme = Theme.SOLID,
+            theme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
             nightMode = NightMode.SYSTEM,
             coinUnit = data.coinEntry.coin.getUnits().firstOrNull()?.text,
             currencyUnit = null,
@@ -120,8 +122,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 }
             }
         }
-        downloadCustomIcon()
-        viewModel.updateWidget(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            downloadCustomIcon()
+            viewModel.updateWidget(true)
+        }
     }
 
     private fun updateExchangeValues() {
@@ -178,7 +182,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         return (DecimalFormat.getCurrencyInstance(locale) as DecimalFormat).decimalFormatSymbols.currencySymbol
     }
 
-    private fun downloadCustomIcon() = CoroutineScope(Dispatchers.IO).launch {
+    private fun downloadCustomIcon() {
         data.coinEntry.getFullIconUrl()?.let {
             val dir = File(requireContext().filesDir, "icons")
             if (!dir.exists()) {
@@ -186,7 +190,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             }
             val file = File(dir, data.coinEntry.iconUrl!!.substringBefore("/"))
             if (file.exists()) {
-                return@launch
+                return
             }
 
             val os = ByteArrayOutputStream()
@@ -222,7 +226,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             return when(key) {
                 "icon" -> widget.showIcon
                 "decimals" -> widget.showDecimals
-                "label" -> widget.showLabel
+                "coinLabel" -> widget.showCoinLabel
+                "exchangeLabel" -> widget.showExchangeLabel
                 else -> throw IllegalArgumentException()
             }
         }
@@ -237,8 +242,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     widget.showDecimals = value
                     true
                 }
-                "label" -> {
-                    widget.showLabel = value
+                "exchangeLabel" -> {
+                    widget.showExchangeLabel = value
+                    false
+                }
+                "coinLabel" -> {
+                    widget.showCoinLabel = value
                     false
                 }
                 else -> false

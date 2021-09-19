@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
+import com.brentpanther.bitcoinwidget.BuildConfig
 import com.brentpanther.bitcoinwidget.R
 
 class BannerInflater {
@@ -27,8 +28,8 @@ class BannerInflater {
                     R.string.button_settings) {
                     context.startActivity(Intent(
                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + context.packageName)
-                    ))
+                        Uri.parse("package:${BuildConfig.APPLICATION_ID}"))
+                    )
                 }
             }
         }
@@ -39,8 +40,8 @@ class BannerInflater {
                 addBanner(layoutInflater, viewGroup, R.string.warning_data_saver, R.string.button_settings) {
                     context.startActivity(Intent(
                         Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
-                        Uri.parse("package:" + context.packageName)
-                    ))
+                        Uri.parse("package:${BuildConfig.APPLICATION_ID}"))
+                    )
                 }
             }
         }

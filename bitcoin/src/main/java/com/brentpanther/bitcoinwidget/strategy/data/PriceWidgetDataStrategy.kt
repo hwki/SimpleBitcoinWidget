@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.brentpanther.bitcoinwidget.WidgetState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -13,17 +12,10 @@ class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrat
     override suspend fun loadData(manual: Boolean, force: Boolean): Unit = withContext(Dispatchers.IO) {
         val config = getConfig()
 
-        val shouldRefresh = widget.shouldRefresh(config.refresh, manual)
-        if (!force && !shouldRefresh) {
-            // give time for the loading indicator to be noticeable if manual
-            if (manual) {
-                delay(750)
-            }
-            return@withContext
-        }
+        if (loading(config.refresh, manual, force)) return@withContext
         try {
             val currency = widget.currencyCustomName ?: widget.currency
-            val coin = widget.coinCustomName ?: widget.coin.name
+            val coin = widget.coinCustomId ?: widget.coin.name
             val value = widget.exchange.getValue(coin, currency)
             widget.state = WidgetState.CURRENT
             if (value == null) {

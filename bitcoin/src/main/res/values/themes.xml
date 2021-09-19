@@ -38,6 +38,8 @@
     <style name="Theme.MyApp.WidgetContainer.Dark">
         <item name="appWidgetBackgroundColor">#111</item>
         <item name="appWidgetDefaultIcon">@drawable/ic_btc_dark</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText.Dark</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.Dark</item>
         <item name="appWidgetLoadingColor">#fff</item>
     </style>
 

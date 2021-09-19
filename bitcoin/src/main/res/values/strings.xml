@@ -3,7 +3,6 @@
     <string name="widget_price_name">Price Widget</string>
     <string name="new_widget">New %s Widget</string>
     <string name="edit_widget">Edit %s Widget</string>
-    <string name="select_coin">Select Coin</string>
     <string name="add_widget">Add Widget</string>
 
     <string name="key_currency" translatable="false">currency</string>
@@ -16,10 +15,12 @@
     <string name="title_refresh_interval">Refresh Interval</string>
     <string name="title_currency">Currency</string>
     <string name="title_exchange">Exchange</string>
-    <string name="title_label">Show exchange label</string>
+    <string name="title_coin_label">Show coin label</string>
+    <string name="title_exchange_label">Show exchange label</string>
     <string name="title_theme">Theme</string>
     <string name="title_night_mode">Night Mode</string>
-
+    <string name="title_format">Format</string>
+    <string name="title_display">Display</string>
     <string name="title_icon">Show icon</string>
     <string name="title_decimals">Always show decimals</string>
     <string name="title_units">Denomination</string>
@@ -93,19 +94,15 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="value_unknown" translatable="false">\u0020\u0020\u0020\?\u0020\u0020\u0020</string>
-    <string name="value_exchange_removed" translatable="false">\u0020!\u0020</string>
     <string name="json_last_modified" translatable="false">Tue, 06 Jul 2021 19:00:00 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
-    <string name="dialog_update_title">Updating</string>
     <string name="settings_updating_data">Updating coin data…</string>
     <string name="error_no_currencies">No currencies/exchanges found for this coin!</string>
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
     <string name="error_restricted_data_saver">Unable to refresh, Data Saver is on</string>
 
     <string name="button_settings">Open Settings</string>
-    <string name="title_warning">Warning</string>
     <string name="coin_search_hint">Search by name or symbol</string>
 
     <string name="settings_update">Update</string>
@@ -122,7 +119,8 @@
 
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
     <string name="state_error">Unable to update price. This may an issue with the exchange.</string>
-    <string name="placeholder_price" translatable="false">$1,000</string>
+    <string name="placeholder_price" translatable="false">$-,---</string>
     <string name="description_price_widget">Current Price</string>
+
 
 </resources>

@@ -19,7 +19,6 @@ import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.data.PriceWidgetDataStrategy
 import com.brentpanther.bitcoinwidget.strategy.display.SolidPriceWidgetDisplayStrategy
 import com.brentpanther.bitcoinwidget.strategy.presenter.PreviewWidgetPresenter
-import com.brentpanther.bitcoinwidget.ui.BannerInflater
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
 import kotlinx.coroutines.flow.collect
@@ -51,9 +50,6 @@ class SettingsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                if (!extras.getBoolean(EXTRA_FROM_MANAGE)) {
-                    BannerInflater().inflate(layoutInflater, binding.layoutBanners)
-                }
                 viewModel.settingsData(coin, applicationContext).collect {
                     binding.apply {
                         when(it) {
@@ -97,7 +93,6 @@ class SettingsActivity : AppCompatActivity() {
     companion object {
 
         const val EXTRA_EDIT_WIDGET = "edit_widget"
-        const val EXTRA_FROM_MANAGE = "from_manage_screen"
         const val EXTRA_COIN = "coin"
     }
 }

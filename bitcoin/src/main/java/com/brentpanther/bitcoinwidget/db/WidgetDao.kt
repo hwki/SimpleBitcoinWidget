@@ -6,9 +6,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WidgetDao {
 
-    @Query("SELECT * FROM configuration LIMIT 1")
-    fun config() : Configuration
-
     @Query("SELECT refresh, consistentSize, MIN(portraitTextSize) AS portrait, MIN(landscapeTextSize) AS landscape FROM configuration, widget LIMIT 1")
     fun configWithSizes() : ConfigurationWithSizes
 

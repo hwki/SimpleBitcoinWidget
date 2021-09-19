@@ -15,6 +15,9 @@
             android:summary="@string/summary_exchange"
             app:key="exchange"
             app:title="@string/title_exchange" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="@string/title_format">
         <ListPreference
             app:defaultValue="LOCAL"
             app:entries="@array/symbols"
@@ -23,6 +26,16 @@
             app:icon="@drawable/ic_outline_attach_money_24"
             app:key="symbol"
             app:title="@string/title_locale" />
+        <ListPreference
+            app:isPreferenceVisible="false"
+            android:icon="@drawable/ic_decimal_comma"
+            app:key="units_coin"
+            app:title="@string/title_units" />
+        <ListPreference
+            app:isPreferenceVisible="false"
+            android:icon="@drawable/ic_decimal_comma"
+            app:key="units_currency"
+            app:title="@string/title_units" />
     </PreferenceCategory>
     <PreferenceCategory
         app:title="@string/title_style">
@@ -44,16 +57,9 @@
             app:icon="@drawable/ic_outline_nightlight_24"
             app:key="nightMode"
             app:title="@string/title_night_mode" />
-        <ListPreference
-            app:isPreferenceVisible="false"
-            android:icon="@drawable/ic_decimal_comma"
-            app:key="units_coin"
-            app:title="@string/title_units" />
-        <ListPreference
-            app:isPreferenceVisible="false"
-            android:icon="@drawable/ic_decimal_comma"
-            app:key="units_currency"
-            app:title="@string/title_units" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="@string/title_display">
         <SwitchPreferenceCompat
             app:defaultValue="true"
             android:icon="@drawable/ic_bitcoin"
@@ -67,8 +73,13 @@
         <SwitchPreferenceCompat
             app:defaultValue="false"
             android:icon="@drawable/ic_outline_label_24"
-            app:key="label"
-            app:title="@string/title_label" />
+            app:key="coinLabel"
+            app:title="@string/title_coin_label" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            android:icon="@drawable/ic_outline_label_24"
+            app:key="exchangeLabel"
+            app:title="@string/title_exchange_label" />
         <Preference android:enabled="false" />
         <Preference android:enabled="false" />
     </PreferenceCategory>

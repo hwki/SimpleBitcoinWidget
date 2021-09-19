@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2288296edd8c56ee1af77a005e69e509",
+    "identityHash": "831cd50e5b400547bda1c3cbcfe06c8b",
     "entities": [
       {
         "tableName": "Widget",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `exchange` TEXT NOT NULL, `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `showDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, `nightMode` TEXT NOT NULL, `coinUnit` TEXT, `currencyUnit` TEXT, `customIcon` TEXT, `portraitTextSize` INTEGER, `landscapeTextSize` INTEGER, `lastValue` TEXT, `lastUpdated` INTEGER NOT NULL, `state` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `exchange` TEXT NOT NULL, `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomId` TEXT, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showExchangeLabel` INTEGER NOT NULL, `showCoinLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `showDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, `nightMode` TEXT NOT NULL, `coinUnit` TEXT, `currencyUnit` TEXT, `customIcon` TEXT, `portraitTextSize` INTEGER, `landscapeTextSize` INTEGER, `lastValue` TEXT, `lastUpdated` INTEGER NOT NULL, `state` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -39,6 +39,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "coinCustomId",
+            "columnName": "coinCustomId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "coinCustomName",
             "columnName": "coinCustomName",
             "affinity": "TEXT",
@@ -51,8 +57,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "showLabel",
-            "columnName": "showLabel",
+            "fieldPath": "showExchangeLabel",
+            "columnName": "showExchangeLabel",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showCoinLabel",
+            "columnName": "showCoinLabel",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -195,7 +207,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2288296edd8c56ee1af77a005e69e509')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '831cd50e5b400547bda1c3cbcfe06c8b')"
     ]
   }
 }

@@ -44,7 +44,6 @@ class ManageWidgetsFragment : Fragment() {
             intent.putExtra(SettingsActivity.EXTRA_COIN, coinEntry)
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, it.widget.widgetId)
             intent.putExtra(SettingsActivity.EXTRA_EDIT_WIDGET, true)
-            intent.putExtra(SettingsActivity.EXTRA_FROM_MANAGE, true)
             startActivity(intent)
         }
         binding.listWidgets.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -72,7 +71,7 @@ class ManageWidgetsFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupPinButton() {
-        val appWidgetManager = requireContext().getSystemService(AppWidgetManager::class.java)
+        val appWidgetManager = AppWidgetManager.getInstance(requireContext())
         if (appWidgetManager.isRequestPinAppWidgetSupported) {
             binding.add.isVisible = true
             binding.add.setOnClickListener {

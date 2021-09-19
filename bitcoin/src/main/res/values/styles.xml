@@ -2,7 +2,11 @@
 <resources>
 
     <style name="SolidWidgetText">
-        <item name="android:textColor">#777</item>
+        <item name="android:textColor">#555</item>
+    </style>
+
+    <style name="SolidWidgetText.Dark">
+        <item name="android:textColor">#bbb</item>
     </style>
 
     <style name="SolidWidgetText.DarkTransparent">

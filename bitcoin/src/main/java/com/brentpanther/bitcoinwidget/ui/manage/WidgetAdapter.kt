@@ -45,7 +45,7 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
 
                 // need to find at runtime since view hierarchy updated after binding
                 binding.root.findViewById<View>(R.id.parent).isClickable = false
-                val coinName = widget.coinUnit ?: widget.currencySymbol ?: widget.coin.name
+                val coinName = widget.coinUnit ?: widget.coinCustomName ?: widget.coin.name
                 val price = binding.root.findViewById<TextView>(R.id.price)
                 TextViewCompat.setAutoSizeTextTypeWithDefaults(price, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
                 binding.labelCoin.text = root.context.getString(R.string.widget_list_title, coinName, widget.currency)

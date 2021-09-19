@@ -44,7 +44,7 @@ class WidgetProvider : AppWidgetProvider() {
                 val workManager = WorkManager.getInstance(context)
                 workManager.cancelUniqueWork(ONETIMEWORKNAME)
                 cancelWork(workManager)
-            } else if (widgetDao.config().consistentSize) {
+            } else if (widgetDao.configWithSizes().consistentSize) {
                 refreshWidgets(context)
             }
         }
@@ -62,7 +62,7 @@ class WidgetProvider : AppWidgetProvider() {
 
             WidgetUpdater.update(context, widgetIds, false)
             val workManager = WorkManager.getInstance(context)
-            val refresh = dao.config().refresh
+            val refresh = dao.configWithSizes().refresh
 
             // https://issuetracker.google.com/issues/115575872
             val immediateWork = OneTimeWorkRequestBuilder<WidgetUpdateWorker>().setInitialDelay(3650L, TimeUnit.DAYS).build()
