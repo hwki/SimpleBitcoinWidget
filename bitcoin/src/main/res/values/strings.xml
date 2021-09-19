@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">Simple Bitcoin Widget</string>
+    <string name="app_name" translatable="false">Simple Crypto Widget</string>
     <string name="widget_price_name">Price Widget</string>
     <string name="new_widget">New %s Widget</string>
     <string name="edit_widget">Edit %s Widget</string>

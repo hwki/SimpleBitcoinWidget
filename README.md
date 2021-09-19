@@ -1,4 +1,4 @@
-# Simple Bitcoin Widget
+# Simple Crypto Widget
 
 Clean, simple cryptocurrency widget for Android.
 
