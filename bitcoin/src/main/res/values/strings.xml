@@ -94,7 +94,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Tue, 06 Jul 2021 19:00:00 GMT</string>
+    <string name="json_last_modified" translatable="false">Mon, 20 Sep 2021 00:59:05 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="settings_updating_data">Updating coin data…</string>
@@ -118,7 +118,7 @@
     <string name="warning_hibernation">Your device may over time put this app into hibernation, causing the widgets not to update properly. Please consider adjusting your settings by turning off the option called \"Remove permissions and free up space\".</string>
 
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
-    <string name="state_error">Unable to update price. This may an issue with the exchange.</string>
+    <string name="state_error">Unable to update price. This may be an issue with the exchange.</string>
     <string name="placeholder_price" translatable="false">$-,---</string>
     <string name="description_price_widget">Current Price</string>
 

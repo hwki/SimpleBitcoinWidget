@@ -269,13 +269,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url).getAsJsonObject("bpi").getAsJsonObject(currency).get("rate_float").asString
         }
     },
-    COINEGG("CoinEgg") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.coinegg.fun/openapi/quote/v1/ticker/price?symbol=$coin$currency"
-            return getJsonObject(url).get("price").asString
-        }
-    },
     COINGECKO("CoinGecko") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -288,20 +281,24 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "ATOM" to "cosmos",
                 "AVA" to "concierge-io",
                 "AVAX" to "avalanche-2",
+                "AXS" to "axie-infinity",
                 "BAL" to "balancer",
                 "BAND" to "band-protocol",
                 "BAT" to "basic-attention-token",
                 "BCD" to "bitcoin-diamond",
                 "BCH" to "bitcoin-cash",
                 "BNB" to "binancecoin",
+                "BNT" to "bancor",
                 "BSV" to "bitcoin-cash-sv",
                 "BTC" to "bitcoin",
                 "BTG" to "bitcoin-gold",
                 "BTM" to "bytom",
                 "BTT" to "bittorrent-2",
                 "CEL" to "celsius-degree-token",
+                "CHZ" to "chiliz",
                 "COMP" to "compound-coin",
                 "CRO" to "crypto-com-chain",
+                "CRV" to "curve-dao-token",
                 "DAI" to "dai",
                 "DASH" to "dash",
                 "DCR" to "decred",
@@ -317,6 +314,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "GNO" to "gnosis",
                 "GNT" to "golem",
                 "GRIN" to "grin",
+                "GRT" to "the-graph",
                 "HBAR" to "hedera-hashgraph",
                 "HNS" to "handshake",
                 "HT" to "huobi-token",
@@ -358,10 +356,12 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "SUSHI" to "sushi",
                 "THETA" to "theta-token",
                 "TRX" to "tron",
+                "UMA" to "uma",
                 "UNI" to "uniswap",
                 "VET" to "vechain",
                 "VTC" to "vertcoin",
                 "WAVES" to "waves",
+                "WBTC" to "wrapped-bitcoin",
                 "XAUT" to "tether-gold",
                 "XEM" to "nem",
                 "XLM" to "stellar",
@@ -438,12 +438,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.deversifi.com/bfx/v2/tickers?symbols=t${coin}$currency"
             return getJsonArray(url)[0].asJsonArray[7].asString
-        }
-    },
-    DUEDEX("DueDEX") {
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.duedex.com/v1/ticker/${coin}$currency"
-            return getJsonObject(url).getAsJsonObject("data").get("lastPrice").asString
         }
     },
     EXMO("Exmo") {
