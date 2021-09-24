@@ -80,7 +80,9 @@
     <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
     <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
     <string name="description_price_widget">Preço Atual</string>
-    <string name="description_value_widget">valor atual</string>
+    <string name="description_value_widget">Valor Atual</string>
     <string name="dialog_amount_held">Quanto %s você tem atualmente?</string>
+    <string name="add_price_widget">Adicionar widget de preço</string>
+    <string name="add_value_widget">Adicionar widget de valor</string>
 
 </resources>

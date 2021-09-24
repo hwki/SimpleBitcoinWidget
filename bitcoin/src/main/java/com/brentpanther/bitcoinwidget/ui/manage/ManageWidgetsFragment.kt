@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,6 +20,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.ValueWidgetProvider
 import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
 import com.brentpanther.bitcoinwidget.ui.BannerInflater
@@ -74,18 +77,40 @@ class ManageWidgetsFragment : Fragment() {
         val appWidgetManager = AppWidgetManager.getInstance(requireContext())
         if (appWidgetManager.isRequestPinAppWidgetSupported) {
             binding.add.isVisible = true
-            binding.add.setOnClickListener {
-                val myProvider = ComponentName(requireContext(), WidgetProvider::class.java)
-                val intent = Intent(requireContext().applicationContext, CoinSelectionActivity::class.java)
-                val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-                } else {
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                }
-                val pendingIntent = PendingIntent.getActivity(requireContext().applicationContext, 123, intent, flags)
-                appWidgetManager.requestPinAppWidget(myProvider, null, pendingIntent)
-            }
+            binding.add.setOnClickListener { toggleExpandedFab() }
+            binding.addPrice.setOnClickListener { pinWidget(appWidgetManager, WidgetProvider::class.java) }
+            binding.addValue.setOnClickListener { pinWidget(appWidgetManager, ValueWidgetProvider::class.java) }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun <T : WidgetProvider> pinWidget(appWidgetManager: AppWidgetManager, className: Class<T>) {
+        val myProvider = ComponentName(requireContext(), className)
+        val intent = Intent(requireContext().applicationContext, CoinSelectionActivity::class.java)
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        val pendingIntent = PendingIntent.getActivity(requireContext().applicationContext, 123, intent, flags)
+        appWidgetManager.requestPinAppWidget(myProvider, null, pendingIntent)
+        toggleExpandedFab()
+    }
+
+    private fun toggleExpandedFab() {
+        val isOpen = binding.addPrice.isVisible
+        val fabAnimation = if (isOpen) R.anim.fab_close else R.anim.fab_open
+        val fabTextAnimation = if (isOpen) R.anim.fab_text_close else R.anim.fab_text_open
+        val fabSpinAnimation = if (isOpen) R.anim.fab_spin_off else R.anim.fab_spin_on
+        binding.addPrice.isVisible = !isOpen
+        binding.addValue.isVisible = !isOpen
+        binding.textAddPrice.isVisible = !isOpen
+        binding.textAddValue.isVisible = !isOpen
+        binding.addPrice.startAnimation(AnimationUtils.loadAnimation(requireContext(), fabAnimation))
+        binding.textAddPrice.startAnimation(AnimationUtils.loadAnimation(requireContext(), fabTextAnimation))
+        binding.addValue.startAnimation(AnimationUtils.loadAnimation(requireContext(), fabAnimation))
+        binding.textAddValue.startAnimation(AnimationUtils.loadAnimation(requireContext(), fabTextAnimation))
+        binding.add.startAnimation(AnimationUtils.loadAnimation(requireContext(), fabSpinAnimation))
     }
 
     override fun onDestroyView() {

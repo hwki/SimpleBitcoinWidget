@@ -124,6 +124,8 @@
     <string name="description_price_widget">Current Price</string>
     <string name="description_value_widget">Current Value</string>
     <string name="dialog_amount_held">How much %s do you currently hold?</string>
+    <string name="add_price_widget">Add Price Widget</string>
+    <string name="add_value_widget">Add Value Widget</string>
 
 
 </resources>
