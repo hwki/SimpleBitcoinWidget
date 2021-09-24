@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget.strategy
 
 import android.graphics.RectF
 import android.text.StaticLayout
+import android.view.View.MeasureSpec
 import android.widget.TextView
 import kotlin.math.roundToInt
 
@@ -43,5 +44,11 @@ object TextViewAutoSizeHelper {
 
         // Height overflow.
         return layout.height <= availableSpace.bottom
+    }
+
+    fun findSmallestWidthWhichFits(view: TextView, textSize: Int): Int {
+        view.paint.textSize = textSize.toFloat()
+        view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED))
+        return view.measuredWidth
     }
 }

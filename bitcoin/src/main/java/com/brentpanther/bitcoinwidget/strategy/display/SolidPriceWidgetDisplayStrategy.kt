@@ -2,113 +2,99 @@ package com.brentpanther.bitcoinwidget.strategy.display
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.BitmapFactory
 import android.graphics.RectF
 import android.os.Build
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.IdRes
+import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.WidgetState.*
+import com.brentpanther.bitcoinwidget.WidgetApplication.Companion.dpToPx
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.TextViewAutoSizeHelper
 import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
-import java.io.File
 import kotlin.math.min
+import kotlin.math.pow
 
 
-class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPresenter: WidgetPresenter) :
+open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPresenter: WidgetPresenter) :
     PriceWidgetDisplayStrategy(context, widget, widgetPresenter) {
 
     override fun refresh() {
-        updateIcon()
-        val widgetSize = getWidgetSize()
+        val widgetSize = widgetPresenter.getWidgetSize(appContext, widget.widgetId)
         // add padding
         widgetSize.bottom -= 16.dpToPx()
         widgetSize.right -= 16.dpToPx()
-        updateLabel(RectF(widgetSize))
-        updatePrice(RectF(widgetSize))
+
+        updateIcon()
+        RectF(widgetSize).also {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                it.bottom *= .22F
+            }
+            updateLabels(it)
+        }
+        RectF(widgetSize).also {
+            it.bottom *= if (widget.showExchangeLabel || widget.showCoinLabel) .56F else .95F
+            it.right *= if (widget.showIcon) .80F else 1F
+            updatePrice(it)
+        }
         updateState()
     }
 
-    private fun updateState() {
-        with(widgetPresenter) {
-            when(widget.state) {
-                STALE -> {
-                    show(R.id.state)
-                    setImageViewResource(R.id.state, R.drawable.ic_outline_stale)
-                    setOnClickMessage(appContext, R.string.state_stale)
-                }
-                ERROR -> {
-                    show(R.id.state)
-                    setImageViewResource(R.id.state, R.drawable.ic_outline_warning_amber_24)
-                    setOnClickMessage(appContext, R.string.state_error)
-                }
-                CURRENT -> hide(R.id.state)
-            }
+    protected fun formatPriceString(amount: String?): String {
+        if (amount.isNullOrEmpty()) return ""
+        var adjustedAmount = amount.toDouble()
+        widget.coinUnit?.let {
+            adjustedAmount *= widget.coin.getUnitAmount(it)
         }
+        widget.currencyUnit?.let {
+            adjustedAmount /= Coin.valueOf(widget.currency).getUnitAmount(it)
+        }
+
+        val nf = getPriceFormat(adjustedAmount)
+        if (adjustedAmount < 1000) {
+            // show at least 3 significant digits if small amount
+            // e.g. show 0.00000000243 instead of 0.00 but still show 1.250 instead of 1.25000003
+            var zeroes = nf.maximumFractionDigits
+            while (adjustedAmount * 10.0.pow((zeroes - 2).toDouble()) < 1) {
+                zeroes++
+            }
+            nf.maximumFractionDigits = zeroes
+            nf.minimumFractionDigits = zeroes
+        }
+        return nf.format(adjustedAmount)
     }
 
-    private fun updateLabel(rectF: RectF) {
-        if (!widget.showExchangeLabel && !widget.showCoinLabel) {
-            widgetPresenter.hide(R.id.exchangeLabel, R.id.coinLabel)
-        }
-        widgetPresenter.show(R.id.exchangeLabel, R.id.coinLabel)
+    private fun updateLabels(rectF: RectF) {
         val adjustSize = Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-        if (adjustSize) {
-            rectF.bottom *= .22F
-            if (widget.showExchangeLabel) {
-                getView(R.id.exchangeLabel).let {
-                    it.text = widget.exchange.shortName
-                    val labelSize = TextViewAutoSizeHelper.findLargestTextSizeWhichFits(it, rectF)
-                    widgetPresenter.setTextViewTextSize(
-                        R.id.exchangeLabel,
-                        TypedValue.COMPLEX_UNIT_PX,
-                        labelSize.toFloat()
-                    )
-                }
-            }
-            if (widget.showCoinLabel) {
-                getView(R.id.coinLabel).let {
-                    it.text = widget.coinName()
-                    val labelSize = TextViewAutoSizeHelper.findLargestTextSizeWhichFits(it, rectF)
-                    widgetPresenter.setTextViewTextSize(R.id.coinLabel, TypedValue.COMPLEX_UNIT_PX, labelSize.toFloat())
-                }
-            }
-        }
-        widgetPresenter.setTextViewText(R.id.exchangeLabel, if (widget.showExchangeLabel) widget.exchange.shortName else "")
-        widgetPresenter.setTextViewText(R.id.coinLabel, if (widget.showCoinLabel) widget.coinName() else "")
-    }
 
-    private fun updateIcon() {
-        if (!widget.showIcon) {
-            widgetPresenter.hide(R.id.icon)
-            return
-        }
-        widgetPresenter.show(R.id.icon)
-        val customIcon = widget.customIcon
-        if (customIcon != null) {
-            val file = File(appContext.filesDir, "icons/$customIcon")
-            if (file.exists()) {
-                val stream = file.inputStream()
-                val bitmap = BitmapFactory.decodeStream(stream)
-                widgetPresenter.setImageViewBitmap(R.id.icon, bitmap)
+        if (widget.showExchangeLabel) {
+            widgetPresenter.show(R.id.exchangeLabel)
+            if (adjustSize) {
+                updateAutoTextView(R.id.exchangeLabel, widget.exchange.shortName, rectF)
             }
+            widgetPresenter.setTextViewText(R.id.exchangeLabel, widget.exchange.shortName)
         } else {
-            val isDark = widget.nightMode.isDark(appContext)
-            val icon = widget.coin.getIcon(widget.theme, isDark)
-            widgetPresenter.setImageViewResource(R.id.icon, icon)
+            widgetPresenter.hide(R.id.exchangeLabel)
+        }
+
+        if (widget.showCoinLabel) {
+            widgetPresenter.show(R.id.coinLabel)
+            if (adjustSize) {
+                updateAutoTextView(R.id.coinLabel, widget.coinName(), rectF)
+            }
+            widgetPresenter.setTextViewText(R.id.coinLabel, widget.coinName())
+        }
+        else {
+            widgetPresenter.hide(R.id.coinLabel)
+        }
+
+        if (!widget.showExchangeLabel && !widget.showCoinLabel) {
+            widgetPresenter.gone(R.id.coinLabel, R.id.exchangeLabel)
         }
     }
 
-    private fun updatePrice(rectF: RectF) {
-        val heightPercent = if (widget.showExchangeLabel) .56F else .95F
-        val widthPercent = if (widget.showIcon) .80F else 1F
-        rectF.right *= widthPercent
-        rectF.bottom *= heightPercent
+    protected fun updatePrice(rectF: RectF) {
         val price = if (widget.lastValue == null) {
             appContext.getString(R.string.placeholder_price)
         } else {
@@ -117,7 +103,7 @@ class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
         val config = getConfig()
         val adjustSize = config.consistentSize || Build.VERSION.SDK_INT < Build.VERSION_CODES.O
         if (adjustSize) {
-            widgetPresenter.hide(R.id.priceAutoSize)
+            widgetPresenter.gone(R.id.priceAutoSize)
             widgetPresenter.show(R.id.price)
             getView(R.id.price).let {
                 it.text = price
@@ -127,7 +113,7 @@ class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
         } else {
             widgetPresenter.setTextViewText(R.id.priceAutoSize, price)
             widgetPresenter.show(R.id.priceAutoSize)
-            widgetPresenter.hide(R.id.price)
+            widgetPresenter.gone(R.id.price)
             widget.portraitTextSize = 0
             widget.landscapeTextSize = 0
         }
@@ -145,12 +131,6 @@ class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
         }
         size = if (size > 0) min(size, priceSize) else priceSize
         widgetPresenter.setTextViewTextSize(R.id.price, TypedValue.COMPLEX_UNIT_PX, size.toFloat())
-    }
-
-    private fun getView(@IdRes layoutId: Int): TextView {
-        val layout = widget.theme.getLayout(widget.nightMode.isDark(appContext))
-        val vg = LayoutInflater.from(appContext).inflate(layout, null) as ViewGroup
-        return vg.findViewById(layoutId)
     }
 
 }

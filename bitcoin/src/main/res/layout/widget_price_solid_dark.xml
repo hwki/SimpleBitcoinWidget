@@ -5,6 +5,6 @@
     android:background="@drawable/bg_widget_solid"
     android:theme="@style/Theme.MyApp.WidgetContainer.Dark">
 
-    <include layout="@layout/widget_solid" />
+    <include layout="@layout/widget_price_solid" />
 
 </FrameLayout>

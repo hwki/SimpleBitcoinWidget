@@ -13,6 +13,7 @@
     <string name="title_exchange">Exchange</string>
     <string name="title_coin_label">Mostrar etiqueta de moeda</string>
     <string name="title_exchange_label">Mostrar etiqueta de troca</string>
+    <string name="title_amount_label">Mostrar quantidade</string>
     <string name="title_theme">Tema</string>
     <string name="title_night_mode">Modo Noturno</string>
     <string name="title_format">Formato</string>
@@ -21,7 +22,7 @@
     <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
     <string name="title_preview">Prévia</string>
-    <string name="title_locale">Símbolo</string>
+    <string name="title_currency_symbol">Símbolo da moeda</string>
     <string name="title_about">Acerca</string>
 
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets</string>
@@ -50,9 +51,9 @@
         <item>24 horas</item>
     </string-array>
     <string-array name="symbols">
-        <item>Mostrar símbolo da moeda local</item>
-        <item>Mostrar símbolo de moeda ISO</item>
-        <item>Não mostrar símbolo de moeda</item>
+        <item>Mostrar símbolo local</item>
+        <item>Mostrar símbolo ISO</item>
+        <item>Não mostrar símbolo</item>
     </string-array>
 
     <string name="settings_updating_data">Atualizando dados da moeda…</string>
@@ -79,5 +80,7 @@
     <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
     <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
     <string name="description_price_widget">Preço Atual</string>
+    <string name="description_value_widget">valor atual</string>
+    <string name="dialog_amount_held">Quanto %s você tem atualmente?</string>
 
 </resources>

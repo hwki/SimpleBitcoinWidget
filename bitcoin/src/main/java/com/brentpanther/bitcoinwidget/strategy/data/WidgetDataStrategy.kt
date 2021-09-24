@@ -1,6 +1,8 @@
 package com.brentpanther.bitcoinwidget.strategy.data
 
 import android.content.Context
+import com.brentpanther.bitcoinwidget.WidgetApplication
+import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import kotlinx.coroutines.delay
@@ -40,6 +42,17 @@ abstract class WidgetDataStrategy(context: Context, val widgetId: Int) {
 
     suspend fun save() {
         dao.update(widget)
+    }
+
+    companion object {
+
+        fun getStrategy(context: Context, widgetId: Int): WidgetDataStrategy {
+            return when (WidgetApplication.instance.getWidgetType(widgetId)) {
+                WidgetType.PRICE -> PriceWidgetDataStrategy(context, widgetId)
+                WidgetType.VALUE -> ValueWidgetDataStrategy(context, widgetId)
+            }
+        }
+
     }
 
 }

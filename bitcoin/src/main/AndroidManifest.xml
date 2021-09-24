@@ -49,6 +49,19 @@
                 android:resource="@xml/widget_price" />
         </receiver>
 
+        <receiver
+            android:name=".ValueWidgetProvider"
+            android:label="Value Widget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_value" />
+        </receiver>
+
         <activity
             android:exported="false"
             android:name=".ui.selection.CoinSelectionActivity" >

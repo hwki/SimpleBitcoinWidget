@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget.strategy.presenter
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.RectF
 import android.net.Uri
 import androidx.annotation.StringRes
 
@@ -26,7 +27,13 @@ interface WidgetPresenter {
 
     fun hide(vararg viewIds: Int)
 
+    fun gone(vararg viewIds: Int)
+
     fun setOnClickRefresh(context: Context, widgetId: Int)
 
     fun setOnClickMessage(context: Context, @StringRes message : Int)
+
+    fun getWidgetSize(context: Context, widgetId: Int): RectF
+
+
 }

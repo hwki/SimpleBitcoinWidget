@@ -21,18 +21,17 @@
 
     <FrameLayout
         android:id="@+id/widgetContainer"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/widget_preview_width"
+        android:layout_height="@dimen/widget_preview_height"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent=".4">
+        app:layout_constraintTop_toTopOf="parent">
 
         <include
             android:id="@+id/widgetLayout"
-            layout="@layout/widget_solid_light"
+            layout="@layout/widget_price_solid_light"
             android:visibility="gone" />
 
     </FrameLayout>

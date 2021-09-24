@@ -3,17 +3,11 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import android.app.Activity
 import android.app.UiModeManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.*
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,10 +27,10 @@ import java.io.File
 import java.text.DecimalFormat
 import java.util.*
 
-class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.NoticeDialogListener {
+abstract class SettingsFragment : PreferenceFragmentCompat() {
 
-    private val viewModel: SettingsViewModel by activityViewModels()
-    private lateinit var data: ExchangeData
+    protected val viewModel: SettingsViewModel by activityViewModels()
+    protected lateinit var data: ExchangeData
     private var checkDataSaver: Boolean = true
     private var checkBatterySaver: Boolean = true
 
@@ -50,6 +44,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
     }
 
+    abstract fun updateWidget(widget: Widget?, rootKey: String?)
+
     private fun updateWidget(data: ExchangeData, widget: Widget?, rootKey: String?) {
         this@SettingsFragment.data = data
         val defaultCurrency = data.defaultCurrency
@@ -58,36 +54,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
             requireActivity().finish()
             return
         }
-        val defaultExchange = data.getDefaultExchange(defaultCurrency)
-
-        viewModel.widget = viewModel.widget ?: widget ?: Widget(
-            0,
-            widgetId = viewModel.widgetId,
-            exchange = Exchange.valueOf(defaultExchange),
-            coin = data.coinEntry.coin,
-            currency = defaultCurrency,
-            coinCustomId = if (data.coinEntry.coin == Coin.CUSTOM) data.coinEntry.id else null,
-            coinCustomName = if (data.coinEntry.coin == Coin.CUSTOM) data.coinEntry.name else null,
-            currencyCustomName = null,
-            showExchangeLabel = false,
-            showCoinLabel = false,
-            showIcon = true,
-            showDecimals = false,
-            currencySymbol = null,
-            theme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
-            nightMode = NightMode.SYSTEM,
-            coinUnit = data.coinEntry.coin.getUnits().firstOrNull()?.text,
-            currencyUnit = null,
-            customIcon = data.coinEntry.iconUrl?.substringBefore("/"),
-            lastUpdated = 0,
-            state = WidgetState.CURRENT
-        )
-        viewModel.widget?.let {
-            preferenceManager.preferenceDataStore = WidgetDataStore(it)
-        }
-        setPreferencesFromResource(R.xml.preferences, rootKey)
+        updateWidget(widget, rootKey)
         loadPreferences()
     }
+
+    open fun loadAdditionalPreferences() {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,24 +75,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
     }
 
-    private fun loadPreferences() {
+    protected open fun loadPreferences() {
         findPreference<ListPreference>(getString(R.string.key_currency))?.apply {
             entries = data.currencies
             entryValues = data.currencies
         }
         updateExchangeValues()
         updateCurrencyUnits()
-        if (viewModel.widget?.coinUnit != null) {
-            val unitNames = data.coinEntry.coin.getUnits().map { it.text }.toTypedArray()
-            findPreference<ListPreference>("units_coin")?.apply {
-                isVisible = true
-                entries = unitNames
-                entryValues = unitNames
-                setSummaryProvider {
-                    getString(R.string.summary_units, data.coinEntry.name, value)
-                }
-            }
-        }
+        loadAdditionalPreferences()
         CoroutineScope(Dispatchers.IO).launch {
             downloadCustomIcon()
             viewModel.updateWidget(true)
@@ -202,25 +163,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
         }
     }
 
-    override fun onDialogPositiveClick(code: Int) {
-        (parentFragmentManager.findFragmentByTag("dialog") as DialogFragment).dismissAllowingStateLoss()
-        when (code) {
-            CODE_BATTERY_SAVER -> checkBatterySaver = false
-            CODE_DATA_SAVER -> checkDataSaver = false
-        }
-        viewModel.save()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun onDialogNegativeClick() {
-        startActivity(
-            Intent(
-                Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
-                Uri.parse("package:" + requireActivity().packageName)
-            )
-        )
-    }
-
     inner class WidgetDataStore(val widget: Widget) : PreferenceDataStore() {
         override fun getBoolean(key: String?, defValue: Boolean): Boolean {
             return when(key) {
@@ -228,6 +170,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 "decimals" -> widget.showDecimals
                 "coinLabel" -> widget.showCoinLabel
                 "exchangeLabel" -> widget.showExchangeLabel
+                "amountLabel" -> widget.showAmountLabel
                 else -> throw IllegalArgumentException()
             }
         }
@@ -250,6 +193,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     widget.showCoinLabel = value
                     false
                 }
+                "amountLabel" -> {
+                    widget.showAmountLabel = value
+                    false
+                }
                 else -> false
             }
             viewModel.updateWidget(updatePrice)
@@ -270,6 +217,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                 "units_currency" -> widget.currencyUnit
                 "theme" -> widget.theme.name
                 "nightMode" -> widget.nightMode.name
+                "amountHeld" -> widget.amountHeld?.toString() ?: "1"
                 else -> throw IllegalArgumentException()
             }
         }
@@ -314,17 +262,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsDialogFragment.Noti
                     }
                     false
                 }
+                "amountHeld" -> {
+                    widget.amountHeld = value?.toDoubleOrNull()
+                    true
+                }
                 else -> false
             }
             viewModel.updateWidget(updatePrice)
         }
-    }
-
-    companion object {
-
-        private const val CODE_DATA_SAVER = 1
-        private const val CODE_BATTERY_SAVER = 2
-
     }
 
 }

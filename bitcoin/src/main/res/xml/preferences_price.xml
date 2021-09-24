@@ -25,7 +25,7 @@
             app:useSimpleSummaryProvider="true"
             app:icon="@drawable/ic_outline_attach_money_24"
             app:key="symbol"
-            app:title="@string/title_locale" />
+            app:title="@string/title_currency_symbol" />
         <ListPreference
             app:isPreferenceVisible="false"
             android:icon="@drawable/ic_decimal_comma"

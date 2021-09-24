@@ -5,16 +5,28 @@ import android.content.res.Configuration
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsFragment
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsPriceFragment
+import com.brentpanther.bitcoinwidget.ui.settings.SettingsValueFragment
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-enum class Theme(@LayoutRes val light: Int, @LayoutRes val dark: Int) : Parcelable {
+enum class Theme(@LayoutRes val lightPrice: Int, @LayoutRes val darkPrice: Int,
+                 @LayoutRes val lightValue: Int, @LayoutRes val darkValue: Int) : Parcelable {
 
-    SOLID(R.layout.widget_solid_light, R.layout.widget_solid_dark),
-    TRANSPARENT(R.layout.widget_transparent_light, R.layout.widget_transparent_dark),
-    MATERIAL(R.layout.widget_material_light, R.layout.widget_material_dark);
+    SOLID(R.layout.widget_price_solid_light, R.layout.widget_price_solid_dark,
+        R.layout.widget_value_solid_light, R.layout.widget_value_solid_dark),
+    TRANSPARENT(R.layout.widget_price_transparent_light, R.layout.widget_price_transparent_dark,
+        R.layout.widget_value_transparent_light, R.layout.widget_value_transparent_dark),
+    MATERIAL(R.layout.widget_price_material_light, R.layout.widget_price_material_dark,
+        R.layout.widget_value_material_light, R.layout.widget_value_material_dark);
 
-    fun getLayout(isDark: Boolean) = if (isDark) dark else light
+    fun getLayout(isDark: Boolean, type: WidgetType): Int {
+        return when(type) {
+            WidgetType.PRICE -> if (isDark) darkPrice else lightPrice
+            WidgetType.VALUE -> if (isDark) darkValue else lightValue
+        }
+    }
 }
 
 @Parcelize
@@ -34,8 +46,15 @@ enum class NightMode {
 }
 
 enum class WidgetState {
+    CURRENT, STALE, ERROR
+}
 
-    CURRENT,STALE,ERROR
+enum class WidgetType {
+    PRICE, VALUE;
 
+    fun getSettingsFragment(): SettingsFragment = when(this) {
+        PRICE -> SettingsPriceFragment()
+        VALUE -> SettingsValueFragment()
+    }
 }
 

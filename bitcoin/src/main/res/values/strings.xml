@@ -17,6 +17,7 @@
     <string name="title_exchange">Exchange</string>
     <string name="title_coin_label">Show coin label</string>
     <string name="title_exchange_label">Show exchange label</string>
+    <string name="title_amount_label">Show amount</string>
     <string name="title_theme">Theme</string>
     <string name="title_night_mode">Night Mode</string>
     <string name="title_format">Format</string>
@@ -25,7 +26,7 @@
     <string name="title_decimals">Always show decimals</string>
     <string name="title_units">Denomination</string>
     <string name="title_preview">Preview</string>
-    <string name="title_locale">Symbol</string>
+    <string name="title_currency_symbol">Currency symbol</string>
     <string name="title_about">About</string>
 
     <string name="summary_fixed_size">Keep text size consistent across all widgets</string>
@@ -85,9 +86,9 @@
         <item>1440</item>
     </string-array>
     <string-array name="symbols">
-        <item>Show local currency symbol</item>
-        <item>Show ISO currency symbol</item>
-        <item>Do not show currency symbol</item>
+        <item>Show local symbol</item>
+        <item>Show ISO symbol</item>
+        <item>Do not show symbol</item>
     </string-array>
     <string-array name="symbolValues">
         <item>LOCAL</item>
@@ -121,6 +122,8 @@
     <string name="state_error">Unable to update price. This may be an issue with the exchange.</string>
     <string name="placeholder_price" translatable="false">$-,---</string>
     <string name="description_price_widget">Current Price</string>
+    <string name="description_value_widget">Current Value</string>
+    <string name="dialog_amount_held">How much %s do you currently hold?</string>
 
 
 </resources>

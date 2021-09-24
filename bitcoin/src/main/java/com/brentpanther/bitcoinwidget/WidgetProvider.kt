@@ -9,7 +9,7 @@ import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
-class WidgetProvider : AppWidgetProvider() {
+open class WidgetProvider : AppWidgetProvider() {
 
     override fun onRestored(context: Context, oldWidgetIds: IntArray?, newWidgetIds: IntArray?) {
         val widgetDao = WidgetDatabase.getInstance(context).widgetDao()

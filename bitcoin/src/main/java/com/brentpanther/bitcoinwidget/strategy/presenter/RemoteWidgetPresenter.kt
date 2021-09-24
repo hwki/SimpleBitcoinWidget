@@ -4,12 +4,17 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.RectF
 import android.net.Uri
+import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
 import androidx.annotation.StringRes
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.WidgetApplication.Companion.dpToPx
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.receiver.WidgetBroadcastReceiver
 
@@ -19,7 +24,7 @@ class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter 
 
     init {
         val isDark = widget.nightMode.isDark(context)
-        val layout = widget.theme.getLayout(isDark)
+        val layout = widget.theme.getLayout(isDark, widget.widgetType)
         remoteViews = RemoteViews(context.packageName, layout)
     }
 
@@ -39,7 +44,9 @@ class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter 
 
     override fun show(vararg viewIds: Int) = viewIds.forEach { remoteViews.setViewVisibility(it, View.VISIBLE) }
 
-    override fun hide(vararg viewIds: Int) = viewIds.forEach { remoteViews.setViewVisibility(it, View.GONE) }
+    override fun gone(vararg viewIds: Int) = viewIds.forEach { remoteViews.setViewVisibility(it, View.GONE) }
+
+    override fun hide(vararg viewIds: Int) = viewIds.forEach { remoteViews.setViewVisibility(it, View.INVISIBLE) }
 
     override fun setOnClickRefresh(context: Context, widgetId: Int) {
         val priceUpdate = Intent(context, WidgetBroadcastReceiver::class.java)
@@ -65,6 +72,18 @@ class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter 
         show(R.id.loading)
         hide(R.id.state)
         AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews)
+    }
+
+    override fun getWidgetSize(context: Context, widgetId: Int): RectF {
+        val portrait = context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+        val w = if (portrait) AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH else AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH
+        val h = if (portrait) AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT else AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        val width = appWidgetManager.getAppWidgetOptions(widgetId).getInt(w)
+        val height = appWidgetManager.getAppWidgetOptions(widgetId).getInt(h)
+        // widgets usually have padding and there is no way to know how much. usually 8dp.
+        val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, Resources.getSystem().displayMetrics)
+        return RectF(0F, 0F, width.dpToPx()-px, height.dpToPx()-px)
     }
 
 }

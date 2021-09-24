@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.databinding.ListItemManageWidgetBinding
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
-import com.brentpanther.bitcoinwidget.strategy.display.SolidPriceWidgetDisplayStrategy
+import com.brentpanther.bitcoinwidget.strategy.display.WidgetDisplayStrategy
 import com.brentpanther.bitcoinwidget.strategy.presenter.PreviewWidgetPresenter
 
 class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> Unit)) :
@@ -29,7 +29,7 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return widgets[position].widget.theme.light
+        return widgets[position].widget.theme.lightPrice
     }
 
     override fun getItemCount() = widgets.count()
@@ -40,7 +40,7 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
             with(binding) {
                 val widget = widgetSettings.widget
                 val widgetPresenter = PreviewWidgetPresenter(widget, this.widgetPreview)
-                val strategy = SolidPriceWidgetDisplayStrategy(binding.root.context, widget, widgetPresenter)
+                val strategy = WidgetDisplayStrategy.getStrategy(binding.root.context, widget, widgetPresenter)
                 strategy.refresh()
 
                 // need to find at runtime since view hierarchy updated after binding

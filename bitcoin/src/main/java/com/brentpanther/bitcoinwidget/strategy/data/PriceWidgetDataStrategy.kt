@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
-class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrategy(context, widgetId) {
+open class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrategy(context, widgetId) {
 
     override suspend fun loadData(manual: Boolean, force: Boolean): Unit = withContext(Dispatchers.IO) {
         val config = getConfig()
@@ -21,8 +21,7 @@ class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrat
             if (value == null) {
                 throw IllegalArgumentException()
             } else {
-                widget.lastValue = value
-                widget.lastUpdated = System.currentTimeMillis()
+                setData(value)
             }
             Log.i(TAG, "$widgetId: downloaded value $value")
         } catch (e: IOException) {
@@ -38,6 +37,11 @@ class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrat
             }
             Log.e(TAG, "Error parsing value from exchange: ${widget.exchange}.", e)
         }
+    }
+
+    open fun setData(value: String) {
+        widget.lastValue = value
+        widget.lastUpdated = System.currentTimeMillis()
     }
 
     companion object {

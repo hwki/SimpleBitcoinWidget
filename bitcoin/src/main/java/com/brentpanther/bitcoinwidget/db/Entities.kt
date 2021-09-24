@@ -10,6 +10,7 @@ import com.brentpanther.bitcoinwidget.exchange.Exchange
 data class Widget(
     @PrimaryKey(autoGenerate = true) val id: Int,
     var widgetId: Int,
+    var widgetType: WidgetType,
     var exchange: Exchange,
     var coin: Coin,
     var currency: String,
@@ -29,6 +30,8 @@ data class Widget(
     var portraitTextSize: Int? = null,
     var landscapeTextSize: Int? = null,
     var lastValue: String? = null,
+    var amountHeld: Double? = null,
+    var showAmountLabel: Boolean,
     var lastUpdated: Long,
     var state: WidgetState
 ) {

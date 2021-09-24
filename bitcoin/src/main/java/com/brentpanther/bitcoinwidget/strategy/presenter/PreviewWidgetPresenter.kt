@@ -2,11 +2,14 @@ package com.brentpanther.bitcoinwidget.strategy.presenter
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.RectF
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.databinding.LayoutWidgetPreviewBinding
 import com.brentpanther.bitcoinwidget.db.Widget
 
@@ -15,7 +18,7 @@ class PreviewWidgetPresenter(widget: Widget, val binding: LayoutWidgetPreviewBin
     init {
         val context = binding.root.context
         val isDark = widget.nightMode.isDark(context)
-        val layout = widget.theme.getLayout(isDark)
+        val layout = widget.theme.getLayout(isDark, widget.widgetType)
         binding.widgetContainer.removeAllViews()
         View.inflate(context, layout, binding.widgetContainer)
     }
@@ -53,6 +56,10 @@ class PreviewWidgetPresenter(widget: Widget, val binding: LayoutWidgetPreviewBin
     }
 
     override fun hide(vararg viewIds: Int) {
+        viewIds.forEach { binding.root.findViewById<View>(it).isInvisible = true }
+    }
+
+    override fun gone(vararg viewIds: Int) {
         viewIds.forEach { binding.root.findViewById<View>(it).isVisible = false }
     }
 
@@ -61,4 +68,10 @@ class PreviewWidgetPresenter(widget: Widget, val binding: LayoutWidgetPreviewBin
 
     override fun setOnClickMessage(context: Context, message: Int) {
     }
+
+    override fun getWidgetSize(context: Context, widgetId: Int): RectF {
+        return RectF(0F, 0F, context.resources.getDimensionPixelSize(R.dimen.widget_preview_width).toFloat(),
+            context.resources.getDimensionPixelSize(R.dimen.widget_preview_height).toFloat())
+    }
+
 }
