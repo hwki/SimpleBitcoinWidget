@@ -83,7 +83,14 @@ class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter 
         val height = appWidgetManager.getAppWidgetOptions(widgetId).getInt(h)
         // widgets usually have padding and there is no way to know how much. usually 8dp.
         val px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16F, Resources.getSystem().displayMetrics)
-        return RectF(0F, 0F, width.dpToPx()-px, height.dpToPx()-px)
+        var availableWidth = width.dpToPx() - px
+        var availableHeight = height.dpToPx() - px
+        // if we can't figure out the widget size, fallback to what the app uses
+        if (availableWidth <= 0 || availableHeight <= 0) {
+            availableHeight = context.resources.getDimensionPixelSize(R.dimen.widget_preview_height).toFloat()
+            availableWidth = context.resources.getDimensionPixelSize(R.dimen.widget_preview_width).toFloat()
+        }
+        return RectF(0F, 0F, availableWidth, availableHeight)
     }
 
 }

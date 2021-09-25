@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.os.Build
+import android.text.InputType
 import androidx.preference.EditTextPreference
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.db.Widget
@@ -44,6 +45,9 @@ class SettingsValueFragment : SettingsFragment() {
     override fun loadAdditionalPreferences() {
         findPreference<EditTextPreference>("amountHeld")?.apply {
             dialogMessage = getString(R.string.dialog_amount_held, viewModel.widget?.coinName())
+            setOnBindEditTextListener {
+                it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+            }
         }
     }
 }

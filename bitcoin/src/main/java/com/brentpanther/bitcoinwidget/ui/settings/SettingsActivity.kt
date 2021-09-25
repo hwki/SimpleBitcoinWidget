@@ -50,6 +50,7 @@ class SettingsActivity : AppCompatActivity() {
             title = getString(R.string.new_widget, coin.name)
             binding.save.text = getString(R.string.settings_create)
         }
+        binding.textWidgetSummary.text = getString(widgetType.widgetSummary, coin.name)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

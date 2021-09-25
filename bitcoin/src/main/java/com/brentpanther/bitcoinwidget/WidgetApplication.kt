@@ -14,12 +14,16 @@ import kotlinx.coroutines.launch
 
 class WidgetApplication : Application() {
 
+    fun <T : WidgetProvider> getWidgetIds(className: Class<T>): IntArray {
+        val name = ComponentName(this, className)
+        return AppWidgetManager.getInstance(this).getAppWidgetIds(name)
+    }
     val widgetIds: IntArray
         get() {
-            val manager = AppWidgetManager.getInstance(this)
-            val cm = ComponentName(this, WidgetProvider::class.java)
-            return manager.getAppWidgetIds(cm)
+            return widgetProviders.map { getWidgetIds(it).toList() }.flatten().toIntArray()
         }
+
+    val widgetProviders = listOf(WidgetProvider::class.java, ValueWidgetProvider::class.java)
 
     fun getWidgetType(widgetId: Int): WidgetType {
         return when (AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.className) {

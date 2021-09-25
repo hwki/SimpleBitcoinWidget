@@ -7,7 +7,6 @@ import android.content.Intent
 import android.widget.Toast
 import com.brentpanther.bitcoinwidget.NetworkStatusHelper
 import com.brentpanther.bitcoinwidget.WidgetApplication
-import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.WidgetUpdater
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.strategy.presenter.RemoteWidgetPresenter
@@ -26,10 +25,11 @@ class WidgetBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun refreshAllWidgets(context: Context) = CoroutineScope(Dispatchers.IO).launch {
-        val widgetUpdateIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, WidgetProvider::class.java)
-        val appWidgetIds = WidgetApplication.instance.widgetIds
-        widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
-        context.sendBroadcast(widgetUpdateIntent)
+        for (widgetProvider in WidgetApplication.instance.widgetProviders) {
+            val widgetUpdateIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, widgetProvider)
+            widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, WidgetApplication.instance.getWidgetIds(widgetProvider))
+            context.sendBroadcast(widgetUpdateIntent)
+        }
     }
 
     private fun refreshWidget(context: Context, intent: Intent) {

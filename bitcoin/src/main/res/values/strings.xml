@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Simple Crypto Widget</string>
-    <string name="widget_price_name">Price Widget</string>
     <string name="new_widget">New %s Widget</string>
     <string name="edit_widget">Edit %s Widget</string>
     <string name="add_widget">Add Widget</string>
@@ -121,11 +120,13 @@
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
     <string name="state_error">Unable to update price. This may be an issue with the exchange.</string>
     <string name="placeholder_price" translatable="false">$-,---</string>
-    <string name="description_price_widget">Current Price</string>
-    <string name="description_value_widget">Current Value</string>
-    <string name="dialog_amount_held">How much %s do you currently hold?</string>
-    <string name="add_price_widget">Add Price Widget</string>
-    <string name="add_value_widget">Add Value Widget</string>
+    <string name="widget_price_name">Current Price</string>
+    <string name="widget_value_name">Wallet Value</string>
+    <string name="dialog_amount_held">How much %s in your wallet?</string>
+    <string name="add_value_widget">Add Wallet Value Widget</string>
+    <string name="add_price_widget">Add Current Value Widget</string>
+    <string name="widget_price_summary">Shows the current %s trading price.</string>
+    <string name="widget_value_summary">Shows the current value of your %s wallet.</string>
 
 
 </resources>

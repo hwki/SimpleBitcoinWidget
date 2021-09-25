@@ -12,9 +12,8 @@
     android:widgetCategory="home_screen|keyguard"
     android:initialKeyguardLayout="@layout/widget_value_solid_light"
     android:resizeMode="vertical|horizontal"
-    android:previewImage="@mipmap/ic_launcher"
-    android:previewLayout="@layout/widget_value_solid_light"
+    android:previewImage="@drawable/preview_value_widget"
     android:widgetFeatures="reconfigurable"
     android:configure="com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity"
-    android:description="@string/description_value_widget"
+    android:description="@string/widget_value_name"
     tools:targetApi="s" />
