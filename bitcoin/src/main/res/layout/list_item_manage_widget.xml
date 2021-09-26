@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="110dp"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:foreground="?android:attr/selectableItemBackground"
@@ -11,38 +11,52 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/labelCoin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="?attr/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="BTC / USD" />
 
         <TextView
+            android:id="@+id/labelType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelCoin"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:text="Current Value" />
+
+        <TextView
             android:id="@+id/labelExchange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/labelCoin"
-            app:layout_constraintStart_toEndOf="@+id/labelCoin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelType"
             tools:text="CoinGecko" />
 
         <include
             android:id="@+id/widgetPreview"
             layout="@layout/layout_widget_preview"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelCoin" />
+            app:layout_constraintTop_toBottomOf="@+id/labelCoin"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent=".5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

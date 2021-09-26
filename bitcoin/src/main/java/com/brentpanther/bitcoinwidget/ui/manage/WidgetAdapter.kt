@@ -48,6 +48,7 @@ class WidgetAdapter(private val onClickListener: ((settings: WidgetSettings) -> 
                 val coinName = widget.coinUnit ?: widget.coinCustomName ?: widget.coin.name
                 val price = binding.root.findViewById<TextView>(R.id.price)
                 TextViewCompat.setAutoSizeTextTypeWithDefaults(price, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
+                binding.labelType.text = root.context.getString(widget.widgetType.widgetName)
                 binding.labelCoin.text = root.context.getString(R.string.widget_list_title, coinName, widget.currency)
                 binding.labelExchange.text = widget.exchange.exchangeName
                 root.setOnClickListener { onClickListener(widgetSettings) }
