@@ -72,7 +72,6 @@
         <item>1 hour</item>
         <item>2 hours</item>
         <item>6 hours</item>
-        <item>24 hours</item>
     </string-array>
     <string-array name="intervalValues">
         <item>5</item>
@@ -82,7 +81,6 @@
         <item>60</item>
         <item>120</item>
         <item>360</item>
-        <item>1440</item>
     </string-array>
     <string-array name="symbols">
         <item>Show local symbol</item>
@@ -111,7 +109,7 @@
     <string name="coin_icon">Icon</string>
     <string name="nav_title_manage_widgets">Manage Widgets</string>
     <string name="nav_title_settings">Settings</string>
-    <string name="manage_widgets_empty">You haven\'t created any widgets yet. Once added they will appear here.</string>
+    <string name="manage_widgets_empty">How to create a widget:\n• Touch and hold on the home screen.\n• Scroll to Simple Crypto Widget.\n• Drag and drop to the home screen.\n• Configure and create.</string>
     <string name="widget_list_title">%1$s / %2$s</string>
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently restricted.</string>
