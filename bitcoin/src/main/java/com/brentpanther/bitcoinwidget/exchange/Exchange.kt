@@ -454,6 +454,12 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url).getAsJsonObject("result").get("last").asString
         }
     },
+    FTX_US("FTX US") {
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://ftx.us/api/markets/$coin/$currency"
+            return getJsonObject(url).getAsJsonObject("result").get("last").asString
+        }
+    },
     FOXBIT("FoxBit") {
 
         override fun getValue(coin: String, currency: String): String? {

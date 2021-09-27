@@ -92,7 +92,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Mon, 20 Sep 2021 00:59:05 GMT</string>
+    <string name="json_last_modified" translatable="false">Tue, 28 Sep 2021 00:55:03 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="settings_updating_data">Updating coin data…</string>
@@ -125,6 +125,7 @@
     <string name="add_price_widget">Add Current Value Widget</string>
     <string name="widget_price_summary">Shows the current %s trading price.</string>
     <string name="widget_value_summary">Shows the current value of your %s wallet.</string>
+    <string name="dismiss">Dismiss</string>
 
 
 </resources>

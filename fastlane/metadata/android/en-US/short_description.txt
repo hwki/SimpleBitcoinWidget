@@ -1,1 +1,1 @@
-A simple widget to display prices for Bitcoin and other cryptocurrencies.
+A simple widget to display prices for lots of cryptocurrencies.

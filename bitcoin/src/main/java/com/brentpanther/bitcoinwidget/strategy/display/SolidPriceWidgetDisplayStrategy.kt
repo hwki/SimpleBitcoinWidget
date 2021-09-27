@@ -41,7 +41,7 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         updateState()
     }
 
-    protected fun formatPriceString(amount: String?): String {
+    private fun formatPriceString(amount: String?): String {
         if (amount.isNullOrEmpty()) return ""
         var adjustedAmount = amount.toDouble()
         widget.coinUnit?.let {

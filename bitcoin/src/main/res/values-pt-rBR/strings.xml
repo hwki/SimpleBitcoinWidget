@@ -84,6 +84,7 @@
     <string name="add_price_widget">Adicionar widget de valor atual</string>
     <string name="widget_price_summary">Mostra o preço de negociação atual do %s.</string>
     <string name="widget_value_summary">Mostra o valor atual de sua carteira %s.</string>
+    <string name="dismiss">Liberar</string>
 
 
 </resources>

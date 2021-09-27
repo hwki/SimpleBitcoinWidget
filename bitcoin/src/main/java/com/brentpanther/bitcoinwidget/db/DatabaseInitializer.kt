@@ -10,6 +10,7 @@ import com.brentpanther.bitcoinwidget.Theme.SOLID
 import com.brentpanther.bitcoinwidget.Theme.TRANSPARENT
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetState
+import com.brentpanther.bitcoinwidget.WidgetType
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import java.util.*
@@ -56,6 +57,8 @@ object DatabaseInitializer {
                     put("lastValue", getString(obj, "last_value")?.replace(Regex("[^0-9\\\\.]+"), ""))
                     put("lastUpdated", 0)
                     put("state", WidgetState.CURRENT.name)
+                    put("showAmountLabel", false)
+                    put("widgetType", WidgetType.PRICE.name)
                     minRefresh = min(minRefresh, getString(obj, "refresh")?.toInt() ?: 30)
                 }
                 db.insert("widget", CONFLICT_REPLACE, values)
