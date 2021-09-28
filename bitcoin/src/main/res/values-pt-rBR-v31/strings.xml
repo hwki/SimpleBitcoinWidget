@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="themes" tools:ignore="InconsistentArrays">
+        <item>Tema Sólida</item>
+        <item>Transparente</item>
+        <item>Material</item>
+    </string-array>
+</resources>

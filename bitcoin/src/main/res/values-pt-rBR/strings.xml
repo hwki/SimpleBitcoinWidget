@@ -1,8 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="widget_name">Widget Simples</string>
-    <string name="new_widget">Novo %s Widget</string>
-
-    <string name="select_coin">Selecione Moeda</string>
+    <string name="new_widget">Novo Widget %s</string>
+    <string name="edit_widget">Editar Widget %s</string>
+    <string name="add_widget">Adicionar Widget</string>
 
     <string name="title_fixed_size">Tamanho De Texto Fixo</string>
     <string name="title_data">Data</string>
@@ -11,35 +10,34 @@
     <string name="title_refresh_interval">Atualizar Intervalo</string>
     <string name="title_currency">Moeda</string>
     <string name="title_exchange">Exchange</string>
-    <string name="title_label">Mostar marcador de exchange</string>
+    <string name="title_coin_label">Mostrar etiqueta de moeda</string>
+    <string name="title_exchange_label">Mostrar etiqueta de troca</string>
+    <string name="title_amount_label">Mostrar quantidade</string>
     <string name="title_theme">Tema</string>
-    <string name="title_rate">Nota</string>
-    <string name="title_icon">Mostrar %s ícone</string>
+    <string name="title_night_mode">Modo Noturno</string>
+    <string name="title_format">Formato</string>
+    <string name="title_display">Aparência</string>
+    <string name="title_icon">Mostrar ícone</string>
     <string name="title_decimals">Sempre Mostrar Decimais</string>
     <string name="title_units">Denominação</string>
     <string name="title_preview">Prévia</string>
-    <string name="title_locale">Símbolo</string>
+    <string name="title_currency_symbol">Símbolo da moeda</string>
+    <string name="title_about">Acerca</string>
 
-    <string name="summary_fixed_size">Manter o texto consistente em todos os widgets (Configuração Global)</string>
-    <plurals name="summary_refresh_interval_minute">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Todo minuto</item>
-        <item quantity="other">A cada %d minutos</item>
-    </plurals>
-    <plurals name="summary_refresh_interval_hour">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Toda hora</item>
-        <item quantity="other">A cada %d horas</item>
-    </plurals>
+    <string name="summary_fixed_size">Manter o texto consistente em todos os widgets</string>
+    <string name="summary_refresh_interval">A cada %s</string>
     <string name="summary_currency">Usar %s como moeda</string>
     <string name="summary_exchange">Pegar data de %s</string>
-    <string name="summary_rate">Avalie na Google Play</string>
-    <string name="summary_units">Mostrar em %s</string>
-    <string name="summary_custom_coin">Usar %s</string>
+    <string name="summary_units">Mostrar %s em %s</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
-        <item>Tema Claro</item>
-        <item>Tema Escuro</item>
+        <item>Tema Sólida</item>
         <item>Transparente</item>
-        <item>Transparente Escuro</item>
+    </string-array>
+    <string-array name="nightModes">
+        <item>Claro</item>
+        <item>Escuro</item>
+        <item>Sistema</item>
     </string-array>
     <string-array name="intervals">
         <item>5 minutos</item>
@@ -49,35 +47,44 @@
         <item>1 hora</item>
         <item>2 horas</item>
         <item>6 horas</item>
-        <item>24 horas</item>
-    </string-array>
-    <string-array name="intervalValues">
-        <item>5</item>
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>60</item>
-        <item>120</item>
-        <item>360</item>
-        <item>1440</item>
     </string-array>
     <string-array name="symbols">
-        <item>Mostrar símbolo da moeda local</item>
-        <item>Mostrar símbolo de moeda ISO</item>
-        <item>Não mostrar símbolo de moeda</item>
+        <item>Mostrar símbolo local</item>
+        <item>Mostrar símbolo ISO</item>
+        <item>Não mostrar símbolo</item>
     </string-array>
 
-    <string name="dialog_update_title">Atualizando</string>
-    <string name="dialog_update_message">Atualizando dados da moeda…</string>
+    <string name="settings_updating_data">Atualizando dados da moeda…</string>
     <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
     <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
 
-    <string name="save">Salve</string>
-    <string name="button_settings">Preferências</string>
-    <string name="title_warning">Aviso</string>
-    <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
-    <string name="warning_battery_saver">O aplicativo não será atualizado porque o protetor de bateria está ativado no momento.</string>
+    <string name="button_settings">Abrir Configurações</string>
     <string name="coin_search_hint">Pesquise por nome ou símbolo</string>
+
+    <string name="settings_update">Atualizo</string>
+    <string name="settings_create">Crio</string>
+    <string name="version">Versão %s</string>
+    <string name="coin_icon">Icone</string>
+    <string name="nav_title_manage_widgets">Gerenciar Widgets</string>
+    <string name="nav_title_settings">Configurações</string>
+    <string name="manage_widgets_empty">Você ainda não criou nenhum widget. Depois de adicionados, eles aparecerão aqui.</string>
+    <string name="widget_list_title">%1$s / %2$s</string>
+
+    <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
+    <string name="warning_battery_saver">O aplicativo não será atualizada porque economizador de bateria atualmente é restrito.</string>
+    <string name="warning_hibernation">Com o tempo, seu dispositivo pode colocar este aplicativo em hibernação, fazendo com que os widgets não sejam atualizados corretamente. Considere ajustar suas configurações desativando a opção chamada \"Remover permissões e liberar espaço\"</string>
+
+    <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
+    <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
+    <string name="widget_price_name">Preço Atual</string>
+    <string name="widget_value_name">Valor da carteiral</string>
+    <string name="dialog_amount_held">Quanto %s você tem atualmente?</string>
+    <string name="add_value_widget">Adicionar widget de valor da carteira</string>
+    <string name="add_price_widget">Adicionar widget de valor atual</string>
+    <string name="widget_price_summary">Mostra o preço de negociação atual do %s.</string>
+    <string name="widget_value_summary">Mostra o valor atual de sua carteira %s.</string>
+    <string name="dismiss">Liberar</string>
+
 
 </resources>

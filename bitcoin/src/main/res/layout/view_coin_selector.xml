@@ -13,35 +13,36 @@
     <ImageView
         android:id="@+id/coin_icon"
         android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_height="36dp"
         android:layout_marginStart="4dp"
-        android:contentDescription="Icon"
-        app:layout_constraintBottom_toBottomOf="@id/coin_symbol"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_btc"
+        android:contentDescription="@string/coin_icon" />
 
     <TextView
         android:id="@+id/coin_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:textColor="#000"
-        android:textSize="18sp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@id/coin_symbol"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/coin_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Bitcoin"/>
 
     <TextView
         android:id="@+id/coin_symbol"
-        android:layout_width="0dp"
-        android:textSize="12sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/coin_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/coin_icon"
-        app:layout_constraintTop_toBottomOf="@id/coin_name" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/coin_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text=" - BTC"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

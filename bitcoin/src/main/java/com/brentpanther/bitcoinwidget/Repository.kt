@@ -2,12 +2,7 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -18,24 +13,9 @@ object Repository {
 
     private const val LAST_MODIFIED = "last_modified"
     const val CURRENCY_FILE_NAME = "coins.json"
-    private val TAG = this::class.java.simpleName
+    private val TAG = Repository::class.java.simpleName
 
-    private val data = MutableLiveData<Boolean>()
-    private var downloading = false
-
-    fun data(context: Context) : LiveData<Boolean> {
-        if (!downloading) {
-            downloading = true
-            data.postValue(false)
-            GlobalScope.launch(Dispatchers.IO) {
-                Log.d(TAG, "starting download")
-                downloadJSON(context)
-            }
-        }
-        return data
-    }
-
-    private fun downloadJSON(context: Context) {
+    fun downloadJSON(context: Context) {
         try {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val lastModified = prefs.getString(LAST_MODIFIED, context.getString(R.string.json_last_modified))
@@ -70,7 +50,6 @@ object Repository {
         } catch (e: IOException) {
             Log.e(TAG, "Error downloading JSON.", e)
         }
-        data.postValue(true)
     }
 
 

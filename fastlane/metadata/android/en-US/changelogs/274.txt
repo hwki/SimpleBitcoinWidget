@@ -1,0 +1,11 @@
+Simple Bitcoin Widget is now Simple Crypto Widget!
+Full app to manage and edit your widgets. Reconfigure at any time.
+Updated look and feel of existing themes.
+New "Material You" themed widget.
+New "Wallet Value" widget type.
+Added option to show coin name.
+Lots of bugs fixed.
+Android 12 updates.
+Added a bunch of new coins.
+Added FTX.US exchange.
+Removed Coinegg and DueDEX exchanges.

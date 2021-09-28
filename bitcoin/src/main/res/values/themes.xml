@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorControlHighlight">@color/secondaryLightColor</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
+        <item name="alertDialogTheme">@style/DialogTheme</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/secondaryColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorPrimaryDark">@color/secondaryColor</item>
+    </style>
+
+    <style name="Theme.MyApp.WidgetContainer" parent="@android:style/Theme.DeviceDefault">
+        <item name="appWidgetRadius">8dp</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText</item>
+    </style>
+
+    <style name="Theme.MyApp.WidgetContainer.Light">
+        <item name="appWidgetDefaultIcon">@drawable/ic_btc</item>
+        <item name="appWidgetBackgroundColor">#fff</item>
+        <item name="appWidgetLoadingColor">#111</item>
+    </style>
+
+    <style name="Theme.MyApp.WidgetContainer.Light.Transparent">
+        <item name="appWidgetBackgroundColor">@android:color/transparent</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText.Transparent</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.Transparent</item>
+    </style>
+
+    <style name="Theme.MyApp.WidgetContainer.Dark">
+        <item name="appWidgetBackgroundColor">#111</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_btc_dark</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText.Dark</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.Dark</item>
+        <item name="appWidgetLoadingColor">#fff</item>
+    </style>
+
+    <style name="Theme.MyApp.WidgetContainer.Dark.Transparent">
+        <item name="appWidgetBackgroundColor">#88000000</item>
+        <item name="appWidgetTextStyle">@style/SolidWidgetText.DarkTransparent</item>
+        <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.DarkTransparent</item>
+    </style>
+</resources>

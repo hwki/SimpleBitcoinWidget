@@ -3,56 +3,54 @@ package com.brentpanther.bitcoinwidget
 import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.util.Log
-import androidx.core.content.FileProvider
-import androidx.preference.PreferenceManager
-import java.io.File
-
+import android.content.res.Resources
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.receiver.WidgetBroadcastReceiver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WidgetApplication : Application() {
 
+    fun <T : WidgetProvider> getWidgetIds(className: Class<T>): IntArray {
+        val name = ComponentName(this, className)
+        return AppWidgetManager.getInstance(this).getAppWidgetIds(name)
+    }
     val widgetIds: IntArray
         get() {
-            val manager = AppWidgetManager.getInstance(this)
-            val cm = ComponentName(this, WidgetProvider::class.java)
-            return manager.getAppWidgetIds(cm)
+            return widgetProviders.map { getWidgetIds(it).toList() }.flatten().toIntArray()
         }
+
+    val widgetProviders = listOf(WidgetProvider::class.java, ValueWidgetProvider::class.java)
+
+    fun getWidgetType(widgetId: Int): WidgetType {
+        return when (AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.className) {
+            WidgetProvider::class.qualifiedName -> WidgetType.PRICE
+            ValueWidgetProvider::class.qualifiedName -> WidgetType.VALUE
+            else -> throw IllegalArgumentException()
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        registerReceiver(MyBroadcastReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
-        grantUriAccessToWidget()
-    }
-
-    private fun grantUriAccessToWidget() {
-        val path = File(File(filesDir, "icons"), "1")
-        val uri = FileProvider.getUriForFile(this, "com.brentpanther.bitcoinwidget.fileprovider", path)
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_HOME)
-        val launcher = packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-        grantUriPermission(launcher?.activityInfo?.packageName, uri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
-                    or Intent.FLAG_GRANT_PREFIX_URI_PERMISSION)
-    }
-
-    fun useAutoSizing(): Boolean {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val fixedSize = sharedPrefs.getBoolean(getString(R.string.key_fixed_size), false)
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !fixedSize
+        registerReceiver(WidgetBroadcastReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
+        // in case of stuck entries in the database
+        if (widgetIds.isEmpty()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                WidgetDatabase.getInstance(this@WidgetApplication).widgetDao().clear()
+            }
+        }
     }
 
     companion object {
 
         lateinit var instance: WidgetApplication
             private set
+
+        fun Int.dpToPx() = this * Resources.getSystem().displayMetrics.density
     }
 
 }

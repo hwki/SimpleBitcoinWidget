@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget
 
+import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.google.gson.Gson
 import com.jayway.jsonpath.JsonPath
 import okhttp3.OkHttpClient
@@ -27,9 +28,9 @@ class GenerateSupportedCoinsJson {
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmex,
                         this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
-                        this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coinegg, this::coingecko,
+                        this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-                        this::cryptocom, this::deversifi, this::duedex, this::exmo, this::ftx, this::foxbit, this::gateio, this::gemini, this::hitbtc,
+                        this::cryptocom, this::deversifi, this::exmo, this::ftx, this::ftx_us, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::ndax,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex,
@@ -341,10 +342,6 @@ class GenerateSupportedCoinsJson {
         return currencies.map { "BTC_$it" }
     }
 
-    private fun coinegg(): List<String> {
-        return parse("https://api.coinegg.fun/openapi/quote/v1/ticker/price", "$[*].symbol")
-    }
-
     private fun coingecko(): List<String> {
         val currencies = parse("https://api.coingecko.com/api/v3/simple/supported_vs_currencies", "[*]")
         return Coin.values().map { coin -> currencies.map { coin.name + "_" + it } }.flatten()
@@ -381,7 +378,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun cryptocom(): List<String> {
-        return parse("https://uat-api.3ona.co/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
+        return parse("https://api.crypto.com/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
     }
 
     private fun deversifi(): List<String> {
@@ -390,16 +387,16 @@ class GenerateSupportedCoinsJson {
         }
     }
 
-    private fun duedex(): List<String> {
-        return parse("https://api.duedex.com/v1/ticker", "$.data[?(@.instrument != 'BTCUSD')].instrument")
-    }
-
     private fun exmo(): List<String> {
         return parseKeys("https://api.exmo.com/v1.1/ticker", "$")
     }
 
     private fun ftx(): List<String> {
         return parse("https://ftx.com/api/markets", "$.result[*].name")
+    }
+
+    private fun ftx_us(): List<String> {
+        return parse("https://ftx.us/api/markets", "$.result[*].name")
     }
 
     private fun foxbit(): List<String> {

@@ -1,63 +1,95 @@
 package com.brentpanther.bitcoinwidget
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.content.Intent
-import androidx.preference.PreferenceManager
+import android.os.Bundle
+import androidx.work.*
+import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import kotlinx.coroutines.*
+import java.util.concurrent.TimeUnit
 
-class WidgetProvider : AppWidgetProvider() {
+open class WidgetProvider : AppWidgetProvider() {
 
     override fun onRestored(context: Context, oldWidgetIds: IntArray?, newWidgetIds: IntArray?) {
-        oldWidgetIds?.zip(newWidgetIds ?: IntArray(0))?.forEach { (old, new) ->
-            Prefs(old).move(new)
+        val widgetDao = WidgetDatabase.getInstance(context).widgetDao()
+        CoroutineScope(Dispatchers.IO).launch {
+            oldWidgetIds?.zip(newWidgetIds ?: IntArray(0))?.forEach { (old, new) ->
+                widgetDao.getByWidgetId(old)?.apply {
+                    widgetId = new
+                    widgetDao.update(this)
+                }
+            }
         }
     }
 
     override fun onEnabled(context: Context) {
-        DataMigration.migrate(context)
         refreshWidgets(context)
     }
 
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        onEnabled(context)
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, widgetIds: IntArray) {
+        refreshWidgets(context)
     }
 
-    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        for (widgetId in appWidgetIds) {
-            Prefs(widgetId).delete()
-            val widgetUpdateIntent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, context, PriceBroadcastReceiver::class.java)
-            widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-            val pendingIntent = PendingIntent.getBroadcast(context, widgetId, widgetUpdateIntent, 0)
-            val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarm.cancel(pendingIntent)
-        }
-        refreshIfFixedSize(context, appWidgetIds)
+    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
+        appWidgetId: Int, newOptions: Bundle) {
+        refreshWidgets(context)
     }
 
-    private fun refreshIfFixedSize(context: Context, appWidgetIds: IntArray) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        if (prefs.getBoolean(context.getString(R.string.key_fixed_size), false)) {
-            refreshWidgets(context, appWidgetIds.toList())
+    override fun onDeleted(context: Context, widgetIds: IntArray) {
+        val widgetDao = WidgetDatabase.getInstance(context).widgetDao()
+        CoroutineScope(Dispatchers.IO).launch {
+            widgetDao.delete(widgetIds)
+            if (widgetDao.getAll().isEmpty()) {
+                val workManager = WorkManager.getInstance(context)
+                workManager.cancelUniqueWork(ONETIMEWORKNAME)
+                cancelWork(workManager)
+            } else if (widgetDao.configWithSizes().consistentSize) {
+                refreshWidgets(context)
+            }
         }
     }
 
     companion object {
 
-        fun refreshWidgets(context: Context, widgetId: Int? = null) {
-            val widgetIds = WidgetApplication.instance.widgetIds
-            refreshWidgets(context, widgetIds.filterNot { it == widgetId })
-        }
+        const val WORKNAME = "widgetRefresh"
+        const val ONETIMEWORKNAME = "115575872"
 
-        internal fun refreshWidgets(context: Context, widgetIds: List<Int>) {
-            for (widgetId in widgetIds) {
-                val widgetUpdateIntent = Intent(context, PriceBroadcastReceiver::class.java)
-                widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-                context.sendBroadcast(widgetUpdateIntent)
+        fun refreshWidgets(context: Context, restart: Boolean = false) = CoroutineScope(Dispatchers.IO).launch {
+            val dao = WidgetDatabase.getInstance(context).widgetDao()
+            val widgetIds = dao.getAll().map { it.widgetId }.toIntArray()
+            if (widgetIds.isEmpty()) return@launch
+
+            WidgetUpdater.update(context, widgetIds, false)
+            val workManager = WorkManager.getInstance(context)
+            val refresh = dao.configWithSizes().refresh
+
+            // https://issuetracker.google.com/issues/115575872
+            val immediateWork = OneTimeWorkRequestBuilder<WidgetUpdateWorker>().setInitialDelay(3650L, TimeUnit.DAYS).build()
+            workManager.enqueueUniqueWork(ONETIMEWORKNAME, ExistingWorkPolicy.KEEP, immediateWork)
+
+            val workPolicy = if (restart) ExistingPeriodicWorkPolicy.REPLACE else ExistingPeriodicWorkPolicy.KEEP
+            when (refresh) {
+                5 -> (0..10 step 5).forEachIndexed { i, it -> scheduleWork(workManager, 15, it, i, workPolicy) }
+                10 -> (0..10 step 10).forEachIndexed { i, it -> scheduleWork(workManager, 20, it, i, workPolicy) }
+                else -> scheduleWork(workManager, refresh, 0, 0, workPolicy)
             }
         }
+
+        fun cancelWork(workManager: WorkManager): Operation {
+            return workManager.cancelAllWorkByTag(WORKNAME)
+        }
+
+        fun scheduleWork(workManager: WorkManager, refresh: Int, delay: Int, index: Int, policy: ExistingPeriodicWorkPolicy) {
+            val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+            val work = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(refresh.toLong(), TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .addTag(WORKNAME)
+                .setInitialDelay(delay.toLong(), TimeUnit.MINUTES)
+                .build()
+            workManager.enqueueUniquePeriodicWork("$WORKNAME$index", policy, work)
+        }
+
     }
 
 }

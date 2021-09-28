@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_donate">Apoie O Desenvolvedor</string>
+    <string name="summary_donate">Doar Bitcoin</string>
+    <string name="error_donate">Endereço bitcoin não encontrado</string>
+</resources>

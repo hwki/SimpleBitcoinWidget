@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:persistent="false">
+    <PreferenceCategory
+        app:title="Settings">
+    <ListPreference
+        app:defaultValue="30"
+        app:entries="@array/intervals"
+        app:entryValues="@array/intervalValues"
+        android:icon="@drawable/ic_outline_timer_24"
+        app:key="refresh_interval"
+        app:title="@string/title_refresh_interval" />
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        android:icon="@drawable/ic_outline_text_fields_24"
+        app:key="fixed_size"
+        app:summary="@string/summary_fixed_size"
+        app:title="@string/title_fixed_size" />
+    </PreferenceCategory>
+</PreferenceScreen>
