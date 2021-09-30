@@ -1,0 +1,1 @@
+Reduce padding to increase text size on non-material themed widgets

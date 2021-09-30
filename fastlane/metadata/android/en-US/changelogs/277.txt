@@ -1,0 +1,1 @@
+Fixed tiny text size bug.

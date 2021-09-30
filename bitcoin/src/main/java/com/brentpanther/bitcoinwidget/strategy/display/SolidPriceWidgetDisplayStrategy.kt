@@ -30,7 +30,7 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
             Theme.TRANSPARENT -> if (widget.nightMode.isDark(appContext)) 2 else 0
             else -> 4
         }
-        widgetSize.right = horizontalPadding.dpToPx()
+        widgetSize.right -= horizontalPadding.dpToPx()
 
         updateIcon()
         RectF(widgetSize).also {
