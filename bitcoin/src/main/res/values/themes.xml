@@ -21,6 +21,7 @@
         <item name="appWidgetRadius">8dp</item>
         <item name="appWidgetTextStyle">@style/SolidWidgetText</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText</item>
+        <item name="appWidgetHorizontalPadding">4dp</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Light">
@@ -33,6 +34,7 @@
         <item name="appWidgetBackgroundColor">@android:color/transparent</item>
         <item name="appWidgetTextStyle">@style/SolidWidgetText.Transparent</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.Transparent</item>
+        <item name="appWidgetHorizontalPadding">0dp</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Dark">
@@ -47,5 +49,6 @@
         <item name="appWidgetBackgroundColor">#88000000</item>
         <item name="appWidgetTextStyle">@style/SolidWidgetText.DarkTransparent</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.DarkTransparent</item>
+        <item name="appWidgetHorizontalPadding">2dp</item>
     </style>
 </resources>

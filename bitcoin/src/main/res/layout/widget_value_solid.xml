@@ -9,7 +9,8 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="?attr/appWidgetHorizontalPadding">
 
         <LinearLayout
             android:id="@+id/coin_layout"

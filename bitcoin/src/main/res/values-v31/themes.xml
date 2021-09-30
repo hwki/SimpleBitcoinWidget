@@ -5,6 +5,7 @@
         <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
         <item name="appWidgetTextStyle">@style/SolidWidgetText</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText</item>
+        <item name="appWidgetHorizontalPadding">4dp</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Light.Material">
@@ -13,6 +14,7 @@
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.LightMaterial.Secondary</item>
         <item name="appWidgetLoadingColor">@android:color/system_accent2_600</item>
         <item name="appWidgetDefaultIcon">@drawable/ic_btc</item>
+        <item name="appWidgetHorizontalPadding">8dp</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Dark.Material">
@@ -21,6 +23,7 @@
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.DarkMaterial.Secondary</item>
         <item name="appWidgetLoadingColor">@android:color/system_accent1_600</item>
         <item name="appWidgetDefaultIcon">@drawable/ic_btc_dark</item>
+        <item name="appWidgetHorizontalPadding">8dp</item>
     </style>
 
 </resources>

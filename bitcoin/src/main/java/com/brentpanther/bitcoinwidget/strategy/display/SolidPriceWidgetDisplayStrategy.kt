@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.widget.TextView
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.WidgetApplication.Companion.dpToPx
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.Widget
@@ -24,7 +25,12 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         val widgetSize = widgetPresenter.getWidgetSize(appContext, widget.widgetId)
         // add padding
         widgetSize.bottom -= 16.dpToPx()
-        widgetSize.right -= 16.dpToPx()
+        val horizontalPadding = when (widget.theme) {
+            Theme.MATERIAL -> 8
+            Theme.TRANSPARENT -> if (widget.nightMode.isDark(appContext)) 2 else 0
+            else -> 4
+        }
+        widgetSize.right = horizontalPadding.dpToPx()
 
         updateIcon()
         RectF(widgetSize).also {

@@ -6,4 +6,5 @@
     <attr name="appWidgetLoadingColor" format="color"/>
     <attr name="appWidgetTextStyle" format="reference"/>
     <attr name="appWidgetSecondaryTextStyle" format="reference"/>
+    <attr name="appWidgetHorizontalPadding" format="dimension"/>
 </resources>
