@@ -134,6 +134,13 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonArray(url).get(0).asJsonObject.get("lastPrice").asString
         }
     },
+    BITPANDA("Bitpanda") {
+
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://api.bitpanda.com/v1/ticker"
+            return getJsonObject(url).get(coin).asJsonObject.get(currency).asString
+        }
+    },
     BITPAY("BitPay") {
 
         override fun getValue(coin: String, currency: String): String? {

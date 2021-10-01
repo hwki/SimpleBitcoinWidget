@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget
 
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.jayway.jsonpath.JsonPath
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -26,7 +27,7 @@ class GenerateSupportedCoinsJson {
                 listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmex,
-                        this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
+                        this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
@@ -264,6 +265,16 @@ class GenerateSupportedCoinsJson {
 
     private fun bitmex(): List<String> {
         return parse("https://www.bitmex.com/api/v1/instrument/active", "$.[*].symbol")
+    }
+
+    private fun bitpanda(): List<String> {
+        val pairs = mutableListOf<String>()
+        Gson().fromJson(get("https://api.bitpanda.com/v1/ticker"), JsonObject::class.java).entrySet().forEach { (coin, currencies) ->
+            currencies.asJsonObject.keySet().forEach{
+                pairs.add("${coin}_${it}")
+            }
+        }
+        return pairs
     }
 
     private fun bitpay(): List<String> {
