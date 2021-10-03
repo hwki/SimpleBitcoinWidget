@@ -293,6 +293,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "BAND" to "band-protocol",
                 "BAT" to "basic-attention-token",
                 "BCD" to "bitcoin-diamond",
+                "BEST" to "bitpanda-ecosystem-token",
                 "BCH" to "bitcoin-cash",
                 "BNB" to "binancecoin",
                 "BNT" to "bancor",
