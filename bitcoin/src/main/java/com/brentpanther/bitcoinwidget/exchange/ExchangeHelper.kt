@@ -27,7 +27,17 @@ internal object ExchangeHelper {
                     CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
             .build()
 
-    val connectionPool = ConnectionPool()
+    private val client: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
+            .retryOnConnectionFailure(false)
+            .connectionPool(ConnectionPool())
+            .hostnameVerifier { _, _ -> true }.build()
+    }
 
     @Throws(IOException::class)
     @JvmOverloads
@@ -45,15 +55,6 @@ internal object ExchangeHelper {
     private fun getString(url: String, headers: Headers? = null) = get(url, headers).body!!.string()
 
     private fun get(url: String, headers: Headers? = null): Response {
-        val client = OkHttpClient.Builder()
-            .followRedirects(true)
-            .followSslRedirects(true)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(5, TimeUnit.SECONDS)
-            .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
-            .retryOnConnectionFailure(false)
-            .connectionPool(connectionPool)
-            .hostnameVerifier { _, _ -> true }.build()
         var builder: Request.Builder = Request.Builder().url(url)
         headers?.let {
             builder = builder.headers(it)
