@@ -171,6 +171,7 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                 "coinLabel" -> widget.showCoinLabel
                 "exchangeLabel" -> widget.showExchangeLabel
                 "amountLabel" -> widget.showAmountLabel
+                "useInverse" -> widget.useInverse
                 else -> throw IllegalArgumentException()
             }
         }
@@ -195,6 +196,10 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 "amountLabel" -> {
                     widget.showAmountLabel = value
+                    false
+                }
+                "useInverse" -> {
+                    widget.useInverse = value
                     false
                 }
                 else -> false

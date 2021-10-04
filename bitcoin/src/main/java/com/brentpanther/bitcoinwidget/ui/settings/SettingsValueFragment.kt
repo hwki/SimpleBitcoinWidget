@@ -34,6 +34,7 @@ class SettingsValueFragment : SettingsFragment() {
             lastUpdated = 0,
             amountHeld = 1.0,
             showAmountLabel = true,
+            useInverse = false,
             state = WidgetState.CURRENT,
         )
         viewModel.widget?.let {

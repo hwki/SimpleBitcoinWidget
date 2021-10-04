@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(version = 2, entities = [Widget::class, Configuration::class], exportSchema = true)
+@Database(version = 3, entities = [Widget::class, Configuration::class], exportSchema = true)
 abstract class WidgetDatabase : RoomDatabase() {
 
     abstract fun widgetDao() : WidgetDao
@@ -22,7 +22,6 @@ abstract class WidgetDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE Widget ADD COLUMN amountHeld REAL")
             }
         }
-
 
         @Volatile
         private var INSTANCE: WidgetDatabase? = null

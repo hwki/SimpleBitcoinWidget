@@ -15,6 +15,11 @@
             android:summary="@string/summary_exchange"
             app:key="exchange"
             app:title="@string/title_exchange" />
+        <SwitchPreference
+            app:defaultValue="false"
+            android:icon="@drawable/ic_outline_change_24"
+            android:title="Use Inverse"
+            app:key="useInverse"/>
     </PreferenceCategory>
     <PreferenceCategory
         app:title="@string/title_format">

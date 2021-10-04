@@ -56,6 +56,9 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         widget.currencyUnit?.let {
             adjustedAmount /= Coin.valueOf(widget.currency).getUnitAmount(it)
         }
+        if (widget.useInverse) {
+            adjustedAmount = 1 / adjustedAmount
+        }
 
         val nf = getPriceFormat(adjustedAmount)
         if (adjustedAmount < 1000) {

@@ -32,6 +32,7 @@ data class Widget(
     var lastValue: String? = null,
     var amountHeld: Double? = null,
     var showAmountLabel: Boolean,
+    var useInverse: Boolean,
     var lastUpdated: Long,
     var state: WidgetState
 ) {

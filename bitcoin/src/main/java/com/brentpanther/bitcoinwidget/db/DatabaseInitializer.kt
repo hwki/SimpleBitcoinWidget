@@ -16,6 +16,7 @@ import com.google.gson.JsonObject
 import java.util.*
 import kotlin.math.min
 
+// Used to upgrade prior shared preferences data storage to android room
 object DatabaseInitializer {
 
     val TAG = DatabaseInitializer::class.simpleName
@@ -58,6 +59,7 @@ object DatabaseInitializer {
                     put("lastUpdated", 0)
                     put("state", WidgetState.CURRENT.name)
                     put("showAmountLabel", false)
+                    put("useInverse", false)
                     put("widgetType", WidgetType.PRICE.name)
                     minRefresh = min(minRefresh, getString(obj, "refresh")?.toInt() ?: 30)
                 }

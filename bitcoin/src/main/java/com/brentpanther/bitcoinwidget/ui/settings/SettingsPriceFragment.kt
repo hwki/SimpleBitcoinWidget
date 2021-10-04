@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.os.Build
 import androidx.preference.ListPreference
+import androidx.preference.TwoStatePreference
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.exchange.Exchange
@@ -32,6 +33,7 @@ class SettingsPriceFragment : SettingsFragment() {
             customIcon = data.coinEntry.iconUrl?.substringBefore("/"),
             lastUpdated = 0,
             showAmountLabel = false,
+            useInverse = false,
             state = WidgetState.CURRENT
         )
         viewModel.widget?.let {
@@ -49,6 +51,15 @@ class SettingsPriceFragment : SettingsFragment() {
                 entryValues = unitNames
                 setSummaryProvider {
                     getString(R.string.summary_units, data.coinEntry.name, value)
+                }
+            }
+        }
+        findPreference<TwoStatePreference>("useInverse")?.apply {
+            setSummaryProvider {
+                if (!isChecked) {
+                    getString(R.string.summary_inverse, data.coinEntry.name, viewModel.widget?.currency)
+                } else {
+                    getString(R.string.summary_inverse, viewModel.widget?.currency, data.coinEntry.name)
                 }
             }
         }

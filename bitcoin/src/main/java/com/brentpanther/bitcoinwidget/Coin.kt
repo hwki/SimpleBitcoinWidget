@@ -50,6 +50,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     DCR("Decred", IconTheme(SOLID, ic_dcr)),
     DOGE("Dogecoin", IconTheme(SOLID, ic_doge)),
     DOT("Polkadot", IconTheme(SOLID, ic_dot_black, ic_dot_white)),
+    EGLD("Elrond", IconTheme(SOLID, ic_egld_dark, ic_egld_white)),
     ENJ("Enjin Coin", IconTheme(SOLID, ic_enj)),
     EOS("EOS", IconTheme(SOLID, ic_eos_black, ic_eos_white), IconTheme(TRANSPARENT, ic_eos_white)),
     ETC("Ethereum Classic", IconTheme(SOLID, ic_etc)),
@@ -79,6 +80,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
         }
     },
     LTO("LTO Network", IconTheme(SOLID, ic_lto)),
+    LUNA("Terra", IconTheme(SOLID, ic_luna)),
     MANA("Decentraland", IconTheme(SOLID, ic_mana)),
     MATIC("Polygon", IconTheme(SOLID, ic_matic)),
     MCO("MCO", IconTheme(SOLID, ic_mco, ic_mco_white)),
@@ -101,6 +103,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     REP("Augur", IconTheme(SOLID, ic_rep)),
     RUNE("THORChain", IconTheme(SOLID, ic_rune)),
     RVN("Ravencoin", IconTheme(SOLID, ic_rvn)),
+    SHIB("Shiba Inu", IconTheme(SOLID, ic_shib)),
     SNX("Synthetix Network Token", IconTheme(SOLID, ic_snx)),
     SOL("Solana", IconTheme(SOLID, ic_sol)),
     SUSHI("Sushi", IconTheme(SOLID, ic_sushi)),
@@ -138,19 +141,16 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
         internal var COIN_NAMES: SortedSet<String> = values().map { it.name }.toSortedSet(String.CASE_INSENSITIVE_ORDER)
 
         fun getVirtualCurrencyFormat(currency: String, hideSymbol: Boolean): String {
+            if (hideSymbol) {
+                return "#,###"
+            }
             return when (currency) {
                 "BTC" ->
                     // bitcoin symbol added in Oreo
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) "₿ #,###" else "Ƀ #,###"
                 "LTC" -> "Ł #,###"
                 "DOGE" -> "Ð #,###"
-                else -> {
-                    if (hideSymbol) {
-                        "#,###"
-                    } else {
-                        "#,### $currency"
-                    }
-                }
+                else -> "#,### $currency"
             }
         }
     }
