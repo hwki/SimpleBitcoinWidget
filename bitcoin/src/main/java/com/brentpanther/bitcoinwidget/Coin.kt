@@ -30,6 +30,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
         }
     },
     BNB("Binance Coin", IconTheme(SOLID, ic_bnb)),
+    BEST("Bitpanda Ecosystem Token", IconTheme(SOLID, ic_best)),
     BNT("Bancor Network Token", IconTheme(SOLID, ic_bnt)),
     BSV("Bitcoin SV", IconTheme(SOLID, ic_bsv, ic_bsv_dark)),
     BTC("Bitcoin", IconTheme(SOLID, ic_btc, ic_btc_dark)) {
