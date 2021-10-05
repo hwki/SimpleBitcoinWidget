@@ -93,7 +93,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Tue, 28 Sep 2021 00:55:03 GMT</string>
+    <string name="json_last_modified" translatable="false">Tue, 05 Oct 2021 01:53:00 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
 
     <string name="settings_updating_data">Updating coin data…</string>

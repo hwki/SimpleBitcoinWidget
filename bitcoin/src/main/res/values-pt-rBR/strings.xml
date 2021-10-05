@@ -29,7 +29,7 @@
     <string name="summary_currency">Usar %s como moeda</string>
     <string name="summary_exchange">Pegar data de %s</string>
     <string name="summary_units">Mostrar %s em %s</string>
-    <string name="summary_inverse">Show price of %s in %s</string>
+    <string name="summary_inverse">Mostrar preço de %s em %s</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Tema Sólida</item>

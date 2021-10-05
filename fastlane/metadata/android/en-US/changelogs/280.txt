@@ -1,0 +1,3 @@
+Added inverse option for Current Price widget.
+Added Bitpanda Ecosystem Token, Elrond, Shiba Inu, and Terra coins.
+Added Bitpanda exchange.
