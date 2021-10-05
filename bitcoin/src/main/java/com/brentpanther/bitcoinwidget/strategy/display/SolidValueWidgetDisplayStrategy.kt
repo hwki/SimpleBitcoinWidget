@@ -3,6 +3,7 @@ package com.brentpanther.bitcoinwidget.strategy.display
 import android.content.Context
 import android.graphics.RectF
 import android.os.Build
+import android.util.Log
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.WidgetApplication.Companion.dpToPx
 import com.brentpanther.bitcoinwidget.db.Widget
@@ -56,7 +57,12 @@ class SolidValueWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
         widgetPresenter.show(R.id.coin_layout, R.id.coinLabel)
         var amount = ""
         if (widget.showAmountLabel) {
-            amount = DecimalFormat("#.#####").format(widget.amountHeld)
+            amount = try {
+                DecimalFormat("#.#####").format(widget.amountHeld)
+            } catch (e : Exception) {
+                Log.e(TAG, "Error formatting amount: ${widget.amountHeld}", e)
+                widget.amountHeld.toString()
+            }
         }
         if (widget.showCoinLabel) {
             amount += " " + widget.coinName()
@@ -65,5 +71,7 @@ class SolidValueWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
         widgetPresenter.setTextViewText(R.id.coinLabel, amount)
     }
 
-
+    companion object {
+        private val TAG = SolidValueWidgetDisplayStrategy::class.java.simpleName
+    }
 }

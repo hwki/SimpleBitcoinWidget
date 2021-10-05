@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.RectF
 import android.os.Build
+import android.util.Log
 import android.util.TypedValue
 import android.widget.TextView
 import com.brentpanther.bitcoinwidget.Coin
@@ -107,7 +108,12 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         val price = if (widget.lastValue == null) {
             appContext.getString(R.string.placeholder_price)
         } else {
-            formatPriceString(widget.lastValue)
+            try {
+                formatPriceString(widget.lastValue)
+            } catch (e: NumberFormatException) {
+                Log.e(TAG, "Error formatting price: ${widget.lastValue}")
+                widget.lastValue ?: ""
+            }
         }
         val config = getConfig()
         val adjustSize = config.consistentSize || Build.VERSION.SDK_INT < Build.VERSION_CODES.O
@@ -140,6 +146,10 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         }
         size = if (size > 0) min(size, priceSize) else priceSize
         widgetPresenter.setTextViewTextSize(R.id.price, TypedValue.COMPLEX_UNIT_PX, size.toFloat())
+    }
+
+    companion object {
+        private val TAG = SolidPriceWidgetDisplayStrategy::class.java.simpleName
     }
 
 }

@@ -26,7 +26,9 @@ class WidgetApplication : Application() {
     val widgetProviders = listOf(WidgetProvider::class.java, ValueWidgetProvider::class.java)
 
     fun getWidgetType(widgetId: Int): WidgetType {
-        return when (AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId).provider.className) {
+        val widgetInfo = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId)
+            ?: return WidgetType.PRICE
+        return when (widgetInfo.provider.className) {
             WidgetProvider::class.qualifiedName -> WidgetType.PRICE
             ValueWidgetProvider::class.qualifiedName -> WidgetType.VALUE
             else -> throw IllegalArgumentException()
