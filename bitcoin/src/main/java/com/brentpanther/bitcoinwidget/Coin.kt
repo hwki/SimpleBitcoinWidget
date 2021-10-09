@@ -123,6 +123,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     XRP("Ripple", IconTheme(SOLID, ic_xrp_black, ic_xrp_white), IconTheme(TRANSPARENT, ic_xrp_white)),
     XTZ("Tezos", IconTheme(SOLID, ic_xtz)),
     XVG("Verge", IconTheme(SOLID, ic_xvg)),
+    XYM("Symbol", IconTheme(SOLID, ic_xym)),
     YFI("yearn.finance", IconTheme(SOLID, ic_yfi)),
     ZEC("Zcash", IconTheme(SOLID, ic_zec, ic_zec_dark), IconTheme(TRANSPARENT, ic_zec)),
     ZIL("Zilliqa", IconTheme(SOLID, ic_zil)),
