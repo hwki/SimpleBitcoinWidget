@@ -377,6 +377,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "XRP" to "ripple",
                 "XTZ" to "tezos",
                 "XVG" to "verge",
+                "XYM" to "symbol",
                 "YFI" to "yearn-finance",
                 "ZEC" to "zcash",
                 "ZIL" to "zilliqa",
