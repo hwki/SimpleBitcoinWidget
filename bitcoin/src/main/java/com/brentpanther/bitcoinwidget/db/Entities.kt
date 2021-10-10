@@ -41,18 +41,6 @@ data class Widget(
     fun coinName() = coinCustomName ?: coin.coinName
 
     fun isOld(refresh: Int) = System.currentTimeMillis() - lastUpdated > (60000 * refresh * 1.5)
-
-    fun shouldRefresh(refresh: Int, manual: Boolean): Boolean {
-        // if this is a manual refresh, don't pull down new data if its been less than
-        // 60 seconds since last time, to avoid HTTP 429 errors
-        // otherwise, refresh if its close enough to the scheduled refresh time
-        val since = System.currentTimeMillis() - lastUpdated
-        return if (manual) {
-            since > 60000
-        } else {
-            since > (60000 * refresh * .25)
-        }
-    }
 }
 
 @Entity

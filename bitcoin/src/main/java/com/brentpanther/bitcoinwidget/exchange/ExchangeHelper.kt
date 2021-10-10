@@ -9,7 +9,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
-internal object ExchangeHelper {
+object ExchangeHelper {
+
 
     private val SPEC = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
             .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
@@ -28,20 +29,9 @@ internal object ExchangeHelper {
                     CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
             .build()
 
-    // should not be more than throttling control period in Widget.shouldRefresh
-    private const val CACHE_MAX_AGE_SECONDS = 60
-
-    // exchanges with a price ticker for all pairs
-    private val oneTickerExchanges = mapOf(
-        "BITCLUDE" to "https://api.bitclude.com/stats/ticker.json",
-        "BITPANDA" to "https://api.bitpanda.com/v1/ticker",
-        "COINBENE" to "https://openapi-exchange.coinbene.com/api/spot/market/summary",
-        "EXMO" to "https://api.exmo.com/v1.1/ticker",
-        "NDAX" to "https://core.ndax.io/v1/ticker",
-        "PARIBU" to "https://www.paribu.com/ticker",
-        "POCKETBITS" to "https://ticker.pocketbits.in/api/v1/ticker",
-        "WYRE" to "https://api.sendwyre.com/v3/rates"
-    )
+    var useCache = true
+    val cache : Cache?
+        get() = if (!useCache) null else Cache(WidgetApplication.instance.cacheDir, 256 * 1024L) // 256k
 
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -52,7 +42,7 @@ internal object ExchangeHelper {
             .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
             .retryOnConnectionFailure(false)
             .connectionPool(ConnectionPool())
-            .cache(Cache(WidgetApplication.instance.cacheDir, 256 * 1024L)) // 256k
+            .cache(cache)
             .addNetworkInterceptor { chain -> intercept(chain) }
             .hostnameVerifier { _, _ -> true }.build()
     }
@@ -73,7 +63,7 @@ internal object ExchangeHelper {
     private fun getString(url: String, headers: Headers? = null) = get(url, headers).body!!.string()
 
     private fun get(url: String, headers: Headers? = null): Response {
-        var builder: Request.Builder = Request.Builder().url(url)
+        var builder = Request.Builder().url(url)
         headers?.let {
             builder = builder.headers(it)
         }
@@ -83,21 +73,13 @@ internal object ExchangeHelper {
 
     @Throws(IOException::class)
     private fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
+        val request = chain.request().newBuilder()
+            .header("Cache-Control", "public, max-age=60")
+            .build()
         val response = chain.proceed(request)
-        val builder = CacheControl.Builder()
-        if (oneTickerExchanges.containsValue(request.url.toString())) {
-            builder
-                .maxAge(CACHE_MAX_AGE_SECONDS, TimeUnit.SECONDS)
-        } else {
-            builder
-                .noCache()
-                .noStore()
-        }
         return response.newBuilder()
             .removeHeader("Pragma")
-            .removeHeader("Cache-Control")
-            .addHeader("Cache-Control", builder.build().toString())
+            .header("Cache-Control", "max-age=60")
             .build()
     }
 }

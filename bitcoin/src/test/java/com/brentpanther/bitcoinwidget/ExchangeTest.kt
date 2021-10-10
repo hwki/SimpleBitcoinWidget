@@ -2,6 +2,7 @@ package com.brentpanther.bitcoinwidget
 
 import com.brentpanther.bitcoinwidget.exchange.Exchange.valueOf
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
+import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
 import org.junit.Test
 import java.io.InputStream
 import java.util.*
@@ -16,6 +17,7 @@ class ExchangeTest {
     @Test
     @Throws(Exception::class)
     fun removedCoins() {
+        ExchangeHelper.useCache = false
         val coins = EnumSet.allOf(Coin::class.java).sorted()
         for (coin in coins) {
             val entry = CoinEntry(coin.name, coin.coinName, coin.name, coin)
