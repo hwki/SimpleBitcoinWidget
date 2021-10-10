@@ -5,7 +5,6 @@ import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
-import kotlinx.coroutines.delay
 
 abstract class WidgetDataStrategy(context: Context, val widgetId: Int) {
 
@@ -26,19 +25,6 @@ abstract class WidgetDataStrategy(context: Context, val widgetId: Int) {
     protected fun getConfig() = dao.configWithSizes()
 
     abstract suspend fun loadData(manual: Boolean, force: Boolean)
-
-    protected suspend fun loading(refresh: Int, manual: Boolean, force: Boolean): Boolean {
-        val shouldRefresh = widget.shouldRefresh(refresh, manual)
-        return if (!force && !shouldRefresh) {
-            // give time for the loading indicator to be noticeable if manual
-            if (manual) {
-                delay(750)
-            }
-            true
-        } else {
-            false
-        }
-    }
 
     suspend fun save() {
         dao.update(widget)
