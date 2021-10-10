@@ -1,0 +1,3 @@
+Added Symbol coin.
+Fixed some coins that were not loading correctly.
+Added response caching.

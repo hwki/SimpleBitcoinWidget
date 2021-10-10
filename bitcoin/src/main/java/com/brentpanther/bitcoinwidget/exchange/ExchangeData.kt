@@ -99,7 +99,7 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
-        return obj?.getExchangeCoinName(exchange, coinEntry.name)
+        return obj?.getExchangeCoinName(exchange, coinEntry.coin.name)
     }
 
     open fun getExchangeCurrencyName(exchange: String, currency: String): String? {
