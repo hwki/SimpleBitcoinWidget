@@ -349,7 +349,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "NEO" to "neo",
                 "NRG" to "energi",
                 "OKB" to "okb",
-                "OMG" to "omg-network",
+                "OMG" to "omisego",
                 "ONT" to "ontology",
                 "PAX" to "paxos-standard",
                 "PAXG" to "pax-gold",

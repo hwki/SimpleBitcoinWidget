@@ -335,7 +335,9 @@ class GenerateSupportedCoinsJson {
     @Suppress("UNCHECKED_CAST")
     private fun coinbase(): List<String> {
         val currencies = parse("https://api.coinbase.com/v2/currencies", "$.data[*].id")
-        return parseKeys("https://api.coinbase.com/v2/exchange-rates", "$.data.rates").map {
+        return parseKeys("https://api.coinbase.com/v2/exchange-rates", "$.data.rates").filterNot {
+            it == "XRP"
+        }.map {
             coin -> currencies.map { "${coin}_$it" }
         }.flatten()
     }
@@ -443,7 +445,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun itbit(): List<String> {
-        return listOf("XBTUSD", "XBTSGD", "XBTEUR", "ETHUSD", "ETHEUR", "ETHSGD", "PAXGUSD", "BCHUSD", "LTCUSD")
+        return parse("https://api.paxos.com/v2/markets", "$.markets[*].market")
     }
 
     @Suppress("UNCHECKED_CAST")
