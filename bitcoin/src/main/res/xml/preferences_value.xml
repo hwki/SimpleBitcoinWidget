@@ -18,7 +18,6 @@
         <EditTextPreference
             app:key="amountHeld"
             app:title="Amount Held"
-            app:useSimpleSummaryProvider="true"
             android:icon="@drawable/ic_outline_account_balance_wallet_24" />
     </PreferenceCategory>
     <PreferenceCategory

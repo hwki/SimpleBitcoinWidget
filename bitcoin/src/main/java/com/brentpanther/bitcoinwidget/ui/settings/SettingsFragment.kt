@@ -222,7 +222,7 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                 "units_currency" -> widget.currencyUnit
                 "theme" -> widget.theme.name
                 "nightMode" -> widget.nightMode.name
-                "amountHeld" -> widget.amountHeld?.toString() ?: "1"
+                "amountHeld" -> widget.amountHeld.toString()
                 else -> throw IllegalArgumentException()
             }
         }
@@ -268,7 +268,7 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                     false
                 }
                 "amountHeld" -> {
-                    widget.amountHeld = value?.toDoubleOrNull()
+                    widget.amountHeld = value?.toDoubleOrNull() ?: widget.amountHeld
                     true
                 }
                 else -> false

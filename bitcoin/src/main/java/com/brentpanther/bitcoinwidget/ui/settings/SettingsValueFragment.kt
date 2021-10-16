@@ -6,6 +6,8 @@ import androidx.preference.EditTextPreference
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.exchange.Exchange
+import java.text.DecimalFormat
+import java.util.*
 
 class SettingsValueFragment : SettingsFragment() {
 
@@ -48,6 +50,14 @@ class SettingsValueFragment : SettingsFragment() {
             dialogMessage = getString(R.string.dialog_amount_held, viewModel.widget?.coinName())
             setOnBindEditTextListener {
                 it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+                it.setSelection(it.length())
+            }
+            setSummaryProvider {
+                DecimalFormat.getNumberInstance(Locale.getDefault()).run {
+                    minimumFractionDigits = 0
+                    maximumFractionDigits = 10
+                    format(viewModel.widget?.amountHeld)
+                }
             }
         }
     }

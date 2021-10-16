@@ -9,6 +9,7 @@ import com.brentpanther.bitcoinwidget.WidgetApplication.Companion.dpToPx
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
 import java.text.DecimalFormat
+import java.util.*
 
 class SolidValueWidgetDisplayStrategy(context: Context, widget: Widget, widgetPresenter: WidgetPresenter) :
     SolidPriceWidgetDisplayStrategy(context, widget, widgetPresenter) {
@@ -58,7 +59,11 @@ class SolidValueWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
         var amount = ""
         if (widget.showAmountLabel) {
             amount = try {
-                DecimalFormat("#.#####").format(widget.amountHeld)
+                DecimalFormat.getNumberInstance(Locale.getDefault()).run {
+                    minimumFractionDigits = 0
+                    maximumFractionDigits = 4
+                    format(widget.amountHeld)
+                }
             } catch (e : Exception) {
                 Log.e(TAG, "Error formatting amount: ${widget.amountHeld}", e)
                 widget.amountHeld.toString()
