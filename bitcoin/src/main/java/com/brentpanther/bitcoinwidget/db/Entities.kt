@@ -38,7 +38,7 @@ data class Widget(
 ) {
     fun toCoinEntry() = CoinEntry(coinCustomId ?: coin.coinName, coinName(), coin.name, coin, customIcon)
 
-    fun coinName() = coinCustomName ?: coin.coinName
+    fun coinName() = if (coinCustomId != null) coinCustomName ?: coin.coinName else coin.coinName
 
     fun isOld(refresh: Int) = System.currentTimeMillis() - lastUpdated > (60000 * refresh * 1.5)
 }

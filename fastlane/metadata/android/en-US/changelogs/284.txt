@@ -1,0 +1,1 @@
+Fixed a bug causing some coin/currency/exchange combinations to not load correctly.

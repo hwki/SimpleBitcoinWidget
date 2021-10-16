@@ -231,6 +231,7 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
             val updatePrice = when(key) {
                 "currency" -> {
                     widget.currency = value ?: widget.currency
+                    widget.currencyCustomName = data.getExchangeCurrencyName(widget.exchange.name, widget.currency)
                     updateExchangeValues()
                     updateCurrencyUnits()
                     true
@@ -245,6 +246,8 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                 }
                 "exchange" -> {
                     widget.exchange = Exchange.valueOf(value ?: Exchange.COINGECKO.name)
+                    widget.coinCustomName = data.getExchangeCoinName(widget.exchange.name)
+                    widget.currencyCustomName = data.getExchangeCurrencyName(widget.exchange.name, widget.currency)
                     true
                 }
                 "units_coin" -> {
