@@ -120,7 +120,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return ((buy + sell) / 2).toString()
         }
     },
-    BITHUMB_PRO("Bithumb Pro") {
+    BITHUMB_PRO("Bitglobal") {
 
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=$coin-$currency"
@@ -183,6 +183,12 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.bittrex.com/v3/markets/$coin-$currency/ticker"
             return getJsonObject(url).get("lastTradeRate").asString
+        }
+    },
+    BITRUE("Bitrue") {
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://openapi.bitrue.com/api/v1/ticker/price?symbol=$coin$currency"
+            return getJsonObject(url).get("price").asString
         }
     },
     BITVAVO ("Bitvavo") {

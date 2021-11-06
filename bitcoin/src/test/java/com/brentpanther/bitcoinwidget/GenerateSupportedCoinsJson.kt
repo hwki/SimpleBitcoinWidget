@@ -27,7 +27,7 @@ class GenerateSupportedCoinsJson {
                 listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmex,
-                        this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitvavo, this::bleutrade,
+                        this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
@@ -293,6 +293,10 @@ class GenerateSupportedCoinsJson {
 
     private fun bittrex(): List<String> {
         return parse("https://api.bittrex.com/v3/markets", "$[*].symbol")
+    }
+
+    private fun bitrue(): List<String> {
+        return parse("https://openapi.bitrue.com/api/v1/exchangeInfo", "$.symbols[*].symbol")
     }
 
     private fun bitvavo(): List<String> {
