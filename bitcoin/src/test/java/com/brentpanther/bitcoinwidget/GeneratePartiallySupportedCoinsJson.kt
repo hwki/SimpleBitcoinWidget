@@ -20,7 +20,7 @@ class GeneratePartiallySupportedCoins {
     private val configuration = Configuration.defaultConfiguration().mappingProvider(GsonMappingProvider())
     private val allSupportedCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.name }
 
-    private val fullySupportedCoinsJsonPath = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins.json"))
+    private val fullySupportedCoinsJsonPath = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json"))
 
     class CoinGeckoCoin(val id: String, val symbol: String, val name: String, var icon: String, val score: Double) {
 

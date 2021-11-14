@@ -93,8 +93,8 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Sat, 06 Nov 2021 15:27:56 GMT</string>
-    <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins.json</string>
+    <string name="json_last_modified" translatable="false">Sun, 14 Nov 2021 18:25:48 GMT</string>
+    <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="settings_updating_data">Updating coin data…</string>
     <string name="error_no_currencies">No currencies/exchanges found for this coin!</string>

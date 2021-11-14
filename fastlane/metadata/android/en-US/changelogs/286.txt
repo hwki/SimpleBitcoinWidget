@@ -1,0 +1,2 @@
+Added Somnium Space coin.
+Fixed some minor bugs.

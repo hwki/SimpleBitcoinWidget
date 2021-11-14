@@ -46,6 +46,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     COMP("Compound", IconTheme(SOLID, ic_comp_black, ic_comp_white)),
     CRO("Crypto.com Coin", IconTheme(SOLID, ic_cro, ic_cro_white)),
     CRV("Curve DAO Token", IconTheme(SOLID, ic_crv)),
+    CUBE("Somnium Space CUBEs", IconTheme(SOLID, ic_cube_black, ic_cube_white)),
     DAI("Dai", IconTheme(SOLID, ic_dai_color)),
     DASH("Dash", IconTheme(SOLID, ic_dash, ic_dash_dark)),
     DCR("Decred", IconTheme(SOLID, ic_dcr)),

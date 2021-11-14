@@ -20,7 +20,7 @@ class SettingsPriceFragment : SettingsFragment() {
             currency = data.defaultCurrency!!,
             coinCustomId = if (data.coinEntry.coin == Coin.CUSTOM) data.coinEntry.id else null,
             coinCustomName = if (data.coinEntry.coin == Coin.CUSTOM) data.coinEntry.name else null,
-            currencyCustomName = null,
+            currencyCustomName = data.getExchangeCurrencyName(defaultExchange, data.defaultCurrency!!),
             showExchangeLabel = false,
             showCoinLabel = false,
             showIcon = true,

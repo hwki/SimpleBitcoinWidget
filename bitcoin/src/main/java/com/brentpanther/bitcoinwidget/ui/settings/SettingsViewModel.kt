@@ -88,7 +88,7 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
        return if (java.io.File(context.filesDir, Repository.CURRENCY_FILE_NAME).exists()) {
             context.openFileInput(Repository.CURRENCY_FILE_NAME)
         } else {
-            context.resources.openRawResource(R.raw.cryptowidgetcoins)
+            context.resources.openRawResource(R.raw.cryptowidgetcoins_v2)
         }
     }
 

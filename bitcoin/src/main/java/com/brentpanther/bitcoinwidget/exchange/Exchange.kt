@@ -313,6 +313,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "COMP" to "compound-coin",
                 "CRO" to "crypto-com-chain",
                 "CRV" to "curve-dao-token",
+                "CUBE" to "somnium-space-cubes",
                 "DAI" to "dai",
                 "DASH" to "dash",
                 "DCR" to "decred",

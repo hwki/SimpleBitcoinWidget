@@ -11,7 +11,7 @@ import java.util.*
 class ExchangeTest {
 
     private fun loadJSON(): InputStream {
-        return ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins.json")
+        return ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json")
     }
 
     @Test

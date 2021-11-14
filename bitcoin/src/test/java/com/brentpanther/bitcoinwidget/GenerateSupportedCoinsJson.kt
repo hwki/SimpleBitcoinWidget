@@ -12,7 +12,7 @@ class GenerateSupportedCoinsJson {
 
     private val allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.name }
     private var allCurrencies = setOf<String>()
-    private val json = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins.json"))
+    private val json = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json"))
     private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",
             "XDG" to "DOGE", "MIOTA" to "IOTA", "STR" to "XLM", "DSH" to "DASH", "IOT" to "IOTA",
             "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM",
@@ -21,7 +21,7 @@ class GenerateSupportedCoinsJson {
 
     @Test
     fun generate() {
-        allCurrencies = (json.read("$..currencies.*") as List<String>).toSortedSet()
+        allCurrencies = (json.read("$..ccy.*") as List<String>).toSortedSet()
 
         val exchanges =
                 listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
@@ -48,9 +48,6 @@ class GenerateSupportedCoinsJson {
                 val currencyOverrides = mutableMapOf<String, String>()
                 val existing = getExistingPairs(name.name)
                 var pairs = extractOverrides(normalize(exchange.invoke()), coinOverrides, currencyOverrides)
-                pairs = pairs.filterNot {
-                   it.substringBefore("_") == it.substringAfter("_")
-                }
                 val removed = existing.minus(pairs).sorted()
                 if (removed.isNotEmpty()) {
                     System.err.println("$name: Removed: ${removed.joinToString()}")
@@ -68,12 +65,39 @@ class GenerateSupportedCoinsJson {
                 jsonExchanges.add(json.read("$.exchanges[?(@.name=='$name')]", List::class.java)[0] as Map<*, *>)
             }
         }
+        for(exchange in jsonExchanges) {
+            reduceExchangeMap(exchange)
+        }
         jsonMap["exchanges"] = jsonExchanges
         println(Gson().toJson(jsonMap))
         println("Potential coins to add:")
         potentialCoinAdds.entries.sortedByDescending { it.value }.take(10).forEach {
             println("${it.key} (${it.value} exchanges)")
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun reduceExchangeMap(exchange: Map<*, *>) {
+        val exchangeMap = exchange as MutableMap<String, Any>
+        // loop through coins, find common ones to put in "all" field
+        var allCurrencies : MutableList<String>? = null
+        for (coinMap in exchangeMap["coins"] as List<MutableMap<String, *>>) {
+            val currencies = coinMap["ccy"] as List<String>
+            if (allCurrencies == null) {
+                allCurrencies = currencies.sorted().toMutableList()
+                continue
+            }
+            // remove any currencies in all that are not in this coin
+            allCurrencies.removeAll { !currencies.contains(it) || coinMap["name"] as String == it }
+        }
+        if (allCurrencies != null) {
+            exchangeMap["all"] = allCurrencies
+            for (coinMap in exchangeMap["coins"] as List<MutableMap<String, List<String>>>) {
+                val currencies = coinMap["ccy"] as List<String>
+                coinMap["ccy"] = currencies.subtract(allCurrencies).toList()
+            }
+        }
+
     }
 
     private fun otherCoins(pairs: Sequence<String>, map: MutableMap<String, Int>)  {
@@ -91,13 +115,13 @@ class GenerateSupportedCoinsJson {
             it.split("_")
         }.groupBy( { it[0] }, {it[1]}).toSortedMap()
         map["coins"] = pairsMap.map {
-            mapOf("name" to it.key, "currencies" to it.value.sorted())
+            mapOf("name" to it.key, "ccy" to it.value.sorted())
         }
         if (currencyOverrides.isNotEmpty()) {
-            map["currency_overrides"] = currencyOverrides.toSortedMap()
+            map["ccy_ovr"] = currencyOverrides.toSortedMap()
         }
         if (coinOverrides.isNotEmpty()) {
-            map["coin_overrides"] = coinOverrides.toSortedMap()
+            map["c_ovr"] = coinOverrides.toSortedMap()
         }
         return map
     }
@@ -143,7 +167,7 @@ class GenerateSupportedCoinsJson {
                     }
                 }
             }
-        }.map { it.joinToString("_") }
+        }.map { it.joinToString("_") }.distinct()
     }
 
     private fun normalize(pairs: List<String>): List<String> {
@@ -163,9 +187,6 @@ class GenerateSupportedCoinsJson {
                     } else {
                         it
                     }
-                }.filterNot {
-                    // remove pairs with same symbols
-                    it[0] == it[1]
                 }.map {
                     it[0] + "_" + it[1]
                 }.toList()
@@ -176,9 +197,13 @@ class GenerateSupportedCoinsJson {
         val existing = json.read("$.exchanges[?(@.name=='${name}')]", List::class.java).firstOrNull() as? Map<String, *>
                 ?: return listOf()
         val coins = existing["coins"] as List<Map<String, *>>
+        val allCoins = existing["all"] as? List<String> ?: emptyList()
         return coins.map { coin ->
-            (coin["currencies"] as List<String>).map { currency ->
-                "${coin["name"].toString()}_$currency"
+            val coinName = coin["name"].toString()
+            (coin["ccy"] as List<String>).plus(allCoins).filterNot {
+                coinName == it
+            }.map { currency ->
+                "${coinName}_$currency"
             }
         }.flatten().sorted()
     }

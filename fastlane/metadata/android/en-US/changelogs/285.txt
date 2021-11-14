@@ -1,0 +1,2 @@
+Added Bitrue exchange.
+Updated Bithumb Pro to Bitglobal.
