@@ -6,7 +6,8 @@ import java.io.InputStream
 class CustomExchangeData(coinEntry: CoinEntry, json: InputStream) : ExchangeData(coinEntry, json) {
 
     init {
-        val currencies = obj?.exchanges?.first { it.name == Exchange.COINGECKO.name }?.coins?.first()?.currencies ?: listOf()
+        val exchanges = obj?.exchanges?.first { it.name == Exchange.COINGECKO.name }
+        val currencies = exchanges?.coins?.first()?.currencies?.plus(exchanges.all) ?: listOf()
         currencyExchange = currencies
                 .associateWith { mutableListOf(Exchange.COINGECKO.name) }
                 .toMutableMap()
