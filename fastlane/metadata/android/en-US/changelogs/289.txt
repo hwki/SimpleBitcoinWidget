@@ -1,0 +1,3 @@
+Minor bug fix.
+Refreshed coin list.
+Removed CoinBene.

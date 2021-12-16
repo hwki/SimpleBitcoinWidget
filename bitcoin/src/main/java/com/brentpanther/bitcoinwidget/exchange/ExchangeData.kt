@@ -70,10 +70,10 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
         var currencyOverrides: Map<String, String>? = null
         @SerializedName("c_ovr")
         var coinOverrides: Map<String, String>? = null
-        var all: List<String> = listOf()
+        var all: List<String>? = null
 
         fun loadExchange(coin: String): List<String> {
-           return coins.firstOrNull { it.name == coin}?.currencies?.plus(all) ?: listOf()
+           return coins.firstOrNull { it.name == coin}?.currencies?.plus(all ?: listOf()) ?: listOf()
         }
     }
 

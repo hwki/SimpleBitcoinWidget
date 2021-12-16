@@ -7,6 +7,7 @@ import com.jayway.jsonpath.JsonPath
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
+import java.util.*
 
 class GenerateSupportedCoinsJson {
 
@@ -17,19 +18,19 @@ class GenerateSupportedCoinsJson {
             "XDG" to "DOGE", "MIOTA" to "IOTA", "STR" to "XLM", "DSH" to "DASH", "IOT" to "IOTA",
             "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM",
             "XZC" to "FIRO")
-    private val allCurrencyOverrides = mapOf("USDT" to "USD", "TUSD" to "USD", "TL" to "TRY", "NIS" to "ILS").plus(allCoinOverrides)
+    private val allCurrencyOverrides = mapOf("USDT" to "USD", "TUSD" to "USD", "USDC" to "USD", "TL" to "TRY", "NIS" to "ILS").plus(allCoinOverrides)
 
     @Test
     fun generate() {
-        allCurrencies = (json.read("$..ccy.*") as List<String>).toSortedSet()
-
+        allCurrencies = Currency.getAvailableCurrencies().asSequence().map { it.currencyCode }.plus(allCoins).plus(allCoinOverrides.keys).toSet()
+        System.err.println("all currencies: $allCurrencies")
         val exchanges =
                 listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmex,
                         this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
-                        this::chilebit, this::coinbase, this::coinbasepro, this::coinbene, this::coindesk, this::coingecko,
+                        this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
                         this::cryptocom, this::deversifi, this::exmo, this::ftx, this::ftx_us, this::foxbit, this::gateio, this::gemini, this::hitbtc,
                         this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
@@ -48,7 +49,7 @@ class GenerateSupportedCoinsJson {
                 val currencyOverrides = mutableMapOf<String, String>()
                 val existing = getExistingPairs(name.name)
                 var pairs = extractOverrides(normalize(exchange.invoke()), coinOverrides, currencyOverrides)
-                val removed = existing.minus(pairs).sorted()
+                val removed = existing.minus(pairs.toSet()).sorted()
                 if (removed.isNotEmpty()) {
                     System.err.println("$name: Removed: ${removed.joinToString()}")
                 }
@@ -88,7 +89,7 @@ class GenerateSupportedCoinsJson {
                 continue
             }
             // remove any currencies in all that are not in this coin
-            allCurrencies.removeAll { !currencies.contains(it) || coinMap["name"] as String == it }
+            allCurrencies.removeAll { !currencies.contains(it) }
         }
         if (allCurrencies != null) {
             exchangeMap["all"] = allCurrencies
@@ -375,10 +376,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.pro.coinbase.com/products", "$[*].id")
     }
 
-    private fun coinbene() : List<String> {
-        return parse("https://openapi-exchange.coinbene.com/api/spot/market/summary", "$[*].trading_pairs")
-    }
-
     private fun coindesk(): List<String> {
         val currencies = parse("https://api.coindesk.com/v1/bpi/supported-currencies.json", "$[*].currency")
         return currencies.map { "BTC_$it" }
@@ -500,10 +497,6 @@ class GenerateSupportedCoinsJson {
 
     private fun liquid(): List<String> {
         return parse("https://api.liquid.com/products", "$[?(@.disabled==false)].currency_pair_code")
-    }
-
-    private fun livecoin(): List<String> {
-        return parse("https://api.livecoin.net/exchange/ticker", "$[*].symbol")
     }
 
     private fun luno(): List<String> {

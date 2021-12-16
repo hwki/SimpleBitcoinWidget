@@ -35,6 +35,7 @@
         <item name="appWidgetTextStyle">@style/SolidWidgetText.Transparent</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.Transparent</item>
         <item name="appWidgetHorizontalPadding">0dp</item>
+        <item name="appWidgetLoadingColor">#fff</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Dark">

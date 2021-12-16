@@ -33,6 +33,7 @@ class GeneratePartiallySupportedCoins {
     private val dataUrl = "https://api.coingecko.com/api/v3/coins/"
     private val dataUrl2 = "?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false"
     private val scoreLimit = 3
+    private val exceptions = setOf("refugees-token")
 
     @Test
     fun generate() {
@@ -53,7 +54,7 @@ class GeneratePartiallySupportedCoins {
                 continue
             }
             getCoin(obj)?.let {
-                if (it.second) {
+                if (it.second || exceptions.contains(it.first.id)) {
                     existing[it.first.id] = it.first
                 }
             } ?: failed.add(obj)

@@ -262,19 +262,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url).get("price").asString
         }
     },
-    COINBENE("CoinBene") {
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://openapi-exchange.coinbene.com/api/spot/market/summary"
-            val array = getJsonArray(url)
-            for (jsonElement in array) {
-                val obj = jsonElement as JsonObject
-                if (obj.get("trading_pairs").asString == "${coin}_$currency") {
-                    return obj.get("last_price").asString
-                }
-            }
-            return null
-        }
-    },
     COINDESK("Coindesk") {
 
         override fun getValue(coin: String, currency: String): String {
