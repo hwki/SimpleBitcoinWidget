@@ -1,0 +1,7 @@
+Een heldere en eenvoudige cryptovalutawidget. Aanpasbaar verversinterval. Laag in batterijgebruik.
+
+Toont de huidige prijs van meer dan 80 verschillende beurzen.
+
+Als je graag een beurs toegevoegd wil hebben, laat het me weten!
+
+Feedback is welkom.
