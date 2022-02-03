@@ -5,7 +5,7 @@
     <PreferenceCategory
         app:title="Settings">
     <ListPreference
-        app:defaultValue="30"
+        app:defaultValue="15"
         app:entries="@array/intervals"
         app:entryValues="@array/intervalValues"
         android:icon="@drawable/ic_outline_timer_24"

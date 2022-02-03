@@ -26,7 +26,7 @@ class SettingsValueFragment : SettingsFragment() {
             showExchangeLabel = false,
             showCoinLabel = false,
             showIcon = true,
-            showDecimals = false,
+            numDecimals = -1,
             currencySymbol = null,
             theme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
             nightMode = NightMode.SYSTEM,

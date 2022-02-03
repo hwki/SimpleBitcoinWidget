@@ -23,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp"
-        tools:ignore="GoogleAppIndexingWarning"
+        tools:ignore="DataExtractionRules,GoogleAppIndexingWarning"
         tools:targetApi="q" >
         <activity
             android:name=".ui.manage.ManageWidgetsActivity"

@@ -10,10 +10,10 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 
-@Database(version = 3, entities = [Widget::class, Configuration::class], exportSchema = true)
+@Database(version = 4, entities = [Widget::class, Configuration::class], exportSchema = true)
 abstract class WidgetDatabase : RoomDatabase() {
 
-    abstract fun widgetDao() : WidgetDao
+    abstract fun widgetDao(): WidgetDao
 
     companion object {
 
@@ -33,15 +33,42 @@ abstract class WidgetDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // not all devices support rename column yet
+                database.execSQL("""
+                    CREATE TABLE `Widget_New` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `widgetId` INTEGER NOT NULL, `widgetType` TEXT NOT NULL, `exchange` TEXT NOT NULL,
+                    `coin` TEXT NOT NULL, `currency` TEXT NOT NULL, `coinCustomId` TEXT, `coinCustomName` TEXT, `currencyCustomName` TEXT, `showExchangeLabel` INTEGER NOT NULL, 
+                    `showCoinLabel` INTEGER NOT NULL, `showIcon` INTEGER NOT NULL, `numDecimals` INTEGER NOT NULL, `currencySymbol` TEXT, `theme` TEXT NOT NULL, 
+                    `nightMode` TEXT NOT NULL, `coinUnit` TEXT, `currencyUnit` TEXT, `customIcon` TEXT, `portraitTextSize` INTEGER, `landscapeTextSize` INTEGER, `lastValue` TEXT, 
+                    `amountHeld` REAL, `showAmountLabel` INTEGER NOT NULL, `useInverse` INTEGER NOT NULL, `lastUpdated` INTEGER NOT NULL, `state` TEXT NOT NULL)
+                """)
+                database.execSQL("""
+                    INSERT INTO Widget_New (id, widgetId, widgetType, exchange, coin, currency, coinCustomId, coinCustomName, currencyCustomName,
+                    showExchangeLabel, showCoinLabel, showIcon, numDecimals, currencySymbol, theme, nightMode, coinUnit, currencyUnit,
+                    customIcon, portraitTextSize, landscapeTextSize, lastValue, amountHeld, showAmountLabel, useInverse, lastUpdated, state)
+                    SELECT id, widgetId, widgetType, exchange, coin, currency, coinCustomId, coinCustomName, currencyCustomName,
+                    showExchangeLabel, showCoinLabel, showIcon, -1, currencySymbol, theme, nightMode, coinUnit, currencyUnit,
+                    customIcon, portraitTextSize, landscapeTextSize, lastValue, amountHeld, showAmountLabel, useInverse, lastUpdated, state 
+                    FROM Widget
+                """)
+                database.execSQL("DROP TABLE Widget")
+                database.execSQL("ALTER TABLE Widget_New RENAME TO Widget")
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_Widget_widgetId` ON `Widget` (`widgetId`)")
+            }
+        }
+
         @Volatile
         private var INSTANCE: WidgetDatabase? = null
 
         fun getInstance(context: Context): WidgetDatabase {
             val callback = object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
-                    DatabaseInitializer.create(db,
+                    DatabaseInitializer.create(
+                        db,
                         PreferenceManager.getDefaultSharedPreferences(context),
-                        context.getSharedPreferences("bitcoinwidget", Context.MODE_PRIVATE))
+                        context.getSharedPreferences("bitcoinwidget", Context.MODE_PRIVATE)
+                    )
                 }
 
                 override fun onOpen(db: SupportSQLiteDatabase) {
@@ -55,6 +82,7 @@ abstract class WidgetDatabase : RoomDatabase() {
                 ).addCallback(callback)
                     .addMigrations(MIGRATION_1_2)
                     .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_3_4)
                     .build()
                 INSTANCE = instance
                 instance

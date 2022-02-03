@@ -31,12 +31,10 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
 
     protected val viewModel: SettingsViewModel by activityViewModels()
     protected lateinit var data: ExchangeData
-    private var checkDataSaver: Boolean = true
-    private var checkBatterySaver: Boolean = true
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         lifecycleScope.launch(Dispatchers.Main) {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.exchangeDataFlow.collect { (widget, data) ->
                     updateWidget(data, widget, rootKey)
                 }
@@ -79,6 +77,14 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<ListPreference>(getString(R.string.key_currency))?.apply {
             entries = data.currencies
             entryValues = data.currencies
+        }
+        findPreference<SeekBarPreference>("decimals")?.apply {
+            summary = if (value < 0) "Auto" else value.toString()
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                val newValueInt = newValue.toString().toInt()
+                summary = if (newValueInt < 0) "Auto" else newValue.toString()
+                true
+            }
         }
         updateExchangeValues()
         updateCurrencyUnits()
@@ -167,7 +173,6 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
         override fun getBoolean(key: String?, defValue: Boolean): Boolean {
             return when(key) {
                 "icon" -> widget.showIcon
-                "decimals" -> widget.showDecimals
                 "coinLabel" -> widget.showCoinLabel
                 "exchangeLabel" -> widget.showExchangeLabel
                 "amountLabel" -> widget.showAmountLabel
@@ -181,10 +186,6 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                 "icon" -> {
                     widget.showIcon = value
                     false
-                }
-                "decimals" -> {
-                    widget.showDecimals = value
-                    true
                 }
                 "exchangeLabel" -> {
                     widget.showExchangeLabel = value
@@ -277,6 +278,24 @@ abstract class SettingsFragment : PreferenceFragmentCompat() {
                 else -> false
             }
             viewModel.updateWidget(updatePrice)
+        }
+
+        override fun putInt(key: String?, value: Int) {
+            val updatePrice = when (key) {
+                "decimals" -> {
+                    widget.numDecimals = value
+                    false
+                }
+                else -> false
+            }
+            viewModel.updateWidget(updatePrice)
+        }
+
+        override fun getInt(key: String?, defValue: Int): Int {
+            return when (key) {
+                "decimals" -> widget.numDecimals
+                else -> throw IllegalArgumentException()
+            }
         }
     }
 

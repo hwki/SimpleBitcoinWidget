@@ -49,7 +49,7 @@ object DatabaseInitializer {
                     put("showCoinLabel", false)
                     put("showExchangeLabel", getString(obj, "show_label") == "true")
                     put("showIcon", getString(obj, "icon")?.equals("false") ?: true)
-                    put("showDecimals", getString(obj, "show_decimals") == "true")
+                    put("numDecimals", "-1")
                     put("currencySymbol", getString(obj, "currency_symbol"))
                     put("theme", themeMap[getString(obj, "theme") ?: SOLID.name]!!.name)
                     put("nightMode", nightModeMap[getString(obj, "theme") ?: SYSTEM.name]!!.name)

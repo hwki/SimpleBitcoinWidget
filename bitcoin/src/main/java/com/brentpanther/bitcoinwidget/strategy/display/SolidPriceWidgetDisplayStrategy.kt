@@ -62,7 +62,7 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         }
 
         val nf = getPriceFormat(adjustedAmount)
-        if (adjustedAmount < 1000) {
+        if (widget.numDecimals == -1 && adjustedAmount < 1000 && adjustedAmount > 0) {
             // show at least 3 significant digits if small amount
             // e.g. show 0.00000000243 instead of 0.00 but still show 1.250 instead of 1.25000003
             var zeroes = nf.maximumFractionDigits

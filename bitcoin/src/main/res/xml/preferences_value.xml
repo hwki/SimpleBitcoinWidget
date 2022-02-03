@@ -54,16 +54,19 @@
     </PreferenceCategory>
     <PreferenceCategory
         app:title="@string/title_display">
+        <SeekBarPreference
+            app:defaultValue="-1"
+            app:icon="@drawable/ic_decimal"
+            app:min="-1"
+            android:max="10"
+            app:adjustable="true"
+            app:key="decimals"
+            app:title="@string/title_decimals"/>
         <SwitchPreferenceCompat
             app:defaultValue="true"
             android:icon="@drawable/ic_bitcoin"
             app:key="icon"
             app:title="@string/title_icon" />
-        <SwitchPreferenceCompat
-            app:defaultValue="false"
-            app:icon="@drawable/ic_decimal"
-            app:key="decimals"
-            app:title="@string/title_decimals" />
         <SwitchPreferenceCompat
             app:defaultValue="false"
             android:icon="@drawable/ic_outline_label_24"

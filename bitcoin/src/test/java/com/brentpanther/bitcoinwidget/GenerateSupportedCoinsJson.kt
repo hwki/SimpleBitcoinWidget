@@ -23,7 +23,7 @@ class GenerateSupportedCoinsJson {
     @Test
     fun generate() {
         allCurrencies = Currency.getAvailableCurrencies().asSequence().map { it.currencyCode }.plus(allCoins).plus(allCoinOverrides.keys).toSet()
-        System.err.println("all currencies: $allCurrencies")
+        System.err.println("all currencies: ${allCurrencies.sorted()}")
         val exchanges =
                 listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitbay, this::bitcambio, this::bitclude,

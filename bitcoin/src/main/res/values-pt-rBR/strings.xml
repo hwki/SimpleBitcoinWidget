@@ -18,7 +18,7 @@
     <string name="title_format">Formato</string>
     <string name="title_display">Aparência</string>
     <string name="title_icon">Mostrar ícone</string>
-    <string name="title_decimals">Sempre Mostrar Decimais</string>
+    <string name="title_decimals">Número de decimais</string>
     <string name="title_units">Denominação</string>
     <string name="title_preview">Prévia</string>
     <string name="title_currency_symbol">Símbolo da moeda</string>
