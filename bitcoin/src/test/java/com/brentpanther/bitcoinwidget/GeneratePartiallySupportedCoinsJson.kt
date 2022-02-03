@@ -33,7 +33,7 @@ class GeneratePartiallySupportedCoins {
     private val dataUrl = "https://api.coingecko.com/api/v3/coins/"
     private val dataUrl2 = "?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false"
     private val scoreLimit = 3
-    private val exceptions = setOf("refugees-token")
+    private val exceptions = setOf("refugees-token", "tangoswap")
 
     @Test
     fun generate() {

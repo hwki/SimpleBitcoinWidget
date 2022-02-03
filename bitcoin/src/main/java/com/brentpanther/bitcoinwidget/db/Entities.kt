@@ -20,7 +20,7 @@ data class Widget(
     var showExchangeLabel: Boolean,
     var showCoinLabel: Boolean,
     var showIcon: Boolean,
-    var showDecimals: Boolean,
+    var numDecimals: Int,
     var currencySymbol: String?,
     var theme: Theme,
     var nightMode: NightMode,

@@ -24,12 +24,12 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
 
     protected fun getPriceFormat(adjustedAmount: Double): NumberFormat {
         val symbol = widget.currencySymbol
-        if (Coin.COIN_NAMES.contains(widget.currency)) {
+        val nf = if (Coin.COIN_NAMES.contains(widget.currency)) {
             // virtual currency
             val format = Coin.getVirtualCurrencyFormat(widget.currency, symbol == "none")
-            return DecimalFormat(format)
+            DecimalFormat(format)
         } else {
-            val nf = when (symbol) {
+            when (symbol) {
                 null -> {
                     val nf = DecimalFormat.getCurrencyInstance()
                     nf.currency = Currency.getInstance(widget.currency)
@@ -44,11 +44,14 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
                     nf
                 }
             }
-            if (!widget.showDecimals && adjustedAmount > 1000) {
-                nf.maximumFractionDigits = 0
-            }
-            return nf
         }
+        if (widget.numDecimals >= 0) {
+            nf.maximumFractionDigits = widget.numDecimals
+            nf.minimumFractionDigits = widget.numDecimals
+        } else if (adjustedAmount > 1000) {
+            nf.maximumFractionDigits = 0
+        }
+        return nf
     }
 
     protected fun updateState() {

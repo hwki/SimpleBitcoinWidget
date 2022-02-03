@@ -1,0 +1,3 @@
+Added an option to manually specify the number of decimal places to show.
+Refreshed coin list.
+Fixed a display bug when exchanges returned a price of $0.
