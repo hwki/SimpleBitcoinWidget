@@ -19,7 +19,7 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
 
     init {
         this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
-        loadCurrencies(coinEntry.coin.name)
+        loadCurrencies(coinEntry.coin.getSymbol())
     }
 
     // only return currencies that we know about
@@ -101,7 +101,7 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
-        return obj?.getExchangeCoinName(exchange, coinEntry.coin.name)
+        return obj?.getExchangeCoinName(exchange, coinEntry.coin.getSymbol())
     }
 
     open fun getExchangeCurrencyName(exchange: String, currency: String): String? {

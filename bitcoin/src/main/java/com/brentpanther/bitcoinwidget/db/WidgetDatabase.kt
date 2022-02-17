@@ -17,8 +17,6 @@ abstract class WidgetDatabase : RoomDatabase() {
 
     companion object {
 
-        private val TAG = WidgetDatabase::class.java.simpleName
-
         private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE Widget ADD COLUMN widgetType TEXT NOT NULL DEFAULT 'PRICE'")
@@ -72,7 +70,7 @@ abstract class WidgetDatabase : RoomDatabase() {
                 }
 
                 override fun onOpen(db: SupportSQLiteDatabase) {
-                    fixRemovedExchanges(db)
+                    DataMigration.migrate(db)
                     super.onOpen(db)
                 }
             }
@@ -89,23 +87,7 @@ abstract class WidgetDatabase : RoomDatabase() {
             }
         }
 
-        private fun fixRemovedExchanges(db: SupportSQLiteDatabase) {
-            val cursor = db.query("SELECT id, exchange FROM Widget ORDER BY id")
-            val allExchanges = Exchange.values().map { it.name }
-            val errored = mutableListOf<Int>()
-            while (cursor.moveToNext()) {
-                val exchange = cursor.getString(1)
-                if (!allExchanges.contains(exchange)) {
-                    val id = cursor.getInt(0)
-                    errored.add(id)
-                    Log.w(TAG, "Widget $id: has invalid exchange: $exchange")
-                }
-            }
-            // fallback to coingecko for any broken exchange
-            for (id in errored) {
-                db.execSQL("UPDATE Widget SET exchange = 'COINGECKO' WHERE id = $id")
-            }
-        }
+
     }
 }
 

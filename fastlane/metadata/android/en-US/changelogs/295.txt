@@ -1,0 +1,2 @@
+Updated BitBay exchange to Zonda
+Added 1inch, Fantom, Gala, Kava, and The Sandbox coins.

@@ -87,7 +87,7 @@ open class BaseManageSettingsFragment : PreferenceFragmentCompat() {
 
         override fun putString(key: String?, value: String?) {
             when(key) {
-                "refresh_interval" -> config.refresh = value?.toInt() ?: 30
+                "refresh_interval" -> config.refresh = value?.toInt() ?: 15
             }
             viewModel.updateGlobalSettings(config)
             WidgetProvider.refreshWidgets(requireContext(), restart = true)

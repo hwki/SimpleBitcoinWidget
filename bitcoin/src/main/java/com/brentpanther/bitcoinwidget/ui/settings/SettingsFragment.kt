@@ -21,7 +21,6 @@ import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.DecimalFormat

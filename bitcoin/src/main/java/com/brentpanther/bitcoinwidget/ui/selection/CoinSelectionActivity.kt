@@ -70,10 +70,10 @@ class CoinSelectionActivity : AppCompatActivity() {
             coinSelected(it, false)
         }
         binding.coinList.adapter = adapter
-        viewModel.coins.observe(this, {
+        viewModel.coins.observe(this) {
             adapter.coins = it
             adapter.notifyItemRangeInserted(adapter.coins.count(), it.count())
-        })
+        }
         binding.search.doAfterTextChanged(adapter.filter::filter)
     }
 

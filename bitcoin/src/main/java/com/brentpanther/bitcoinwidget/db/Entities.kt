@@ -36,7 +36,7 @@ data class Widget(
     var lastUpdated: Long,
     var state: WidgetState
 ) {
-    fun toCoinEntry() = CoinEntry(coinCustomId ?: coin.coinName, coinName(), coin.name, coin, customIcon)
+    fun toCoinEntry() = CoinEntry(coinCustomId ?: coin.coinName, coinName(), coin.getSymbol(), coin, customIcon)
 
     fun coinName() = if (coinCustomId != null) coinCustomName ?: coin.coinName else coin.coinName
 

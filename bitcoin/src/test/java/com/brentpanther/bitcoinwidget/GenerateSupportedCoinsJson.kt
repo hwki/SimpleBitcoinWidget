@@ -11,7 +11,7 @@ import java.util.*
 
 class GenerateSupportedCoinsJson {
 
-    private val allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.name }
+    private val allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.getSymbol() }
     private var allCurrencies = setOf<String>()
     private val json = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json"))
     private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",
@@ -26,7 +26,7 @@ class GenerateSupportedCoinsJson {
         System.err.println("all currencies: ${allCurrencies.sorted()}")
         val exchanges =
                 listOf(this::abucoins, this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
-                        this::bitbank, this::bitbay, this::bitcambio, this::bitclude,
+                        this::bitbank, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bithumbpro, this::bitmex,
                         this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
@@ -37,7 +37,7 @@ class GenerateSupportedCoinsJson {
                         this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::ndax,
                         this::nexchange, this::okcoin, this::okex, this::p2pb2b, this::paribu, this::paymium, this::phemex,
                         this::pocketbits, this::poloniex, this::probit, this::therock, this::tradeogre, this::uphold,
-                        this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb, this::zbg
+                        this::urdubit, this::vbtc, this::whitebit, this::wyre, this::yobit, this::zb, this::zbg, this::zonda
                 ).zip(Exchange.values())
 
         val jsonMap = mutableMapOf<String, List<*>>()
@@ -251,10 +251,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.bitbank.cc/v1/spot/pairs", "$.data.pairs[*].name")
     }
 
-    private fun bitbay(): List<String> {
-        return parse("https://api.bitbay.net/rest/trading/stats", "$.items..m")
-    }
-
     private fun bitcambio(): List<String> {
         return listOf("BTC_BRL")
     }
@@ -383,7 +379,7 @@ class GenerateSupportedCoinsJson {
 
     private fun coingecko(): List<String> {
         val currencies = parse("https://api.coingecko.com/api/v3/simple/supported_vs_currencies", "[*]")
-        return Coin.values().map { coin -> currencies.map { coin.name + "_" + it } }.flatten()
+        return Coin.values().map { coin -> currencies.map { coin.getSymbol() + "_" + it } }.flatten()
     }
 
     private fun coinjar(): List<String> {
@@ -614,6 +610,10 @@ class GenerateSupportedCoinsJson {
 
     private fun zbg(): List<String> {
         return parse("https://www.zbg.com/exchange/api/v1/common/symbols", "$.datas[*].symbol")
+    }
+
+    private fun zonda(): List<String> {
+        return parseKeys("https://api.zonda.exchange/rest/trading/ticker", "$.items")
     }
 
     //endregion

@@ -20,14 +20,14 @@ class ExchangeTest {
         val coins = EnumSet.allOf(Coin::class.java).sorted()
         for (coin in coins) {
             println("Checking $coin")
-            val entry = CoinEntry(coin.name, coin.coinName, coin.name, coin)
+            val entry = CoinEntry(coin.name, coin.coinName, coin.getSymbol(), coin)
             val data = ExchangeData(entry, loadJSON())
             for (currency in data.currencies.sorted()) {
                 for (exchange in data.getExchanges(currency).toList().parallelStream()) {
                     try {
                         var coinName = data.getExchangeCoinName(exchange)
                         var currencyName = data.getExchangeCurrencyName(exchange, currency)
-                        if (coinName == null) coinName = coin.name
+                        if (coinName == null) coinName = coin.getSymbol()
                         if (currencyName == null) currencyName = currency
                         valueOf(exchange).getValue(coinName, currencyName)!!.toDouble()
                     } catch (e: Exception) {

@@ -17,7 +17,7 @@ open class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetData
         }
         try {
             val currency = widget.currencyCustomName ?: widget.currency
-            val coin = widget.coinCustomId ?: widget.coinCustomName ?: widget.coin.name
+            val coin = widget.coinCustomId ?: widget.coinCustomName ?: widget.coin.getSymbol()
             val value = widget.exchange.getValue(coin, currency)
             widget.state = WidgetState.CURRENT
             if (value == null) {

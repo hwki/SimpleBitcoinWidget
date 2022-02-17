@@ -61,7 +61,7 @@ object DatabaseInitializer {
                     put("showAmountLabel", false)
                     put("useInverse", false)
                     put("widgetType", WidgetType.PRICE.name)
-                    minRefresh = min(minRefresh, getString(obj, "refresh")?.toInt() ?: 30)
+                    minRefresh = min(minRefresh, getString(obj, "refresh")?.toInt() ?: 15)
                 }
                 db.insert("widget", CONFLICT_REPLACE, values)
             } catch (e: Exception) {
@@ -69,7 +69,7 @@ object DatabaseInitializer {
             }
         }
         val values = ContentValues().apply {
-            put("refresh", if(minRefresh == Int.MAX_VALUE) 30 else minRefresh)
+            put("refresh", if(minRefresh == Int.MAX_VALUE) 15 else minRefresh)
             put("consistentSize", globalPrefs.getBoolean("fixed_size", false))
             put("dataMigrationVersion", 1)
         }

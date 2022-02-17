@@ -66,13 +66,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url).getAsJsonObject("data").get("last").asString
         }
     },
-    BITBAY("BitBay") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.bitbay.net/rest/trading/ticker/$coin-$currency"
-            return getJsonObject(url).getAsJsonObject("ticker").get("rate").asString
-        }
-    },
     BITCAMBIO("BitCambio") {
 
         override fun getValue(coin: String, currency: String): String {
@@ -274,6 +267,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
         override fun getValue(coin: String, currency: String): String? {
             // hardcoded map to id
             val map = mapOf(
+                "1INCH" to "1inch",
                 "AAVE" to "aave",
                 "ADA" to "cardano",
                 "ALGO" to "algorand",
@@ -313,7 +307,9 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "ETH" to "ethereum",
                 "FIL" to "filecoin",
                 "FIRO" to "zcoin",
+                "FTM" to "fantom",
                 "FTT" to "ftx-token",
+                "GALA" to "gala",
                 "GNO" to "gnosis",
                 "GNT" to "golem",
                 "GRIN" to "grin",
@@ -323,6 +319,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "HT" to "huobi-token",
                 "ICX" to "icon",
                 "IOTA" to "iota",
+                "KAVA" to "kava",
                 "KMD" to "komodo",
                 "KNC" to "kyber-network",
                 "KSM" to "kusama",
@@ -355,6 +352,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 "REP" to "augur",
                 "RUNE" to "thorchain",
                 "RVN" to "ravencoin",
+                "SAND" to "the-sandbox",
                 "SHIB" to "shiba-inu",
                 "SNX" to "havven",
                 "SOL" to "solana",
@@ -760,6 +758,12 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             val pair = "${coin}_$currency".lowercase(Locale.ROOT)
             val url = "https://kline.zbg.com/api/data/v1/ticker?marketName=$pair"
             return getJsonObject(url).getAsJsonArray("datas")[1].asString
+        }
+    },
+    ZONDA("Zonda") {
+        override fun getValue(coin: String, currency: String): String {
+            val url = "https://api.zonda.exchange/rest/trading/ticker/$coin-$currency"
+            return getJsonObject(url).getAsJsonObject("ticker").get("rate").asString
         }
     };
 

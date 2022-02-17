@@ -19,7 +19,7 @@ class CoinSelectionViewModel(application: Application) : AndroidViewModel(applic
 
     private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.name }
     private var fullCoins: List<CoinEntry> = allCoins.map {
-        CoinEntry(it.key, it.value.coinName, it.key, it.value)
+        CoinEntry(it.key, it.value.coinName, it.value.getSymbol(), it.value)
     }.sortedWith { o1, o2 ->
         String.CASE_INSENSITIVE_ORDER.compare(o1.coin.coinName, o2.coin.coinName)
     }

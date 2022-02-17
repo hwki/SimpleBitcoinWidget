@@ -12,6 +12,7 @@ import java.util.*
 enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable {
 
     CUSTOM("Custom", IconTheme(SOLID, ic_placeholder)),
+    ONE_INCH("1inch", IconTheme(SOLID, ic_1inch)),
     AAVE("Aave", IconTheme(SOLID, ic_aave)),
     ADA("Cardano", IconTheme(SOLID, ic_ada)),
     ALGO("Algorand", IconTheme(SOLID, ic_algo, ic_algo_white)),
@@ -59,7 +60,9 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     ETH("Ethereum", IconTheme(SOLID, ic_eth)),
     FIL("Filecoin", IconTheme(SOLID, ic_fil)),
     FIRO("Firo", IconTheme(SOLID, ic_firo, ic_firo_dark)),
+    FTM("Fantom", IconTheme(SOLID, ic_ftm)),
     FTT("FTX Token", IconTheme(SOLID, ic_ftt)),
+    GALA("Gala", IconTheme(SOLID, ic_gala, ic_gala_white)),
     GNO("Gnosis", IconTheme(SOLID, ic_gno_color)),
     GNT("Golem", IconTheme(SOLID, ic_gnt_blue)),
     GRIN("Grin", IconTheme(SOLID, ic_grin_color_black)),
@@ -69,6 +72,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     HT("Huobi Token", IconTheme(SOLID, ic_ht)),
     ICX("Icon", IconTheme(SOLID, ic_icx)),
     IOTA("Iota", IconTheme(SOLID, ic_iota, ic_iota_white)),
+    KAVA("Kava", IconTheme(SOLID, ic_kava)),
     KMD("Komodo", IconTheme(SOLID, ic_kmd)),
     KNC("Kyber Network", IconTheme(SOLID, ic_knc_color)),
     KSM("Kusama", IconTheme(SOLID, ic_ksm_black, ic_ksm_white)),
@@ -105,6 +109,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     REP("Augur", IconTheme(SOLID, ic_rep)),
     RUNE("THORChain", IconTheme(SOLID, ic_rune)),
     RVN("Ravencoin", IconTheme(SOLID, ic_rvn)),
+    SAND("The Sandbox", IconTheme(SOLID, ic_sand)),
     SHIB("Shiba Inu", IconTheme(SOLID, ic_shib)),
     SNX("Synthetix Network Token", IconTheme(SOLID, ic_snx)),
     SOL("Solana", IconTheme(SOLID, ic_sol)),
@@ -138,6 +143,8 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
         val iconTheme = themes.firstOrNull { it.theme == theme } ?: themes.first()
         return if (dark) iconTheme.dark else iconTheme.light
     }
+
+    fun getSymbol() = if (this == ONE_INCH) "1INCH" else name
 
     companion object {
 
