@@ -32,8 +32,8 @@
     <string name="summary_refresh_interval">Every %s</string>
     <string name="summary_currency">Use %s as currency</string>
     <string name="summary_exchange">Get data from %s</string>
-    <string name="summary_units">Show %s as %s</string>
-    <string name="summary_inverse">Show price of %s in %s</string>
+    <string name="summary_units">Show %1$s as %2$s</string>
+    <string name="summary_inverse">Show price of %1$s in %2$s</string>
 
     <string name="licenses" translatable="false"><![CDATA[
       Licenses:<br/><br/>

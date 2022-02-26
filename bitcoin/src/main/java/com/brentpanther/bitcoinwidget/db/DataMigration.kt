@@ -10,7 +10,17 @@ object DataMigration {
 
     fun migrate(db: SupportSQLiteDatabase) {
         migrateBitBayToZonda(db)
+        migrateOkexToOkx(db)
+        migrateBithumbProToBitGlobal(db)
         fixRemovedExchanges(db)
+    }
+
+    private fun migrateBithumbProToBitGlobal(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET exchange = 'BITGLOBAL' WHERE exchange = 'BITHUMB_PRO'")
+    }
+
+    private fun migrateOkexToOkx(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET exchange = 'OKX' WHERE exchange = 'OKEX'")
     }
 
     private fun migrateBitBayToZonda(db: SupportSQLiteDatabase) {

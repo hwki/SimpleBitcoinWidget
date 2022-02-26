@@ -31,7 +31,7 @@ class ExchangeTest {
                         if (currencyName == null) currencyName = currency
                         valueOf(exchange).getValue(coinName, currencyName)!!.toDouble()
                     } catch (e: Exception) {
-                        println("Failure: $coin $exchange $currency: ${e.message}")
+                        System.err.println("Failure: $coin $exchange $currency: ${e.message}")
                     }
                     Thread.sleep(1500)
                 }

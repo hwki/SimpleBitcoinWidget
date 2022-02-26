@@ -28,8 +28,8 @@
     <string name="summary_refresh_interval">A cada %s</string>
     <string name="summary_currency">Usar %s como moeda</string>
     <string name="summary_exchange">Pegar data de %s</string>
-    <string name="summary_units">Mostrar %s em %s</string>
-    <string name="summary_inverse">Mostrar preço de %s em %s</string>
+    <string name="summary_units">Mostrar %1$s em %2$s</string>
+    <string name="summary_inverse">Mostrar preço de %1$s em %2$s</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Tema Sólida</item>

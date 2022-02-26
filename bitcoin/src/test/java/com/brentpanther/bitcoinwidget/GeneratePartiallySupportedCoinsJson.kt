@@ -14,6 +14,7 @@ import java.io.InputStreamReader
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import kotlin.streams.asSequence
 
 class GeneratePartiallySupportedCoins {
 
@@ -44,7 +45,7 @@ class GeneratePartiallySupportedCoins {
         val failed = mutableListOf<JsonObject>()
         val total = allCoins.count()
         var index = 0
-        for (obj in allCoins.map { it.asJsonObject }.stream()) {
+        for (obj in allCoins.map { it.asJsonObject }.stream().asSequence()) {
             index++
             if (index % 100 == 0) {
                 println("${(index * 100.0 / total).roundToInt()}%")
