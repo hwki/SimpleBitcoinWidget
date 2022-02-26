@@ -6,12 +6,13 @@ import androidx.preference.PreferenceManager
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.internal.closeQuietly
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 object Repository {
 
-    private const val LAST_MODIFIED = "last_modified"
+    internal const val LAST_MODIFIED = "last_modified"
     const val CURRENCY_FILE_NAME = "coins.json"
     private val TAG = Repository::class.java.simpleName
 
@@ -38,10 +39,11 @@ object Repository {
                 304 -> Log.d(TAG, "No changes found in JSON file.")
                 200 -> {
                     Log.d(TAG, "Updated JSON file found.")
-                    val json = response.body!!.bytes()
-                    val os = context.openFileOutput(CURRENCY_FILE_NAME, Context.MODE_PRIVATE)
-                    os.write(json)
-                    os.close()
+                    response.body?.byteStream()?.use {
+                        val os = context.openFileOutput(CURRENCY_FILE_NAME, Context.MODE_PRIVATE)
+                        it.copyTo(os)
+                        os.closeQuietly()
+                    }
                     prefs.edit().putString(LAST_MODIFIED, response.header("Last-Modified")).apply()
                     Log.d(TAG, "JSON downloaded.")
                 }

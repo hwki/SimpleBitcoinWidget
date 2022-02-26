@@ -91,6 +91,8 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
         return exchangeNames.toTypedArray()
     }
 
+    var numberExchanges = currencyExchange.count()
+
     //TODO: change to use exchange
     fun getDefaultExchange(currency: String): String {
         val exchanges = currencyExchange[currency]

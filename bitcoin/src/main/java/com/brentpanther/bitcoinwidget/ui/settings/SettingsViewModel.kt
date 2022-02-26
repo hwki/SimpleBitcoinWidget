@@ -3,9 +3,11 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.CoinEntry
 import com.brentpanther.bitcoinwidget.R
@@ -18,7 +20,7 @@ import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
-import com.google.gson.JsonSyntaxException
+import com.google.gson.JsonParseException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
@@ -73,11 +75,18 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
             if (coin.coin == Coin.CUSTOM) {
                 CustomExchangeData(coin, getJson(context))
             } else  {
-                ExchangeData(coin, getJson(context))
+                val data = ExchangeData(coin, getJson(context))
+                if (data.numberExchanges == 0) {
+                    throw JsonParseException("No exchanges found.")
+                }
+                data
             }
-        } catch(e: JsonSyntaxException) {
+        } catch(e: JsonParseException) {
             Log.e("SettingsViewModel", "Error parsing JSON file, falling back to original.", e)
             context.deleteFile(Repository.CURRENCY_FILE_NAME)
+            PreferenceManager.getDefaultSharedPreferences(context).edit {
+                remove(Repository.LAST_MODIFIED)
+            }
             ExchangeData(coin, getJson(context))
         } catch (e: FileNotFoundException) {
             throw RuntimeException(e)

@@ -1,0 +1,4 @@
+Removed Abucoins and Urdubit.
+Renamed OKEx to OKX.
+Renamed Bithumb Pro to Biglobal.
+Added BitMart, Digifinex, Hoo, Mexc, XT.com, and Yadio exchanges.

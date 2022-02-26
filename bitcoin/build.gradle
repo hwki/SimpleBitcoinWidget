@@ -12,8 +12,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdk 23
         targetSdk 31
-        versionCode 295
-        versionName "8.2.1"
+        versionCode 296
+        versionName "8.2.2"
 
         javaCompileOptions {
             annotationProcessorOptions {

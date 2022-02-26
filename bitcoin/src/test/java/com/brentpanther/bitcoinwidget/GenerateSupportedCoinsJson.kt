@@ -319,7 +319,8 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bitrue(): List<String> {
-        return parse("https://openapi.bitrue.com/api/v1/exchangeInfo", "$.symbols[*].symbol")
+        val pairs = parse("https://openapi.bitrue.com/api/v1/exchangeInfo", "$.symbols[*].symbol")
+        return pairs.filterNot { it.contains("USDC") }
     }
 
     private fun bitvavo(): List<String> {
@@ -528,7 +529,8 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun okx(): List<String> {
-        return parse("https://www.okx.com/api/v5/public/instruments?instType=SPOT", "$.data[*].instId")
+        val pairs = parse("https://www.okx.com/api/v5/public/instruments?instType=SPOT", "$.data[*].instId")
+        return pairs.filterNot { it.contains("USDC") }
     }
 
     private fun p2pb2b(): List<String> {

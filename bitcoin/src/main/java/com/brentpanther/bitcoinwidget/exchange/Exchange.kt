@@ -131,8 +131,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     BITPANDA("Bitpanda") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.exchange.bitpanda.com/public/v1/market-ticker/${coin}_$currency"
-            return getJsonObject(url).get("last_price").asString
+            val url = "https://api.bitpanda.com/v1/ticker"
+            return getJsonObject(url).get(coin).asJsonObject.get(currency).asString
         }
     },
     BITPAY("BitPay") {
@@ -497,7 +497,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
         override fun getValue(coin: String, currency: String): String {
             val url = "https://api.hitbtc.com/api/3/public/ticker?symbols=$coin$currency"
-            return getJsonObject(url).get("$coin$currency").asJsonObject.asString
+            return getJsonObject(url).get("$coin$currency").asJsonObject.get("last").asString
         }
     },
     HOO("Hoo") {
@@ -654,8 +654,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     PARIBU("Paribu") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.p2pb2b.io/api/v2/public/ticker?market=${coin}_$currency"
-            return getJsonObject(url).get("result").asJsonObject.get("last").asString
+            val url = "https://www.paribu.com/ticker"
+            return getJsonObject(url).getAsJsonObject("${coin}_$currency").get("last").asString
         }
     },
     PAYMIUM("Paymium") {
