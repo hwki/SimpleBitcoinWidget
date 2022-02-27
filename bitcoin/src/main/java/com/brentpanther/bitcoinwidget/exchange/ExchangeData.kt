@@ -36,6 +36,7 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
                 if (i2 >= 0) return@Comparator 1
                 o1.compareTo(o2)
             })
+            currencyNames.remove(coinEntry.symbol)
             return currencyNames.toTypedArray()
         }
 

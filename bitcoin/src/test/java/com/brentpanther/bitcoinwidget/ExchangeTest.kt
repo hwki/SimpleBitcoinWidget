@@ -29,6 +29,7 @@ class ExchangeTest {
                         var currencyName = data.getExchangeCurrencyName(exchange, currency)
                         if (coinName == null) coinName = coin.getSymbol()
                         if (currencyName == null) currencyName = currency
+                        if (coinName == currencyName) continue
                         valueOf(exchange).getValue(coinName, currencyName)!!.toDouble()
                     } catch (e: Exception) {
                         System.err.println("Failure: $coin $exchange $currency: ${e.message}")
