@@ -610,7 +610,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun zb(): List<String> {
-        return parseKeys("http://api.zb.cafe/data/v1/markets", "$")
+        return parseKeys("http://api.zbex.cc/data/v1/markets", "$")
     }
 
     private fun zbg(): List<String> {

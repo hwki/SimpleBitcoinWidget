@@ -1,0 +1,3 @@
+Added ApeCoin and Storj.
+Refreshed coin lists.
+Library updates.
