@@ -20,7 +20,9 @@ enum class Theme(@LayoutRes val lightPrice: Int, @LayoutRes val darkPrice: Int,
     TRANSPARENT(R.layout.widget_price_transparent_light, R.layout.widget_price_transparent_dark,
         R.layout.widget_value_transparent_light, R.layout.widget_value_transparent_dark),
     MATERIAL(R.layout.widget_price_material_light, R.layout.widget_price_material_dark,
-        R.layout.widget_value_material_light, R.layout.widget_value_material_dark);
+        R.layout.widget_value_material_light, R.layout.widget_value_material_dark),
+    TRANSPARENT_MATERIAL(R.layout.widget_price_transparent_light_material, R.layout.widget_price_transparent_dark_material,
+        R.layout.widget_value_transparent_light_material, R.layout.widget_value_transparent_dark_material);
 
     fun getLayout(isDark: Boolean, type: WidgetType): Int {
         return when(type) {

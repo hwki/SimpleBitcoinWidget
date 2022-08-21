@@ -34,7 +34,7 @@ class GeneratePartiallySupportedCoins {
     private val dataUrl = "https://api.coingecko.com/api/v3/coins/"
     private val dataUrl2 = "?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false"
     private val scoreLimit = 3
-    private val exceptions = setOf("refugees-token", "tangoswap")
+    private val exceptions = setOf("refugees-token", "tangoswap", "wibx")
 
     @Test
     fun generate() {
@@ -85,7 +85,7 @@ class GeneratePartiallySupportedCoins {
         var coin: CoinGeckoCoin? = null
         var tries = 0
         while (coin == null) {
-            Thread.sleep(1300)
+            Thread.sleep(3000)
             try {
                 coin = getCoinData(obj)
                 return Pair(coin, coin.score >= scoreLimit)
@@ -114,8 +114,8 @@ class GeneratePartiallySupportedCoins {
 
     private fun parse(url: String, path: String) = JsonPath.read(get(url), path) as List<String>
     private fun get(value: String): String =
-        OkHttpClient.Builder().retryOnConnectionFailure(true).readTimeout(0, TimeUnit.SECONDS)
-            .connectTimeout(0, TimeUnit.SECONDS).callTimeout(0, TimeUnit.SECONDS)
-            .writeTimeout(0, TimeUnit.SECONDS).build()
+        OkHttpClient.Builder().retryOnConnectionFailure(true).readTimeout(1, TimeUnit.SECONDS)
+            .connectTimeout(1, TimeUnit.SECONDS).callTimeout(1, TimeUnit.SECONDS)
+            .writeTimeout(1, TimeUnit.SECONDS).build()
             .newCall(Request.Builder().url(value).build()).execute().body!!.string()
 }

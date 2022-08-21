@@ -11,24 +11,6 @@ import java.util.concurrent.TimeUnit
 
 object ExchangeHelper {
 
-
-    private val SPEC = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-            .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
-            .cipherSuites(
-                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                    CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                    CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                    CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
-                    CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-                    CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
-                    CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
-            .build()
-
     var useCache = true
     val cache : Cache?
         get() = if (!useCache) null else Cache(WidgetApplication.instance.cacheDir, 256 * 1024L) // 256k
@@ -39,12 +21,11 @@ object ExchangeHelper {
             .followSslRedirects(true)
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(5, TimeUnit.SECONDS)
-            .connectionSpecs(listOf(SPEC, ConnectionSpec.CLEARTEXT))
             .retryOnConnectionFailure(false)
             .connectionPool(ConnectionPool())
             .cache(cache)
             .addNetworkInterceptor { chain -> intercept(chain) }
-            .hostnameVerifier { _, _ -> true }.build()
+                .build()
     }
 
     @Throws(IOException::class)

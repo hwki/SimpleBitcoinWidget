@@ -28,7 +28,7 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         widgetSize.bottom -= 16.dpToPx()
         val horizontalPadding = when (widget.theme) {
             Theme.MATERIAL -> 8
-            Theme.TRANSPARENT -> if (widget.nightMode.isDark(appContext)) 2 else 0
+            Theme.TRANSPARENT, Theme.TRANSPARENT_MATERIAL -> if (widget.nightMode.isDark(appContext)) 2 else 0
             else -> 4
         }
         widgetSize.right -= horizontalPadding.dpToPx()

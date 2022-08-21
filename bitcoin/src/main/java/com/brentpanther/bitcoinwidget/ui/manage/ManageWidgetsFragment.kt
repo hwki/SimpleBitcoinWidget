@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.ValueWidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.databinding.FragmentManageWidgetsBinding
 import com.brentpanther.bitcoinwidget.ui.BannerInflater
@@ -52,8 +54,8 @@ class ManageWidgetsFragment : Fragment() {
         binding.listWidgets.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         binding.listWidgets.adapter = adapter
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 BannerInflater().inflate(layoutInflater, binding.layoutBanners)
                 viewModel.getWidgets().distinctUntilChanged().collect {
                     binding.progress.isVisible = false
@@ -61,6 +63,10 @@ class ManageWidgetsFragment : Fragment() {
                     adapter.notifyDataSetChanged()
                     binding.empty.isVisible = it.isEmpty()
                     binding.listWidgets.isVisible = it.isNotEmpty()
+
+                    // remove any orphaned widgets
+                    val missingWidgets = it.map { w -> w.widget.widgetId }.minus(WidgetApplication.instance.widgetIds.toSet())
+                    viewModel.deleteWidgets(missingWidgets.toIntArray())
                 }
             }
         }

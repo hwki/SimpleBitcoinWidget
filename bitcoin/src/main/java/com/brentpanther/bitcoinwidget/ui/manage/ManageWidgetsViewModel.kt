@@ -3,6 +3,8 @@ package com.brentpanther.bitcoinwidget.ui.manage
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
+import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.db.Configuration
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
@@ -31,5 +33,19 @@ class ManageWidgetsViewModel(application: Application) : AndroidViewModel(applic
         viewModelScope.launch(Dispatchers.IO) {
             dao.update(config)
         }
+    }
+
+    fun deleteWidgets(widgetIds: IntArray) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.delete(widgetIds)
+            if (dao.getAll().isEmpty()) {
+                val workManager = WorkManager.getInstance(getApplication())
+                workManager.cancelUniqueWork(WidgetProvider.ONETIMEWORKNAME)
+                WidgetProvider.cancelWork(workManager)
+            } else if (dao.configWithSizes().consistentSize) {
+                WidgetProvider.refreshWidgets(getApplication())
+            }
+        }
+
     }
 }

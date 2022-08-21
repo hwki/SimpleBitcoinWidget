@@ -17,7 +17,7 @@
             style="?attr/appWidgetSecondaryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="22"
+            android:layout_weight="20"
             android:autoSizeMinTextSize="4sp"
             android:autoSizeTextType="uniform"
             android:gravity="center|bottom"
@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="56"
+            android:layout_weight="60"
             android:orientation="horizontal">
 
             <ImageView
@@ -87,7 +87,7 @@
             style="?attr/appWidgetSecondaryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="22"
+            android:layout_weight="20"
             android:autoSizeMinTextSize="4sp"
             android:autoSizeTextType="uniform"
             android:gravity="center|top"

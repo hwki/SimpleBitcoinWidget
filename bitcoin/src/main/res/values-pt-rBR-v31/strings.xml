@@ -2,7 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Tema Sólida</item>
-        <item>Transparente</item>
         <item>Material</item>
+        <item>Transparente</item>
+        <item>Transparente Material</item>
     </string-array>
 </resources>

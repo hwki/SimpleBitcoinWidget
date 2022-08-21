@@ -27,17 +27,17 @@ class GenerateSupportedCoinsJson {
         val exchanges =
                 listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitcambio, this::bitclude,
-                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitglobal, this::bitmart, this::bitmex,
+                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitglobal, this::bitmart,
                         this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo, this::bleutrade,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-                        this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::ftx, this::ftx_us, this::foxbit, this::gateio, this::gemini, this::hitbtc,
-                        this::hoo, this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
+                        this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::ftx, this::ftx_us, this::foxbit, this::gateio, this::gemini,
+                        this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::mexc, this::ndax,
                         this::nexchange, this::okcoin, this::okx, this::p2pb2b, this::paribu, this::paymium, this::phemex,
                         this::pocketbits, this::poloniex, this::probit, this::therock, this::tradeogre, this::uphold,
-                        this::vbtc, this::whitebit, this::wyre, this::xt, this::yadio, this::yobit, this::zb, this::zbg, this::zonda
+                        this::vbtc, this::whitebit, this::wyre, this::xt, this::yadio, this::yobit, this::zbg, this::zonda
                 ).zip(Exchange.values())
 
         val jsonMap = mutableMapOf<String, List<*>>()
@@ -286,10 +286,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api-cloud.bitmart.com/spot/v1/symbols", "$.data.symbols.[*]")
     }
 
-    private fun bitmex(): List<String> {
-        return parse("https://www.bitmex.com/api/v1/instrument/active", "$.[*].symbol")
-    }
-
     private fun bitpanda(): List<String> {
         val pairs = mutableListOf<String>()
         Gson().fromJson(get("https://api.bitpanda.com/v1/ticker"), JsonObject::class.java).entrySet().forEach { (coin, currencies) ->
@@ -457,10 +453,6 @@ class GenerateSupportedCoinsJson {
         return parseKeys("https://api.hitbtc.com/api/3/public/symbol", "$")
     }
 
-    private fun hoo(): List<String> {
-        return parse("https://api.hoolgd.com/open/v1/tickers/market", "$.data[*].symbol")
-    }
-
     private fun huobi(): List<String> {
         return parse("https://api.huobi.pro/market/tickers", "$.data[*].symbol")
     }
@@ -607,10 +599,6 @@ class GenerateSupportedCoinsJson {
 
     private fun yobit(): List<String> {
         return parseKeys("https://yobit.net/api/3/info", "$.pairs")
-    }
-
-    private fun zb(): List<String> {
-        return parseKeys("http://api.zbex.cc/data/v1/markets", "$")
     }
 
     private fun zbg(): List<String> {
