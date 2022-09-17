@@ -4,6 +4,8 @@
     android:updatePeriodMillis="0"
     android:minWidth="110dp"
     android:minHeight="40dp"
+    android:minResizeWidth="1dp"
+    android:minResizeHeight="1dp"
     android:targetCellHeight="1"
     android:targetCellWidth="2"
     android:initialLayout="@layout/widget_price_solid_light"

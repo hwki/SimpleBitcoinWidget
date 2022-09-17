@@ -21,8 +21,8 @@ object NetworkStatusHelper {
     private fun checkBackgroundData(context: Context): Int {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val restrictBackgroundStatus = connectivityManager.restrictBackgroundStatus
-            if (restrictBackgroundStatus == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED) {
+            if (connectivityManager.restrictBackgroundStatus == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED &&
+                    connectivityManager.isActiveNetworkMetered) {
                 return R.string.error_restricted_data_saver
             }
         }

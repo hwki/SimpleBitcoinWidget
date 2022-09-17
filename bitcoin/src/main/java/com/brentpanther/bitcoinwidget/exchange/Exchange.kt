@@ -4,7 +4,6 @@ import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonArray
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonObject
 import com.google.gson.JsonObject
 import okhttp3.Headers
-import java.util.*
 import kotlin.math.pow
 
 enum class Exchange(val exchangeName: String, shortName: String? = null) {
