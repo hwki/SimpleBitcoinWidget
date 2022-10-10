@@ -88,6 +88,7 @@ enum class Coin(val coinName: String, vararg val themes: IconTheme) : Parcelable
     },
     LTO("LTO Network", IconTheme(SOLID, ic_lto)),
     LUNA("Terra", IconTheme(SOLID, ic_luna)),
+    LUNC("Terra Luna Classic", IconTheme(SOLID, ic_lunc)),
     MANA("Decentraland", IconTheme(SOLID, ic_mana)),
     MATIC("Polygon", IconTheme(SOLID, ic_matic)),
     MCO("MCO", IconTheme(SOLID, ic_mco, ic_mco_white)),

@@ -1,0 +1,3 @@
+Added Terra Luna Classic coin.
+Fixed Terra Luna 2.0.
+Refreshed coin lists.
