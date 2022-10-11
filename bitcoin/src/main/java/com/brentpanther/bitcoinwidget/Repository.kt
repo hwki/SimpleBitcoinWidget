@@ -1,13 +1,24 @@
 package com.brentpanther.bitcoinwidget
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
+import com.brentpanther.bitcoinwidget.exchange.ExchangeData
+import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
+import com.google.gson.JsonParseException
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.internal.closeQuietly
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
 object Repository {
@@ -16,7 +27,8 @@ object Repository {
     const val CURRENCY_FILE_NAME = "coins.json"
     private val TAG = Repository::class.java.simpleName
 
-    fun downloadJSON(context: Context) {
+    fun downloadJSON() {
+        val context = WidgetApplication.instance
         try {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val lastModified = prefs.getString(LAST_MODIFIED, context.getString(R.string.json_last_modified))
@@ -51,6 +63,59 @@ object Repository {
             }
         } catch (e: IOException) {
             Log.e(TAG, "Error downloading JSON.", e)
+        }
+    }
+
+    fun downloadCustomIcon(widget: Widget) {
+        val context = WidgetApplication.instance
+        widget.customIcon?.let { url ->
+            val dir = File(context.filesDir, "icons")
+            if (!dir.exists()) {
+                dir.mkdir()
+            }
+            val id = widget.coinCustomId ?: return@let
+            val file = File(dir, id)
+            if (file.exists()) {
+                return
+            }
+
+            ExchangeHelper.getStream(url).use { stream ->
+                ByteArrayOutputStream().use { os ->
+                    val image = BitmapFactory.decodeStream(stream)
+                    image.compress(Bitmap.CompressFormat.PNG, 100, os)
+                    file.writeBytes(os.toByteArray())
+                }
+            }
+        }
+    }
+
+    fun getExchangeData(widget: Widget): ExchangeData {
+        val context = WidgetApplication.instance
+        return try {
+            if (widget.coin == Coin.CUSTOM) {
+                CustomExchangeData(widget.coinName(), widget.coin, getJson(context))
+            } else  {
+                val data = ExchangeData(widget.coin, getJson(context))
+                if (data.numberExchanges == 0) {
+                    throw JsonParseException("No exchanges found.")
+                }
+                data
+            }
+        } catch(e: JsonParseException) {
+            Log.e("SettingsViewModel", "Error parsing JSON file, falling back to original.", e)
+            context.deleteFile(CURRENCY_FILE_NAME)
+            PreferenceManager.getDefaultSharedPreferences(context).edit {
+                remove(LAST_MODIFIED)
+            }
+            ExchangeData(widget.coin,  getJson(context))
+        }
+    }
+
+    private fun getJson(context: Context): InputStream {
+        return if (File(context.filesDir, CURRENCY_FILE_NAME).exists()) {
+            context.openFileInput(CURRENCY_FILE_NAME)
+        } else {
+            context.resources.openRawResource(R.raw.cryptowidgetcoins_v2)
         }
     }
 

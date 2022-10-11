@@ -1,53 +1,89 @@
 package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.app.Application
+import android.content.Context
+import android.os.Build
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.liveData
-import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.CoinEntry
-import com.brentpanther.bitcoinwidget.R
+import androidx.lifecycle.viewModelScope
+import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import kotlinx.coroutines.Dispatchers
-import java.io.InputStreamReader
-import java.util.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 class CoinSelectionViewModel(application: Application) : AndroidViewModel(application) {
 
-    fun getWidget(widgetId: Int) = WidgetDatabase.getInstance(getApplication()).widgetDao().getByWidgetIdFlow(widgetId)
+    private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.coinGeckoId }
 
-    private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.name }
-    private var fullCoins: List<CoinEntry> = allCoins.map {
-        CoinEntry(it.key, it.value.coinName, it.value.getSymbol(), it.value)
-    }.sortedWith { o1, o2 ->
-        String.CASE_INSENSITIVE_ORDER.compare(o1.coin.coinName, o2.coin.coinName)
+    val coins = MutableStateFlow<SearchResponse?>(null)
+
+    suspend fun createWidget(context: Context, widgetId: Int, coinEntry: CoinResponse) = withContext(Dispatchers.IO) {
+        val widgetType = WidgetApplication.instance.getWidgetType(widgetId)
+        val widget = Widget(
+            id = 0,
+            widgetId = widgetId,
+            widgetType = widgetType,
+            exchange = Exchange.COINGECKO,
+            coin = coinEntry.coin,
+            currency = "USD",
+            coinCustomId = if (coinEntry.coin == Coin.CUSTOM) coinEntry.id else null,
+            coinCustomName = if (coinEntry.coin == Coin.CUSTOM) coinEntry.name else null,
+            currencyCustomName = null,
+            showExchangeLabel = false,
+            showCoinLabel = false,
+            showIcon = true,
+            numDecimals = -1,
+            currencySymbol = null,
+            theme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
+            nightMode = NightMode.SYSTEM,
+            coinUnit = if (widgetType == WidgetType.VALUE) null else coinEntry.coin.getUnits().firstOrNull()?.text,
+            currencyUnit = null,
+            customIcon = coinEntry.large,
+            lastUpdated = 0,
+            showAmountLabel = widgetType == WidgetType.VALUE,
+            amountHeld = if (widgetType == WidgetType.VALUE) 1.0 else null,
+            useInverse = false,
+            state = WidgetState.DRAFT
+        )
+        WidgetDatabase.getInstance(context).widgetDao().insert(widget)
     }
-    private var coinList: List<CoinEntry> = mutableListOf()
-    private val resource = application.resources.openRawResource(R.raw.othercoins)
 
-    val coins = liveData(Dispatchers.IO) {
-        // TODO: load coins in parallel
-        emit(fullCoins)
-        loadOtherCoins()
-        emit(coinList)
-    }
+    var searchJob: Job? = null
 
-    private fun loadOtherCoins() {
-        val jsonArray = Gson().fromJson(InputStreamReader(resource), JsonArray::class.java)
-        val otherCoins = jsonArray.map {
-            val obj = it.asJsonObject
-            CoinEntry(
-                obj.get("id").asString,
-                obj.get("name").asString,
-                obj.get("symbol").asString.uppercase(Locale.ROOT),
-                Coin.CUSTOM,
-                obj.get("icon").asString
-            )
-        }.filterNot {
-            allCoins.containsKey(it.symbol)
+    fun search(query: String) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
+            coins.emit(SearchResponse(emptyList(), true))
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("https://api.coingecko.com/api/v3/search?query=$query")
+                .addHeader("Accept", "application/json")
+                .build()
+            client.newCall(request).execute().use { response ->
+                if (response.isSuccessful) {
+                    val responses = Gson().fromJson(response.body!!.charStream(), SearchResponse::class.java)
+                    val coinResults = responses.coins.map {
+                        allCoins[it.id]?.let { coin ->
+                            CoinResponse(coin.name, coin.coinName, coin.getSymbol(), null, null, coin)
+                        } ?: it.apply { coin = Coin.CUSTOM }
+                    }.sortedWith( compareBy(
+                        { it.coin == Coin.CUSTOM },
+                        { it.name.uppercase() }
+                    ))
+                    coins.emit(SearchResponse(coinResults, false))
+                }
+            }
         }
-        coinList = fullCoins.plus(otherCoins)
     }
 
+    fun removeWidget(context: Context, widgetId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        WidgetDatabase.getInstance(context).widgetDao().delete(intArrayOf(widgetId))
+    }
 }

@@ -36,7 +36,6 @@ data class Widget(
     var lastUpdated: Long,
     var state: WidgetState
 ) {
-    fun toCoinEntry() = CoinEntry(coinCustomId ?: coin.coinName, coinName(), coin.getSymbol(), coin, customIcon)
 
     fun coinName() = if (coinCustomId != null) coinCustomName ?: coin.coinName else coin.coinName
 
@@ -54,8 +53,4 @@ data class Configuration(
 data class ConfigurationWithSizes(var refresh: Int, var consistentSize: Boolean, var portrait: Int, val landscape: Int)
 
 data class WidgetSettings(val widget: Widget, val config: ConfigurationWithSizes, val refreshPrice: Boolean = true,
-                          val alwaysCurrent: Boolean = false)  {
-    fun shouldRefresh() = System.currentTimeMillis() - widget.lastUpdated > (60000 * config.refresh * .25)
-    fun throttled() = System.currentTimeMillis() - widget.lastUpdated < 120000
-
-}
+                          val alwaysCurrent: Boolean = false)

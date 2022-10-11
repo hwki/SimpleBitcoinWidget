@@ -1,113 +1,164 @@
 package com.brentpanther.bitcoinwidget.ui.settings
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.core.content.edit
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.preference.PreferenceManager
-import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.CoinEntry
-import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.Repository
-import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
+import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.Repository.downloadCustomIcon
+import com.brentpanther.bitcoinwidget.Repository.downloadJSON
+import com.brentpanther.bitcoinwidget.Repository.getExchangeData
 import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.db.WidgetDao
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
-import com.brentpanther.bitcoinwidget.db.WidgetSettings
-import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
+import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Downloading
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsViewModel.DataState.Success
-import com.google.gson.JsonParseException
+import com.brentpanther.bitcoinwidget.strategy.data.WidgetDataStrategy
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.io.FileNotFoundException
-import java.io.InputStream
+import java.text.DecimalFormat
+import java.util.*
 
-class SettingsViewModel(app: Application) : AndroidViewModel(app) {
+class SettingsViewModel : ViewModel() {
 
-    var widgetId: Int = 0
-    val saveWidgetFlow = MutableLiveData<Boolean>()
-    private lateinit var configWithSizes: ConfigurationWithSizes
-    private var success: Success? = null
-    var exchangeDataFlow = MutableSharedFlow<Success>(1)
+    private var dao: WidgetDao = WidgetDatabase.getInstance(WidgetApplication.instance).widgetDao()
 
-    val widgetPreviewFlow = MutableSharedFlow<WidgetSettings>()
+    val configFlow = dao.configWithSizesAsFlow()
+    var exchangeData: ExchangeData? = null
 
-    var widget: Widget? = null
+    val exchanges = mutableStateListOf<Exchange>()
+    val widgetFlow = MutableStateFlow<Widget?>(null)
+    private var widgetCopy: Widget? = null
+    private val widget by lazy { widgetCopy ?: throw IllegalStateException() }
 
-    @OptIn(FlowPreview::class)
-    fun settingsData(coin: CoinEntry, context: Context) = flow {
-        if (success == null) {
-            emit(Downloading(true))
-            val dao = WidgetDatabase.getInstance(getApplication()).widgetDao()
-            val exchangeData = viewModelScope.async(Dispatchers.IO) { getExchangeData(coin, context) }
-            val widgetData = viewModelScope.async(Dispatchers.IO) { dao.getByWidgetId(widgetId) }
-            val configData = viewModelScope.async(Dispatchers.IO) { dao.configWithSizes() }
-            configWithSizes = configData.await()
-            success = Success(widgetData.await(), exchangeData.await())
+    fun loadData(widgetId: Int) {
+        if (widgetCopy != null) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val dbWidget = dao.getByWidgetId(widgetId) ?: return@launch
+            widgetCopy = dbWidget.copy()
+            downloadJSON()
+            exchangeData = getExchangeData(widget)
+            loadExchanges()
+            updateData()
+            downloadCustomIcon(widget)
+            widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))
         }
-        success?.let {
-            exchangeDataFlow.emit(it)
-            emit(it)
-        }
-    }.debounce(350)
+    }
 
-    fun updateWidget(refreshPrice: Boolean) {
-        viewModelScope.launch {
-            widget?.let {
-                widgetPreviewFlow.emit(WidgetSettings(it, configWithSizes, refreshPrice, alwaysCurrent = true))
+    fun getCurrencies() = exchangeData?.currencies?.toList() ?: emptyList()
+
+    private fun updateData() = viewModelScope.launch(Dispatchers.IO) {
+        val strategy = WidgetDataStrategy.getStrategy(widget.widgetId)
+        widget.currencyCustomName = exchangeData?.getExchangeCurrencyName(widget.exchange.name, widget.currency)
+        strategy.widget = widget
+        strategy.loadData(manual = false)
+        widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))
+    }
+
+    fun setCurrency(currency: String) {
+        widget.currency = currency
+        updateData()
+        loadExchanges()
+    }
+
+    fun setExchange(exchange: Exchange) {
+        widget.exchange = exchange
+        updateData()
+    }
+
+    private fun loadExchanges() {
+        val exchangeList = exchangeData!!.getExchanges(widget.currency).map {
+            Exchange.valueOf(it)
+        }
+        exchanges.clear()
+        exchanges.addAll(exchangeList)
+
+        if (widget.exchange !in exchangeList) {
+            val defaultExchange = exchangeData!!.getDefaultExchange(widget.currency)
+            widget.exchange = Exchange.valueOf(defaultExchange)
+        }
+    }
+
+    private fun emit(action: (Widget) -> Unit) {
+        action(widget)
+        widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))
+    }
+
+    fun setInverse(inverse: Boolean) = emit {
+        widget.useInverse = inverse
+    }
+
+    fun setCurrencySymbol(symbol: String) = emit {
+        val currencySymbol = when(symbol) {
+            "ISO" -> null
+            "NONE" -> "none"
+            else -> getLocalSymbol(widget.currency)
+        }
+        widget.currencySymbol = currencySymbol
+    }
+
+    private fun getLocalSymbol(currencyCode: String?): String? {
+        val locale = Locale.getAvailableLocales().filter {
+            // find all locales that match this currency code
+            try {
+                Currency.getInstance(it).currencyCode == currencyCode
+            } catch (ignored: Exception) {
+                false
             }
-        }
+        }.minByOrNull {
+            // pick the best currency symbol, which is probably the one that does not match the ISO symbol
+            val symbols = (DecimalFormat.getCurrencyInstance(it) as DecimalFormat).decimalFormatSymbols
+            if (symbols.currencySymbol == symbols.internationalCurrencySymbol) 1 else 0
+        } ?: return null
+        return (DecimalFormat.getCurrencyInstance(locale) as DecimalFormat).decimalFormatSymbols.currencySymbol
     }
 
-    private fun getExchangeData(coin: CoinEntry, context: Context): ExchangeData {
-        Log.i("SettingsViewModel", "Downloading JSON...")
-        Repository.downloadJSON(context.applicationContext)
-        return try {
-            if (coin.coin == Coin.CUSTOM) {
-                CustomExchangeData(coin, getJson(context))
-            } else  {
-                val data = ExchangeData(coin, getJson(context))
-                if (data.numberExchanges == 0) {
-                    throw JsonParseException("No exchanges found.")
-                }
-                data
-            }
-        } catch(e: JsonParseException) {
-            Log.e("SettingsViewModel", "Error parsing JSON file, falling back to original.", e)
-            context.deleteFile(Repository.CURRENCY_FILE_NAME)
-            PreferenceManager.getDefaultSharedPreferences(context).edit {
-                remove(Repository.LAST_MODIFIED)
-            }
-            ExchangeData(coin, getJson(context))
-        } catch (e: FileNotFoundException) {
-            throw RuntimeException(e)
-        }
+    fun setCoinUnit(unit: String) = emit {
+        widget.coinUnit = unit
     }
 
-    private fun getJson(context: Context): InputStream {
-       return if (java.io.File(context.filesDir, Repository.CURRENCY_FILE_NAME).exists()) {
-            context.openFileInput(Repository.CURRENCY_FILE_NAME)
-        } else {
-            context.resources.openRawResource(R.raw.cryptowidgetcoins_v2)
-        }
+    fun setCurrencyUnit(unit: String) = emit {
+        widget.currencyUnit = unit
     }
 
-    fun save() {
-        saveWidgetFlow.postValue(true)
+    fun setTheme(theme: Theme) = emit {
+        widget.theme = theme
     }
 
-    sealed class DataState {
-        data class Downloading(val downloading: Boolean) : DataState()
-        data class Success(val widget: Widget?, val exchangeData: ExchangeData) : DataState()
+    fun setNightMode(nightMode: NightMode) = emit {
+        widget.nightMode = nightMode
     }
+
+    fun setNumDecimals(numDecimals: Int) = emit {
+        widget.numDecimals = numDecimals
+    }
+
+    fun setShowIcon(showIcon: Boolean) = emit {
+        widget.showIcon = showIcon
+    }
+
+    fun setShowCoinLabel(showCoinLabel: Boolean) = emit {
+        widget.showCoinLabel = showCoinLabel
+    }
+
+    fun setShowExchangeLabel(showExchangeLabel: Boolean) = emit {
+        widget.showExchangeLabel = showExchangeLabel
+    }
+
+    fun setAmountHeld(amount: Double) = emit {
+        widget.amountHeld = amount
+        updateData()
+    }
+
+    fun setShowAmountLabel(showAmountLabel: Boolean) = emit {
+        widget.showAmountLabel = showAmountLabel
+    }
+
+    fun save() = viewModelScope.launch(Dispatchers.IO) {
+        widget.state = WidgetState.CURRENT
+        dao.update(widget)
+        WidgetProvider.refreshWidgets(WidgetApplication.instance)
+    }
+
 
 }

@@ -14,6 +14,6 @@
     android:resizeMode="vertical|horizontal"
     android:previewImage="@drawable/preview_price_widget"
     android:widgetFeatures="reconfigurable"
-    android:configure="com.brentpanther.bitcoinwidget.ui.selection.CoinSelectionActivity"
+    android:configure="com.brentpanther.bitcoinwidget.ui.MainActivity"
     android:description="@string/widget_price_name"
     tools:targetApi="s" />

@@ -10,7 +10,8 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
-import com.brentpanther.bitcoinwidget.WidgetState.*
+import com.brentpanther.bitcoinwidget.WidgetState.ERROR
+import com.brentpanther.bitcoinwidget.WidgetState.STALE
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.TextViewAutoSizeHelper
 import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
@@ -31,17 +32,17 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
         } else {
             when (symbol) {
                 null -> {
-                    val nf = DecimalFormat.getCurrencyInstance()
-                    nf.currency = Currency.getInstance(widget.currency)
-                    nf
+                    DecimalFormat.getCurrencyInstance().apply {
+                        currency = Currency.getInstance(widget.currency)
+                    }
                 }
                 "none" -> NumberFormat.getNumberInstance()
                 else -> {
-                    val nf = DecimalFormat.getCurrencyInstance() as DecimalFormat
-                    val decimalFormatSymbols = nf.decimalFormatSymbols
-                    decimalFormatSymbols.currencySymbol = symbol
-                    nf.decimalFormatSymbols = decimalFormatSymbols
-                    nf
+                    (DecimalFormat.getCurrencyInstance() as DecimalFormat).also {
+                        val decimalFormatSymbols = it.decimalFormatSymbols
+                        decimalFormatSymbols.currencySymbol = symbol
+                        it.decimalFormatSymbols = decimalFormatSymbols
+                    }
                 }
             }
         }
@@ -67,7 +68,7 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
                     setImageViewResource(R.id.state, R.drawable.ic_outline_warning_amber_24)
                     setOnClickMessage(appContext, R.string.state_error)
                 }
-                CURRENT -> gone(R.id.state)
+                else -> gone(R.id.state)
             }
         }
     }
@@ -84,13 +85,14 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
             return
         }
         widgetPresenter.show(R.id.icon)
-        val customIcon = widget.customIcon
+        val customIcon = widget.coinCustomId
         if (customIcon != null) {
             val file = File(appContext.filesDir, "icons/$customIcon")
             if (file.exists()) {
-                val stream = file.inputStream()
-                val bitmap = BitmapFactory.decodeStream(stream)
-                widgetPresenter.setImageViewBitmap(R.id.icon, bitmap)
+                file.inputStream().use { stream ->
+                    val bitmap = BitmapFactory.decodeStream(stream)
+                    widgetPresenter.setImageViewBitmap(R.id.icon, bitmap)
+                }
             }
         } else {
             val isDark = widget.nightMode.isDark(appContext)
@@ -106,7 +108,6 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
             widgetPresenter.setTextViewTextSize(viewId, TypedValue.COMPLEX_UNIT_PX, size.toFloat())
         }
     }
-
 
 }
 

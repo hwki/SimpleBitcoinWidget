@@ -1,6 +1,5 @@
 package com.brentpanther.bitcoinwidget.strategy.data
 
-import android.content.Context
 import android.util.Log
 import com.brentpanther.bitcoinwidget.WidgetState
 import kotlinx.coroutines.Dispatchers
@@ -8,9 +7,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
-open class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetDataStrategy(context, widgetId) {
+open class PriceWidgetDataStrategy(widgetId: Int) : WidgetDataStrategy(widgetId) {
 
-    override suspend fun loadData(manual: Boolean, force: Boolean): Unit = withContext(Dispatchers.IO) {
+    override suspend fun loadData(manual: Boolean): Unit = withContext(Dispatchers.IO) {
         val config = getConfig()
         if (manual) {
             delay(750)
@@ -19,7 +18,7 @@ open class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetData
             val currency = widget.currencyCustomName ?: widget.currency
             val coin = widget.coinCustomId ?: widget.coinCustomName ?: widget.coin.getSymbol()
             val value = widget.exchange.getValue(coin, currency)
-            widget.state = WidgetState.CURRENT
+            if (widget.state != WidgetState.DRAFT) widget.state = WidgetState.CURRENT
             if (value == null) {
                 throw IllegalArgumentException()
             } else {
@@ -29,13 +28,13 @@ open class PriceWidgetDataStrategy(context: Context, widgetId: Int) : WidgetData
         } catch (e: IOException) {
             // unable to reach exchange. potentially mark data as stale
             if (widget.isOld(config.refresh)) {
-                widget.state = WidgetState.STALE
+                if (widget.state != WidgetState.DRAFT)  widget.state = WidgetState.STALE
             }
             Log.w(TAG, "Error getting value from exchange: ${widget.exchange}.", e)
         } catch (e: Exception) {
             // error with data from exchange. potentially mark as error
             if (widget.isOld(config.refresh) || widget.lastValue == null) {
-                widget.state = WidgetState.ERROR
+                if (widget.state != WidgetState.DRAFT) widget.state = WidgetState.ERROR
             }
             Log.e(TAG, "Error parsing value from exchange: ${widget.exchange}.", e)
         }

@@ -1,16 +1,16 @@
 package com.brentpanther.bitcoinwidget.db
 
 import android.content.Context
-import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.brentpanther.bitcoinwidget.exchange.Exchange
+import com.brentpanther.bitcoinwidget.WidgetApplication
+import java.io.File
 
-@Database(version = 4, entities = [Widget::class, Configuration::class], exportSchema = true)
+@Database(version = 5, entities = [Widget::class, Configuration::class], exportSchema = true)
 abstract class WidgetDatabase : RoomDatabase() {
 
     abstract fun widgetDao(): WidgetDao
@@ -56,6 +56,21 @@ abstract class WidgetDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                val cursor = database.query("SELECT coinCustomId, customIcon FROM Widget ORDER BY id")
+                while (cursor.moveToNext()) {
+                    val coinCustomId = cursor.getString(0)
+                    val customIcon = cursor.getString(1)
+                    val file = File(WidgetApplication.instance.filesDir, "icons/$customIcon")
+                    if (file.exists()) {
+                        val newFile = File(WidgetApplication.instance.filesDir, "icons/$coinCustomId")
+                        file.renameTo(newFile)
+                    }
+                }
+            }
+        }
+
         @Volatile
         private var INSTANCE: WidgetDatabase? = null
 
@@ -81,6 +96,7 @@ abstract class WidgetDatabase : RoomDatabase() {
                     .addMigrations(MIGRATION_1_2)
                     .addMigrations(MIGRATION_2_3)
                     .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_4_5)
                     .build()
                 INSTANCE = instance
                 instance

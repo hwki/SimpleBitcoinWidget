@@ -23,6 +23,9 @@
     <string name="title_preview">Prévia</string>
     <string name="title_currency_symbol">Símbolo da moeda</string>
     <string name="title_about">Acerca</string>
+    <string name="title_inverse">Usar Inverso</string>
+    <string name="title_amount_held">Montante retido</string>
+    <string name="title_coin_select">Selecionar moeda</string>
 
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets</string>
     <string name="summary_refresh_interval">A cada %s</string>
@@ -30,6 +33,7 @@
     <string name="summary_exchange">Pegar data de %s</string>
     <string name="summary_units">Mostrar %1$s em %2$s</string>
     <string name="summary_inverse">Mostrar preço de %1$s em %2$s</string>
+    <string name="summary_decimals_auto">Automático</string>
 
     <string-array name="themes" tools:ignore="InconsistentArrays">
         <item>Tema Sólida</item>
@@ -55,13 +59,14 @@
         <item>Não mostrar símbolo</item>
     </string-array>
 
-    <string name="settings_updating_data">Atualizando dados da moeda…</string>
-    <string name="error_no_currencies">Parâmetros não encontrados para essa moeda!</string>
     <string name="error_restricted_battery_saver">Não é possível atualizar, o poupador de bateria está ligado</string>
     <string name="error_restricted_data_saver">Não é possível atualizar, o poupador de dados móveis está ligado</string>
 
     <string name="button_settings">Abrir Configurações</string>
     <string name="coin_search_hint">Pesquise por nome ou símbolo</string>
+    <string name="coin_search_popular">Popular</string>
+    <string name="coin_search_more">Mais</string>
+    <string name="coin_search_powered_by">Alimentado por CoinGecko</string>
 
     <string name="settings_update">Atualizo</string>
     <string name="settings_create">Crio</string>
@@ -69,7 +74,8 @@
     <string name="coin_icon">Icone</string>
     <string name="nav_title_manage_widgets">Gerenciar Widgets</string>
     <string name="nav_title_settings">Configurações</string>
-    <string name="manage_widgets_empty">Você ainda não criou nenhum widget. Depois de adicionados, eles aparecerão aqui.</string>
+    <string name="manage_widgets_empty">Você ainda não criou nenhum widget!</string>
+    <string name="manage_widgets_how_to">Como criar um widget:\n• Toque e segure na tela inicial.\n• Role até Simple Crypto Widget.\n• Arraste e solte na tela inicial.\n• Configure e crie.</string>
     <string name="widget_list_title">%1$s / %2$s</string>
 
     <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
@@ -86,6 +92,5 @@
     <string name="widget_price_summary">Mostra o preço de negociação atual do %s.</string>
     <string name="widget_value_summary">Mostra o valor atual de sua carteira %s.</string>
     <string name="dismiss">Liberar</string>
-
 
 </resources>

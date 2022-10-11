@@ -1,0 +1,437 @@
+package com.brentpanther.bitcoinwidget.ui.settings
+
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.graphics.Typeface
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
+import com.brentpanther.bitcoinwidget.db.Widget
+import com.brentpanther.bitcoinwidget.exchange.Exchange
+import com.brentpanther.bitcoinwidget.ui.BannersViewModel
+import com.brentpanther.bitcoinwidget.ui.WarningBanner
+import com.brentpanther.bitcoinwidget.ui.WidgetPreview
+
+@Composable
+fun SettingsScreen(
+    navController: NavController, widgetId: Int,
+    viewModel: SettingsViewModel = viewModel(),
+    bannersViewModel: BannersViewModel = viewModel()
+) {
+    BaseSettingsScreen(navController, viewModel, bannersViewModel, widgetId) {
+        when (WidgetApplication.instance.getWidgetType(widgetId)) {
+            WidgetType.PRICE -> PriceSettings(it, viewModel)
+            WidgetType.VALUE -> ValueSettings(it, viewModel)
+        }
+    }
+}
+
+@Composable
+fun BaseSettingsScreen(
+    navController: NavController,
+    viewModel: SettingsViewModel,
+    bannersViewModel: BannersViewModel,
+    widgetId: Int, content: @Composable (Widget) -> Unit
+) {
+    viewModel.loadData(widgetId)
+    val widgetState by viewModel.widgetFlow.collectAsState(null)
+    val widget = widgetState
+    val config by viewModel.configFlow.collectAsState(
+        ConfigurationWithSizes(15, false, 0, 0)
+    )
+    val context = LocalContext.current
+    val fromHome = navController.backQueue.any { it.destination.route == "home" }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    when (widget?.state) {
+                        null -> {}
+                        WidgetState.DRAFT -> Text(stringResource(R.string.new_widget, widget.coinName()))
+                        else -> Text(stringResource(R.string.edit_widget, widget.coinName()))
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            widget?.let {
+                ExtendedFloatingActionButton(
+                    onClick = {
+                        viewModel.save()
+                        if (fromHome) {
+                            navController.navigateUp()
+                        } else {
+                            (context as Activity).apply {
+                                setResult(RESULT_OK)
+                                WidgetProvider.refreshWidgets(this)
+                                finish()
+                            }
+                        }
+                    },
+                    icon = {
+                        Icon(painterResource(R.drawable.ic_outline_check_24), null)
+                    },
+                    text = {
+                        when (it.state) {
+                            WidgetState.DRAFT -> Text(
+                                stringResource(R.string.settings_create)
+                                    .uppercase()
+                            )
+                            else -> Text(
+                                stringResource(R.string.settings_update)
+                                    .uppercase()
+                            )
+                        }
+                    }
+                )
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center
+    ) { paddingValues ->
+        when (widget) {
+            null -> {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(strokeWidth = 6.dp, modifier = Modifier.size(80.dp))
+                }
+            }
+            else -> {
+                Column(
+                    Modifier
+                        .padding(paddingValues)
+                        .fillMaxWidth()
+                ) {
+                    if (widget.state != WidgetState.DRAFT) {
+                        WarningBanner(bannersViewModel)
+                    }
+                    Text(
+                        text = stringResource(widget.widgetType.widgetSummary, widget.coinName()),
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Typeface.create("sans-serif-light", Typeface.BOLD)),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .padding(horizontal = 16.dp)
+                    )
+                    SettingsHeader(
+                        title = R.string.title_preview,
+                        Modifier.padding(bottom = 16.dp),
+                        withDivider = false
+                    )
+                    WidgetPreview(
+                        widget, config.consistentSize,
+                        Modifier
+                            .height(96.dp)
+                            .fillMaxWidth()
+                    )
+                    Column(Modifier.verticalScroll(rememberScrollState())) {
+                        content(widget)
+                        Spacer(Modifier.height(80.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
+    DataSection(settingsPriceViewModel, widget)
+    SettingsEditText(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_account_balance_wallet_24), null)
+        },
+        title = {
+            Text(stringResource(id = R.string.title_amount_held))
+        },
+        subtitle = {
+            Text(widget.amountHeld.toString())
+        },
+        dialogText = {
+            Text(stringResource(R.string.dialog_amount_held, widget.coinName()))
+        },
+        value = widget.amountHeld.toString(),
+        onChange = {
+            settingsPriceViewModel.setAmountHeld(it.toDouble())
+        }
+    )
+    FormatSection(settingsPriceViewModel, widget)
+    StyleSection(settingsPriceViewModel, widget)
+    DisplaySection(settingsPriceViewModel, widget)
+    SettingsSwitch(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_numbers_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_amount_label))
+        },
+        value = widget.showAmountLabel,
+        onChange = {
+            settingsPriceViewModel.setShowAmountLabel(it)
+        }
+    )
+}
+
+@Composable
+fun PriceSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
+    DataSection(settingsPriceViewModel, widget)
+    SettingsSwitch(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_change_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_inverse))
+        },
+        subtitle = {
+            if (widget.useInverse) {
+                Text(stringResource(R.string.summary_inverse, widget.currency, widget.coinName()))
+            } else {
+                Text(stringResource(R.string.summary_inverse, widget.coinName(), widget.currency))
+            }
+        },
+        value = widget.useInverse,
+        onChange = {
+            settingsPriceViewModel.setInverse(it)
+        }
+    )
+    FormatSection(settingsPriceViewModel, widget)
+    if (widget.coinUnit != null) {
+        SettingsList(
+            icon = {
+                Icon(painterResource(R.drawable.ic_decimal_comma), null)
+            },
+            title = {
+                Text(stringResource(R.string.title_units))
+            },
+            subtitle = { value ->
+                Text(stringResource(R.string.summary_units, widget.coinName(), value ?: widget.coinName()))
+            },
+            value = widget.coinUnit,
+            items = widget.coin.getUnits().map { it.text },
+            onChange = {
+                settingsPriceViewModel.setCoinUnit(it)
+            }
+        )
+    }
+    if (widget.currency in Coin.COIN_NAMES) {
+        val currencyUnits = Coin.valueOf(widget.currency).getUnits()
+        SettingsList(
+            icon = {
+                Icon(painterResource(R.drawable.ic_decimal_comma), null)
+            },
+            title = {
+                Text(stringResource(R.string.title_units))
+            },
+            subtitle = { value ->
+                Text(stringResource(R.string.summary_units, widget.currency, value ?: widget.currency))
+            },
+            value = widget.currencyUnit ?: widget.currency,
+            items = currencyUnits.map { it.text },
+            onChange = {
+                settingsPriceViewModel.setCurrencyUnit(it)
+            }
+        )
+    }
+    StyleSection(settingsPriceViewModel, widget)
+    DisplaySection(settingsPriceViewModel, widget)
+}
+
+@Composable
+private fun DataSection(
+    settingsPriceViewModel: SettingsViewModel,
+    widget: Widget
+) {
+    SettingsHeader(title = R.string.title_data)
+    SettingsList(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_local_atm_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_currency))
+        },
+        subtitle = {
+            Text(stringResource(R.string.summary_currency, widget.currency))
+        },
+        value = widget.currency,
+        items = settingsPriceViewModel.getCurrencies(),
+        onChange = {
+            settingsPriceViewModel.setCurrency(it)
+        }
+    )
+    SettingsList(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_account_balance_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_exchange))
+        },
+        subtitle = {
+            Text(stringResource(R.string.summary_exchange, widget.exchange.exchangeName))
+        },
+        value = widget.exchange.toString(),
+        items = settingsPriceViewModel.exchanges.map { it.exchangeName },
+        itemValues = settingsPriceViewModel.exchanges.map { it.name },
+        onChange = {
+            settingsPriceViewModel.setExchange(Exchange.valueOf(it))
+        }
+    )
+}
+
+@Composable
+private fun FormatSection(
+    settingsPriceViewModel: SettingsViewModel,
+    widget: Widget
+) {
+    SettingsHeader(
+        title = R.string.title_format
+    )
+    val value = when (widget.currencySymbol) {
+        null -> "ISO"
+        "none" -> "NONE"
+        else -> "LOCAL"
+    }
+    SettingsList(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_attach_money_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_currency_symbol))
+        },
+        subtitle = {
+            Text(it ?: "")
+        },
+        value = value,
+        items = stringArrayResource(R.array.symbols).toList(),
+        itemValues = stringArrayResource(R.array.symbolValues).toList(),
+        onChange = {
+            settingsPriceViewModel.setCurrencySymbol(it)
+        }
+    )
+}
+
+@Composable
+private fun StyleSection(
+    settingsPriceViewModel: SettingsViewModel,
+    widget: Widget
+) {
+    SettingsHeader(title = R.string.title_style)
+    SettingsList(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_color_lens_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_theme))
+        },
+        subtitle = {
+            Text(it ?: "")
+        },
+        value = widget.theme.name,
+        items = stringArrayResource(R.array.themes).toList(),
+        itemValues = stringArrayResource(R.array.themeValues).toList(),
+        onChange = {
+            settingsPriceViewModel.setTheme(Theme.valueOf(it))
+        }
+    )
+    SettingsList(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_nightlight_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_night_mode))
+        },
+        subtitle = {
+            Text(it ?: "")
+        },
+        value = widget.nightMode.name,
+        items = stringArrayResource(R.array.nightModes).toList(),
+        itemValues = stringArrayResource(R.array.nightModeValues).toList(),
+        onChange = {
+            settingsPriceViewModel.setNightMode(NightMode.valueOf(it))
+        }
+    )
+}
+
+@Composable
+private fun DisplaySection(
+    settingsViewModel: SettingsViewModel,
+    widget: Widget
+) {
+    SettingsHeader(title = R.string.title_display)
+    SettingsSlider(
+        icon = {
+            Icon(painterResource(R.drawable.ic_decimal), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_decimals))
+        },
+        subtitle = {
+            val value = if (widget.numDecimals == -1) {
+                stringResource(R.string.summary_decimals_auto)
+            } else {
+                widget.numDecimals.toString()
+            }
+            Text(value)
+        },
+        value = widget.numDecimals,
+        range = -1..10,
+        onChange = {
+            settingsViewModel.setNumDecimals(it)
+        }
+    )
+    SettingsSwitch(
+        icon = {
+            Icon(painterResource(R.drawable.ic_bitcoin), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_icon))
+        },
+        value = widget.showIcon,
+        onChange = {
+            settingsViewModel.setShowIcon(it)
+        }
+    )
+    SettingsSwitch(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_label_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_coin_label))
+        },
+        value = widget.showCoinLabel,
+        onChange = {
+            settingsViewModel.setShowCoinLabel(it)
+        }
+    )
+    SettingsSwitch(
+        icon = {
+            Icon(painterResource(R.drawable.ic_outline_label_24), null)
+        },
+        title = {
+            Text(stringResource(R.string.title_exchange_label))
+        },
+        value = widget.showExchangeLabel,
+        onChange = {
+            settingsViewModel.setShowExchangeLabel(it)
+        }
+    )
+}
+

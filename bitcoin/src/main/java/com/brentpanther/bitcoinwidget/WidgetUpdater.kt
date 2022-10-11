@@ -10,7 +10,7 @@ object WidgetUpdater {
 
     suspend fun update(context: Context, widgetIds: IntArray, manual: Boolean) = coroutineScope {
 
-        val dataStrategies = widgetIds.map { WidgetDataStrategy.getStrategy(context, it) }
+        val dataStrategies = widgetIds.map { WidgetDataStrategy.getStrategy(it) }
 
         // update display immediately to avoid looking bad
         for (strategy in dataStrategies) {
@@ -21,7 +21,7 @@ object WidgetUpdater {
 
         // update data
         for (strategy in dataStrategies) {
-            strategy.loadData(manual, false)
+            strategy.loadData(manual)
             strategy.save()
         }
 

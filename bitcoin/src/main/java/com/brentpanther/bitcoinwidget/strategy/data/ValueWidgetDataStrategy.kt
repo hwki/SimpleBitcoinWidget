@@ -1,8 +1,6 @@
 package com.brentpanther.bitcoinwidget.strategy.data
 
-import android.content.Context
-
-class ValueWidgetDataStrategy(context: Context, widgetId: Int)  : PriceWidgetDataStrategy(context, widgetId) {
+class ValueWidgetDataStrategy(widgetId: Int)  : PriceWidgetDataStrategy(widgetId) {
 
     override fun setData(value: String) {
         val valueDouble = value.toDoubleOrNull() ?: 0.0

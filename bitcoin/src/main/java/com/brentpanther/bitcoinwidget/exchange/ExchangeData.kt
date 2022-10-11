@@ -1,25 +1,22 @@
 package com.brentpanther.bitcoinwidget.exchange
 
 import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.CoinEntry
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.Serializable
-import java.util.Currency
-import java.util.HashMap
-import kotlin.Comparator
+import java.util.*
 
 
-open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
+open class ExchangeData(val coin: Coin, json: InputStream) {
 
     protected var obj: JsonExchangeObject? = null
     protected var currencyExchange: MutableMap<String, MutableList<String>> = HashMap()
 
     init {
         this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
-        loadCurrencies(coinEntry.coin.getSymbol())
+        loadCurrencies(coin.getSymbol())
     }
 
     // only return currencies that we know about
@@ -36,16 +33,10 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
                 if (i2 >= 0) return@Comparator 1
                 o1.compareTo(o2)
             })
-            currencyNames.remove(coinEntry.symbol)
+            currencyNames.remove(coin.getSymbol())
             return currencyNames.toTypedArray()
         }
 
-    open val defaultCurrency: String?
-        get() {
-            if (currencyExchange.containsKey("USD")) return "USD"
-            if (currencyExchange.containsKey("EUR")) return "EUR"
-            return if (currencyExchange.isEmpty()) null else currencyExchange.keys.iterator().next()
-        }
 
     inner class JsonExchangeObject {
 
@@ -88,7 +79,7 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
         // only return exchanges that we know about
         val exchangeNames = Exchange.getAllExchangeNames()
         val exchanges = currencyExchange[currency] ?: return arrayOf()
-        exchangeNames.retainAll(exchanges)
+        exchangeNames.retainAll(exchanges.toSet())
         return exchangeNames.toTypedArray()
     }
 
@@ -104,7 +95,7 @@ open class ExchangeData(val coinEntry: CoinEntry, json: InputStream) {
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
-        return obj?.getExchangeCoinName(exchange, coinEntry.coin.getSymbol())
+        return obj?.getExchangeCoinName(exchange, coin.getSymbol())
     }
 
     open fun getExchangeCurrencyName(exchange: String, currency: String): String? {
