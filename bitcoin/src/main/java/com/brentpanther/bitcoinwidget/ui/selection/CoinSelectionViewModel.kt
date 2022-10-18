@@ -26,33 +26,36 @@ class CoinSelectionViewModel(application: Application) : AndroidViewModel(applic
 
     suspend fun createWidget(context: Context, widgetId: Int, coinEntry: CoinResponse) = withContext(Dispatchers.IO) {
         val widgetType = WidgetApplication.instance.getWidgetType(widgetId)
+        val dao = WidgetDatabase.getInstance(context).widgetDao()
+        // pull properties from last created widget if exists
+        val lastWidget = dao.getAll().lastOrNull()
         val widget = Widget(
             id = 0,
             widgetId = widgetId,
             widgetType = widgetType,
             exchange = Exchange.COINGECKO,
             coin = coinEntry.coin,
-            currency = "USD",
+            currency = lastWidget?.currency ?: "USD",
             coinCustomId = if (coinEntry.coin == Coin.CUSTOM) coinEntry.id else null,
             coinCustomName = if (coinEntry.coin == Coin.CUSTOM) coinEntry.name else null,
             currencyCustomName = null,
-            showExchangeLabel = false,
-            showCoinLabel = false,
-            showIcon = true,
-            numDecimals = -1,
-            currencySymbol = null,
-            theme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
-            nightMode = NightMode.SYSTEM,
+            showExchangeLabel = lastWidget?.showExchangeLabel ?: false,
+            showCoinLabel = lastWidget?.showCoinLabel ?: false,
+            showIcon = lastWidget?.showIcon ?: true,
+            numDecimals = lastWidget?.numDecimals ?: -1,
+            currencySymbol = lastWidget?.currencySymbol,
+            theme = lastWidget?.theme ?: if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
+            nightMode = lastWidget?.nightMode ?: NightMode.SYSTEM,
             coinUnit = if (widgetType == WidgetType.VALUE) null else coinEntry.coin.getUnits().firstOrNull()?.text,
             currencyUnit = null,
             customIcon = coinEntry.large,
             lastUpdated = 0,
-            showAmountLabel = widgetType == WidgetType.VALUE,
+            showAmountLabel = lastWidget?.showAmountLabel ?: (widgetType == WidgetType.VALUE),
             amountHeld = if (widgetType == WidgetType.VALUE) 1.0 else null,
             useInverse = false,
             state = WidgetState.DRAFT
         )
-        WidgetDatabase.getInstance(context).widgetDao().insert(widget)
+        dao.insert(widget)
     }
 
     var searchJob: Job? = null
