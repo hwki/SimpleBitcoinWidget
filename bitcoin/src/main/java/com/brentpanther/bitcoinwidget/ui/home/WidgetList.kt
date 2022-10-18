@@ -34,8 +34,8 @@ fun WidgetList(
     bannersViewModel: BannersViewModel = viewModel()
 ) {
     val widgets = viewModel.getWidgets().collectAsState(null).value ?: return
-    val settings by viewModel.globalSettings.collectAsState(null)
-    val fixedSize = settings?.consistentSize ?: false
+    val settings = viewModel.globalSettings.collectAsState(null).value ?: return
+    val fixedSize = settings.consistentSize
     Column {
         WarningBanner(viewModel = bannersViewModel)
         if (widgets.isEmpty()) {
