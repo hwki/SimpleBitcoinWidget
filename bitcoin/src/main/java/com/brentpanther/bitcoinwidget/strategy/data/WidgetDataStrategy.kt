@@ -11,10 +11,9 @@ abstract class WidgetDataStrategy(val widgetId: Int) {
 
     private var _widget : Widget? = null
 
-    var widget : Widget
+    var widget : Widget?
         get() {
-            _widget = _widget ?: dao.getByWidgetId(widgetId) ?: throw IllegalArgumentException()
-            return _widget!!
+            return _widget ?: dao.getByWidgetId(widgetId)
         }
         set(value) {
             _widget = value
@@ -25,7 +24,7 @@ abstract class WidgetDataStrategy(val widgetId: Int) {
     abstract suspend fun loadData(manual: Boolean)
 
     suspend fun save() {
-        dao.update(widget)
+        widget?.let { dao.update(it) }
     }
 
     companion object {

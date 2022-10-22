@@ -1,0 +1,4 @@
+New create screen with search powered by CoinGecko. Search and create a widget for any cryptocurrency.
+Added themed app icon for Android 13.
+New widgets will default settings to match the last created widget.
+Major overhaul of UI behind the screens.

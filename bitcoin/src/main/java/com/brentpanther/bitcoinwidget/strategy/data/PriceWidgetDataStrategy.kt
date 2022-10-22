@@ -10,6 +10,7 @@ import java.io.IOException
 open class PriceWidgetDataStrategy(widgetId: Int) : WidgetDataStrategy(widgetId) {
 
     override suspend fun loadData(manual: Boolean): Unit = withContext(Dispatchers.IO) {
+        val widget = widget ?: return@withContext
         val config = getConfig()
         if (manual) {
             delay(750)
@@ -41,8 +42,10 @@ open class PriceWidgetDataStrategy(widgetId: Int) : WidgetDataStrategy(widgetId)
     }
 
     open fun setData(value: String) {
-        widget.lastValue = value
-        widget.lastUpdated = System.currentTimeMillis()
+        widget?.apply {
+            lastValue = value
+            lastUpdated = System.currentTimeMillis()
+        }
     }
 
     companion object {
