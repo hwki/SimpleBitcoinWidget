@@ -15,6 +15,9 @@ interface WidgetDao {
     @Query("SELECT * FROM configuration LIMIT 1")
     fun configAsFlow(): Flow<Configuration>
 
+    @Query("SELECT * FROM configuration LIMIT 1")
+    fun config(): Configuration
+
     @Query("SELECT * FROM widget WHERE widgetId = :widgetId")
     fun getByWidgetId(widgetId: Int): Widget?
 
@@ -34,13 +37,19 @@ interface WidgetDao {
     suspend fun delete(widgetIds: IntArray)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(widget: Widget)
+    suspend fun insert(widget: Widget) : Long
 
     @Update
     suspend fun update(config: Configuration)
 
-    @Query("DELETE FROM widget")
-    suspend fun clear()
+    @Query("SELECT * FROM widget WHERE id = :id")
+    fun getAsFlow(id: Int): Flow<Widget?>
+
+    @Query("SELECT * FROM widget WHERE id = :id")
+    fun get(id: Int): Widget?
+
+    @Query("DELETE FROM widget WHERE widgetId NOT IN (:widgetIds)")
+    fun deleteOrphans(widgetIds: IntArray)
 
 
 }

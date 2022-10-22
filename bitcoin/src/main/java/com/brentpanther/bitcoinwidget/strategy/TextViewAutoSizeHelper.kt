@@ -12,7 +12,7 @@ object TextViewAutoSizeHelper {
     fun findLargestTextSizeWhichFits(textView: TextView, availableSpace: RectF): Int {
         val sizes = IntArray(400) { (it + 8) }
         var bestSizeIndex = 0
-        var lowIndex = bestSizeIndex + 1
+        var lowIndex = 1
         var highIndex = sizes.size - 1
         var sizeToTryIndex: Int
         while (lowIndex <= highIndex) {

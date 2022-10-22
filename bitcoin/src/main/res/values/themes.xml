@@ -25,7 +25,7 @@
     </style>
 
     <style name="Theme.MyApp.WidgetContainer.Light">
-        <item name="appWidgetDefaultIcon">@drawable/ic_btc</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_placeholder</item>
         <item name="appWidgetBackgroundColor">#fff</item>
         <item name="appWidgetLoadingColor">#111</item>
     </style>
@@ -40,7 +40,7 @@
 
     <style name="Theme.MyApp.WidgetContainer.Dark">
         <item name="appWidgetBackgroundColor">#111</item>
-        <item name="appWidgetDefaultIcon">@drawable/ic_btc_dark</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_placeholder</item>
         <item name="appWidgetTextStyle">@style/SolidWidgetText.Dark</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.Dark</item>
         <item name="appWidgetLoadingColor">#fff</item>

@@ -13,7 +13,7 @@
         <item name="appWidgetTextStyle">@style/SolidWidgetText.LightMaterial</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.LightMaterial.Secondary</item>
         <item name="appWidgetLoadingColor">@android:color/system_accent2_600</item>
-        <item name="appWidgetDefaultIcon">@drawable/ic_btc</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_placeholder</item>
         <item name="appWidgetHorizontalPadding">8dp</item>
     </style>
 
@@ -22,7 +22,7 @@
         <item name="appWidgetTextStyle">@style/SolidWidgetText.DarkMaterial</item>
         <item name="appWidgetSecondaryTextStyle">@style/SolidWidgetText.DarkMaterial.Secondary</item>
         <item name="appWidgetLoadingColor">@android:color/system_accent1_600</item>
-        <item name="appWidgetDefaultIcon">@drawable/ic_btc_dark</item>
+        <item name="appWidgetDefaultIcon">@drawable/ic_placeholder</item>
         <item name="appWidgetHorizontalPadding">8dp</item>
     </style>
 

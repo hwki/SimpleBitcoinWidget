@@ -1,9 +1,9 @@
 package com.brentpanther.bitcoinwidget.exchange
 
-import com.brentpanther.bitcoinwidget.CoinEntry
+import com.brentpanther.bitcoinwidget.Coin
 import java.io.InputStream
 
-class CustomExchangeData(coinEntry: CoinEntry, json: InputStream) : ExchangeData(coinEntry, json) {
+class CustomExchangeData(val name: String, coin: Coin, json: InputStream) : ExchangeData(coin, json) {
 
     init {
         val exchanges = obj?.exchanges?.first { it.name == Exchange.COINGECKO.name }
@@ -13,7 +13,7 @@ class CustomExchangeData(coinEntry: CoinEntry, json: InputStream) : ExchangeData
                 .toMutableMap()
     }
 
-    override fun getExchangeCoinName(exchange: String) = coinEntry.name
+    override fun getExchangeCoinName(exchange: String) = name
 
     override fun getExchangeCurrencyName(exchange: String, currency: String): String? = null
 }

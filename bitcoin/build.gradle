@@ -12,18 +12,22 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdk 23
         targetSdk 33
-        versionCode 304
-        versionName "8.2.7"
+        versionCode 311
+        versionName "8.3.1"
 
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
     buildFeatures {
         viewBinding true
+        compose true
     }
 
     buildTypes {
@@ -41,12 +45,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = ['-Xopt-in=kotlin.RequiresOptIn']
+        jvmTarget = "11"
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     sourceSets.test.resources.srcDirs += ["src/main/res"]
@@ -60,28 +63,36 @@ android {
         }
     }
     namespace 'com.brentpanther.bitcoinwidget'
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 
 }
 
 dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.core:core-ktx:1.9.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.fragment:fragment-ktx:1.5.3'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.google.code.gson:gson:2.9.1'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    implementation 'androidx.activity:activity-compose:1.6.0'
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
+    implementation 'androidx.compose.material:material:1.2.1'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+    implementation "androidx.navigation:navigation-compose:2.5.2"
+    implementation "io.coil-kt:coil-compose:2.2.2"
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.jayway.jsonpath:json-path:2.7.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
     def room_version = "2.4.3"
 

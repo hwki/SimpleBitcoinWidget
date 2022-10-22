@@ -6,7 +6,9 @@ import android.content.Context
 import android.os.Bundle
 import androidx.work.*
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 open class WidgetProvider : AppWidgetProvider() {
@@ -76,9 +78,7 @@ open class WidgetProvider : AppWidgetProvider() {
             }
         }
 
-        fun cancelWork(workManager: WorkManager): Operation {
-            return workManager.cancelAllWorkByTag(WORKNAME)
-        }
+        fun cancelWork(workManager: WorkManager) = workManager.cancelAllWorkByTag(WORKNAME)
 
         fun scheduleWork(workManager: WorkManager, refresh: Int, delay: Int, index: Int, policy: ExistingPeriodicWorkPolicy) {
             val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()

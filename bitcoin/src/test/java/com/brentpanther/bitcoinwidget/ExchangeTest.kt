@@ -20,8 +20,7 @@ class ExchangeTest {
         val coins = EnumSet.allOf(Coin::class.java).sorted()
         for (coin in coins) {
             println("Checking $coin")
-            val entry = CoinEntry(coin.name, coin.coinName, coin.getSymbol(), coin)
-            val data = ExchangeData(entry, loadJSON())
+            val data = ExchangeData(coin, loadJSON())
             for (currency in data.currencies.sorted()) {
                 for (exchange in data.getExchanges(currency).toList().parallelStream()) {
                     try {

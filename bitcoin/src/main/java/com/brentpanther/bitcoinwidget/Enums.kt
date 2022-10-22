@@ -6,9 +6,6 @@ import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsFragment
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsPriceFragment
-import com.brentpanther.bitcoinwidget.ui.settings.SettingsValueFragment
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -49,16 +46,11 @@ enum class NightMode {
 }
 
 enum class WidgetState {
-    CURRENT, STALE, ERROR
+    DRAFT, CURRENT, STALE, ERROR
 }
 
 enum class WidgetType(@StringRes val widgetName: Int, @StringRes val widgetSummary: Int) {
     PRICE(R.string.widget_price_name, R.string.widget_price_summary),
     VALUE(R.string.widget_value_name, R.string.widget_value_summary);
-
-    fun getSettingsFragment(): SettingsFragment = when(this) {
-        PRICE -> SettingsPriceFragment()
-        VALUE -> SettingsValueFragment()
-    }
 }
 
