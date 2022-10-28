@@ -81,9 +81,10 @@ object Repository {
 
             ExchangeHelper.getStream(url).use { stream ->
                 ByteArrayOutputStream().use { os ->
-                    val image = BitmapFactory.decodeStream(stream)
-                    image.compress(Bitmap.CompressFormat.PNG, 100, os)
-                    file.writeBytes(os.toByteArray())
+                    BitmapFactory.decodeStream(stream)?.let { image ->
+                        image.compress(Bitmap.CompressFormat.PNG, 100, os)
+                        file.writeBytes(os.toByteArray())
+                    }
                 }
             }
         }

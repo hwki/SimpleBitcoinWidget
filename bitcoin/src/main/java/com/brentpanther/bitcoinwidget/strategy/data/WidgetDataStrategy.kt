@@ -14,7 +14,7 @@ abstract class WidgetDataStrategy(val widgetId: Int) {
     var widget : Widget?
         get() {
             _widget = _widget ?: dao.getByWidgetId(widgetId)
-            return _widget!!
+            return _widget
         }
         set(value) {
             _widget = value

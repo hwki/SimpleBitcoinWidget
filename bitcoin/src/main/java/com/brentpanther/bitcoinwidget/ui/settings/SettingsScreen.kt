@@ -171,7 +171,9 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
         },
         value = widget.amountHeld.toString(),
         onChange = {
-            settingsPriceViewModel.setAmountHeld(it.toDouble())
+            it.toDoubleOrNull()?.apply {
+                settingsPriceViewModel.setAmountHeld(this)
+            }
         }
     )
     FormatSection(settingsPriceViewModel, widget)
