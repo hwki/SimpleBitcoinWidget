@@ -33,7 +33,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     BNB("Binance Coin", "binancecoin", IconTheme(SOLID, ic_bnb)),
     BEST("Bitpanda Ecosystem Token", "bitpanda-ecosystem-token", IconTheme(SOLID, ic_best)),
     BNT("Bancor Network Token", "bancor", IconTheme(SOLID, ic_bnt)),
-    BSV("Bitcoin SV", "bitcoin-cash", IconTheme(SOLID, ic_bsv, ic_bsv_dark)),
+    BSV("Bitcoin SV", "bitcoin-cash-sv", IconTheme(SOLID, ic_bsv, ic_bsv_dark)),
     BTC("Bitcoin", "bitcoin", IconTheme(SOLID, ic_btc, ic_btc_dark)) {
         override fun getUnits() =
             listOf(CoinUnit("BTC", 1.0), CoinUnit("mBTC", .001), CoinUnit("Bit", .000001), CoinUnit("Sat", .00000001))
