@@ -17,7 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -34,6 +34,7 @@ import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.ui.theme.HighlightRippleTheme
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -55,7 +56,18 @@ fun CoinSelectionScreen(
             navController.navigateUp()
         }
     }
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    LaunchedEffect(Unit) {
+        viewModel.error.collectLatest {
+            it?.let {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = context.getString(it)
+                )
+            }
+        }
+    }
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = {
@@ -99,11 +111,11 @@ fun CoinSelectionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-                    .onKeyEvent {
+                    .onPreviewKeyEvent {
                         if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
                             viewModel.search(searchText)
                             keyboardController?.hide()
-                            return@onKeyEvent true
+                            return@onPreviewKeyEvent true
                         }
                         false
                     }
@@ -119,7 +131,7 @@ fun CoinSelectionScreen(
                 }
                 result.coins.isEmpty() -> {
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                        Text("No coins found.")
+                        Text(stringResource(R.string.search_empty))
                     }
                 }
                 else -> {
@@ -138,7 +150,9 @@ fun CoinSelectionScreen(
 @Composable
 fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (CoinResponse) -> Unit) {
     val isNightMode = isSystemInDarkTheme()
-    val iconModifier = Modifier.padding(start = 4.dp, end = 8.dp).size(28.dp)
+    val iconModifier = Modifier
+        .padding(start = 4.dp, end = 8.dp)
+        .size(28.dp)
     val customStartIndex = coins.indexOfFirst { it.coin == Coin.CUSTOM }
     Column {
         LazyColumn(

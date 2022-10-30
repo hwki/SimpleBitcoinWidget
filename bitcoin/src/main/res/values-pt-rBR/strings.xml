@@ -92,5 +92,7 @@
     <string name="widget_price_summary">Mostra o preço de negociação atual do %s.</string>
     <string name="widget_value_summary">Mostra o valor atual de sua carteira %s.</string>
     <string name="dismiss">Liberar</string>
+    <string name="search_error">Erro ao obter moedas do CoinGecko.</string>
+    <string name="search_empty">Nenhuma moeda encontrada.</string>
 
 </resources>

@@ -130,5 +130,7 @@
     <string name="widget_price_summary">Shows the current %s trading price.</string>
     <string name="widget_value_summary">Shows the current value of your %s wallet.</string>
     <string name="dismiss">Dismiss</string>
+    <string name="search_error">Error retrieving coins from CoinGecko.</string>
+    <string name="search_empty">No coins found.</string>
 
 </resources>

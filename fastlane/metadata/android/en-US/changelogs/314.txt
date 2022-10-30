@@ -1,0 +1,2 @@
+Fixed Bitcoin Cash not being available.
+Better error handling on search screen.

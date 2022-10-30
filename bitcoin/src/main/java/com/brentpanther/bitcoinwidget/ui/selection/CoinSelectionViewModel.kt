@@ -1,9 +1,8 @@
 package com.brentpanther.bitcoinwidget.ui.selection
 
-import android.app.Application
 import android.content.Context
 import android.os.Build
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.*
 import com.brentpanther.bitcoinwidget.db.Widget
@@ -17,12 +16,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
 
-class CoinSelectionViewModel(application: Application) : AndroidViewModel(application) {
+class CoinSelectionViewModel : ViewModel() {
 
     private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.coinGeckoId }
 
     val coins = MutableStateFlow<SearchResponse?>(null)
+    val error = MutableStateFlow<Int?>(null)
 
     suspend fun createWidget(context: Context, widgetId: Int, coinEntry: CoinResponse) = withContext(Dispatchers.IO) {
         val widgetType = WidgetApplication.instance.getWidgetType(widgetId)
@@ -63,7 +64,36 @@ class CoinSelectionViewModel(application: Application) : AndroidViewModel(applic
     fun search(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {
+            error.emit(null)
             coins.emit(SearchResponse(emptyList(), true))
+            val responses = searchCoinGecko(query)
+            var coinResults = when {
+                responses != null -> {
+                    responses.coins.map {
+                        allCoins[it.id]?.let { coin ->
+                            CoinResponse(coin.name, coin.coinName, coin.getSymbol(), null, null, coin)
+                        } ?: it.apply { coin = Coin.CUSTOM }
+                    }
+                }
+                else -> {
+                    allCoins.values.filter {
+                        it.coinName.contains(query, ignoreCase = true) || it.getSymbol().contains(query, ignoreCase = true)
+                    }.map { coin ->
+                        CoinResponse(coin.name, coin.coinName, coin.getSymbol(), null, null, coin)
+                    }
+                }
+            }
+            coinResults = coinResults.sortedWith(
+                compareBy(
+                    { it.coin == Coin.CUSTOM },
+                    { it.name.uppercase() }
+                ))
+            coins.emit(SearchResponse(coinResults, false))
+        }
+    }
+
+    private fun searchCoinGecko(query: String): SearchResponse? {
+        try {
             val client = OkHttpClient()
             val request = Request.Builder()
                 .url("https://api.coingecko.com/api/v3/search?query=$query")
@@ -71,18 +101,16 @@ class CoinSelectionViewModel(application: Application) : AndroidViewModel(applic
                 .build()
             client.newCall(request).execute().use { response ->
                 if (response.isSuccessful) {
-                    val responses = Gson().fromJson(response.body!!.charStream(), SearchResponse::class.java)
-                    val coinResults = responses.coins.map {
-                        allCoins[it.id]?.let { coin ->
-                            CoinResponse(coin.name, coin.coinName, coin.getSymbol(), null, null, coin)
-                        } ?: it.apply { coin = Coin.CUSTOM }
-                    }.sortedWith( compareBy(
-                        { it.coin == Coin.CUSTOM },
-                        { it.name.uppercase() }
-                    ))
-                    coins.emit(SearchResponse(coinResults, false))
+                    error.tryEmit(null)
+                    return Gson().fromJson(response.body!!.charStream(), SearchResponse::class.java)
+                } else {
+                    error.tryEmit(R.string.search_error)
+                    return null
                 }
             }
+        } catch (e: IOException) {
+            error.tryEmit(R.string.search_error)
+            return null
         }
     }
 
