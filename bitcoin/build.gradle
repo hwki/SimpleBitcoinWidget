@@ -12,21 +12,17 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdk 23
         targetSdk 33
-        versionCode 314
-        versionName "8.3.4"
+        versionCode 315
+        versionName "8.3.5"
 
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
-        vectorDrawables {
-            useSupportLibrary true
-        }
     }
 
     buildFeatures {
-        viewBinding true
         compose true
     }
 

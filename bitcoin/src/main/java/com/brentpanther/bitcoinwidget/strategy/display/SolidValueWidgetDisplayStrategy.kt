@@ -61,7 +61,7 @@ class SolidValueWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
             amount = try {
                 DecimalFormat.getNumberInstance(Locale.getDefault()).run {
                     minimumFractionDigits = 0
-                    maximumFractionDigits = 4
+                    maximumFractionDigits = 8
                     format(widget.amountHeld)
                 }
             } catch (e : Exception) {

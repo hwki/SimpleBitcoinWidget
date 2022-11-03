@@ -30,6 +30,8 @@ import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.ui.BannersViewModel
 import com.brentpanther.bitcoinwidget.ui.WarningBanner
 import com.brentpanther.bitcoinwidget.ui.WidgetPreview
+import java.text.DecimalFormat
+import java.text.ParseException
 
 @Composable
 fun SettingsScreen(
@@ -156,6 +158,8 @@ fun BaseSettingsScreen(
 @Composable
 fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
     DataSection(settingsPriceViewModel, widget)
+    val numberInstance = DecimalFormat.getNumberInstance()
+    numberInstance.maximumFractionDigits = 40
     SettingsEditText(
         icon = {
             Icon(painterResource(R.drawable.ic_outline_account_balance_wallet_24), null)
@@ -164,16 +168,18 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
             Text(stringResource(id = R.string.title_amount_held))
         },
         subtitle = {
-            Text(widget.amountHeld.toString())
+            Text(numberInstance.format(widget.amountHeld))
         },
         dialogText = {
             Text(stringResource(R.string.dialog_amount_held, widget.coinName()))
         },
         value = widget.amountHeld.toString(),
         onChange = {
-            it.toDoubleOrNull()?.apply {
-                settingsPriceViewModel.setAmountHeld(this)
-            }
+            try {
+                numberInstance.parse(it)?.apply {
+                    settingsPriceViewModel.setAmountHeld(this.toDouble())
+                }
+            } catch (ignored: ParseException) {}
         }
     )
     FormatSection(settingsPriceViewModel, widget)
