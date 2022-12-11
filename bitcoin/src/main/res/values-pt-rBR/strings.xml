@@ -86,7 +86,7 @@
     <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
     <string name="widget_price_name">Preço Atual</string>
     <string name="widget_value_name">Valor da carteiral</string>
-    <string name="dialog_amount_held">Quanto %s você tem atualmente?</string>
+    <string name="dialog_amount_held">Insira a quantia de %1$s mantida em sua carteira. Por exemplo, %2$s.</string>
     <string name="add_value_widget">Adicionar widget de valor da carteira</string>
     <string name="add_price_widget">Adicionar widget de valor atual</string>
     <string name="widget_price_summary">Mostra o preço de negociação atual do %s.</string>

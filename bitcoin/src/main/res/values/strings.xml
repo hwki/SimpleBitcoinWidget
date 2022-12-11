@@ -124,7 +124,7 @@
     <string name="placeholder_price" translatable="false">$-,---</string>
     <string name="widget_price_name">Current Price</string>
     <string name="widget_value_name">Wallet Value</string>
-    <string name="dialog_amount_held">How much %s in your wallet?</string>
+    <string name="dialog_amount_held">Enter the amount of %1$s held in your wallet. e.g. %2$s</string>
     <string name="add_value_widget">Add Wallet Value Widget</string>
     <string name="add_price_widget">Add Current Value Widget</string>
     <string name="widget_price_summary">Shows the current %s trading price.</string>

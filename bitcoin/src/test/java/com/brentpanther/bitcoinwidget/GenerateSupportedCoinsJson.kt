@@ -37,7 +37,7 @@ class GenerateSupportedCoinsJson {
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-                        this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::ftx, this::ftx_us, this::foxbit, this::gateio, this::gemini,
+                        this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::foxbit, this::gateio, this::gemini,
                         this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::mexc, this::ndax,
                         this::nexchange, this::okcoin, this::okx, this::p2pb2b, this::paribu, this::paymium, this::phemex,
@@ -251,6 +251,7 @@ class GenerateSupportedCoinsJson {
         return parse("https://big.one/api/v3/asset_pairs", "$.data[*].name")
     }
 
+    // no longer allows access from US
     private fun binance(): List<String> {
         return parse("https://api.binance.com/api/v3/exchangeInfo", "$.symbols[*].symbol")
     }
@@ -447,14 +448,6 @@ class GenerateSupportedCoinsJson {
 
     private fun exmo(): List<String> {
         return parseKeys("https://api.exmo.com/v1.1/ticker", "$")
-    }
-
-    private fun ftx(): List<String> {
-        return parse("https://ftx.com/api/markets", "$.result[*].name")
-    }
-
-    private fun ftx_us(): List<String> {
-        return parse("https://ftx.us/api/markets", "$.result[*].name")
     }
 
     private fun foxbit(): List<String> {

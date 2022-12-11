@@ -31,7 +31,9 @@ import com.brentpanther.bitcoinwidget.ui.BannersViewModel
 import com.brentpanther.bitcoinwidget.ui.WarningBanner
 import com.brentpanther.bitcoinwidget.ui.WidgetPreview
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.ParseException
+import java.util.*
 
 @Composable
 fun SettingsScreen(
@@ -171,15 +173,30 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
             Text(numberInstance.format(widget.amountHeld))
         },
         dialogText = {
-            Text(stringResource(R.string.dialog_amount_held, widget.coinName()))
+            Text(stringResource(R.string.dialog_amount_held, widget.coinName(), numberInstance.format(1.23)))
         },
-        value = widget.amountHeld.toString(),
+        value = numberInstance.format(widget.amountHeld),
         onChange = {
             try {
-                numberInstance.parse(it)?.apply {
-                    settingsPriceViewModel.setAmountHeld(this.toDouble())
+                // do not assume numbers are being input in the current system locale.
+                val groupingSeparator = DecimalFormatSymbols.getInstance().groupingSeparator
+                val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
+                val parsed = if (it.contains(groupingSeparator) && it.contains(decimalSeparator)) {
+                    // parse in system locale
+                    numberInstance.parse(it)?.toDouble()
+                } else if (it.contains(".")) {
+                    // parse in english
+                    DecimalFormat.getNumberInstance(Locale.ENGLISH).parse(it)?.toDouble()
+                } else {
+                    // parse in system locale
+                    numberInstance.parse(it)?.toDouble()
                 }
-            } catch (ignored: ParseException) {}
+                parsed?.apply {
+                    settingsPriceViewModel.setAmountHeld(this)
+                }
+            } catch (ignored: ParseException) {
+            }
+
         }
     )
     FormatSection(settingsPriceViewModel, widget)
