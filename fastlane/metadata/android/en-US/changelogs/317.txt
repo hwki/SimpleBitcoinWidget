@@ -1,0 +1,1 @@
+Fix an issue preventing the widget from being created on certain devices.

@@ -1,7 +1,8 @@
 package com.brentpanther.bitcoinwidget.ui.settings
 
 import android.app.Activity
-import android.app.Activity.RESULT_OK
+import android.appwidget.AppWidgetManager
+import android.content.Intent
 import android.graphics.Typeface
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -85,9 +86,10 @@ fun BaseSettingsScreen(
                             navController.navigateUp()
                         } else {
                             (context as Activity).apply {
-                                setResult(RESULT_OK)
-                                WidgetProvider.refreshWidgets(this)
+                                val resultIntent = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                                setResult(Activity.RESULT_OK, resultIntent)
                                 finish()
+                                WidgetProvider.refreshWidgets(this)
                             }
                         }
                     },
