@@ -1,0 +1,1 @@
+Un widget simple pour afficher les prix de nombreuses cryptomonnaies.
