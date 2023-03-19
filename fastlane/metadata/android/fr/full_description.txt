@@ -1,0 +1,7 @@
+Un widget de cryptomonnaie propre et simple. Intervalle de rafraîchissement personnalisable. Utilisation très légère de la batterie.
+
+Affiche le prix actuel de plus de 80 échanges différents.
+
+Si vous souhaitez voir un échange qui ne figure pas dans la liste, veuillez me le faire savoir !
+
+Les commentaires sont les bienvenus.
