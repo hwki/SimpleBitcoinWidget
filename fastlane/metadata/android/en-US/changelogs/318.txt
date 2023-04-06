@@ -1,0 +1,1 @@
+Removed Bluetrade and TheRock exchanges.

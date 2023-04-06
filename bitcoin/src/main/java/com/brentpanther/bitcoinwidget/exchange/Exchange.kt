@@ -131,7 +131,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     BITPAY("BitPay") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://bitpay.com/api/rates/BTC/USD"
+            val url = "https://bitpay.com/api/rates/$coin/$currency"
             return getJsonObject(url).get("rate").asString
         }
     },
@@ -179,15 +179,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url).get("price").asString
         }
 
-    },
-    BLEUTRADE("Bleutrade") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val pair = "${coin}_$currency"
-            val url = "https://bleutrade.com/api/v3/public/getticker?market=$pair"
-            val result = getJsonObject(url).getAsJsonArray("result").get(0).asJsonObject
-            return result.get("Last").asString
-        }
     },
     BTCBOX("BTC Box") {
 
@@ -277,8 +268,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     COINONE("Coinone") {
 
         override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.coinone.co.kr/ticker/?currency=$coin"
-            return getJsonObject(url).get("last").asString
+            val url = "https://api.coinone.co.kr/public/v2/ticker_new/$currency/$coin"
+            return getJsonObject(url).getAsJsonArray("tickers")[0].asJsonObject.get("last").asString
         }
     },
     COINSBIT("Coinsbit") {
@@ -560,13 +551,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url).getAsJsonArray("data")[0].asJsonObject.get("last").asString
         }
     },
-    THEROCK("TheRock") {
-
-        override fun getValue(coin: String, currency: String): String {
-            val url = "https://api.therocktrading.com/v1/funds/$coin$currency/ticker"
-            return getJsonObject(url).get("last").asString
-        }
-    },
     TRADEOGRE("TradeOgre") {
         override fun getValue(coin: String, currency: String): String {
             val url = "https://tradeogre.com/api/v1/ticker/$currency-$coin"
@@ -606,8 +590,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     },
     XT("XT.com") {
         override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.xt.com/data/api/v1/getTicker?market=${coin.lowercase()}_${currency.lowercase()}"
-            return getJsonObject(url).get("price").asString
+            val url = "https://sapi.xt.com/v4/public/ticker/price?symbol=${coin.lowercase()}_${currency.lowercase()}"
+            return getJsonObject(url).get("result").asJsonArray[0].asJsonObject.get("p").asString
         }
 
     },

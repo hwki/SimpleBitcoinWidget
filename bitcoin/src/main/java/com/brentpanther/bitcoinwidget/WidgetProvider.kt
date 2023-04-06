@@ -70,7 +70,7 @@ open class WidgetProvider : AppWidgetProvider() {
             val immediateWork = OneTimeWorkRequestBuilder<WidgetUpdateWorker>().setInitialDelay(3650L, TimeUnit.DAYS).build()
             workManager.enqueueUniqueWork(ONETIMEWORKNAME, ExistingWorkPolicy.KEEP, immediateWork)
 
-            val workPolicy = if (restart) ExistingPeriodicWorkPolicy.REPLACE else ExistingPeriodicWorkPolicy.KEEP
+            val workPolicy = if (restart) ExistingPeriodicWorkPolicy.UPDATE else ExistingPeriodicWorkPolicy.KEEP
             when (refresh) {
                 5 -> (0..10 step 5).forEachIndexed { i, it -> scheduleWork(workManager, 15, it, i, workPolicy) }
                 10 -> (0..10 step 10).forEachIndexed { i, it -> scheduleWork(workManager, 20, it, i, workPolicy) }

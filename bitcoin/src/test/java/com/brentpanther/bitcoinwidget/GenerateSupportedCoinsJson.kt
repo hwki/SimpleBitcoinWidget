@@ -33,7 +33,7 @@ class GenerateSupportedCoinsJson {
                 listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
                         this::bitbank, this::bitcambio, this::bitclude,
                         this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitglobal, this::bitmart,
-                        this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo, this::bleutrade,
+                        this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo,
                         this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
                         this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
                         this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
@@ -41,7 +41,7 @@ class GenerateSupportedCoinsJson {
                         this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
                         this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::mexc, this::ndax,
                         this::nexchange, this::okcoin, this::okx, this::p2pb2b, this::paribu, this::paymium, this::phemex,
-                        this::pocketbits, this::poloniex, this::probit, this::therock, this::tradeogre, this::uphold,
+                        this::pocketbits, this::poloniex, this::probit, this::tradeogre, this::uphold,
                         this::vbtc, this::whitebit, this::wyre, this::xt, this::yadio, this::yobit, this::zbg, this::zonda
                 ).zip(Exchange.values())
 
@@ -320,8 +320,10 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bitpay(): List<String> {
-        return parse("https://bitpay.com/currencies", "$.data[*].code").flatMap {
-            listOf("BTC_$it", "BCH_$it")
+        val coins = parse("https://bitpay.com/currencies", "$.data[?(@.chain)].code").filterNot { it == "PAX" }
+        val currencies = parse("https://bitpay.com/currencies", "$.data[*].code")
+        return coins.flatMap { coin ->
+            currencies.map { currency -> "${coin}_$currency"}
         }
     }
 
@@ -344,10 +346,6 @@ class GenerateSupportedCoinsJson {
 
     private fun bitvavo(): List<String> {
         return parse("https://api.bitvavo.com/v2/markets", "$[*].market")
-    }
-
-    private fun bleutrade(): List<String> {
-        return parse("https://bleutrade.com/api/v3/public/getmarkets", "$.result[*].MarketName")
     }
 
     private fun btcbox(): List<String> {
@@ -411,8 +409,10 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun coinone(): List<String> {
-        return parse("https://tb.coinone.co.kr/api/v1/tradepair/", "$.tradepairs[*].target_coin_symbol").map {
-            it + "_KRW"
+        val currencies = listOf("KRW")
+        return currencies.flatMap { currency ->
+            val list = parse("https://api.coinone.co.kr/public/v2/markets/$currency", "$.markets[*].target_currency")
+            list.map { "${it}_$currency" }
         }
     }
 
@@ -572,10 +572,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.probit.com/api/exchange/v1/market", "$.data[*].id")
     }
 
-    private fun therock(): List<String> {
-        return parse("https://api.therocktrading.com/v1/funds/tickers", "$.tickers[*].fund_id")
-    }
-
     private fun tradeogre(): List<String> {
         val list = JsonPath.read(get("https://tradeogre.com/api/v1/markets"), "$[*]") as List<Map<String, *>>
         return list.map { it.keys.first().split("-").reversed().joinToString("_") }
@@ -604,7 +600,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun xt(): List<String> {
-        return parseKeys("https://api.xt.com/data/api/v1/getTickers", "$")
+        return parse("https://sapi.xt.com/v4/public/symbol", "$.result.symbols[*].symbol")
     }
 
     private fun yadio(): List<String> {
