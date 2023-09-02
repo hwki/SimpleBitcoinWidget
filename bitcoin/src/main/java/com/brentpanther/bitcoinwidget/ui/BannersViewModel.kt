@@ -8,8 +8,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.core.content.edit
 import androidx.core.net.ConnectivityManagerCompat
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.ui.home.ManageWidgetsViewModel
+import kotlinx.coroutines.launch
 
 class BannersViewModel : ViewModel() {
 
@@ -19,7 +21,7 @@ class BannersViewModel : ViewModel() {
         loadBanners()
     }
 
-    fun loadBanners() {
+    fun loadBanners() = viewModelScope.launch {
         val application = WidgetApplication.instance
         visibleBanners.clear()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

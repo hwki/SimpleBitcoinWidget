@@ -7,7 +7,7 @@ class CustomExchangeData(val name: String, coin: Coin, json: InputStream) : Exch
 
     init {
         val exchanges = obj?.exchanges?.first { it.name == Exchange.COINGECKO.name }
-        val currencies = exchanges?.coins?.first()?.currencies?.plus(exchanges.all ?: listOf()) ?: listOf()
+        val currencies = exchanges?.coins?.first()?.currencies?.plus(exchanges.all) ?: listOf()
         currencyExchange = currencies
                 .associateWith { mutableListOf(Exchange.COINGECKO.name) }
                 .toMutableMap()

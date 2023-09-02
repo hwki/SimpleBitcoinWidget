@@ -24,12 +24,10 @@ class ManageWidgetsViewModel : ViewModel() {
 
     val globalSettings = dao.configAsFlow()
 
-    private fun setValue(action: ((Configuration) -> Unit)) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dao.config().apply {
-                action(this)
-                dao.update(this)
-            }
+    private fun setValue(action: ((Configuration) -> Unit)) = viewModelScope.launch(Dispatchers.IO) {
+        dao.config().apply {
+            action(this)
+            dao.update(this)
         }
     }
 

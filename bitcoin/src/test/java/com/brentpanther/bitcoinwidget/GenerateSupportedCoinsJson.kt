@@ -1,182 +1,222 @@
 package com.brentpanther.bitcoinwidget
 
 import com.brentpanther.bitcoinwidget.exchange.Exchange
-import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.brentpanther.bitcoinwidget.exchange.ExchangeData.*
+import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.asString
 import com.jayway.jsonpath.JsonPath
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
+import java.nio.file.Paths
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+import kotlin.io.path.writeText
 
 class GenerateSupportedCoinsJson {
 
+    private lateinit var allCurrencies: Set<String>
     private val allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.getSymbol() }
-    private var allCurrencies = setOf<String>()
-    private val json = JsonPath.parse(ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json"))
     private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",
             "XDG" to "DOGE", "MIOTA" to "IOTA", "STR" to "XLM", "DSH" to "DASH", "IOT" to "IOTA",
             "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM",
             "XZC" to "FIRO")
     private val allCurrencyOverrides = mapOf("USDT" to "USD", "TUSD" to "USD", "USDC" to "USD", "TL" to "TRY", "NIS" to "ILS").plus(allCoinOverrides)
 
-    @Test
-    fun generate() {
-        allCurrencies = Currency.getAvailableCurrencies().asSequence().map { it.currencyCode }.plus(allCoins).plus(allCoinOverrides.keys).toSet()
-        System.err.println("all currencies: ${allCurrencies.sorted()}")
-        val exchanges =
-                listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
-                        this::bitbank, this::bitcambio, this::bitclude,
-                        this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitglobal, this::bitmart,
-                        this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue, this::bitvavo,
-                        this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
-                        this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
-                        this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-                        this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::foxbit, this::gateio, this::gemini,
-                        this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit, this::korbit, this::kraken, this::kucoin,
-                        this::kuna, this::lbank, this::liquid, this::luno, this::mercado, this::mexc, this::ndax,
-                        this::nexchange, this::okcoin, this::okx, this::p2pb2b, this::paribu, this::paymium, this::phemex,
-                        this::pocketbits, this::poloniex, this::probit, this::tradeogre, this::uphold,
-                        this::vbtc, this::whitebit, this::wyre, this::xt, this::yadio, this::yobit, this::zbg, this::zonda
-                ).zip(Exchange.values())
+    private val allExchanges =
+        listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
+            this::bitbank, this::bitclude, this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb,
+            this::bitglobal, this::bitmart, this::bitpanda, this::bitpay, this::bitso, this::bitstamp,
+            this::bittrex, this::bitrue, this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk,
+            this::bybit, this::cexio, this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
+            this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
+            this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::foxbit, this::gateio, this::gemini,
+            this::hashkey, this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit,
+            this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::liquid, this::luno,
+            this::mercado, this::mexc, this::ndax, this::nexchange, this::okcoin, this::okx, this::p2pb2b,
+            this::paribu, this::paymium, this::phemex, this::pocketbits, this::poloniex, this::probit,
+            this::tradeogre, this::uphold, this::vbtc, this::whitebit, this::xt, this::yadio,
+            this::yobit, this::zonda
+        ).zip(Exchange.values()).associate {
+            Pair(it.second) { it.first.invoke() }
+        }
 
-        val jsonMap = mutableMapOf<String, List<*>>()
-        val jsonExchanges = mutableListOf<Map<*, *>>()
+    // these exchanges do not allow API requests from the united states
+    private val nonUSExchanges = listOf(Exchange.BYBIT, Exchange.BITGLOBAL, Exchange.BINANCE)
+
+    @Test
+    fun generateAll() = generate(allExchanges)
+
+    @Test
+    fun generateUS() {
+        generate(allExchanges.filterNot { it.key in nonUSExchanges })
+    }
+
+    @Test
+    fun generateNonUS() {
+        generate(allExchanges.filter { it.key in nonUSExchanges })
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    private val json = Json { encodeDefaults = true; explicitNulls = false }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    private fun generate(exchanges: Map<Exchange, () -> List<String>>) {
+        allCurrencies = Currency.getAvailableCurrencies().asSequence().map { it.currencyCode }
+            .plus(allCoins).plus(allCoinOverrides.keys).toSet()
+
         val potentialCoinAdds = mutableMapOf<String, Int>()
-        for ((exchange, name) in exchanges.asSequence()) {
-            try {
-                val coinOverrides = mutableMapOf<String, String>()
-                val currencyOverrides = mutableMapOf<String, String>()
-                val existing = getExistingPairs(name.name)
-                var pairs = extractOverrides(normalize(exchange.invoke()), coinOverrides, currencyOverrides)
-                val removed = existing.minus(pairs.toSet()).sorted()
-                if (removed.isNotEmpty()) {
-                    System.err.println("$name: Removed: ${removed.joinToString()}")
-                }
-                // remove coins and currencies we don't know about
-                otherCoins(pairs, potentialCoinAdds)
-                pairs = removeUnknowns(pairs)
-                if (pairs.count() > existing.count() - removed.count()) {
-                    println("$name: ${pairs.count() + removed.count() - existing.count()} pairs added")
-                }
-                jsonExchanges.add(buildExchange(name, pairs, currencyOverrides, coinOverrides))
-            } catch (e: Exception) {
-                System.err.println("$name: Error: ${e.message}")
-                // add previous exchange data
-                jsonExchanges.add(json.read("$.exchanges[?(@.name=='$name')]", List::class.java)[0] as Map<*, *>)
+        val stream = ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json")
+        val allExchangeData = try {
+            Json.decodeFromStream(stream)
+        } catch (_: Exception) {
+            JsonExchangeObject().apply {
+                this.exchanges = mutableListOf()
             }
         }
-        for(exchange in jsonExchanges) {
-            reduceExchangeMap(exchange)
+
+        println()
+        for ((exchange, func) in exchanges) {
+            val exchangeData = allExchangeData.exchanges.firstOrNull { it.name == exchange.name } ?: JsonExchange().apply {
+                name = exchange.name
+                allExchangeData.exchanges.add(this)
+            }
+            try {
+                loadExchange(exchangeData, exchange, func(), potentialCoinAdds)
+            } catch (e: Exception) {
+                System.err.println("$exchange: " + e.message)
+                exchangeData.coins = listOf()
+
+            }
         }
-        jsonMap["exchanges"] = jsonExchanges
-        println(Gson().toJson(jsonMap))
+        allExchangeData.exchanges.sortBy { it.name }
+        println()
         println("Potential coins to add:")
         potentialCoinAdds.entries.sortedByDescending { it.value }.take(10).forEach {
             println("${it.key} (${it.value} exchanges)")
         }
+        val jsonString = json.encodeToString(allExchangeData)
+        Paths.get("src", "main", "res", "raw", "cryptowidgetcoins_v2.json").writeText(jsonString)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun reduceExchangeMap(exchange: Map<*, *>) {
-        val exchangeMap = exchange as MutableMap<String, Any>
-        // loop through coins, find common ones to put in "all" field
-        var allCurrencies : MutableList<String>? = null
-        for (coinMap in exchangeMap["coins"] as List<MutableMap<String, *>>) {
-            val currencies = coinMap["ccy"] as List<String>
-            if (allCurrencies == null) {
-                allCurrencies = currencies.sorted().toMutableList()
-                continue
+    private fun loadExchange(exchangeData: JsonExchange, exchange: Exchange, pairs: List<String>,
+        potentialCoinsToAdd: MutableMap<String, Int>) {
+
+        // normalize the coin/currency pairs
+        var foundPairs = normalize(pairs)
+
+        // find any coin and currency overrides
+        val coinOverrides = mutableMapOf<String, String>()
+        val currencyOverrides = mutableMapOf<String, String>()
+        foundPairs = extractOverrides(foundPairs, coinOverrides, currencyOverrides)
+
+        // populate any coins we might want to start supporting
+        potentialNewCoins(foundPairs, potentialCoinsToAdd)
+
+        // remove coins and currencies we don't know about
+        removeUnknowns(foundPairs)
+
+        // recalculate "all"
+        val allCoins = foundPairs.map { it.first }.distinct()
+        // all currencies are ones that have entries for all the coins
+        val all = foundPairs.map { it.second }.filter { currency ->
+            foundPairs.containsAll(allCoins.map { it to currency })
+        }.toSet()
+
+        // print out new and removed pairs
+        logUpdates(exchangeData, foundPairs, exchange)
+
+        // set fields
+        with(exchangeData) {
+            this.coinOverrides = coinOverrides.ifEmpty { null }
+            this.currencyOverrides = currencyOverrides.ifEmpty { null }
+            this.all = all.sorted().toList()
+            this.coins = foundPairs.groupBy({ it.first }) {
+                it.second
+            }.map { (name, currencies) ->
+                JsonCoin(name, currencies - all)
+            }.sortedBy { it.name }
+        }
+    }
+
+    private fun logUpdates(exchangeData: JsonExchange, foundPairs: MutableSet<Pair<String, String>>, exchange: Exchange) {
+        val existingPairs = exchangeData.coins.flatMap { coin ->
+            coin.currencies.plus(exchangeData.all).map { coin.name to it }
+        }.toSet()
+        val added = foundPairs - existingPairs
+        if (added.isNotEmpty()) {
+            println("$exchange: Added ${added.count()} new pairs: ${added.joinToString { "${it.first}_${it.second}" }}")
+        }
+        val removed = existingPairs - foundPairs
+        if (removed.isNotEmpty()) {
+            println("$exchange: Removed ${removed.count()} pairs: ${removed.joinToString { "${it.first}_${it.second}" }}")
+        }
+    }
+
+    /**
+     * Add coins we don't know about to the list of coins that we should consider adding support for
+     */
+    private fun potentialNewCoins(pairs: MutableSet<Pair<String, String>>, map: MutableMap<String, Int>)  {
+        pairs.map { it.first }.distinct().filterNot { allCoins.contains(it) }.forEach {
+            map.merge(it, 1) { a, _ -> a + 1 }
+        }
+    }
+
+    /**
+     * Removes coin/currency pairs that have coins or currencies we don't support
+     */
+    private fun removeUnknowns(pairs: MutableSet<Pair<String, String>>) {
+        pairs.removeIf {(coin, currency) ->
+            !allCoins.contains(coin) || !allCurrencies.plus(allCoins).contains(currency)
+        }
+    }
+
+    /**
+     * Find any overrides in the list of pairs, and update pairs to use them
+     */
+    private fun extractOverrides(pairs: MutableSet<Pair<String, String>>, coinOverrides: MutableMap<String, String>,
+                                 currencyOverrides: MutableMap<String, String>) : MutableSet<Pair<String, String>> {
+        // some exchanges have multiple possible overrides (e.g. USDT and USDC).
+        // we are going to use only the most common ones
+        val currencyOverrideWithCount = mutableMapOf<String, Int>()
+
+        // some don't need overrides (e.g. have USD and USDT). don't use overrides in this case
+        val currencyCount = mutableMapOf<String, Int>()
+
+        val updatedPairs = pairs.map { (coin, currency) ->
+            val newCoin = allCoinOverrides[coin]?.apply {
+                coinOverrides[this] = coin
+            } ?: coin
+            val newCurrency = allCurrencyOverrides[currency]?.apply {
+                currencyOverrideWithCount.merge(currency, 1) { i, _ -> i + 1}
+            } ?: run {
+                currencyCount.merge(currency, 1) { i, _ -> i + 1}
+                currency
             }
-            // remove any currencies in all that are not in this coin
-            allCurrencies.removeAll { !currencies.contains(it) }
-        }
-        if (allCurrencies != null) {
-            exchangeMap["all"] = allCurrencies
-            for (coinMap in exchangeMap["coins"] as List<MutableMap<String, List<String>>>) {
-                val currencies = coinMap["ccy"] as List<String>
-                coinMap["ccy"] = currencies.subtract(allCurrencies).toList()
+            newCoin to newCurrency
+        }.toMutableSet()
+        // go through currency overrides, applying in reverse order of occurence
+        currencyOverrideWithCount.entries.sortedBy { it.value }.forEach {
+            val value = allCurrencyOverrides[it.key]!!
+            // only set the override if there is more overrides than default value, e.g. more USDT than USD
+            if (currencyCount.getOrDefault(value, 0) < it.value) {
+                currencyOverrides[value] = it.key
             }
         }
-
+        return updatedPairs
     }
 
-    private fun otherCoins(pairs: Sequence<String>, map: MutableMap<String, Int>)  {
-        pairs.map{ it.split("_")[0] }.distinct().filterNot { allCoins.contains(it) }.forEach {
-            map[it] = map.getOrDefault(it, 0) + 1
-        }
-    }
-
-    // region helpers
-
-    private fun buildExchange(exchange: Exchange, pairs: Sequence<String>, currencyOverrides: Map<String, String>,
-                              coinOverrides: Map<String, String>): Map<String, Any> {
-        val map = mutableMapOf<String, Any>("name" to exchange.name)
-        val pairsMap = pairs.map {
-            it.split("_")
-        }.groupBy( { it[0] }, {it[1]}).toSortedMap()
-        map["coins"] = pairsMap.map {
-            mapOf("name" to it.key, "ccy" to it.value.sorted())
-        }
-        if (currencyOverrides.isNotEmpty()) {
-            map["ccy_ovr"] = currencyOverrides.toSortedMap()
-        }
-        if (coinOverrides.isNotEmpty()) {
-            map["c_ovr"] = coinOverrides.toSortedMap()
-        }
-        return map
-    }
-
-    private fun removeUnknowns(pairs: Sequence<String>): Sequence<String> {
-        return pairs.map {
-            it.split("_")
-        }.filter {
-            allCoins.contains(it[0]) && allCurrencies.plus(allCoins).contains(it[1])
-        }.map {
-            it.joinToString("_")
-        }
-    }
-
-    private fun extractOverrides(pairs: List<String>, coinOverrides: MutableMap<String, String>,
-                                 currencyOverrides: MutableMap<String, String>) : Sequence<String> {
-        val splitPairs = pairs.asSequence().map { it.split("_") }
-        val partitioned = splitPairs.flatten().withIndex().partition { it.index % 2 == 0 }
-        val coins = partitioned.first.map { it.value }
-        val currencies = partitioned.second.map { it.value }
-        return splitPairs.map {
-            // should only match overrides if default doesn't exist
-            when (val match = allCoinOverrides[it[0]]) {
-                null -> it
-                else -> {
-                    if (coins.contains(match)) {
-                        it
-                    } else {
-                        coinOverrides[match] = it[0]
-                        listOf(match, it[1])
-                    }
-                }
-            }
-        }.map {
-            when (val match = allCurrencyOverrides[it[1]]) {
-                null -> it
-                else -> {
-                    if (currencies.contains(match)) {
-                        it
-                    } else {
-                        currencyOverrides[match] = it[1]
-                        listOf(it[0], match)
-                    }
-                }
-            }
-        }.map { it.joinToString("_") }.distinct()
-    }
-
-    private fun normalize(pairs: List<String>): List<String> {
+    private fun normalize(pairs: List<String>): MutableSet<Pair<String, String>> {
         return pairs.asSequence().map { it.uppercase() }
                 .map { it.split("-", "/", "_") }
                 .map {
@@ -194,31 +234,15 @@ class GenerateSupportedCoinsJson {
                         it
                     }
                 }.map {
-                    it[0] + "_" + it[1]
-                }.toList()
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun getExistingPairs(name: String): List<String> {
-        val existing = json.read("$.exchanges[?(@.name=='${name}')]", List::class.java).firstOrNull() as? Map<String, *>
-                ?: return listOf()
-        val coins = existing["coins"] as List<Map<String, *>>
-        val allCoins = existing["all"] as? List<String> ?: emptyList()
-        return coins.map { coin ->
-            val coinName = coin["name"].toString()
-            (coin["ccy"] as List<String>).plus(allCoins).filterNot {
-                coinName == it
-            }.map { currency ->
-                "${coinName}_$currency"
-            }
-        }.flatten().sorted()
+                    it[0] to it[1]
+                }.toMutableSet()
     }
 
     private fun parseKeys(url: String, path: String) = (JsonPath.read(get(url), path) as Map<String, *>).keys.map { it }
     private fun parse(url: String, path: String) = JsonPath.read(get(url), path) as List<String>
     private fun get(value: String): String = OkHttpClient.Builder().ignoreAllSSLErrors().build().newCall(Request.Builder().url(value).build()).execute().body!!.string()
 
-    fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
+    private fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
         val naiveTrustManager = object : X509TrustManager {
             override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
             override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) = Unit
@@ -251,7 +275,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://big.one/api/v3/asset_pairs", "$.data[*].name")
     }
 
-    // no longer allows access from US
     private fun binance(): List<String> {
         return parse("https://api.binance.com/api/v3/exchangeInfo", "$.symbols[*].symbol")
     }
@@ -268,10 +291,6 @@ class GenerateSupportedCoinsJson {
 
     private fun bitbank(): List<String> {
         return parse("https://public.bitbank.cc/tickers", "$.data[*].pair")
-    }
-
-    private fun bitcambio(): List<String> {
-        return parse("https://nova.bitcambio.com.br/api/v3/public/getmarkets", "$.result.[*].MarketName")
     }
 
     private fun bitclude(): List<String> {
@@ -310,13 +329,12 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bitpanda(): List<String> {
-        val pairs = mutableListOf<String>()
-        Gson().fromJson(get("https://api.bitpanda.com/v1/ticker"), JsonObject::class.java).entrySet().forEach { (coin, currencies) ->
-            currencies.asJsonObject.keySet().forEach{
-                pairs.add("${coin}_${it}")
+        return Json.decodeFromString<JsonObject>(get("https://api.bitpanda.com/v1/ticker")).entries
+            .flatMap { (coin, currencies) ->
+                currencies.jsonObject.keys.map {
+                    "${coin}_${it}"
+                }
             }
-        }
-        return pairs
     }
 
     private fun bitpay(): List<String> {
@@ -361,15 +379,15 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bybit(): List<String> {
-        return parse("https://api.bybit.com/v2/public/tickers", "$.result[*].symbol")
+        return parse("https://api.bybit.com/v5/market/tickers?category=spot", "$.result.list[*].symbol")
     }
 
     private fun cexio(): List<String> {
-        val pairs = (Gson().fromJson(get("https://cex.io/api/currency_limits"), Map::class.java)["data"] as Map<*, *>)["pairs"]
-
-        @Suppress("UNCHECKED_CAST")
-        return (pairs as List<Map<String, String>>).map {
-            it["symbol1"] + "_" + it["symbol2"]
+        val obj = Json.decodeFromString<JsonObject>(get("https://cex.io/api/currency_limits"))
+        val pairs = obj["data"]!!.jsonObject["pairs"]
+        return pairs!!.jsonArray.map {
+            val o = it.jsonObject
+            "${o["symbol1"].asString}_${o["symbol2"].asString}"
         }
     }
 
@@ -462,6 +480,10 @@ class GenerateSupportedCoinsJson {
 
     private fun gemini(): List<String> {
         return parse("https://api.gemini.com/v1/symbols", "$[*]")
+    }
+
+    private fun hashkey(): List<String> {
+        return parse("https://api-pro.hashkey.com/api/v1/exchangeInfo", "$.symbols[*].symbol")
     }
 
     private fun hitbtc(): List<String> {
@@ -563,9 +585,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun poloniex(): List<String> {
-        return parseKeys("https://poloniex.com/public?command=returnTicker", "$").map {
-            it.split("_").reversed().joinToString("_")
-        }
+        return parse("https://api.poloniex.com/markets", "$[*].symbol")
     }
 
     private fun probit(): List<String> {
@@ -591,14 +611,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://whitebit.com/api/v1/public/symbols", "$.result[*]")
     }
 
-    private fun wyre(): List<String> {
-        // is in currency - coin format
-        val list = parseKeys("https://api.sendwyre.com/v3/rates", "$")
-        val split1 =  list.map { it.substring(3, it.length) + "_" + it.substring(0, 3)  }
-        val split2 = list.map { it.substring(4, it.length) + "_" + it.substring(0, 4)  }
-        return split1.plus(split2).distinct()
-    }
-
     private fun xt(): List<String> {
         return parse("https://sapi.xt.com/v4/public/symbol", "$.result.symbols[*].symbol")
     }
@@ -610,10 +622,6 @@ class GenerateSupportedCoinsJson {
 
     private fun yobit(): List<String> {
         return parseKeys("https://yobit.net/api/3/info", "$.pairs")
-    }
-
-    private fun zbg(): List<String> {
-        return parse("https://www.zbg.com/exchange/api/v1/common/symbols", "$.datas[*].symbol")
     }
 
     private fun zonda(): List<String> {

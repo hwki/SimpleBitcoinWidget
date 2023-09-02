@@ -3,10 +3,14 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.Repository.downloadCustomIcon
 import com.brentpanther.bitcoinwidget.Repository.downloadJSON
 import com.brentpanther.bitcoinwidget.Repository.getExchangeData
+import com.brentpanther.bitcoinwidget.Theme
+import com.brentpanther.bitcoinwidget.WidgetApplication
+import com.brentpanther.bitcoinwidget.WidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDao
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
@@ -17,14 +21,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Currency
+import java.util.Locale
 
 class SettingsViewModel : ViewModel() {
 
     private var dao: WidgetDao = WidgetDatabase.getInstance(WidgetApplication.instance).widgetDao()
 
     val configFlow = dao.configWithSizesAsFlow()
-    var exchangeData: ExchangeData? = null
+    private var exchangeData: ExchangeData? = null
 
     val exchanges = mutableStateListOf<Exchange>()
     val widgetFlow = MutableStateFlow<Widget?>(null)

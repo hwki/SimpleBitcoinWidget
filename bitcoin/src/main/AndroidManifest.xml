@@ -21,8 +21,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp"
+        android:enableOnBackInvokedCallback="true"
         tools:ignore="DataExtractionRules,GoogleAppIndexingWarning"
-        tools:targetApi="q">
+        tools:targetApi="tiramisu">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

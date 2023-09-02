@@ -1,7 +1,9 @@
 package com.brentpanther.bitcoinwidget.ui.selection
 
 import com.brentpanther.bitcoinwidget.Coin
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CoinResponse(
     val id: String,
     val name: String,
@@ -11,7 +13,8 @@ data class CoinResponse(
     var coin: Coin = Coin.CUSTOM
 )
 
+@Serializable
 data class SearchResponse(
     val coins: List<CoinResponse>,
-    val loading: Boolean
+    val loading: Boolean = false
 )

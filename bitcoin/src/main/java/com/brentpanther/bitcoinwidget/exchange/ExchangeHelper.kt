@@ -1,9 +1,12 @@
 package com.brentpanther.bitcoinwidget.exchange
 
 import com.brentpanther.bitcoinwidget.WidgetApplication
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.*
 import java.io.IOException
 import java.io.InputStream
@@ -12,7 +15,7 @@ import java.util.concurrent.TimeUnit
 object ExchangeHelper {
 
     var useCache = true
-    val cache : Cache?
+    private val cache : Cache?
         get() = if (!useCache) null else Cache(WidgetApplication.instance.cacheDir, 256 * 1024L) // 256k
 
     private val client: OkHttpClient by lazy {
@@ -28,16 +31,15 @@ object ExchangeHelper {
                 .build()
     }
 
-    @Throws(IOException::class)
-    @JvmOverloads
-    fun getJsonObject(url: String, headers: Headers? = null): JsonObject {
-        return Gson().fromJson(getString(url, headers), JsonObject::class.java)
-    }
+    val JsonElement?.asString: String?
+        get() = this?.jsonPrimitive?.contentOrNull
 
     @Throws(IOException::class)
-    fun getJsonArray(url: String): JsonArray {
-        return Gson().fromJson(getString(url), JsonArray::class.java)
-    }
+    @JvmOverloads
+    fun getJsonObject(url: String, headers: Headers? = null) = Json.decodeFromString<JsonObject>(getString(url, headers))
+
+    @Throws(IOException::class)
+    fun getJsonArray(url: String) = Json.decodeFromString<JsonArray>(getString(url))
 
     fun getStream(url: String): InputStream = get(url).body!!.byteStream()
 

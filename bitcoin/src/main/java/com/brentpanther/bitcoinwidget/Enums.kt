@@ -2,15 +2,12 @@ package com.brentpanther.bitcoinwidget
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 enum class Theme(@LayoutRes val lightPrice: Int, @LayoutRes val darkPrice: Int,
-                 @LayoutRes val lightValue: Int, @LayoutRes val darkValue: Int) : Parcelable {
+                 @LayoutRes val lightValue: Int, @LayoutRes val darkValue: Int) {
 
     SOLID(R.layout.widget_price_solid_light, R.layout.widget_price_solid_dark,
         R.layout.widget_value_solid_light, R.layout.widget_value_solid_dark),
@@ -29,9 +26,8 @@ enum class Theme(@LayoutRes val lightPrice: Int, @LayoutRes val darkPrice: Int,
     }
 }
 
-@Parcelize
 data class IconTheme(val theme: Theme, @DrawableRes val light: Int,
-                     @DrawableRes val dark: Int = light) : Parcelable
+                     @DrawableRes val dark: Int = light)
 
 enum class NightMode {
     LIGHT,

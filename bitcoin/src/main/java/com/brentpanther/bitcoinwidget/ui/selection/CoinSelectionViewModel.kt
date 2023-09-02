@@ -2,26 +2,39 @@ package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.content.Context
 import android.os.Build
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.NightMode
+import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.Theme
+import com.brentpanther.bitcoinwidget.WidgetApplication
+import com.brentpanther.bitcoinwidget.WidgetState
+import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.exchange.Exchange
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 class CoinSelectionViewModel : ViewModel() {
 
     private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.coinGeckoId }
 
+    private val json = Json { ignoreUnknownKeys = true }
     val coins = MutableStateFlow<SearchResponse?>(null)
     val error = MutableStateFlow<Int?>(null)
 
@@ -59,11 +72,20 @@ class CoinSelectionViewModel : ViewModel() {
         dao.insert(widget)
     }
 
-    var searchJob: Job? = null
+    private var searchJob: Job? = null
+    var searchText by mutableStateOf("")
 
-    fun search(query: String) {
+    fun setText(text: String) {
+        this.searchText = text
+        if (text.length > 2) {
+            search(text, 500.milliseconds)
+        }
+    }
+
+    fun search(query: String, delay: Duration = Duration.ZERO) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(delay)
             error.emit(null)
             coins.emit(SearchResponse(emptyList(), true))
             val responses = searchCoinGecko(query)
@@ -102,7 +124,7 @@ class CoinSelectionViewModel : ViewModel() {
             client.newCall(request).execute().use { response ->
                 if (response.isSuccessful) {
                     error.tryEmit(null)
-                    return Gson().fromJson(response.body!!.charStream(), SearchResponse::class.java)
+                    return json.decodeFromString(response.body!!.string())
                 } else {
                     error.tryEmit(R.string.search_error)
                     return null

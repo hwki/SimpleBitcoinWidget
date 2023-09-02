@@ -1,11 +1,13 @@
+@file:OptIn(ExperimentalSerializationApi::class)
+
 package com.brentpanther.bitcoinwidget.exchange
 
 import com.brentpanther.bitcoinwidget.Coin
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.Serializable
 import java.util.*
 
 
@@ -15,7 +17,7 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
     protected var currencyExchange: MutableMap<String, MutableList<String>> = HashMap()
 
     init {
-        this.obj = Gson().fromJson(InputStreamReader(json), JsonExchangeObject::class.java)
+        this.obj = Json.decodeFromStream(json)
         loadCurrencies(coin.getSymbol())
     }
 
@@ -38,9 +40,10 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
         }
 
 
-    inner class JsonExchangeObject {
+    @kotlinx.serialization.Serializable
+    class JsonExchangeObject {
 
-        lateinit var exchanges: List<JsonExchange>
+        lateinit var exchanges: MutableList<JsonExchange>
 
         fun getExchangeCoinName(exchange: String, coin: String): String? {
             return exchanges.filter {it.name == exchange}.firstOrNull {it.coinOverrides != null}
@@ -54,26 +57,28 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
 
     }
 
-    inner class JsonExchange {
+    @kotlinx.serialization.Serializable
+    class JsonExchange {
 
-        lateinit var name: String
-        lateinit var coins: List<JsonCoin>
-        @SerializedName("ccy_ovr")
+        var name: String = ""
+        var coins: List<JsonCoin> = listOf()
+        @SerialName("ccy_ovr")
         var currencyOverrides: Map<String, String>? = null
-        @SerializedName("c_ovr")
+        @SerialName("c_ovr")
         var coinOverrides: Map<String, String>? = null
-        var all: List<String>? = null
+        var all: List<String> = listOf()
 
         fun loadExchange(coin: String): List<String> {
-           return coins.firstOrNull { it.name == coin}?.currencies?.plus(all ?: listOf()) ?: listOf()
+            return coins.firstOrNull { it.name == coin }?.currencies?.plus(all) ?: listOf()
         }
     }
 
-    class JsonCoin : Serializable {
-        lateinit var name: String
-        @SerializedName("ccy")
-        var currencies: List<String> = listOf()
-    }
+    @kotlinx.serialization.Serializable
+    data class JsonCoin(
+        var name: String,
+        @SerialName("ccy")
+        var currencies: List<String>
+    )
 
     fun getExchanges(currency: String): Array<String> {
         // only return exchanges that we know about

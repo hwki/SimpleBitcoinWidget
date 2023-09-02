@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 abstract class WidgetDisplayStrategy(context: Context, val widget: Widget, val widgetPresenter: WidgetPresenter) {
 
     protected val appContext: Context = context.applicationContext
-    protected val dao = WidgetDatabase.getInstance(appContext).widgetDao()
+    private val dao = WidgetDatabase.getInstance(appContext).widgetDao()
 
     protected fun getConfig(): ConfigurationWithSizes {
         return runBlocking(Dispatchers.IO) {

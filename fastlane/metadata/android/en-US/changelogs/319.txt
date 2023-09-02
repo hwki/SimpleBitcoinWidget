@@ -1,0 +1,4 @@
+Updated API version and dependencies.
+Remove Bitcambio, Wyre, and Zbg.
+Fixed Bybit, Coinsbit, and Poloniex.
+Added Hashkey.

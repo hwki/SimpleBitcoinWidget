@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/secondaryColor</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorControlHighlight">@color/secondaryLightColor</item>
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
-        <item name="alertDialogTheme">@style/DialogTheme</item>
-    </style>
-
-    <style name="DialogTheme" parent="Theme.MaterialComponents.DayNight.Dialog">
-        <item name="colorPrimary">@color/secondaryColor</item>
-        <item name="colorAccent">@color/secondaryColor</item>
-        <item name="colorPrimaryDark">@color/secondaryColor</item>
+    <style name="Theme.MyApp" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/primaryColor</item>
     </style>
 
     <style name="Theme.MyApp.WidgetContainer" parent="@android:style/Theme.DeviceDefault">

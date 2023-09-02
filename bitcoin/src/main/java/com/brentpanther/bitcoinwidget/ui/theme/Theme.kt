@@ -9,14 +9,14 @@ import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val darkColorPalette = darkColors(
     primary = Color(0xff3a554e),
     secondary = Color(0xff843d19),
     secondaryVariant = Color(0xffba5624),
     primaryVariant = Color(0xff253638)
 )
 
-private val LightColorPalette = lightColors(
+private val lightColorPalette = lightColors(
     primary = Color(0xff52796f),
     secondary = Color(0xffba5624),
     secondaryVariant = Color(0xffba5624),
@@ -36,9 +36,9 @@ class HighlightRippleTheme : RippleTheme {
 @Composable
 fun SimpleBitcoinWidgetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        darkColorPalette
     } else {
-        LightColorPalette
+        lightColorPalette
     }
 
     MaterialTheme(

@@ -29,7 +29,7 @@ import com.brentpanther.bitcoinwidget.ui.MainActivity
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: ManageWidgetsViewModel = viewModel()) {
-    var index by remember { mutableStateOf(0) }
+    var index by remember { mutableIntStateOf(0) }
     val context = LocalContext.current
     val supportsPin = remember {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
@@ -154,6 +154,7 @@ fun PinWidgetFAB() {
             }
         }
         val rotationAngle by animateFloatAsState(
+            label = "rotation animation",
             targetValue = if (expanded) 90f else 0f
         )
         FloatingActionButton(

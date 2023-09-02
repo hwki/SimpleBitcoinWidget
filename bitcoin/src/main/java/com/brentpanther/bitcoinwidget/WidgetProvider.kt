@@ -4,7 +4,13 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.os.Bundle
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +60,7 @@ open class WidgetProvider : AppWidgetProvider() {
 
     companion object {
 
-        const val WORKNAME = "widgetRefresh"
+        private const val WORKNAME = "widgetRefresh"
         const val ONETIMEWORKNAME = "115575872"
 
         fun refreshWidgets(context: Context, restart: Boolean = false) = CoroutineScope(Dispatchers.IO).launch {
@@ -80,7 +86,7 @@ open class WidgetProvider : AppWidgetProvider() {
 
         fun cancelWork(workManager: WorkManager) = workManager.cancelAllWorkByTag(WORKNAME)
 
-        fun scheduleWork(workManager: WorkManager, refresh: Int, delay: Int, index: Int, policy: ExistingPeriodicWorkPolicy) {
+        private fun scheduleWork(workManager: WorkManager, refresh: Int, delay: Int, index: Int, policy: ExistingPeriodicWorkPolicy) {
             val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
             val work = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(refresh.toLong(), TimeUnit.MINUTES)
                 .setConstraints(constraints)

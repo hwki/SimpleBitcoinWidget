@@ -2,7 +2,7 @@ package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.app.Activity
 import android.view.KeyEvent.KEYCODE_ENTER
-import androidx.activity.compose.BackHandler
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -43,12 +43,13 @@ fun CoinSelectionScreen(
     navController: NavController, widgetId: Int,
     viewModel: CoinSelectionViewModel = viewModel()
 ) {
-    var searchText by remember { mutableStateOf("") }
+    val searchText = viewModel.searchText
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    BackHandler {
+    PredictiveBackHandler { progress ->
+        progress.collect { }
         viewModel.removeWidget(context, widgetId)
         if (navController.previousBackStackEntry == null) {
             (context as Activity).finish()
@@ -81,7 +82,7 @@ fun CoinSelectionScreen(
             OutlinedTextField(
                 value = searchText,
                 onValueChange = {
-                    searchText = it
+                    viewModel.setText(it)
                 },
                 placeholder = {
                     Text(

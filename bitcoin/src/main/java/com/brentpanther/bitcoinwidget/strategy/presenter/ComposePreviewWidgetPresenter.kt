@@ -13,7 +13,7 @@ import androidx.core.view.isVisible
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.db.Widget
 
-class ComposePreviewWidgetPresenter(widget: Widget, val view: View) : WidgetPresenter {
+class ComposePreviewWidgetPresenter(widget: Widget, private val view: View) : WidgetPresenter {
 
     init {
         val context = view.context

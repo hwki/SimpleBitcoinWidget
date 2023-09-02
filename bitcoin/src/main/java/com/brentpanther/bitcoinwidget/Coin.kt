@@ -1,15 +1,154 @@
 package com.brentpanther.bitcoinwidget
 
 import android.os.Build
-import android.os.Parcelable
-import com.brentpanther.bitcoinwidget.R.drawable.*
+import com.brentpanther.bitcoinwidget.R.drawable.ic_1inch
+import com.brentpanther.bitcoinwidget.R.drawable.ic_aave
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ada
+import com.brentpanther.bitcoinwidget.R.drawable.ic_algo
+import com.brentpanther.bitcoinwidget.R.drawable.ic_algo_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ape
+import com.brentpanther.bitcoinwidget.R.drawable.ic_arrr
+import com.brentpanther.bitcoinwidget.R.drawable.ic_atom
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ava
+import com.brentpanther.bitcoinwidget.R.drawable.ic_avax
+import com.brentpanther.bitcoinwidget.R.drawable.ic_avax_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_axs
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bal
+import com.brentpanther.bitcoinwidget.R.drawable.ic_band_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bat
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bcd
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bcd_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bch
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bch_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_best
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bnb
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bnt
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bsv
+import com.brentpanther.bitcoinwidget.R.drawable.ic_bsv_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btc_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btg
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btg_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btm
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btm_gray
+import com.brentpanther.bitcoinwidget.R.drawable.ic_btt
+import com.brentpanther.bitcoinwidget.R.drawable.ic_cel
+import com.brentpanther.bitcoinwidget.R.drawable.ic_chz
+import com.brentpanther.bitcoinwidget.R.drawable.ic_comp_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_comp_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_cro
+import com.brentpanther.bitcoinwidget.R.drawable.ic_cro_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_crv
+import com.brentpanther.bitcoinwidget.R.drawable.ic_cube_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_cube_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_dai_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_dash
+import com.brentpanther.bitcoinwidget.R.drawable.ic_dash_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_dcr
+import com.brentpanther.bitcoinwidget.R.drawable.ic_doge
+import com.brentpanther.bitcoinwidget.R.drawable.ic_dot_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_dot_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_egld_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_egld_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_enj
+import com.brentpanther.bitcoinwidget.R.drawable.ic_eos_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_eos_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_etc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_eth
+import com.brentpanther.bitcoinwidget.R.drawable.ic_fil
+import com.brentpanther.bitcoinwidget.R.drawable.ic_firo
+import com.brentpanther.bitcoinwidget.R.drawable.ic_firo_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ftm
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ftt
+import com.brentpanther.bitcoinwidget.R.drawable.ic_gala
+import com.brentpanther.bitcoinwidget.R.drawable.ic_gala_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_gno_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_gnt_blue
+import com.brentpanther.bitcoinwidget.R.drawable.ic_grin_color_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_grt
+import com.brentpanther.bitcoinwidget.R.drawable.ic_hbar
+import com.brentpanther.bitcoinwidget.R.drawable.ic_hbar_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_hns
+import com.brentpanther.bitcoinwidget.R.drawable.ic_hns_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ht
+import com.brentpanther.bitcoinwidget.R.drawable.ic_icx
+import com.brentpanther.bitcoinwidget.R.drawable.ic_iota
+import com.brentpanther.bitcoinwidget.R.drawable.ic_iota_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_kava
+import com.brentpanther.bitcoinwidget.R.drawable.ic_kmd
+import com.brentpanther.bitcoinwidget.R.drawable.ic_knc_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ksm_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ksm_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_leo
+import com.brentpanther.bitcoinwidget.R.drawable.ic_link
+import com.brentpanther.bitcoinwidget.R.drawable.ic_lrc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_lsk
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ltc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_lto
+import com.brentpanther.bitcoinwidget.R.drawable.ic_luna
+import com.brentpanther.bitcoinwidget.R.drawable.ic_lunc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_mana
+import com.brentpanther.bitcoinwidget.R.drawable.ic_matic
+import com.brentpanther.bitcoinwidget.R.drawable.ic_mco
+import com.brentpanther.bitcoinwidget.R.drawable.ic_mco_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_mkr
+import com.brentpanther.bitcoinwidget.R.drawable.ic_mln
+import com.brentpanther.bitcoinwidget.R.drawable.ic_nano
+import com.brentpanther.bitcoinwidget.R.drawable.ic_near_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_near_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_neo
+import com.brentpanther.bitcoinwidget.R.drawable.ic_nrg
+import com.brentpanther.bitcoinwidget.R.drawable.ic_okb
+import com.brentpanther.bitcoinwidget.R.drawable.ic_omg
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ont
+import com.brentpanther.bitcoinwidget.R.drawable.ic_pax
+import com.brentpanther.bitcoinwidget.R.drawable.ic_paxg_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_placeholder
+import com.brentpanther.bitcoinwidget.R.drawable.ic_powr_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ppc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_qtum
+import com.brentpanther.bitcoinwidget.R.drawable.ic_rdd
+import com.brentpanther.bitcoinwidget.R.drawable.ic_ren
+import com.brentpanther.bitcoinwidget.R.drawable.ic_rep
+import com.brentpanther.bitcoinwidget.R.drawable.ic_rune
+import com.brentpanther.bitcoinwidget.R.drawable.ic_rvn
+import com.brentpanther.bitcoinwidget.R.drawable.ic_sand
+import com.brentpanther.bitcoinwidget.R.drawable.ic_shib
+import com.brentpanther.bitcoinwidget.R.drawable.ic_snx
+import com.brentpanther.bitcoinwidget.R.drawable.ic_sol
+import com.brentpanther.bitcoinwidget.R.drawable.ic_storj
+import com.brentpanther.bitcoinwidget.R.drawable.ic_sushi
+import com.brentpanther.bitcoinwidget.R.drawable.ic_theta
+import com.brentpanther.bitcoinwidget.R.drawable.ic_trx
+import com.brentpanther.bitcoinwidget.R.drawable.ic_uma
+import com.brentpanther.bitcoinwidget.R.drawable.ic_uni
+import com.brentpanther.bitcoinwidget.R.drawable.ic_vet
+import com.brentpanther.bitcoinwidget.R.drawable.ic_vtc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_waves
+import com.brentpanther.bitcoinwidget.R.drawable.ic_wbtc
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xaut_color
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xem
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xem_dark_gray
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xlm
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xlm_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xmr
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xmr_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xrp_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xrp_white
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xtz
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xvg
+import com.brentpanther.bitcoinwidget.R.drawable.ic_xym
+import com.brentpanther.bitcoinwidget.R.drawable.ic_yfi
+import com.brentpanther.bitcoinwidget.R.drawable.ic_zec
+import com.brentpanther.bitcoinwidget.R.drawable.ic_zec_dark
+import com.brentpanther.bitcoinwidget.R.drawable.ic_zil
+import com.brentpanther.bitcoinwidget.R.drawable.ic_zrx_black
+import com.brentpanther.bitcoinwidget.R.drawable.ic_zrx_white
 import com.brentpanther.bitcoinwidget.Theme.SOLID
 import com.brentpanther.bitcoinwidget.Theme.TRANSPARENT
-import kotlinx.parcelize.Parcelize
-import java.util.*
+import java.util.SortedSet
 
-@Parcelize
-enum class Coin(val coinName: String, val coinGeckoId: String, private vararg val themes: IconTheme) : Parcelable {
+enum class Coin(val coinName: String, val coinGeckoId: String, private vararg val themes: IconTheme) {
 
     CUSTOM("Custom", "", IconTheme(SOLID, ic_placeholder)),
     ONE_INCH("1inch", "1inch", IconTheme(SOLID, ic_1inch)),
@@ -172,5 +311,4 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
 
 }
 
-@Parcelize
-class CoinUnit(val text: String, val amount: Double) : Parcelable
+class CoinUnit(val text: String, val amount: Double)

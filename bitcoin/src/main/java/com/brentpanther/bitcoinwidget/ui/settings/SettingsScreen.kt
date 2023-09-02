@@ -4,10 +4,23 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.graphics.Typeface
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.FabPosition
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,8 +36,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.Theme
+import com.brentpanther.bitcoinwidget.WidgetApplication
+import com.brentpanther.bitcoinwidget.WidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetState
+import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.exchange.Exchange
@@ -34,7 +53,7 @@ import com.brentpanther.bitcoinwidget.ui.WidgetPreview
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.ParseException
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun SettingsScreen(
@@ -64,7 +83,8 @@ fun BaseSettingsScreen(
         ConfigurationWithSizes(15, false, 0, 0)
     )
     val context = LocalContext.current
-    val fromHome = navController.backQueue.any { it.destination.route == "home" }
+    val navEntries by navController.currentBackStack.collectAsState()
+    val fromHome = navEntries.any { it.destination.route == "home" }
     Scaffold(
         topBar = {
             TopAppBar(

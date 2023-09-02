@@ -1,11 +1,12 @@
 package com.brentpanther.bitcoinwidget
 
+import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.Exchange.valueOf
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
 import org.junit.Test
 import java.io.InputStream
-import java.util.*
+import java.util.EnumSet
 
 
 class ExchangeTest {
@@ -14,29 +15,58 @@ class ExchangeTest {
         return ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json")
     }
 
-    @Test
-    fun removedCoins() {
+    private val nonUSExchanges = setOf(Exchange.BYBIT, Exchange.BITGLOBAL, Exchange.BINANCE)
+
+    private fun exchangeCanLoadValues(excluded: Collection<Exchange>) {
         ExchangeHelper.useCache = false
         val coins = EnumSet.allOf(Coin::class.java).sorted()
         for (coin in coins) {
             println("Checking $coin")
             val data = ExchangeData(coin, loadJSON())
+            val triedExchanges = mutableSetOf(*excluded.map { it.name}.toTypedArray())
             for (currency in data.currencies.sorted()) {
-                for (exchange in data.getExchanges(currency).toList().parallelStream()) {
+                for (exchange in data.getExchanges(currency)) {
+                    if (exchange in triedExchanges) continue
                     try {
-                        var coinName = data.getExchangeCoinName(exchange)
-                        var currencyName = data.getExchangeCurrencyName(exchange, currency)
-                        if (coinName == null) coinName = coin.getSymbol()
-                        if (currencyName == null) currencyName = currency
-                        if (coinName == currencyName) continue
-                        valueOf(exchange).getValue(coinName, currencyName)!!.toDouble()
+                        tryGetValue(data, exchange, currency, coin)
                     } catch (e: Exception) {
                         System.err.println("Failure: $coin $exchange $currency: ${e.message}")
                     }
-                    Thread.sleep(1500)
+                    triedExchanges.add(exchange)
+                    Thread.sleep(50)
                 }
             }
         }
+    }
+
+    @Test
+    fun exchangeCanLoadValuesUS() {
+        exchangeCanLoadValues(nonUSExchanges)
+    }
+
+    @Test
+    fun exchangeCanLoadValuesNonUS() {
+        exchangeCanLoadValues(Exchange.entries - nonUSExchanges)
+    }
+
+    private fun tryGetValue(data: ExchangeData, exchange: String, currency: String, coin: Coin): Double? {
+        var coinName = data.getExchangeCoinName(exchange)
+        var currencyName = data.getExchangeCurrencyName(exchange, currency)
+        if (coinName == null) coinName = coin.getSymbol()
+        if (currencyName == null) currencyName = currency
+        if (coinName == currencyName) return null
+        return valueOf(exchange).getValue(coinName, currencyName)?.toDouble()
+    }
+
+    @Test
+    fun testPair() {
+        ExchangeHelper.useCache = false
+        val exchange = Exchange.COINSBIT
+        val coin = Coin.WBTC
+        val currency = "USD"
+        val data = ExchangeData(coin, loadJSON())
+        val value = tryGetValue(data, exchange.name, currency, coin)
+        println("Got value: $value")
     }
 
 }

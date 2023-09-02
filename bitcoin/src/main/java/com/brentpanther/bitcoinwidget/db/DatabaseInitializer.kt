@@ -5,21 +5,26 @@ import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
 import android.util.Log
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.brentpanther.bitcoinwidget.NightMode.*
+import com.brentpanther.bitcoinwidget.NightMode.DARK
+import com.brentpanther.bitcoinwidget.NightMode.LIGHT
+import com.brentpanther.bitcoinwidget.NightMode.SYSTEM
 import com.brentpanther.bitcoinwidget.Theme.SOLID
 import com.brentpanther.bitcoinwidget.Theme.TRANSPARENT
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.WidgetType
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import java.util.*
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
+import java.util.Currency
+import java.util.Locale
 import kotlin.math.min
 
 // Used to upgrade prior shared preferences data storage to android room
 object DatabaseInitializer {
 
-    val TAG = DatabaseInitializer::class.simpleName
+    private val TAG = DatabaseInitializer::class.simpleName
 
     fun create(db: SupportSQLiteDatabase, globalPrefs: SharedPreferences, prefs: SharedPreferences) {
         val widgets = WidgetApplication.instance.widgetIds
@@ -27,7 +32,7 @@ object DatabaseInitializer {
         for (widgetId in widgets) {
             val string = prefs.getString(widgetId.toString(), null) ?: continue
             try {
-                val obj = Gson().fromJson(string, JsonObject::class.java)
+                val obj: JsonObject = Json.decodeFromString(string)
                 val themeMap = mapOf(
                     "Light" to SOLID, "Dark" to SOLID, "DayNight" to SOLID, "Transparent" to TRANSPARENT,
                     "Transparent Dark" to TRANSPARENT, "Transparent DayNight" to TRANSPARENT
@@ -78,9 +83,6 @@ object DatabaseInitializer {
         globalPrefs.edit().clear().apply()
     }
 
-    private fun getString(obj: JsonObject, key: String): String? {
-        val el = obj.get(key)
-        return if (el == null || el.isJsonNull) null else el.asString
-    }
+    private fun getString(obj: JsonObject, key: String) = obj[key]?.jsonPrimitive?.contentOrNull
 
 }

@@ -10,7 +10,7 @@ import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
-import com.google.gson.JsonParseException
+import kotlinx.serialization.SerializationException
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit
 
 object Repository {
 
-    internal const val LAST_MODIFIED = "last_modified"
-    const val CURRENCY_FILE_NAME = "coins.json"
+    private const val LAST_MODIFIED = "last_modified"
+    private const val CURRENCY_FILE_NAME = "coins.json"
     private val TAG = Repository::class.java.simpleName
 
     fun downloadJSON() {
@@ -98,11 +98,11 @@ object Repository {
             } else  {
                 val data = ExchangeData(widget.coin, getJson(context))
                 if (data.numberExchanges == 0) {
-                    throw JsonParseException("No exchanges found.")
+                    throw SerializationException("No exchanges found.")
                 }
                 data
             }
-        } catch(e: JsonParseException) {
+        } catch(e: SerializationException) {
             Log.e("SettingsViewModel", "Error parsing JSON file, falling back to original.", e)
             context.deleteFile(CURRENCY_FILE_NAME)
             PreferenceManager.getDefaultSharedPreferences(context).edit {
