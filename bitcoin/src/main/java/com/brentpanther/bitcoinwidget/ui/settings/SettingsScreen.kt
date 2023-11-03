@@ -24,6 +24,9 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -54,6 +57,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.ParseException
 import java.util.Locale
+import kotlin.math.roundToInt
 
 @Composable
 fun SettingsScreen(
@@ -83,7 +87,7 @@ fun BaseSettingsScreen(
         ConfigurationWithSizes(15, false, 0, 0)
     )
     val context = LocalContext.current
-    val navEntries by navController.currentBackStack.collectAsState()
+    val navEntries by navController.visibleEntries.collectAsState()
     val fromHome = navEntries.any { it.destination.route == "home" }
     Scaffold(
         topBar = {
@@ -423,6 +427,7 @@ private fun DisplaySection(
     widget: Widget
 ) {
     SettingsHeader(title = R.string.title_display)
+    var numDecimals by remember { mutableFloatStateOf(widget.numDecimals.toFloat()) }
     SettingsSlider(
         icon = {
             Icon(painterResource(R.drawable.ic_decimal), null)
@@ -438,10 +443,11 @@ private fun DisplaySection(
             }
             Text(value)
         },
-        value = widget.numDecimals,
+        value = numDecimals,
         range = -1..10,
         onChange = {
-            settingsViewModel.setNumDecimals(it)
+            numDecimals = it
+            settingsViewModel.setNumDecimals(it.roundToInt())
         }
     )
     SettingsSwitch(

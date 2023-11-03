@@ -2,17 +2,48 @@ package com.brentpanther.bitcoinwidget.ui.settings
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Divider
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.ProvideTextStyle
+import androidx.compose.material.RadioButton
+import androidx.compose.material.Slider
+import androidx.compose.material.SliderDefaults
+import androidx.compose.material.Surface
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.brentpanther.bitcoinwidget.ui.theme.HighlightRippleTheme
 import java.lang.Integer.max
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun Setting(
@@ -157,24 +188,23 @@ fun SettingsEditText(
                     dialogVisible = false
                 }
             ) {
-                Surface(
-                    shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                Card(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .safeContentPadding()
+                        .padding(vertical = 36.dp, horizontal = 20.dp),
+                    shape = RoundedCornerShape(16.dp),
                 ) {
                     Column(
-                        Modifier.padding(start = 20.dp, top = 20.dp)
+                        Modifier.padding(16.dp)
                     )
                     {
-                        Row(
-                            Modifier.padding(bottom = 12.dp)
-                        ) {
+                        Row {
                             ProvideTextStyle(value = MaterialTheme.typography.h6) {
                                 title()
                             }
                         }
-                        Row(
-                            Modifier.padding(bottom = 8.dp)
-                        ) {
+                        Row(Modifier.padding(vertical=8.dp)) {
                             dialogText?.invoke()
                         }
                         OutlinedTextField(
@@ -190,12 +220,12 @@ fun SettingsEditText(
                             singleLine = true,
                             onValueChange = {
                                 tempValue = it
-                            }
+                            },
+                            modifier = Modifier.padding(vertical=8.dp)
                         )
                         Row(
                             Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
+                                .fillMaxWidth(),
                             horizontalArrangement = Arrangement.End
                         ) {
                             TextButton(
@@ -205,7 +235,7 @@ fun SettingsEditText(
                                 }
                             ) {
                                 Text(
-                                    stringResource(android.R.string.ok).uppercase(Locale.getDefault())
+                                    stringResource(android.R.string.ok).uppercase((Locale.getDefault()))
                                 )
                             }
                             TextButton(
@@ -254,14 +284,17 @@ fun SettingsList(
                 dialogVisible = false
             }
         ) {
-            Surface(
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(vertical = 8.dp)
+            Card(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .safeContentPadding()
+                    .padding(vertical = 36.dp, horizontal = 20.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
-                Column {
-                    Row(
-                        Modifier.padding(start = 20.dp, top = 20.dp, bottom = 12.dp)
-                    ) {
+                Column (
+                    Modifier.padding(16.dp)
+                ){
+                    Row {
                         ProvideTextStyle(value = MaterialTheme.typography.h6) {
                             title()
                         }
@@ -280,9 +313,7 @@ fun SettingsList(
                         }
                     }
                     Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
+                        Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(
@@ -322,8 +353,8 @@ fun SettingsSlider(
     title: @Composable () -> Unit,
     subtitle: (@Composable () -> Unit)? = null,
     range: IntRange,
-    value: Int,
-    onChange: (Int) -> Unit
+    value: Float,
+    onChange: (Float) -> Unit
 ) {
     Column {
         Setting(
@@ -332,11 +363,12 @@ fun SettingsSlider(
             subtitle = subtitle
         )
         Slider(
-            value.toFloat(),
+            value,
             onValueChange = {
-                onChange(it.toInt())
+                onChange(it)
             },
             valueRange = range.first.toFloat()..range.last.toFloat(),
+            steps = range.last - range.first,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

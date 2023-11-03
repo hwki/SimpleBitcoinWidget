@@ -1,0 +1,2 @@
+Fixed an issue where specific coins on certain exchanges failed to load.
+Improved the slider for decimal places on settings screen.

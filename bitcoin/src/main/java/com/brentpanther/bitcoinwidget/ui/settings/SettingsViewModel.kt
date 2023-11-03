@@ -55,6 +55,7 @@ class SettingsViewModel : ViewModel() {
     private fun updateData() = viewModelScope.launch(Dispatchers.IO) {
         val strategy = WidgetDataStrategy.getStrategy(widget.widgetId)
         widget.currencyCustomName = exchangeData?.getExchangeCurrencyName(widget.exchange.name, widget.currency)
+        widget.coinCustomName = exchangeData?.getExchangeCoinName(widget.exchange.name)
         strategy.widget = widget
         strategy.loadData(manual = false)
         widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))

@@ -29,7 +29,7 @@ object DataMigration {
 
     private fun fixRemovedExchanges(db: SupportSQLiteDatabase) {
         val cursor = db.query("SELECT id, exchange FROM Widget ORDER BY id")
-        val allExchanges = Exchange.values().map { it.name }
+        val allExchanges = Exchange.entries.map { it.name }
         val errored = mutableListOf<Int>()
         while (cursor.moveToNext()) {
             val exchange = cursor.getString(1)

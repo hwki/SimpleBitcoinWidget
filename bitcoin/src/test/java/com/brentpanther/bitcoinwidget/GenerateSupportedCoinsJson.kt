@@ -1,7 +1,9 @@
 package com.brentpanther.bitcoinwidget
 
 import com.brentpanther.bitcoinwidget.exchange.Exchange
-import com.brentpanther.bitcoinwidget.exchange.ExchangeData.*
+import com.brentpanther.bitcoinwidget.exchange.ExchangeData.JsonCoin
+import com.brentpanther.bitcoinwidget.exchange.ExchangeData.JsonExchange
+import com.brentpanther.bitcoinwidget.exchange.ExchangeData.JsonExchangeObject
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.asString
 import com.jayway.jsonpath.JsonPath
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -17,7 +19,7 @@ import org.junit.Test
 import java.nio.file.Paths
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
-import java.util.*
+import java.util.Currency
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -26,7 +28,7 @@ import kotlin.io.path.writeText
 class GenerateSupportedCoinsJson {
 
     private lateinit var allCurrencies: Set<String>
-    private val allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.map { it.getSymbol() }
+    private val allCoins = Coin.entries.filterNot { it == Coin.CUSTOM }.map { it.getSymbol() }
     private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",
             "XDG" to "DOGE", "MIOTA" to "IOTA", "STR" to "XLM", "DSH" to "DASH", "IOT" to "IOTA",
             "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM",
@@ -47,7 +49,7 @@ class GenerateSupportedCoinsJson {
             this::paribu, this::paymium, this::phemex, this::pocketbits, this::poloniex, this::probit,
             this::tradeogre, this::uphold, this::vbtc, this::whitebit, this::xt, this::yadio,
             this::yobit, this::zonda
-        ).zip(Exchange.values()).associate {
+        ).zip(Exchange.entries.toTypedArray()).associate {
             Pair(it.second) { it.first.invoke() }
         }
 
@@ -415,7 +417,7 @@ class GenerateSupportedCoinsJson {
 
     private fun coingecko(): List<String> {
         val currencies = parse("https://api.coingecko.com/api/v3/simple/supported_vs_currencies", "[*]")
-        return Coin.values().map { coin -> currencies.map { coin.getSymbol() + "_" + it } }.flatten()
+        return Coin.entries.map { coin -> currencies.map { coin.getSymbol() + "_" + it } }.flatten()
     }
 
     private fun coinjar(): List<String> {

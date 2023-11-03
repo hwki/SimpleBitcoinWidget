@@ -32,7 +32,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class CoinSelectionViewModel : ViewModel() {
 
-    private var allCoins = Coin.values().filterNot { it == Coin.CUSTOM }.associateBy { it.coinGeckoId }
+    private var allCoins = Coin.entries.filterNot { it == Coin.CUSTOM }.associateBy { it.coinGeckoId }
 
     private val json = Json { ignoreUnknownKeys = true }
     val coins = MutableStateFlow<SearchResponse?>(null)
