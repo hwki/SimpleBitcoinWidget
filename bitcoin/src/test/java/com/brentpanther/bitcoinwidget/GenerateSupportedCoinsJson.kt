@@ -36,9 +36,9 @@ class GenerateSupportedCoinsJson {
     private val allCurrencyOverrides = mapOf("USDT" to "USD", "TUSD" to "USD", "USDC" to "USD", "TL" to "TRY", "NIS" to "ILS").plus(allCoinOverrides)
 
     private val allExchanges =
-        listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bit2c,
-            this::bitbank, this::bitclude, this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb,
-            this::bitglobal, this::bitmart, this::bitpanda, this::bitpay, this::bitso, this::bitstamp,
+        listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bingx, this::bit2c,
+            this::bitbank, this::bitclude, this::bitcoinde, this::bitfinex, this::bitflyer,
+            this::bitglobal, this::bithumb, this::bitmart, this::bitpanda, this::bitpay, this::bitso, this::bitstamp,
             this::bittrex, this::bitrue, this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk,
             this::bybit, this::cexio, this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
             this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
@@ -283,6 +283,10 @@ class GenerateSupportedCoinsJson {
 
     private fun binance_us(): List<String> {
         return parse("https://api.binance.us/api/v3/exchangeInfo", "$.symbols[*].symbol")
+    }
+
+    private fun bingx(): List<String> {
+        return parse("https://open-api.bingx.com/openApi/spot/v1/common/symbols", "$.data.symbols[*].symbol")
     }
 
     private fun bit2c(): List<String> {

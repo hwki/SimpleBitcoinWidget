@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget.strategy.data
 
 import com.brentpanther.bitcoinwidget.WidgetApplication
+import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
@@ -26,6 +27,12 @@ abstract class WidgetDataStrategy(val widgetId: Int) {
 
     suspend fun save() {
         widget?.let { dao.update(it) }
+    }
+
+    fun shouldRefresh(): Boolean {
+        return widget?.let {
+            it.state == WidgetState.DRAFT || System.currentTimeMillis() - it.lastUpdated > 15000
+        } ?: false
     }
 
     companion object {

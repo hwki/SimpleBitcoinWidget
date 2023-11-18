@@ -65,7 +65,7 @@
     <string name="button_settings">Abrir Configurações</string>
     <string name="coin_search_hint">Pesquise por nome ou símbolo</string>
     <string name="coin_search_popular">Popular</string>
-    <string name="coin_search_more">Mais</string>
+    <string name="coin_search_more">Mais de CoinGecko</string>
     <string name="coin_search_powered_by">Alimentado por CoinGecko</string>
 
     <string name="settings_update">Atualizo</string>

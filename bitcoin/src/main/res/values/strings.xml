@@ -94,7 +94,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Fri, 03 Nov 2023 23:16:25 GMT</string>
+    <string name="json_last_modified" translatable="false">Sat, 18 Nov 2023 17:12:07 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
@@ -103,7 +103,7 @@
     <string name="button_settings">Open Settings</string>
     <string name="coin_search_hint">Search by name or symbol</string>
     <string name="coin_search_popular">Popular</string>
-    <string name="coin_search_more">More</string>
+    <string name="coin_search_more">More from CoinGecko</string>
     <string name="coin_search_powered_by">Powered by CoinGecko</string>
 
     <string name="settings_update">Update</string>

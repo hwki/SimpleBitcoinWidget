@@ -1,0 +1,5 @@
+Try to work around some Coingecko API issues.
+Added coins: Aptos, Arbitrum, Immutable, Kaspa, Lido DAO, NEXO, Optimism, and Rocket Pool.
+Added BingX exchange.
+Remove http cache control implementation and instead prevent refreshing the same data for 15 seconds.
+Added user agent on requests.

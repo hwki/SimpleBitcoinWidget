@@ -15,6 +15,7 @@ open class PriceWidgetDataStrategy(widgetId: Int) : WidgetDataStrategy(widgetId)
         if (manual) {
             delay(750)
         }
+        if (!shouldRefresh()) return@withContext
         try {
             val currency = widget.currencyCustomName ?: widget.currency
             val coin = widget.coinCustomId ?: widget.coinCustomName ?: widget.coin.getSymbol()

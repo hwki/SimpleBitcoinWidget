@@ -1,7 +1,6 @@
 package com.brentpanther.bitcoinwidget.db
 
 import android.content.Context
-import androidx.preference.PreferenceManager
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -76,13 +75,6 @@ abstract class WidgetDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): WidgetDatabase {
             val callback = object : Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    DatabaseInitializer.create(
-                        db,
-                        PreferenceManager.getDefaultSharedPreferences(context),
-                        context.getSharedPreferences("bitcoinwidget", Context.MODE_PRIVATE)
-                    )
-                }
 
                 override fun onOpen(db: SupportSQLiteDatabase) {
                     DataMigration.migrate(db)

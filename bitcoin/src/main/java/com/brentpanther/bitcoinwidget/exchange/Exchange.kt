@@ -49,6 +49,13 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["price"].asString
         }
     },
+    BINGX("BingX") {
+
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://open-api.bingx.com/openApi/swap/v2/quote/ticker?symbol=$coin-${currency}"
+            return getJsonObject(url)["data"]?.jsonObject?.get("lastPrice").asString
+        }
+    },
     BIT2C("Bit2C") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -94,6 +101,13 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["ltp"].asString
         }
     },
+    BITGLOBAL("BitGlobal") {
+
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=$coin-$currency"
+            return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("c")?.asString
+        }
+    },
     BITHUMB("Bithumb") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -102,13 +116,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             val buy = data["opening_price"].asString?.toDoubleOrNull() ?: return null
             val sell = data["closing_price"].asString?.toDoubleOrNull() ?: return null
             return ((buy + sell) / 2).toString()
-        }
-    },
-    BITGLOBAL("BitGlobal") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=$coin-$currency"
-            return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("c")?.asString
         }
     },
     BITMART("BitMart") {
@@ -624,7 +631,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
     companion object {
 
-        private val ALL_EXCHANGE_NAMES = values().map { it.name}.toMutableList()
+        private val ALL_EXCHANGE_NAMES = entries.map { it.name}.toMutableList()
 
         fun getAllExchangeNames(): MutableList<String> {
             return ALL_EXCHANGE_NAMES.toMutableList()

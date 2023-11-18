@@ -3,7 +3,6 @@ package com.brentpanther.bitcoinwidget
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.Exchange.valueOf
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
-import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper
 import org.junit.Test
 import java.io.InputStream
 import java.util.EnumSet
@@ -18,7 +17,6 @@ class ExchangeTest {
     private val nonUSExchanges = setOf(Exchange.BYBIT, Exchange.BITGLOBAL, Exchange.BINANCE)
 
     private fun exchangeCanLoadValues(excluded: Collection<Exchange>) {
-        ExchangeHelper.useCache = false
         val coins = EnumSet.allOf(Coin::class.java).sorted()
         for (coin in coins) {
             println("Checking $coin")
@@ -60,7 +58,6 @@ class ExchangeTest {
 
     @Test
     fun testPair() {
-        ExchangeHelper.useCache = false
         val exchange = Exchange.COINSBIT
         val coin = Coin.WBTC
         val currency = "USD"

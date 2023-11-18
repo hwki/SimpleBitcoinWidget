@@ -55,7 +55,9 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
             adjustedAmount *= widget.coin.getUnitAmount(it)
         }
         widget.currencyUnit?.let {
-            adjustedAmount /= Coin.valueOf(widget.currency).getUnitAmount(it)
+            Coin.getByName(widget.currency)?.apply {
+                adjustedAmount /= this.getUnitAmount(it)
+            }
         }
         if (widget.useInverse) {
             adjustedAmount = 1 / adjustedAmount

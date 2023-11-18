@@ -2,9 +2,6 @@ package com.brentpanther.bitcoinwidget.ui.selection
 
 import android.content.Context
 import android.os.Build
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.Coin
@@ -19,7 +16,6 @@ import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,8 +23,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 class CoinSelectionViewModel : ViewModel() {
 
@@ -73,19 +67,10 @@ class CoinSelectionViewModel : ViewModel() {
     }
 
     private var searchJob: Job? = null
-    var searchText by mutableStateOf("")
 
-    fun setText(text: String) {
-        this.searchText = text
-        if (text.length > 2) {
-            search(text, 500.milliseconds)
-        }
-    }
-
-    fun search(query: String, delay: Duration = Duration.ZERO) {
+    fun search(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {
-            delay(delay)
             error.emit(null)
             coins.emit(SearchResponse(emptyList(), true))
             val responses = searchCoinGecko(query)

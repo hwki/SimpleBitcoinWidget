@@ -123,7 +123,7 @@ class SettingsViewModel : ViewModel() {
         widget.coinUnit = unit
     }
 
-    fun setCurrencyUnit(unit: String) = emit {
+    fun setCurrencyUnit(unit: String?) = emit {
         widget.currencyUnit = unit
     }
 
