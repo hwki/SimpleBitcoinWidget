@@ -1,6 +1,8 @@
 package com.brentpanther.bitcoinwidget.db
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -76,9 +78,17 @@ abstract class WidgetDatabase : RoomDatabase() {
         fun getInstance(context: Context): WidgetDatabase {
             val callback = object : Callback() {
 
+                override fun onCreate(db: SupportSQLiteDatabase) {
+                    val values = ContentValues().apply {
+                        put("refresh", 15)
+                        put("consistentSize", false)
+                        put("dataMigrationVersion", 1)
+                    }
+                    db.insert("configuration", SQLiteDatabase.CONFLICT_REPLACE, values)
+                }
+
                 override fun onOpen(db: SupportSQLiteDatabase) {
                     DataMigration.migrate(db)
-                    super.onOpen(db)
                 }
             }
             return INSTANCE ?: synchronized(this) {
