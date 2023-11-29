@@ -12,7 +12,12 @@ object DataMigration {
         migrateBitBayToZonda(db)
         migrateOkexToOkx(db)
         migrateBithumbProToBitGlobal(db)
+        migrateKaspaToKas(db)
         fixRemovedExchanges(db)
+    }
+
+    private fun migrateKaspaToKas(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET coin = 'KAS' WHERE coin = 'KASPA'")
     }
 
     private fun migrateBithumbProToBitGlobal(db: SupportSQLiteDatabase) {

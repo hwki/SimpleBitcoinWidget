@@ -101,13 +101,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["ltp"].asString
         }
     },
-    BITGLOBAL("BitGlobal") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=$coin-$currency"
-            return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("c")?.asString
-        }
-    },
     BITHUMB("Bithumb") {
 
         override fun getValue(coin: String, currency: String): String? {

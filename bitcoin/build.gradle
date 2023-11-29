@@ -13,8 +13,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdk 23
         targetSdk 34
-        versionCode 322
-        versionName "8.4.3"
+        versionCode 323
+        versionName "8.4.4"
 
     }
 
@@ -68,7 +68,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1"
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.work:work-runtime-ktx:2.8.1'
+    implementation 'androidx.work:work-runtime:2.9.0'
     implementation 'androidx.activity:activity-ktx:1.8.1'
     implementation 'androidx.activity:activity-compose:1.8.1'
     implementation "androidx.compose.ui:ui"
@@ -83,7 +83,7 @@ dependencies {
     testImplementation 'com.jayway.jsonpath:json-path:2.8.0'
     debugImplementation "androidx.compose.ui:ui-tooling"
 
-    def room_version = '2.6.0'
+    def room_version = '2.6.1'
 
     ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-runtime:$room_version"

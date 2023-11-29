@@ -38,7 +38,7 @@ class GenerateSupportedCoinsJson {
     private val allExchanges =
         listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bingx, this::bit2c,
             this::bitbank, this::bitclude, this::bitcoinde, this::bitfinex, this::bitflyer,
-            this::bitglobal, this::bithumb, this::bitmart, this::bitpanda, this::bitpay, this::bitso, this::bitstamp,
+            this::bithumb, this::bitmart, this::bitpanda, this::bitpay, this::bitso, this::bitstamp,
             this::bittrex, this::bitrue, this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk,
             this::bybit, this::cexio, this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
             this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
@@ -54,7 +54,7 @@ class GenerateSupportedCoinsJson {
         }
 
     // these exchanges do not allow API requests from the united states
-    private val nonUSExchanges = listOf(Exchange.BYBIT, Exchange.BITGLOBAL, Exchange.BINANCE)
+    private val nonUSExchanges = listOf(Exchange.BYBIT, Exchange.BINANCE)
 
     @Test
     fun generateAll() = generate(allExchanges)
@@ -324,10 +324,6 @@ class GenerateSupportedCoinsJson {
 
     private fun bithumb(): List<String> {
         return parseKeys("https://api.bithumb.com/public/ticker/ALL", "$.data").map { "${it}_KRW" }
-    }
-
-    private fun bitglobal() : List<String> {
-        return parse("https://global-openapi.bithumb.pro/openapi/v1/spot/ticker?symbol=ALL", "$.data[*].s")
     }
 
     private fun bitmart(): List<String> {

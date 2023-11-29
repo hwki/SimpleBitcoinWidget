@@ -1,0 +1,3 @@
+Added Core, Flare, Space ID, Near, OKB, Quant, Sologenic, MicrovisionChain, Stargate Finance, and Sui coins.
+Removed Bitglobal exchange.
+Updated some coin logos.
