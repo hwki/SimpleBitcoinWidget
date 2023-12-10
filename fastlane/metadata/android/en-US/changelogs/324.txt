@@ -1,0 +1,2 @@
+Fixed Coins.ph.
+Fixed a crash when adding a coin that does not have an associated image.

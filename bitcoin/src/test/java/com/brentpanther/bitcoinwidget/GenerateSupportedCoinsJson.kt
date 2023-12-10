@@ -441,9 +441,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun coinsph(): List<String> {
-        val pairs1 = parse("https://quote.coins.ph/v2/markets", "$.markets[*].symbol")
-        val pairs2 = parse("https://quote.coins.ph/v2/markets?region=TH", "$.markets[*].symbol")
-        return pairs1 + pairs2
+        return parse("https://api.pro.coins.ph/openapi/v1/pairs", "$[*].symbol")
     }
 
     private fun cointree(): List<String> {

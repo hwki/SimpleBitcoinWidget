@@ -79,7 +79,7 @@ object Repository {
                 return
             }
 
-            ExchangeHelper.getStream(url).use { stream ->
+            ExchangeHelper.getStream(url)?.use { stream ->
                 ByteArrayOutputStream().use { os ->
                     BitmapFactory.decodeStream(stream)?.let { image ->
                         image.compress(Bitmap.CompressFormat.PNG, 100, os)

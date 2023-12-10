@@ -28,17 +28,21 @@ object ExchangeHelper {
     @Throws(IOException::class)
     fun getJsonArray(url: String) = Json.decodeFromString<JsonArray>(getString(url))
 
-    fun getStream(url: String): InputStream = get(url).body!!.byteStream()
+    fun getStream(url: String): InputStream? = get(url)?.body?.byteStream()
 
-    private fun getString(url: String, headers: Headers? = null) = get(url, headers).body!!.string()
+    private fun getString(url: String, headers: Headers? = null) = get(url, headers)?.body?.string() ?: ""
 
-    private fun get(url: String, headers: Headers? = null): Response {
-        var builder = Request.Builder().url(url)
-        headers?.let {
-            builder = builder.headers(it)
+    private fun get(url: String, headers: Headers? = null): Response? {
+        return try {
+            var builder = Request.Builder().url(url)
+            headers?.let {
+                builder = builder.headers(it)
+            }
+            val request = builder.build()
+            client.newCall(request).execute()
+        } catch (e: IllegalArgumentException) {
+            null
         }
-        val request = builder.build()
-        return client.newCall(request).execute()
     }
 
     @Throws(IOException::class)

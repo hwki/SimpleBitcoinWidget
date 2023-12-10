@@ -279,12 +279,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     COINSPH("Coins.ph") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val region = if (currency == "THB") "TH" else "PH"
-            val url = "https://quote.coins.ph/v2/markets/$coin-$currency?region=$region"
-            val obj = getJsonObject(url)
-            val bid = obj["bid"].asString?.toDoubleOrNull() ?: return null
-            val ask = obj["ask"].asString?.toDoubleOrNull() ?: return null
-            return ((bid + ask) / 2).toString()
+            val url = "https://api.pro.coins.ph/openapi/quote/v1/avgPrice?symbol=$coin$currency"
+            return getJsonObject(url)["price"].asString
         }
     },
     COINTREE("Cointree") {
