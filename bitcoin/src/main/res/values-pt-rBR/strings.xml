@@ -80,10 +80,10 @@
 
     <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
     <string name="warning_battery_saver">O aplicativo não será atualizada porque economizador de bateria atualmente é restrito.</string>
-    <string name="warning_hibernation">Com o tempo, seu dispositivo pode colocar este aplicativo em hibernação, fazendo com que os widgets não sejam atualizados corretamente. Considere ajustar suas configurações desativando a opção chamada \"Remover permissões e liberar espaço\"</string>
 
     <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
     <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
+    <string name="state_rate_limited">Taxa limitada pelo câmbio.</string>
     <string name="widget_price_name">Preço Atual</string>
     <string name="widget_value_name">Valor da carteiral</string>
     <string name="dialog_amount_held">Insira a quantia de %1$s mantida em sua carteira. Por exemplo, %2$s.</string>

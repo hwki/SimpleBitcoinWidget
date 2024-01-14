@@ -31,17 +31,9 @@ open class WidgetProvider : AppWidgetProvider() {
         }
     }
 
-    override fun onEnabled(context: Context) {
-        refreshWidgets(context)
-    }
-
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, widgetIds: IntArray) {
-        refreshWidgets(context)
-    }
-
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetId: Int, newOptions: Bundle) {
-        refreshWidgets(context)
+        refreshWidgets(context, appWidgetId)
     }
 
     override fun onDeleted(context: Context, widgetIds: IntArray) {
@@ -53,7 +45,7 @@ open class WidgetProvider : AppWidgetProvider() {
                 workManager.cancelUniqueWork(ONETIMEWORKNAME)
                 cancelWork(workManager)
             } else if (widgetDao.configWithSizes().consistentSize) {
-                refreshWidgets(context)
+                WidgetUpdater.updateDisplays(context)
             }
         }
     }
@@ -63,37 +55,42 @@ open class WidgetProvider : AppWidgetProvider() {
         private const val WORKNAME = "widgetRefresh"
         const val ONETIMEWORKNAME = "115575872"
 
-        fun refreshWidgets(context: Context, restart: Boolean = false) = CoroutineScope(Dispatchers.IO).launch {
-            val dao = WidgetDatabase.getInstance(context).widgetDao()
-            val widgetIds = dao.getAll().map { it.widgetId }.toIntArray()
-            if (widgetIds.isEmpty()) return@launch
+        fun refreshWidgets(context: Context, widgetId: Int) = refreshWidgets(context, intArrayOf(widgetId))
 
-            WidgetUpdater.update(context, widgetIds, false)
+        fun refreshWidgets(context: Context, widgetIds: IntArray? = null, restart: Boolean = false) = CoroutineScope(Dispatchers.IO).launch {
+            val dao = WidgetDatabase.getInstance(context).widgetDao()
+            val widgetIdsToRefresh = widgetIds ?: dao.getAll().map { it.widgetId }.toIntArray()
+            if (widgetIdsToRefresh.isEmpty()) return@launch
+
+            WidgetUpdater.update(context, widgetIdsToRefresh, false)
             val workManager = WorkManager.getInstance(context)
             val refresh = dao.configWithSizes().refresh
 
             // https://issuetracker.google.com/issues/115575872
-            val immediateWork = OneTimeWorkRequestBuilder<WidgetUpdateWorker>().setInitialDelay(3650L, TimeUnit.DAYS).build()
+            val immediateWork = OneTimeWorkRequestBuilder<WidgetUpdateWorker>()
+                .setInitialDelay(3650L, TimeUnit.DAYS).build()
             workManager.enqueueUniqueWork(ONETIMEWORKNAME, ExistingWorkPolicy.KEEP, immediateWork)
 
-            val workPolicy = if (restart) ExistingPeriodicWorkPolicy.UPDATE else ExistingPeriodicWorkPolicy.KEEP
+            if (restart) {
+                workManager.cancelAllWorkByTag(WORKNAME)
+            }
             when (refresh) {
-                5 -> (0..10 step 5).forEachIndexed { i, it -> scheduleWork(workManager, 15, it, i, workPolicy) }
-                10 -> (0..10 step 10).forEachIndexed { i, it -> scheduleWork(workManager, 20, it, i, workPolicy) }
-                else -> scheduleWork(workManager, refresh, 0, 0, workPolicy)
+                5 -> (5..15 step 5).forEachIndexed { i, it -> scheduleWork(workManager, 15, it, i) }
+                10 -> (10..20 step 10).forEachIndexed { i, it -> scheduleWork(workManager, 20, it, i) }
+                else -> scheduleWork(workManager, refresh, refresh, 0)
             }
         }
 
         fun cancelWork(workManager: WorkManager) = workManager.cancelAllWorkByTag(WORKNAME)
 
-        private fun scheduleWork(workManager: WorkManager, refresh: Int, delay: Int, index: Int, policy: ExistingPeriodicWorkPolicy) {
+        private fun scheduleWork(workManager: WorkManager, refresh: Int, delay: Int, index: Int) {
             val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
             val work = PeriodicWorkRequestBuilder<WidgetUpdateWorker>(refresh.toLong(), TimeUnit.MINUTES)
                 .setConstraints(constraints)
                 .addTag(WORKNAME)
                 .setInitialDelay(delay.toLong(), TimeUnit.MINUTES)
                 .build()
-            workManager.enqueueUniquePeriodicWork("$WORKNAME$index", policy, work)
+            workManager.enqueueUniquePeriodicWork("$WORKNAME$index", ExistingPeriodicWorkPolicy.KEEP, work)
         }
 
     }

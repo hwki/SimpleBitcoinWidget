@@ -13,6 +13,7 @@ object DataMigration {
         migrateOkexToOkx(db)
         migrateBithumbProToBitGlobal(db)
         migrateKaspaToKas(db)
+        migrateBitcludeToEgera(db)
         fixRemovedExchanges(db)
     }
 
@@ -30,6 +31,10 @@ object DataMigration {
 
     private fun migrateBitBayToZonda(db: SupportSQLiteDatabase) {
         db.execSQL("UPDATE Widget SET exchange = 'ZONDA' WHERE exchange = 'BITBAY'")
+    }
+
+    private fun migrateBitcludeToEgera(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET exchange = 'EGERA' WHERE exchange = 'BITCLUDE'")
     }
 
     private fun fixRemovedExchanges(db: SupportSQLiteDatabase) {

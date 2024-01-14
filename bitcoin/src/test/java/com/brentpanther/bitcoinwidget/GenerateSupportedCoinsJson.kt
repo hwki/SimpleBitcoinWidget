@@ -37,16 +37,16 @@ class GenerateSupportedCoinsJson {
 
     private val allExchanges =
         listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bingx, this::bit2c,
-            this::bitbank, this::bitclude, this::bitcoinde, this::bitfinex, this::bitflyer,
-            this::bithumb, this::bitmart, this::bitpanda, this::bitpay, this::bitso, this::bitstamp,
-            this::bittrex, this::bitrue, this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk,
-            this::bybit, this::cexio, this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
+            this::bitbank, this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitmart,
+            this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue,
+            this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
+            this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
             this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
-            this::cryptocom, this::deversifi, this::digifinex, this::exmo, this::foxbit, this::gateio, this::gemini,
+            this::cryptocom, this::deversifi, this::digifinex, this::egera, this::exmo, this::foxbit, this::gateio, this::gemini,
             this::hashkey, this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit,
-            this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::liquid, this::luno,
+            this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::luno,
             this::mercado, this::mexc, this::ndax, this::nexchange, this::okcoin, this::okx, this::p2pb2b,
-            this::paribu, this::paymium, this::phemex, this::pocketbits, this::poloniex, this::probit,
+            this::paribu, this::paymium, this::phemex, this::poloniex, this::probit,
             this::tradeogre, this::uphold, this::vbtc, this::whitebit, this::xt, this::yadio,
             this::yobit, this::zonda
         ).zip(Exchange.entries.toTypedArray()).associate {
@@ -283,6 +283,7 @@ class GenerateSupportedCoinsJson {
 
     private fun binance_us(): List<String> {
         return parse("https://api.binance.us/api/v3/exchangeInfo", "$.symbols[*].symbol")
+            .filterNot { it.endsWith("USD") }
     }
 
     private fun bingx(): List<String> {
@@ -297,10 +298,6 @@ class GenerateSupportedCoinsJson {
 
     private fun bitbank(): List<String> {
         return parse("https://public.bitbank.cc/tickers", "$.data[*].pair")
-    }
-
-    private fun bitclude(): List<String> {
-        return parseKeys("https://api.bitclude.com/stats/ticker.json", "$")
     }
 
     private fun bitcoinde(): List<String> {
@@ -464,6 +461,10 @@ class GenerateSupportedCoinsJson {
         return parse("https://openapi.digifinex.com/v3/ticker", "$.ticker.[*].symbol")
     }
 
+    private fun egera(): List<String> {
+        return parseKeys("https://api.egera.com/stats/ticker.json", "$")
+    }
+
     private fun exmo(): List<String> {
         return parseKeys("https://api.exmo.com/v1.1/ticker", "$")
     }
@@ -528,10 +529,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.lbkex.com/v2/currencyPairs.do", "$.data[*]")
     }
 
-    private fun liquid(): List<String> {
-        return parse("https://api.liquid.com/products", "$[?(@.disabled==false)].currency_pair_code")
-    }
-
     private fun luno(): List<String> {
         return parse("https://api.luno.com/api/1/tickers", "$.tickers[*].pair")
     }
@@ -578,10 +575,6 @@ class GenerateSupportedCoinsJson {
         val list = JsonPath.read(get("https://api.phemex.com/public/products"),
             "$.data.products.[?(@.status == 'Listed' && @.type == 'Spot')]") as List<Map<String, *>>
         return list.map { "${it["baseCurrency"]}-${it["quoteCurrency"]}" }
-    }
-
-    private fun pocketbits(): List<String> {
-        return parse("https://ticker.pocketbits.in/api/v1/ticker", "$[*].symbol")
     }
 
     private fun poloniex(): List<String> {

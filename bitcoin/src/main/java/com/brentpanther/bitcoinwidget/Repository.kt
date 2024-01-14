@@ -90,25 +90,25 @@ object Repository {
         }
     }
 
-    fun getExchangeData(widget: Widget): ExchangeData {
+    fun getExchangeData(coin: Coin, coinName: String?): ExchangeData {
         val context = WidgetApplication.instance
         return try {
-            if (widget.coin == Coin.CUSTOM) {
-                CustomExchangeData(widget.coinName(), widget.coin, getJson(context))
+            if (coin == Coin.CUSTOM) {
+                CustomExchangeData(coinName ?: coin.coinName, coin, getJson(context))
             } else  {
-                val data = ExchangeData(widget.coin, getJson(context))
+                val data = ExchangeData(coin, getJson(context))
                 if (data.numberExchanges == 0) {
                     throw SerializationException("No exchanges found.")
                 }
                 data
             }
         } catch(e: SerializationException) {
-            Log.e("SettingsViewModel", "Error parsing JSON file, falling back to original.", e)
+            Log.e(TAG, "Error parsing JSON file, falling back to original.", e)
             context.deleteFile(CURRENCY_FILE_NAME)
             PreferenceManager.getDefaultSharedPreferences(context).edit {
                 remove(LAST_MODIFIED)
             }
-            ExchangeData(widget.coin,  getJson(context))
+            ExchangeData(coin,  getJson(context))
         }
     }
 

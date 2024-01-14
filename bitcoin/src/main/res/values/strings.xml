@@ -94,7 +94,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Sun, 10 Dec 2023 22:44:10 GMT</string>
+    <string name="json_last_modified" translatable="false">Sun, 14 Jan 2024 15:48:32 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
@@ -117,10 +117,10 @@
     <string name="widget_list_title">%1$s / %2$s</string>
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently restricted.</string>
-    <string name="warning_hibernation">Your device may over time put this app into hibernation, causing the widgets not to update properly. Please consider adjusting your settings by turning off the option called \"Remove permissions and free up space\".</string>
 
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
     <string name="state_error">Unable to update price. This may be an issue with the exchange.</string>
+    <string name="state_rate_limited">Rate limited by exchange.</string>
     <string name="placeholder_price" translatable="false">$-,---</string>
     <string name="widget_price_name">Current Price</string>
     <string name="widget_value_name">Wallet Value</string>

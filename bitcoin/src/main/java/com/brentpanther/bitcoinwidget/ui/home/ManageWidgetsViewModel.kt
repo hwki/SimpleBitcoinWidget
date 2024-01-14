@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetProvider
+import com.brentpanther.bitcoinwidget.WidgetUpdater
 import com.brentpanther.bitcoinwidget.db.Configuration
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.db.WidgetSettings
@@ -15,6 +16,10 @@ import kotlinx.coroutines.launch
 class ManageWidgetsViewModel : ViewModel() {
 
     private val dao = WidgetDatabase.getInstance(WidgetApplication.instance).widgetDao()
+
+    init {
+        WidgetUpdater.updateDisplays(WidgetApplication.instance)
+    }
 
     fun getWidgets(): Flow<List<WidgetSettings>> {
         return dao.getAllAsFlow().combine(dao.configWithSizesAsFlow()) { w, c ->
@@ -35,7 +40,7 @@ class ManageWidgetsViewModel : ViewModel() {
         setValue {
             it.consistentSize = value
         }
-        WidgetProvider.refreshWidgets(WidgetApplication.instance)
+        WidgetUpdater.updateDisplays(WidgetApplication.instance)
     }
     fun setRefreshInterval(value: String) {
         setValue {
@@ -45,6 +50,6 @@ class ManageWidgetsViewModel : ViewModel() {
     }
 
     companion object {
-        const val dismissTime: Long = 172800000L
+        const val DISMISS_TIME: Long = 172800000L
     }
 }

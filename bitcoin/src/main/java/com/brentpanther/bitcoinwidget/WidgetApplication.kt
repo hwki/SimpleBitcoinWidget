@@ -35,6 +35,7 @@ class WidgetApplication : Application() {
         super.onCreate()
         instance = this
         registerReceiver(WidgetBroadcastReceiver(), IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED))
+        WidgetUpdater.updateDisplays(this)
     }
 
     companion object {

@@ -1,0 +1,4 @@
+Optimized the number of exchange update calls to reduce likelihood of rate limiting.
+Added an indicator to show when a widget has been rate limited by the exchange.
+Renamed BitClude to Egera.
+Fixed a bug where widget prices were not updating in certain scenarios.

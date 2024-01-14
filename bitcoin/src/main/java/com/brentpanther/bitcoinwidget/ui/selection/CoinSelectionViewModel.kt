@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.Repository
 import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetState
@@ -37,13 +38,23 @@ class CoinSelectionViewModel : ViewModel() {
         val dao = WidgetDatabase.getInstance(context).widgetDao()
         // pull properties from last created widget if exists
         val lastWidget = dao.getAll().lastOrNull()
+
+        val currency = lastWidget?.currency ?: "USD"
+        var exchange = lastWidget?.exchange
+        if (coinEntry.coin != Coin.CUSTOM) {
+            // get default exchange
+            val exchangeData = Repository.getExchangeData(coinEntry.coin, null)
+            if (!exchangeData.getExchanges(currency).contains(exchange?.name)) {
+                exchange = Exchange.valueOf(exchangeData.getDefaultExchange(currency))
+            }
+        }
         val widget = Widget(
             id = 0,
             widgetId = widgetId,
             widgetType = widgetType,
-            exchange = Exchange.COINGECKO,
+            exchange = exchange ?: Exchange.COINGECKO,
             coin = coinEntry.coin,
-            currency = lastWidget?.currency ?: "USD",
+            currency = currency,
             coinCustomId = if (coinEntry.coin == Coin.CUSTOM) coinEntry.id else null,
             coinCustomName = if (coinEntry.coin == Coin.CUSTOM) coinEntry.name else null,
             currencyCustomName = null,

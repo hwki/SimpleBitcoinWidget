@@ -8,7 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.io.InputStream
-import java.util.*
+import java.util.Currency
 
 
 open class ExchangeData(val coin: Coin, json: InputStream) {
@@ -93,10 +93,7 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
     //TODO: change to use exchange
     fun getDefaultExchange(currency: String): String {
         val exchanges = currencyExchange[currency]
-        exchanges?.let {
-            if (!exchanges.contains(Exchange.COINGECKO.name)) return exchanges[0]
-        }
-        return Exchange.COINGECKO.name
+        return exchanges?.get(0) ?: Exchange.COINGECKO.name
     }
 
     open fun getExchangeCoinName(exchange: String): String? {

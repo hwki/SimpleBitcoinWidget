@@ -42,7 +42,7 @@ class SettingsViewModel : ViewModel() {
             val dbWidget = dao.getByWidgetId(widgetId) ?: return@launch
             widgetCopy = dbWidget.copy()
             downloadJSON()
-            exchangeData = getExchangeData(widget)
+            exchangeData = getExchangeData(widget.coin, widget.coinName())
             loadExchanges()
             updateData()
             downloadCustomIcon(widget)
@@ -56,6 +56,7 @@ class SettingsViewModel : ViewModel() {
         val strategy = WidgetDataStrategy.getStrategy(widget.widgetId)
         widget.currencyCustomName = exchangeData?.getExchangeCurrencyName(widget.exchange.name, widget.currency)
         widget.coinCustomName = exchangeData?.getExchangeCoinName(widget.exchange.name)
+        widget.lastUpdated = 0
         strategy.widget = widget
         strategy.loadData(manual = false)
         widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))
@@ -163,7 +164,7 @@ class SettingsViewModel : ViewModel() {
     fun save() = viewModelScope.launch(Dispatchers.IO) {
         widget.state = WidgetState.CURRENT
         dao.update(widget)
-        WidgetProvider.refreshWidgets(WidgetApplication.instance)
+        WidgetProvider.refreshWidgets(WidgetApplication.instance, widget.widgetId)
     }
 
 

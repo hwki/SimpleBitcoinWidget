@@ -5,8 +5,16 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberUpdatedState
@@ -32,15 +40,6 @@ fun WarningBanner(viewModel: BannersViewModel) {
     }
     val banners = viewModel.visibleBanners
     Column(Modifier.fillMaxWidth()) {
-        if ("hibernate" in banners) {
-            Banner(viewModel, "hibernate", R.string.warning_hibernation, R.string.button_settings) {
-                context.startActivity(
-                    Intent(
-                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:${BuildConfig.APPLICATION_ID}"))
-                )
-            }
-        }
         if ("data" in banners) {
             Banner(viewModel, "data", R.string.warning_data_saver, R.string.button_settings) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

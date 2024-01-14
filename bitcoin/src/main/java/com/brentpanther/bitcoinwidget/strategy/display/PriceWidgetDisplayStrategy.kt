@@ -11,6 +11,7 @@ import androidx.annotation.IdRes
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.WidgetState.ERROR
+import com.brentpanther.bitcoinwidget.WidgetState.RATE_LIMITED
 import com.brentpanther.bitcoinwidget.WidgetState.STALE
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.strategy.TextViewAutoSizeHelper
@@ -18,7 +19,7 @@ import com.brentpanther.bitcoinwidget.strategy.presenter.WidgetPresenter
 import java.io.File
 import java.text.DecimalFormat
 import java.text.NumberFormat
-import java.util.*
+import java.util.Currency
 
 abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widgetPresenter: WidgetPresenter) :
     WidgetDisplayStrategy(context, widget, widgetPresenter) {
@@ -67,6 +68,11 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
                     show(R.id.state)
                     setImageViewResource(R.id.state, R.drawable.ic_outline_warning_amber_24)
                     setOnClickMessage(appContext, R.string.state_error)
+                }
+                RATE_LIMITED -> {
+                    show(R.id.state)
+                    setImageViewResource(R.id.state, R.drawable.ic_outline_do_not_disturb_alt_24)
+                    setOnClickMessage(appContext, R.string.state_rate_limited)
                 }
                 else -> gone(R.id.state)
             }

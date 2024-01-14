@@ -1,7 +1,15 @@
 package com.brentpanther.bitcoinwidget.ui.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.ui.BannersViewModel
 import com.brentpanther.bitcoinwidget.ui.WarningBanner
@@ -87,40 +96,60 @@ private fun WidgetCard(
             shape = RoundedCornerShape(8.dp),
             elevation = 6.dp
         ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .height(110.dp)
-            ) {
-                Column(
+            Column {
+                Row(
                     Modifier
-                        .weight(.5f)
-                        .padding(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                        .fillMaxWidth()
+                        .height(110.dp)
                 ) {
-                    val coinName = widget.coinUnit ?: widget.coinCustomName ?: widget.coin.getSymbol()
-                    Text(
-                        stringResource(widget.widgetType.widgetName),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                    Text(
-                        stringResource(R.string.widget_list_title, coinName, widget.currency),
-                        fontSize = 16.sp
-                    )
-                    Text(
-                        widget.exchange.exchangeName,
-                        fontSize = 14.sp
-                    )
+                    Column(
+                        Modifier
+                            .weight(.5f)
+                            .padding(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        val coinName = widget.coinUnit ?: widget.coinCustomName ?: widget.coin.getSymbol()
+                        Text(
+                            stringResource(widget.widgetType.widgetName),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                        Text(
+                            stringResource(R.string.widget_list_title, coinName, widget.currency),
+                            fontSize = 16.sp
+                        )
+                        Text(
+                            widget.exchange.exchangeName,
+                            fontSize = 14.sp
+                        )
 
-                }
-                Box(Modifier.weight(.5f)) {
-                    Image(
-                        painterResource(id = R.drawable.bg), stringResource(R.string.coin_icon), contentScale = ContentScale.Crop
-                    )
-                    key(fixedSize) {
-                        WidgetPreview(widget, fixedSize)
                     }
+                    Box(Modifier.weight(.5f)) {
+                        Image(
+                            painterResource(id = R.drawable.bg), stringResource(R.string.coin_icon), contentScale = ContentScale.Crop
+                        )
+                        key(fixedSize) {
+                            WidgetPreview(widget, fixedSize)
+                        }
+                    }
+                }
+                when(widget.state) {
+                    WidgetState.STALE -> Text(
+                        text = stringResource(R.string.state_stale),
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                    WidgetState.ERROR -> Text(
+                        text = stringResource(R.string.state_error),
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                    WidgetState.RATE_LIMITED -> Text(
+                        text = stringResource(R.string.state_rate_limited),
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                    else -> {}
                 }
             }
         }

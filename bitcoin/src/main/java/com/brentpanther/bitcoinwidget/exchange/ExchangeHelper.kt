@@ -39,7 +39,11 @@ object ExchangeHelper {
                 builder = builder.headers(it)
             }
             val request = builder.build()
-            client.newCall(request).execute()
+            val response = client.newCall(request).execute()
+            if (response.code == 429) {
+                throw RateLimitedException()
+            }
+            return response
         } catch (e: IllegalArgumentException) {
             null
         }

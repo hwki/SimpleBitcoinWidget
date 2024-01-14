@@ -44,7 +44,6 @@ import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.WidgetApplication
-import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
@@ -88,7 +87,9 @@ fun BaseSettingsScreen(
     )
     val context = LocalContext.current
     val navEntries by navController.visibleEntries.collectAsState()
-    val fromHome = navEntries.any { it.destination.route == "home" }
+    val fromHome = remember(Unit) {
+        navEntries.any { it.destination.route == "home" }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -113,7 +114,6 @@ fun BaseSettingsScreen(
                                 val resultIntent = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
                                 setResult(Activity.RESULT_OK, resultIntent)
                                 finish()
-                                WidgetProvider.refreshWidgets(this)
                             }
                         }
                     },
@@ -123,12 +123,10 @@ fun BaseSettingsScreen(
                     text = {
                         when (it.state) {
                             WidgetState.DRAFT -> Text(
-                                stringResource(R.string.settings_create)
-                                    .uppercase()
+                                stringResource(R.string.settings_create).uppercase()
                             )
                             else -> Text(
-                                stringResource(R.string.settings_update)
-                                    .uppercase()
+                                stringResource(R.string.settings_update).uppercase()
                             )
                         }
                     }

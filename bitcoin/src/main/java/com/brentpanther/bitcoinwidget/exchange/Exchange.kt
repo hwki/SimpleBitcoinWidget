@@ -70,14 +70,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["data"]?.jsonObject?.get("last").asString
         }
     },
-    BITCLUDE("BitClude") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.bitclude.com/stats/ticker.json"
-            val obj = getJsonObject(url)
-            return obj["${coin.lowercase()}_${currency.lowercase()}"]?.jsonObject?.get("last").asString
-        }
-    },
     BITCOINDE("Bitcoin.de") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -310,6 +302,13 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["ticker"]?.jsonArray?.get(0)?.jsonObject?.get("last").asString
         }
     },
+    EGERA("Egera") {
+        override fun getValue(coin: String, currency: String): String? {
+            val url = "https://api.egera.com/stats/ticker.json"
+            val obj = getJsonObject(url)
+            return obj["${coin.lowercase()}_${currency.lowercase()}"]?.jsonObject?.get("last").asString
+        }
+    },
     EXMO("Exmo") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -433,19 +432,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 ?.jsonObject?.get("latest").asString
         }
     },
-    LIQUID("Liquid") {
-        override fun getValue(coin: String, currency: String): String? {
-            val array = getJsonArray("https://api.liquid.com/products")
-            val pair = "$coin$currency"
-            for (jsonElement in array) {
-                val obj = jsonElement as JsonObject
-                if (pair == obj["currency_pair_code"].asString) {
-                    return obj["last_traded_price"].asString
-                }
-            }
-            return null
-        }
-    },
     LUNO("Luno") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -523,18 +509,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             val url = "https://api.phemex.com/md/spot/ticker/24hr?symbol=s${coin}$currency"
             val value = getJsonObject(url)["result"]?.jsonObject?.get("lastEp").asString ?: return null
             return (value.toDouble() / 10.0.pow(8)).toString()
-        }
-    },
-    POCKETBITS("Pocketbits") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://ticker.pocketbits.in/api/v1/ticker"
-            val obj = getJsonArray(url).firstOrNull {
-                it.jsonObject["symbol"].asString == "$coin$currency"
-            }?.jsonObject ?: return null
-            val buy = obj["buy"].asString?.toDoubleOrNull() ?: return null
-            val sell = obj["sell"].asString?.toDoubleOrNull() ?: return null
-            return ((buy + sell) / 2).toString()
         }
     },
     POLONIEX("Poloniex") {

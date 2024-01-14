@@ -24,11 +24,6 @@ class BannersViewModel : ViewModel() {
     fun loadBanners() = viewModelScope.launch {
         val application = WidgetApplication.instance
         visibleBanners.clear()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (!application.packageManager.isAutoRevokeWhitelisted && !isDismissed(application, "hibernate")) {
-                visibleBanners.add("hibernate")
-            }
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val connectivityManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val restrictBackgroundStatus = connectivityManager.restrictBackgroundStatus
@@ -47,7 +42,7 @@ class BannersViewModel : ViewModel() {
 
     fun setDismissed(key: String) {
         WidgetApplication.instance.getSharedPreferences("widget", Context.MODE_PRIVATE).edit {
-            putLong(key, System.currentTimeMillis() + ManageWidgetsViewModel.dismissTime)
+            putLong(key, System.currentTimeMillis() + ManageWidgetsViewModel.DISMISS_TIME)
         }
         visibleBanners.remove(key)
     }

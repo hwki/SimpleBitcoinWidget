@@ -23,7 +23,7 @@ abstract class WidgetDataStrategy(val widgetId: Int) {
 
     protected fun getConfig() = dao.configWithSizes()
 
-    abstract suspend fun loadData(manual: Boolean)
+    abstract suspend fun loadData(manual: Boolean) : Boolean
 
     suspend fun save() {
         widget?.let { dao.update(it) }
