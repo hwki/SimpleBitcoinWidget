@@ -1,0 +1,1 @@
+Fixed an issue where not all widgets would regularly update on certain devices.

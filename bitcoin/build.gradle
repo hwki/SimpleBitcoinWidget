@@ -13,8 +13,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdk 23
         targetSdk 34
-        versionCode 325
-        versionName "8.5.0"
+        versionCode 326
+        versionName "8.5.1"
 
     }
 

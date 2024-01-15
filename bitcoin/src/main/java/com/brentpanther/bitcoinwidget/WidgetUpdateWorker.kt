@@ -9,7 +9,7 @@ class WidgetUpdateWorker(context: Context, params: WorkerParameters) : Coroutine
 
     override suspend fun doWork(): Result {
         return try {
-            WidgetUpdater.update(applicationContext, WidgetApplication.instance.widgetIds, false)
+            WidgetUpdater.update(applicationContext, WidgetApplication.instance.widgetIds, false).join()
             Result.success()
         } catch (e: Exception) {
             Log.e(TAG, "Exception in worker", e)
