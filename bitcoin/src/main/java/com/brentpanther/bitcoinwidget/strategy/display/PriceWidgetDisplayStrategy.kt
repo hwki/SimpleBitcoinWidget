@@ -80,7 +80,7 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
     }
 
     protected fun getView(@IdRes layoutId: Int): TextView {
-        val layout = widget.theme.getLayout(widget.nightMode.isDark(appContext), widget.widgetType)
+        val layout = widget.theme.getLayout(widget.nightMode, widget.widgetType)
         val vg = LayoutInflater.from(appContext).inflate(layout, null) as ViewGroup
         return vg.findViewById(layoutId)
     }

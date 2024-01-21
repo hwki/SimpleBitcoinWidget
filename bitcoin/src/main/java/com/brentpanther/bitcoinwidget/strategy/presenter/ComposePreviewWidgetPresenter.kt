@@ -17,8 +17,7 @@ class ComposePreviewWidgetPresenter(widget: Widget, private val view: View) : Wi
 
     init {
         val context = view.context
-        val isDark = widget.nightMode.isDark(context)
-        val layout = widget.theme.getLayout(isDark, widget.widgetType)
+        val layout = widget.theme.getLayout(widget.nightMode, widget.widgetType)
         view.findViewById<ViewGroup>(R.id.widgetContainer).apply {
             removeAllViews()
             View.inflate(context, layout, this)

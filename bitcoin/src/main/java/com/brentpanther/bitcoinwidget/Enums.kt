@@ -6,23 +6,38 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 
-enum class Theme(@LayoutRes val lightPrice: Int, @LayoutRes val darkPrice: Int,
-                 @LayoutRes val lightValue: Int, @LayoutRes val darkValue: Int) {
+enum class Theme(@LayoutRes val lightPrice: Int, @LayoutRes val darkPrice: Int, @LayoutRes val autoPrice: Int,
+                 @LayoutRes val lightValue: Int, @LayoutRes val darkValue: Int, @LayoutRes val autoValue: Int) {
 
-    SOLID(R.layout.widget_price_solid_light, R.layout.widget_price_solid_dark,
-        R.layout.widget_value_solid_light, R.layout.widget_value_solid_dark),
-    TRANSPARENT(R.layout.widget_price_transparent_light, R.layout.widget_price_transparent_dark,
-        R.layout.widget_value_transparent_light, R.layout.widget_value_transparent_dark),
-    MATERIAL(R.layout.widget_price_material_light, R.layout.widget_price_material_dark,
-        R.layout.widget_value_material_light, R.layout.widget_value_material_dark),
-    TRANSPARENT_MATERIAL(R.layout.widget_price_transparent_light_material, R.layout.widget_price_transparent_dark_material,
-        R.layout.widget_value_transparent_light_material, R.layout.widget_value_transparent_dark_material);
+    SOLID(R.layout.widget_price_solid_light,
+        R.layout.widget_price_solid_dark,
+        R.layout.widget_price_solid_auto,
+        R.layout.widget_value_solid_light,
+        R.layout.widget_value_solid_dark,
+        R.layout.widget_value_solid_auto),
+    TRANSPARENT(R.layout.widget_price_transparent_light,
+        R.layout.widget_price_transparent_dark,
+        R.layout.widget_price_transparent_auto,
+        R.layout.widget_value_transparent_light,
+        R.layout.widget_value_transparent_dark,
+        R.layout.widget_value_transparent_auto),
+    MATERIAL(R.layout.widget_price_material_light,
+        R.layout.widget_price_material_dark,
+        R.layout.widget_price_material_auto,
+        R.layout.widget_value_material_light,
+        R.layout.widget_value_material_dark,
+        R.layout.widget_value_material_auto),
+    TRANSPARENT_MATERIAL(R.layout.widget_price_transparent_light_material,
+        R.layout.widget_price_transparent_dark_material,
+        R.layout.widget_price_transparent_auto_material,
+        R.layout.widget_value_transparent_light_material,
+        R.layout.widget_value_transparent_dark_material,
+        R.layout.widget_value_transparent_auto_material);
 
-    fun getLayout(isDark: Boolean, type: WidgetType): Int {
-        return when(type) {
-            WidgetType.PRICE -> if (isDark) darkPrice else lightPrice
-            WidgetType.VALUE -> if (isDark) darkValue else lightValue
-        }
+    fun getLayout(mode: NightMode, type: WidgetType) = when(mode) {
+        NightMode.LIGHT -> if (type == WidgetType.PRICE) lightPrice else lightValue
+        NightMode.DARK -> if (type == WidgetType.PRICE) darkPrice else darkValue
+        NightMode.SYSTEM -> if (type == WidgetType.PRICE) autoPrice else autoValue
     }
 }
 

@@ -23,8 +23,7 @@ class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter 
     private var remoteViews: RemoteViews
 
     init {
-        val isDark = widget.nightMode.isDark(context)
-        val layout = widget.theme.getLayout(isDark, widget.widgetType)
+        val layout = widget.theme.getLayout(widget.nightMode, widget.widgetType)
         remoteViews = RemoteViews(context.packageName, layout)
     }
 
