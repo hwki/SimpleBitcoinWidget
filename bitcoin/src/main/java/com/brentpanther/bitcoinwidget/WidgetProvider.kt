@@ -33,7 +33,11 @@ open class WidgetProvider : AppWidgetProvider() {
 
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
         appWidgetId: Int, newOptions: Bundle) {
-        refreshWidgets(context, appWidgetId)
+        WidgetUpdater.updateDisplays(context)
+    }
+
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        WidgetUpdater.updateDisplays(context)
     }
 
     override fun onDeleted(context: Context, widgetIds: IntArray) {
