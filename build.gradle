@@ -2,6 +2,7 @@
 
 buildscript {
     ext.compose_compiler_version = '1.5.8'
+
     ext.kotlin_version = '1.9.22'
     repositories {
         google()
@@ -9,7 +10,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.1'
+        classpath 'com.android.tools.build:gradle:8.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22"
 
         // NOTE: Do not place your application dependencies here; they belong
