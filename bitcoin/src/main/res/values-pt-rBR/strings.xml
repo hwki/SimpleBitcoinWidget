@@ -52,6 +52,7 @@
         <item>1 hora</item>
         <item>2 horas</item>
         <item>6 horas</item>
+        <item>Nunca</item>
     </string-array>
     <string-array name="symbols">
         <item>Mostrar símbolo local</item>

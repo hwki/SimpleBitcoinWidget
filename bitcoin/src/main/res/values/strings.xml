@@ -74,6 +74,7 @@
         <item>1 hour</item>
         <item>2 hours</item>
         <item>6 hours</item>
+        <item>Never</item>
     </string-array>
     <string-array name="intervalValues">
         <item>5</item>
@@ -83,6 +84,7 @@
         <item>60</item>
         <item>120</item>
         <item>360</item>
+        <item>0</item>
     </string-array>
     <string-array name="symbols">
         <item>Show local symbol</item>
@@ -94,7 +96,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Thu, 01 Feb 2024 20:47:37 GMT</string>
+    <string name="json_last_modified" translatable="false">Sat, 06 Jul 2024 15:54:48 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>

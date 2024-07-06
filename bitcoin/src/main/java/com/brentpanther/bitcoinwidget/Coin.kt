@@ -33,6 +33,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     BNB("Binance Coin", "binancecoin", IconTheme(SOLID, ic_bnb)),
     BEST("Bitpanda Ecosystem Token", "bitpanda-ecosystem-token", IconTheme(SOLID, ic_best)),
     BNT("Bancor Network Token", "bancor", IconTheme(SOLID, ic_bnt)),
+    BONK("Bonk", "bonk", IconTheme(SOLID, ic_bonk)),
     BSV("Bitcoin SV", "bitcoin-cash-sv", IconTheme(SOLID, ic_bsv, ic_bsv_dark)),
     BTC("Bitcoin", "bitcoin", IconTheme(SOLID, ic_btc, ic_btc_dark)) {
         override fun getUnits() =
@@ -56,6 +57,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     DYDX("dYdX", "dydx-chain", IconTheme(SOLID, ic_dydx)),
     EGLD("Elrond", "elrond-erd-2", IconTheme(SOLID, ic_egld_dark, ic_egld_white)),
     ENJ("Enjin Coin", "enjincoin", IconTheme(SOLID, ic_enj)),
+    ENS("Ethereum Name Service", "ethereum-name-service", IconTheme(SOLID, ic_ens)),
     EOS("EOS", "eos", IconTheme(SOLID, ic_eos_black, ic_eos_white), IconTheme(TRANSPARENT, ic_eos_white)),
     ETC("Ethereum Classic", "ethereum-classic", IconTheme(SOLID, ic_etc)),
     ETH("Ethereum", "ethereum", IconTheme(SOLID, ic_eth)),
@@ -112,6 +114,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     PAN("Pantos", "pantos", IconTheme(SOLID, ic_pan)),
     PAX("Paxos Standard", "paxos-standard", IconTheme(SOLID, ic_pax)),
     PAXG("PAX Gold", "pax-gold", IconTheme(SOLID, ic_paxg_color)),
+    PEPE("Pepe", "pepe", IconTheme(SOLID, ic_pepe)),
     POWR("Power Ledger", "power-ledger", IconTheme(SOLID, ic_powr_color)),
     PPC("Peercoin", "peercoin", IconTheme(SOLID, ic_ppc)),
     QNT("Quant", "quant-network", IconTheme(SOLID, ic_qnt)),
@@ -119,6 +122,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     RDD("Reddcoin", "reddcoin", IconTheme(SOLID, ic_rdd)),
     REN("REN", "republic-protocol", IconTheme(SOLID, ic_ren)),
     REP("Augur", "augur", IconTheme(SOLID, ic_rep)),
+    RNDR("Render", "render-token", IconTheme(SOLID, ic_rndr)),
     RPL("Rocket Pool", "rocket-pool", IconTheme(SOLID, ic_rpl)),
     RUNE("THORChain", "thorchain", IconTheme(SOLID, ic_rune)),
     RVN("Ravencoin", "ravencoin", IconTheme(SOLID, ic_rvn)),

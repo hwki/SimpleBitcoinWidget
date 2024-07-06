@@ -1,0 +1,2 @@
+Added Bonk, Ethereum Name Service, Pepe, and Render tokens.
+Added a "Never" setting to update intervals.

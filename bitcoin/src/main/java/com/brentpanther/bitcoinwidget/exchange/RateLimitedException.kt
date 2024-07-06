@@ -1,4 +1,3 @@
 package com.brentpanther.bitcoinwidget.exchange
 
-class RateLimitedException : Exception() {
-}
+class RateLimitedException : Exception()

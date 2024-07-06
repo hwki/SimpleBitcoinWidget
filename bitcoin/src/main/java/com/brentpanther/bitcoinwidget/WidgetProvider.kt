@@ -79,6 +79,7 @@ open class WidgetProvider : AppWidgetProvider() {
                 workManager.cancelAllWorkByTag(WORKNAME)
             }
             when (refresh) {
+                0 -> workManager.cancelAllWorkByTag(WORKNAME)
                 5 -> (5..15 step 5).forEachIndexed { i, it -> scheduleWork(workManager, 15, it, i) }
                 10 -> (10..20 step 10).forEachIndexed { i, it -> scheduleWork(workManager, 20, it, i) }
                 else -> scheduleWork(workManager, refresh, refresh, 0)
