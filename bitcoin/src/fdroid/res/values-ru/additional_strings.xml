@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_donate">Поддержать разработчика</string>
+    <string name="summary_donate">Пожертвовать Bitcoin</string>
+    <string name="error_donate">Кошелёк не найден</string>
+</resources>
