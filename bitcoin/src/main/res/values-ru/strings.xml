@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="new_widget">Новый %s-виджет</string>
+    <string name="edit_widget">Изменить %s-виджет</string>
+    <string name="add_widget">Добавить виджет</string>
+    <string name="title_fixed_size">Фиксированный размер текста</string>
+    <string name="title_data">Данные</string>
+    <string name="title_style">Стиль</string>
+    <string name="title_other">Другое</string>
+    <string name="title_refresh_interval">Интервал обновления</string>
+    <string name="title_currency">Валюта</string>
+    <string name="title_exchange">Биржа</string>
+    <string name="title_coin_label">Показывать название криптовалюты</string>
+    <string name="title_exchange_label">Показывать название обменника</string>
+    <string name="title_amount_label">Показывать количество</string>
+    <string name="title_theme">Тема</string>
+    <string name="title_night_mode">Тёмный режим</string>
+    <string name="title_format">Формат</string>
+    <string name="title_display">Вид</string>
+    <string name="title_icon">Показывать значок</string>
+    <string name="title_decimals">Количество знаков после запятой</string>
+    <string name="title_units">Номинал</string>
+    <string name="title_preview">Предпросмотр</string>
+    <string name="title_currency_symbol">Символ валюты</string>
+    <string name="title_about">О приложении</string>
+    <string name="title_inverse">Инверсия</string>
+    <string name="title_amount_held">Количество во владении</string>
+    <string name="title_coin_select">Выберите криптовалюту</string>
+    <string name="summary_fixed_size">Одинаковый размер шрифта среди всех виджетов</string>
+    <string name="summary_refresh_interval">Каждые %s</string>
+    <string name="summary_currency">Использовать %s как валюту</string>
+    <string name="summary_exchange">Получить данные из %s</string>
+    <string name="summary_units">Показывать %1$s как %2$s</string>
+    <string name="summary_inverse">Показывать цену %1$s в %1$s</string>
+    <string name="summary_decimals_auto">Автоматически</string>
+    <string name="error_restricted_battery_saver">Невозможно обновить, включен режим энергосбережения</string>
+    <string name="error_restricted_data_saver">Невозможно обновить, включен режим экономии трафика</string>
+    <string name="button_settings">Открыть настройки</string>
+    <string name="coin_search_hint">Поиск по названию или обозначению</string>
+    <string name="coin_search_popular">Популярные</string>
+    <string name="coin_search_more">Больше от CoinGecko</string>
+    <string name="coin_search_powered_by">На базе CoinGecko</string>
+    <string name="settings_update">Обновить</string>
+    <string name="settings_create">Создать</string>
+    <string name="version">Версия %s</string>
+    <string name="coin_icon">Значок</string>
+    <string name="nav_title_manage_widgets">Управление виджетами</string>
+    <string name="nav_title_settings">Настройки</string>
+    <string name="manage_widgets_empty">У вас пока нет виджетов!</string>
+    <string name="manage_widgets_how_to">Как создать виджет:\n• Зажмите и удерживайте на домашнем экране\n• Прокрутите до Simple Crypto Widget\n• Перетащите на домашний экран\n• Настройте и создайте</string>
+    <string name="widget_list_title">%1$s / %2$s</string>
+    <string name="warning_data_saver">Приложение не будет обновлять данные, так как использование трафика ограничено. Включите настройку для неограниченного использования трафика для этого приложения.</string>
+    <string name="warning_battery_saver">Приложение не будет обновлять данные, так как сейчас включен режим энергосбережения.</string>
+    <string name="state_stale">Цена устарело. Проверьте интернет-соединение.</string>
+    <string name="state_error">Невозможно обновить цену. Возможно, это проблема с биржей.</string>
+    <string name="state_rate_limited">Запросы были ограничены биржей.</string>
+    <string name="widget_price_name">Текущая цена</string>
+    <string name="widget_value_name">Цена кошелька</string>
+    <string name="dialog_amount_held">Введите количество %1$s на вашем кошельке, например %2$s</string>
+    <string name="add_value_widget">Добавить виджет \"Цена кошелька\"</string>
+    <string name="add_price_widget">Добавить виджет \"Текущая цена\"</string>
+    <string name="widget_price_summary">Показывает текущую цену продажи %s.</string>
+    <string name="widget_value_summary">Показывает текущую цену вашего %s-кошелька.</string>
+    <string name="dismiss">Отменить</string>
+    <string name="search_error">Ошибка получения криптовалют с CoinGecko.</string>
+    <string name="search_empty">Не найдено криптовалют.</string>
+    <string-array name="themes" tools:ignore="InconsistentArrays">
+        <item>Сплошной цвет</item>
+        <item>Прозрачный</item>
+    </string-array>
+    <string-array name="nightModes">
+        <item>Светлый</item>
+        <item>Тёмный</item>
+        <item>Системный</item>
+    </string-array>
+    <string-array name="intervals">
+        <item>5 минут</item>
+        <item>10 минут</item>
+        <item>20 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>2 часа</item>
+        <item>6 часов</item>
+        <item>Никогда</item>
+    </string-array>
+    <string-array name="symbols">
+        <item>Показывать локальный символ</item>
+        <item>Показывать символ ISO</item>
+        <item>Не показывать символ</item>
+    </string-array>
+</resources>
