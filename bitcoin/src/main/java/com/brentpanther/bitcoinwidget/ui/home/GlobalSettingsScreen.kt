@@ -11,6 +11,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -84,6 +85,7 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
         )
         if (dialogVisible) {
             val licenseString = stringResource(R.string.licenses)
+            val textColor = MaterialTheme.colors.onSurface
             Dialog(
                 onDismissRequest = { dialogVisible = false }
             ) {
@@ -102,6 +104,7 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
                                 TextView.BufferType.SPANNABLE
                             )
                             it.movementMethod = LinkMovementMethod.getInstance()
+                            it.setTextColor(textColor.toArgb())
                         }
                     )
                 }
