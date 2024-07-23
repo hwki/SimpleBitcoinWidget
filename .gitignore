@@ -81,6 +81,9 @@ obj/
 .idea/assetWizardSettings.xml
 .idea/render.experimental.xml
 .idea/misc.xml
+.idea/deploymentTargetDropDown.xml
+.idea/deploymentTargetSelector.xml
+.idea/other.xml
 
 # Gradle:
 .idea/gradle.xml
@@ -135,4 +138,3 @@ fabric.properties
 # End of https://www.gitignore.io/api/androidstudio
 
 release/
-/.idea/deploymentTargetDropDown.xml

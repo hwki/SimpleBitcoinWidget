@@ -1,0 +1,2 @@
+Added Russian translations.
+Fix minor UX bug.
