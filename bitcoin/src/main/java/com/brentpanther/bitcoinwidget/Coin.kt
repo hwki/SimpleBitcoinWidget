@@ -141,6 +141,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     UMA("UMA", "uma", IconTheme(SOLID, ic_uma)),
     UNI("Uniswap", "uniswap", IconTheme(SOLID, ic_uni)),
     VET("VeChain", "vechain", IconTheme(SOLID, ic_vet)),
+    VRSC("Verus Coin", "verus-coin", IconTheme(SOLID, ic_vrsc)),
     VTC("Vertcoin", "vertcoin", IconTheme(SOLID, ic_vtc)),
     WAVES("Waves", "waves", IconTheme(SOLID, ic_waves)),
     WBTC("Wrapped Bitcoin", "wrapped-bitcoin", IconTheme(SOLID, ic_wbtc)),

@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.devtools.ksp'
     id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.24'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.25'
 }
 
 android {
@@ -13,8 +13,8 @@ android {
         applicationId "com.brentpanther.bitcoinwidget"
         minSdk 23
         targetSdk 34
-        versionCode 331
-        versionName "8.5.6"
+        versionCode 332
+        versionName "8.5.7"
 
     }
 
@@ -68,13 +68,13 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3'
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.work:work-runtime:2.9.0'
-    implementation 'androidx.activity:activity-ktx:1.9.0'
-    implementation 'androidx.activity:activity-compose:1.9.0'
+    implementation 'androidx.work:work-runtime:2.9.1'
+    implementation 'androidx.activity:activity-ktx:1.9.1'
+    implementation 'androidx.activity:activity-compose:1.9.1'
     implementation "androidx.compose.ui:ui"
     implementation "androidx.compose.ui:ui-tooling-preview"
     implementation 'androidx.compose.material:material'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4'
     implementation 'androidx.navigation:navigation-compose:2.7.7'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'io.coil-kt:coil-compose:2.7.0'

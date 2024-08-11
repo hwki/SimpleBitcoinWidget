@@ -261,6 +261,18 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["tickers"]?.jsonArray?.get(0)?.jsonObject?.get("last").asString
         }
     },
+    COINPAPRIKA("Coinpaprika") {
+        override fun getValue(coin: String, currency: String): String? {
+            // since we can't look up by symbol, first search for id
+            val searchUrl = "https://api.coinpaprika.com/v1/search/?q=$coin&c=currencies&modifier=symbol_search"
+            val id = getJsonObject(searchUrl)["currencies"]?.jsonArray?.firstOrNull {
+                it.jsonObject["symbol"].asString == coin
+            }?.jsonObject?.get("id").asString ?: return null
+            val url = "https://api.coinpaprika.com/v1/tickers/$id"
+            return getJsonObject(url)["quotes"]?.jsonObject?.get(currency)?.jsonObject?.get("price").asString
+        }
+
+    },
     COINSBIT("Coinsbit") {
         override fun getValue(coin: String, currency: String): String? {
             val coinName = if (coin == "WBTC") "wBTC" else coin

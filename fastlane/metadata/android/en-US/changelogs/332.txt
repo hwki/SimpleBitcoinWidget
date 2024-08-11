@@ -1,0 +1,2 @@
+Added CoinPaprika exchange.
+Added Verus token.

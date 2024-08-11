@@ -41,7 +41,7 @@ class GenerateSupportedCoinsJson {
             this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue,
             this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
             this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
-            this::coinjar, this::coinmate, this::coinone, this::coinsbit, this::coinsph, this::cointree,
+            this::coinjar, this::coinmate, this::coinone, this::coinpaprika, this::coinsbit, this::coinsph, this::cointree,
             this::cryptocom, this::deversifi, this::digifinex, this::egera, this::exmo, this::foxbit, this::gateio, this::gemini,
             this::hashkey, this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit,
             this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::luno,
@@ -433,6 +433,13 @@ class GenerateSupportedCoinsJson {
         }
     }
 
+    private fun coinpaprika(): List<String> {
+        val currencies = listOf("BTC", "ETH", "USD", "EUR", "PLN", "KRW", "GBP", "CAD", "JPY", "RUB", "TRY", "NZD", "AUD", "CHF", "UAH", "HKD", "SGD", "NGN", "PHP", "MXN", "BRL", "THB", "CLP", "CNY", "CZK", "DKK", "HUF", "IDR", "ILS", "INR", "MYR", "NOK", "PKR", "SEK", "TWD", "ZAR", "VND", "BOB", "COP", "PEN", "ARS", "ISK")
+        val coins = parse("https://api.coinpaprika.com/v1/coins", "$[*][?(@.is_active==true)].symbol")
+            .filterNot { it == "XBT" }
+        return coins.flatMap { coin -> currencies.filterNot { it == coin }.map { currency -> "$coin-$currency" } }
+    }
+
     private fun coinsbit(): List<String> {
         return parse("https://coinsbit.io/api/v1/public/products", "$.result[*].id")
     }
@@ -572,8 +579,8 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun phemex(): List<String> {
-        val list = JsonPath.read(get("https://api.phemex.com/public/products"),
-            "$.data.products.[?(@.status == 'Listed' && @.type == 'Spot')]") as List<Map<String, *>>
+        val path = "$.data.products.[?(@.status == 'Listed' && @.type == 'Spot')]"
+        val list = JsonPath.read(get("https://api.phemex.com/public/products"), path) as List<Map<String, *>>
         return list.map { "${it["baseCurrency"]}-${it["quoteCurrency"]}" }
     }
 
@@ -586,7 +593,8 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun tradeogre(): List<String> {
-        val list = JsonPath.read(get("https://tradeogre.com/api/v1/markets"), "$[*]") as List<Map<String, *>>
+        val path = "$[*]"
+        val list = JsonPath.read(get("https://tradeogre.com/api/v1/markets"), path) as List<Map<String, *>>
         return list.map { it.keys.first().split("-").reversed().joinToString("_") }
     }
 
