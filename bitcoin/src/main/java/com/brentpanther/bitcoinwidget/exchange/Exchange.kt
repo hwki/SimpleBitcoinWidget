@@ -588,7 +588,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     },
     ZONDA("Zonda") {
         override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.zonda.exchange/rest/trading/ticker/$coin-$currency"
+            val url = "https://api.zondacrypto.exchange/rest/trading/ticker/$coin-$currency"
             return getJsonObject(url)["ticker"]?.jsonObject?.get("rate").asString
         }
     };

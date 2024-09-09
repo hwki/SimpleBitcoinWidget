@@ -25,7 +25,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalRippleConfiguration
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.ProvideTextStyle
@@ -37,7 +39,6 @@ import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -53,10 +54,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.brentpanther.bitcoinwidget.ui.theme.HighlightRippleTheme
+import com.brentpanther.bitcoinwidget.ui.theme.MyRippleConfiguration
 import java.lang.Integer.max
 import java.util.Locale
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Setting(
     modifier: Modifier = Modifier,
@@ -65,7 +67,7 @@ fun Setting(
     subtitle: @Composable (() -> Unit)? = null,
     content: @Composable ((BoxScope).() -> Unit) = {}
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides HighlightRippleTheme()) {
+    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -381,13 +383,14 @@ fun SettingsSlider(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun RadioDialogItem(
     item: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides HighlightRippleTheme()) {
+    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
         Row(
             Modifier
                 .fillMaxWidth()

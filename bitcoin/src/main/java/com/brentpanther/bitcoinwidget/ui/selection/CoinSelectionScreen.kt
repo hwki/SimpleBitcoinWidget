@@ -24,8 +24,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalRippleConfiguration
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
@@ -33,7 +35,6 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -61,7 +62,7 @@ import coil.compose.AsyncImage
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Theme
-import com.brentpanther.bitcoinwidget.ui.theme.HighlightRippleTheme
+import com.brentpanther.bitcoinwidget.ui.theme.MyRippleConfiguration
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -235,6 +236,7 @@ fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CoinRow(
     onClick: (CoinResponse) -> Unit,
@@ -242,7 +244,7 @@ private fun CoinRow(
     modifier: Modifier,
     isNightMode: Boolean
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides HighlightRippleTheme()) {
+    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
         Row(
             Modifier
                 .clickable {

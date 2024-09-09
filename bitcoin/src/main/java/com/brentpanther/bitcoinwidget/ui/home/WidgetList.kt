@@ -15,8 +15,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.LocalRippleConfiguration
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,8 +33,9 @@ import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.ui.BannersViewModel
 import com.brentpanther.bitcoinwidget.ui.WarningBanner
 import com.brentpanther.bitcoinwidget.ui.WidgetPreview
-import com.brentpanther.bitcoinwidget.ui.theme.HighlightRippleTheme
+import com.brentpanther.bitcoinwidget.ui.theme.MyRippleConfiguration
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WidgetList(
     navController: NavController,
@@ -70,8 +71,8 @@ fun WidgetList(
             LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 48.dp)) {
                 items(widgets, key = { it.widget.widgetId }) { item ->
                     val widget = item.widget
-                    CompositionLocalProvider(LocalRippleTheme provides HighlightRippleTheme()) {
-                       WidgetCard(navController, widget, fixedSize)
+                    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
+                        WidgetCard(navController, widget, fixedSize)
                     }
                 }
             }

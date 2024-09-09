@@ -626,7 +626,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun zonda(): List<String> {
-        return parseKeys("https://api.zonda.exchange/rest/trading/ticker", "$.items")
+        return parseKeys("https://api.zondacrypto.exchange/rest/trading/ticker", "$.items")
     }
 
     //endregion

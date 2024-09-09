@@ -1,11 +1,12 @@
 package com.brentpanther.bitcoinwidget.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RippleConfiguration
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -24,14 +25,12 @@ private val lightColorPalette = lightColors(
 
 )
 
-class HighlightRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = Highlight
-
-    @Composable
-    override fun rippleAlpha() = RippleAlpha(0.8f,0.8f,0.8f,0.8f)
-
-}
+@OptIn(ExperimentalMaterialApi::class)
+val MyRippleConfiguration =
+    RippleConfiguration(
+        color = Highlight,
+        rippleAlpha = RippleAlpha(0.8f,0.8f,0.8f,0.8f)
+    )
 
 @Composable
 fun SimpleBitcoinWidgetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
