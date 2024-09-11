@@ -1,0 +1,1 @@
+Attempted fix for CoinGecko API.

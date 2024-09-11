@@ -242,7 +242,14 @@ class GenerateSupportedCoinsJson {
 
     private fun parseKeys(url: String, path: String) = (JsonPath.read(get(url), path) as Map<String, *>).keys.map { it }
     private fun parse(url: String, path: String) = JsonPath.read(get(url), path) as List<String>
-    private fun get(value: String): String = OkHttpClient.Builder().ignoreAllSSLErrors().build().newCall(Request.Builder().url(value).build()).execute().body!!.string()
+    private fun get(value: String): String = OkHttpClient.Builder()
+        .ignoreAllSSLErrors()
+        .build()
+        .newCall(Request.Builder()
+            .url(value)
+            .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0")
+            .build()
+        ).execute().body!!.string()
 
     private fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
         val naiveTrustManager = object : X509TrustManager {

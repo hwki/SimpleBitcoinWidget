@@ -13,9 +13,7 @@ import java.io.InputStream
 object ExchangeHelper {
 
     private val client: OkHttpClient by lazy {
-        OkHttpClient.Builder()
-            .addNetworkInterceptor { chain -> intercept(chain) }
-                .build()
+        OkHttpClient.Builder().build()
     }
 
     val JsonElement?.asString: String?
@@ -38,6 +36,7 @@ object ExchangeHelper {
             headers?.let {
                 builder = builder.headers(it)
             }
+            builder = builder.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0")
             val request = builder.build()
             val response = client.newCall(request).execute()
             if (response.code == 429) {
@@ -49,12 +48,4 @@ object ExchangeHelper {
         }
     }
 
-    @Throws(IOException::class)
-    private fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request().newBuilder()
-            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0")
-            .build()
-        val response = chain.proceed(request)
-        return response.newBuilder().build()
-    }
 }
