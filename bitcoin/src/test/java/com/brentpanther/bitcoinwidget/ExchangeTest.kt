@@ -14,7 +14,7 @@ class ExchangeTest {
         return ClassLoader.getSystemResourceAsStream("raw/cryptowidgetcoins_v2.json")
     }
 
-    private val nonUSExchanges = setOf(Exchange.BYBIT, Exchange.BINANCE)
+    private val nonUSExchanges = setOf(Exchange.BYBIT, Exchange.BINANCE, Exchange.BINGX)
 
     private fun exchangeCanLoadValues(excluded: Collection<Exchange>) {
         val coins = EnumSet.allOf(Coin::class.java).sorted()

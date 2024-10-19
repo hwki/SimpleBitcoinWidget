@@ -161,14 +161,13 @@ fun BaseSettingsScreen(
                     )
                     SettingsHeader(
                         title = R.string.title_preview,
-                        Modifier.padding(bottom = 16.dp),
+                        modifier = Modifier.padding(bottom = 16.dp),
                         withDivider = false
                     )
                     WidgetPreview(
-                        widget, config.consistentSize,
-                        Modifier
-                            .height(96.dp)
-                            .fillMaxWidth()
+                        widget = widget,
+                        fixedSize = config.consistentSize,
+                        modifier = Modifier.height(96.dp)
                     )
                     Column(Modifier.verticalScroll(rememberScrollState())) {
                         content(widget)

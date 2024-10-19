@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.brentpanther.bitcoinwidget.BuildConfig
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.ui.theme.Highlight
 
@@ -46,7 +45,7 @@ fun WarningBanner(viewModel: BannersViewModel) {
                     context.startActivity(
                         Intent(
                             Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
-                            Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+                            Uri.parse("package:${context.packageName}")
                         )
                     )
                 }

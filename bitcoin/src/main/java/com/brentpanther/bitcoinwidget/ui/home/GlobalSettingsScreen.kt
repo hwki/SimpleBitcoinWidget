@@ -9,9 +9,15 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -20,7 +26,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.brentpanther.bitcoinwidget.BuildConfig
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsButton
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsHeader
@@ -30,6 +35,7 @@ import com.brentpanther.bitcoinwidget.ui.settings.SettingsSwitch
 @Composable
 fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
     val settings by viewModel.globalSettings.collectAsState(null)
+    val context = LocalContext.current
     if (settings == null) return
     Column {
         SettingsHeader(title = R.string.nav_title_settings, withDivider = false)
@@ -77,7 +83,8 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
                 Text(stringResource(id = R.string.title_about))
             },
             subtitle = {
-                Text(stringResource(R.string.version, BuildConfig.VERSION_NAME))
+                val versionName = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+                Text(stringResource(R.string.version, versionName.orEmpty()))
             },
             onClick = {
                 dialogVisible = true

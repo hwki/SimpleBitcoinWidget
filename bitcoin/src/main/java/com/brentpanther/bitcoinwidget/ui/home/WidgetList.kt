@@ -1,6 +1,5 @@
 package com.brentpanther.bitcoinwidget.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +18,6 @@ import androidx.compose.material.LocalRippleConfiguration
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -126,9 +123,6 @@ private fun WidgetCard(
 
                     }
                     Box(Modifier.weight(.5f)) {
-                        Image(
-                            painterResource(id = R.drawable.bg), stringResource(R.string.coin_icon), contentScale = ContentScale.Crop
-                        )
                         key(fixedSize) {
                             WidgetPreview(widget, fixedSize)
                         }
