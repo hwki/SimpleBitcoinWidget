@@ -6,20 +6,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalRippleConfiguration
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,9 +30,8 @@ import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.ui.BannersViewModel
 import com.brentpanther.bitcoinwidget.ui.WarningBanner
 import com.brentpanther.bitcoinwidget.ui.WidgetPreview
-import com.brentpanther.bitcoinwidget.ui.theme.MyRippleConfiguration
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WidgetList(
     navController: NavController,
@@ -68,9 +67,7 @@ fun WidgetList(
             LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 48.dp)) {
                 items(widgets, key = { it.widget.widgetId }) { item ->
                     val widget = item.widget
-                    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
-                        WidgetCard(navController, widget, fixedSize)
-                    }
+                    WidgetCard(navController, widget, fixedSize)
                 }
             }
         }
@@ -78,7 +75,6 @@ fun WidgetList(
 }
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
 private fun WidgetCard(
     navController: NavController,
     widget: Widget,
@@ -91,14 +87,13 @@ private fun WidgetCard(
             modifier = Modifier
                 .padding(8.dp)
                 .padding(horizontal = 16.dp),
-            shape = RoundedCornerShape(8.dp),
-            elevation = 6.dp
+            shape = RoundedCornerShape(8.dp)
         ) {
             Column {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .height(110.dp)
+                        .heightIn(110.dp)
                 ) {
                     Column(
                         Modifier
@@ -114,13 +109,14 @@ private fun WidgetCard(
                         )
                         Text(
                             stringResource(R.string.widget_list_title, coinName, widget.currency),
-                            fontSize = 16.sp
+                            fontSize = 16.sp,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
                         )
                         Text(
                             widget.exchange.exchangeName,
                             fontSize = 14.sp
                         )
-
                     }
                     Box(Modifier.weight(.5f)) {
                         key(fixedSize) {

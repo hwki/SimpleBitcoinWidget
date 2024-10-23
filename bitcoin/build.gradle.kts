@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.brentpanther.bitcoinwidget"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.brentpanther.bitcoinwidget"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 334
         versionName = "8.5.9"
     }
@@ -70,7 +70,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle)
     implementation(libs.androidx.preferences)

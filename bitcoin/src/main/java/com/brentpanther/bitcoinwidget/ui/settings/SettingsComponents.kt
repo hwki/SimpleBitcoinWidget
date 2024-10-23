@@ -22,23 +22,18 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalRippleConfiguration
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Slider
-import androidx.compose.material.SliderDefaults
-import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -47,18 +42,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.brentpanther.bitcoinwidget.ui.theme.MyRippleConfiguration
 import java.lang.Integer.max
 import java.util.Locale
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Setting(
     modifier: Modifier = Modifier,
@@ -67,49 +59,45 @@ fun Setting(
     subtitle: @Composable (() -> Unit)? = null,
     content: @Composable ((BoxScope).() -> Unit) = {}
 ) {
-    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .heightIn(min = 72.dp),
-            verticalAlignment = Alignment.CenterVertically
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .heightIn(min = 72.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(24.dp)
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(24.dp)
-            ) {
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    icon()
+            CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
+                icon()
+            }
+        }
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .weight(1f, true)
+                .padding(start = 16.dp)
+        ) {
+            ProvideTextStyle(value = MaterialTheme.typography.titleMedium) {
+                title()
+            }
+            if (subtitle != null) {
+                ProvideTextStyle(value = MaterialTheme.typography.bodyMedium.merge(MaterialTheme.colorScheme.onSurfaceVariant)) {
+                    subtitle()
                 }
             }
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .weight(1f, true)
-                    .padding(start = 16.dp)
-            ) {
-                ProvideTextStyle(value = MaterialTheme.typography.subtitle1) {
-                    title()
-                }
-                if (subtitle != null) {
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        ProvideTextStyle(value = MaterialTheme.typography.body2) {
-                            subtitle()
-                        }
-                    }
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                content()
-            }
+        }
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            content()
         }
     }
 }
@@ -118,7 +106,7 @@ fun Setting(
 fun SettingsHeader(@StringRes title: Int, modifier: Modifier = Modifier, withDivider: Boolean = true) {
     Surface {
         if (withDivider) {
-            Divider()
+            HorizontalDivider()
         }
         Row(
             modifier
@@ -127,10 +115,8 @@ fun SettingsHeader(@StringRes title: Int, modifier: Modifier = Modifier, withDiv
                 .padding(top = 16.dp, start = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                ProvideTextStyle(value = MaterialTheme.typography.subtitle2.copy(color = MaterialTheme.colors.secondary)) {
-                    Text(stringResource(id = title), Modifier.padding(start = 56.dp))
-                }
+            ProvideTextStyle(value = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondary)) {
+                Text(stringResource(id = title), Modifier.padding(start = 56.dp))
             }
         }
     }
@@ -157,10 +143,7 @@ fun SettingsSwitch(
     ) {
         Switch(
             checked = value,
-            onCheckedChange = null,
-            colors = SwitchDefaults.colors(
-                uncheckedThumbColor = Color(0xffdddddd)
-            )
+            onCheckedChange = null
         )
     }
 }
@@ -202,11 +185,11 @@ fun SettingsEditText(
                     )
                     {
                         Row {
-                            ProvideTextStyle(value = MaterialTheme.typography.h6) {
+                            ProvideTextStyle(value = MaterialTheme.typography.titleLarge) {
                                 title()
                             }
                         }
-                        Row(Modifier.padding(vertical=8.dp)) {
+                        Row(Modifier.padding(vertical = 8.dp)) {
                             dialogText?.invoke()
                         }
                         OutlinedTextField(
@@ -223,7 +206,7 @@ fun SettingsEditText(
                             onValueChange = {
                                 tempValue = it
                             },
-                            modifier = Modifier.padding(vertical=8.dp)
+                            modifier = Modifier.padding(vertical = 8.dp)
                         )
                         Row(
                             Modifier
@@ -293,11 +276,11 @@ fun SettingsList(
                     .padding(vertical = 36.dp, horizontal = 20.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
-                Column (
+                Column(
                     Modifier.padding(16.dp)
-                ){
+                ) {
                     Row {
-                        ProvideTextStyle(value = MaterialTheme.typography.h6) {
+                        ProvideTextStyle(value = MaterialTheme.typography.titleLarge) {
                             title()
                         }
                     }
@@ -374,44 +357,37 @@ fun SettingsSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .padding(start = 48.dp),
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colors.secondaryVariant,
-                activeTrackColor = MaterialTheme.colors.secondaryVariant
-            )
+                .padding(start = 48.dp)
         )
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun RadioDialogItem(
     item: String,
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-                .selectable(
-                    selected = selected,
-                    onClick = onClick,
-                    role = Role.RadioButton
-                )
-                .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            RadioButton(
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .selectable(
                 selected = selected,
-                onClick = null
+                onClick = onClick,
+                role = Role.RadioButton
             )
-            Text(
-                text = item,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = selected,
+            onClick = null
+        )
+        Text(
+            text = item,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(start = 16.dp)
+        )
     }
 }

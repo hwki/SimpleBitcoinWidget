@@ -20,7 +20,7 @@ work = "2.9.1"
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx"}
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityKtx"}
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose"}
-androidx-compose-material = { group = "androidx.compose.material", name = "material"}
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle"}
 androidx-preferences = { group = "androidx.preference", name="preference-ktx", version.ref = "preferences"}

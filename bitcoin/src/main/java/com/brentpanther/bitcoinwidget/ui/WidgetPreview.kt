@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.widget.TextViewCompat
 import com.brentpanther.bitcoinwidget.R
@@ -30,7 +31,7 @@ fun WidgetPreview(widget: Widget, fixedSize: Boolean, modifier: Modifier = Modif
                 painterResource(R.drawable.bg),
                 null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(110.dp)
             )
             AndroidView(
                 factory = { context ->

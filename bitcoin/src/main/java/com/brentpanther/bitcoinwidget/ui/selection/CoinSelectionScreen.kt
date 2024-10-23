@@ -4,12 +4,12 @@ import android.app.Activity
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,21 +22,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalRippleConfiguration
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -47,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -62,10 +63,11 @@ import coil.compose.AsyncImage
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Theme
-import com.brentpanther.bitcoinwidget.ui.theme.MyRippleConfiguration
+import com.brentpanther.bitcoinwidget.ui.appBarScrollColor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CoinSelectionScreen(
     navController: NavController, widgetId: Int,
@@ -85,28 +87,31 @@ fun CoinSelectionScreen(
             navController.navigateUp()
         }
     }
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(Unit) {
         viewModel.error.collectLatest {
             it?.let {
-                scaffoldState.snackbarHostState.showSnackbar(
+                snackbarHostState.showSnackbar(
                     message = context.getString(it)
                 )
             }
         }
     }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
-        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
+                scrollBehavior = scrollBehavior,
                 title = {
                     Text(stringResource(R.string.title_coin_select))
                 }
             )
         }
     ) { paddingValues ->
+
         val coinResult by viewModel.coins.collectAsState(null)
-        Column {
+        Column(Modifier.padding(paddingValues)) {
             OutlinedTextField(
                 value = searchText,
                 onValueChange = {
@@ -137,8 +142,13 @@ fun CoinSelectionScreen(
                     viewModel.search(searchText)
                     keyboardController?.hide()
                 },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(appBarScrollColor(scrollBehavior))
                     .padding(8.dp)
                     .onPreviewKeyEvent {
                         if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
@@ -149,7 +159,6 @@ fun CoinSelectionScreen(
                         false
                     }
             )
-            Divider()
             val result = coinResult
             when {
                 result == null -> {}
@@ -164,12 +173,16 @@ fun CoinSelectionScreen(
                     }
                 }
                 else -> {
-                    CoinList(result.coins, paddingValues, onClick = {
-                        coroutineScope.launch {
-                            viewModel.createWidget(context, widgetId, it)
-                            navController.navigate("setting/$widgetId")
+                    CoinList(
+                        coins = result.coins,
+                        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                        onClick = {
+                            coroutineScope.launch {
+                                viewModel.createWidget(context, widgetId, it)
+                                navController.navigate("setting/$widgetId")
+                            }
                         }
-                    })
+                    )
                 }
             }
         }
@@ -177,7 +190,7 @@ fun CoinSelectionScreen(
 }
 
 @Composable
-fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (CoinResponse) -> Unit) {
+fun CoinList(coins: List<CoinResponse>, modifier: Modifier = Modifier, onClick: (CoinResponse) -> Unit) {
     val isNightMode = isSystemInDarkTheme()
     val iconModifier = Modifier
         .padding(start = 4.dp, end = 8.dp)
@@ -185,15 +198,13 @@ fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (
     val customStartIndex = coins.indexOfFirst { it.coin == Coin.CUSTOM }
     Column {
         LazyColumn(
-            Modifier
-                .padding(paddingValues)
-                .weight(1f, fill = true)
+            modifier.weight(1f, fill = true)
         ) {
             if (customStartIndex != 0) {
                 item(contentType = "header") {
                     Text(
                         stringResource(R.string.coin_search_popular),
-                        color = MaterialTheme.colors.secondary,
+                        color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(8.dp)
                     )
@@ -207,7 +218,7 @@ fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (
                 item(contentType = "header") {
                     Text(
                         stringResource(R.string.coin_search_more),
-                        color = MaterialTheme.colors.secondary,
+                        color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(8.dp)
                     )
@@ -217,7 +228,7 @@ fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -236,7 +247,6 @@ fun CoinList(coins: List<CoinResponse>, paddingValues: PaddingValues, onClick: (
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun CoinRow(
     onClick: (CoinResponse) -> Unit,
@@ -244,7 +254,6 @@ private fun CoinRow(
     modifier: Modifier,
     isNightMode: Boolean
 ) {
-    CompositionLocalProvider(LocalRippleConfiguration provides MyRippleConfiguration) {
         Row(
             Modifier
                 .clickable {
@@ -279,5 +288,4 @@ private fun CoinRow(
             )
             Text(" - ${item.symbol}", fontSize = 16.sp)
         }
-    }
 }

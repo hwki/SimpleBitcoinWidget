@@ -138,3 +138,5 @@ fabric.properties
 # End of https://www.gitignore.io/api/androidstudio
 
 release/
+/.kotlin/sessions/**
+/.idea/inspectionProfiles/*.xml
