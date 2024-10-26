@@ -95,5 +95,9 @@
     <string name="dismiss">Liberar</string>
     <string name="search_error">Erro ao obter moedas do CoinGecko.</string>
     <string name="search_empty">Nenhuma moeda encontrada.</string>
+    <string name="ok">OK</string>
+    <string name="pin_widget_failure_title">Não é possível criar o widget</string>
+    <string name="pin_widget_failure_text">Seu launcher não suporta a criação de widgets dessa forma.\nPor favor, tente criar um na sua tela inicial.</string>
+    <string name="tap_to_configure">Toque para configurar</string>
 
 </resources>

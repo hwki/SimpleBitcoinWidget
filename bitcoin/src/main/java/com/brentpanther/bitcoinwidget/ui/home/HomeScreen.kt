@@ -20,14 +20,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -43,6 +50,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -103,7 +112,7 @@ fun HomeScreen(navController: NavController, viewModel: ManageWidgetsViewModel =
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-private fun <T : WidgetProvider> pinWidget(context: Context, className: Class<T>) {
+private fun <T : WidgetProvider> pinWidget(context: Context, className: Class<T>): Boolean {
     val myProvider = ComponentName(context, className)
     val intent = Intent(context.applicationContext, MainActivity::class.java)
     val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -112,14 +121,57 @@ private fun <T : WidgetProvider> pinWidget(context: Context, className: Class<T>
         PendingIntent.FLAG_UPDATE_CURRENT
     }
     val pendingIntent = PendingIntent.getActivity(context.applicationContext, 123, intent, flags)
-    AppWidgetManager.getInstance(context).requestPinAppWidget(myProvider, null, pendingIntent)
+    return AppWidgetManager.getInstance(context).requestPinAppWidget(myProvider, null, pendingIntent)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PinWidgetFAB() {
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
+    var failureDialogVisible by remember { mutableStateOf(false) }
+
+    if (failureDialogVisible) {
+        BasicAlertDialog(
+            onDismissRequest = {
+                failureDialogVisible = false
+            }
+
+        ) {
+            Surface(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                shape = MaterialTheme.shapes.extraLarge,
+                tonalElevation = AlertDialogDefaults.TonalElevation
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text(
+                        text = stringResource(R.string.pin_widget_failure_title),
+                        modifier = Modifier
+                            .padding(bottom = 16.dp)
+                            .semantics { heading() },
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+
+                    Text(
+                        text = stringResource(R.string.pin_widget_failure_text),
+                        modifier = Modifier.padding(bottom = 24.dp),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    TextButton(
+                        onClick = { failureDialogVisible = false },
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text(stringResource(R.string.ok))
+                    }
+                }
+            }
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -139,7 +191,7 @@ fun PinWidgetFAB() {
                 FloatingActionButton(
                     onClick = {
                         expanded = false
-                        pinWidget(context, ValueWidgetProvider::class.java)
+                        failureDialogVisible = !pinWidget(context, ValueWidgetProvider::class.java)
                     },
                     modifier = Modifier
                         .padding(4.dp)
@@ -165,7 +217,7 @@ fun PinWidgetFAB() {
                 FloatingActionButton(
                     onClick = {
                         expanded = false
-                        pinWidget(context, WidgetProvider::class.java)
+                        failureDialogVisible = !pinWidget(context, WidgetProvider::class.java)
                     },
                     modifier = Modifier
                         .padding(4.dp)

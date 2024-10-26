@@ -134,5 +134,9 @@
     <string name="dismiss">Dismiss</string>
     <string name="search_error">Error retrieving coins from CoinGecko.</string>
     <string name="search_empty">No coins found.</string>
+    <string name="ok">OK</string>
+    <string name="pin_widget_failure_title">Unable to create widget</string>
+    <string name="pin_widget_failure_text">Your launcher does not support creating widgets this way.\nPlease try to create one from your home screen.</string>
+    <string name="tap_to_configure">Tap to configure</string>
 
 </resources>

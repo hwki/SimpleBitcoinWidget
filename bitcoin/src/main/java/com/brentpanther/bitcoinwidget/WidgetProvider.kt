@@ -1,9 +1,12 @@
 package com.brentpanther.bitcoinwidget
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.RemoteViews
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
@@ -12,6 +15,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
+import com.brentpanther.bitcoinwidget.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,12 +36,32 @@ open class WidgetProvider : AppWidgetProvider() {
     }
 
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager,
-        appWidgetId: Int, newOptions: Bundle) {
+                                           appWidgetId: Int, newOptions: Bundle) {
         WidgetUpdater.updateDisplays(context)
     }
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        // check for any unconfigured widgets, setting them to "Tap to Configure" state
+        CoroutineScope(Dispatchers.IO).launch {
+            val allWidgetIds = WidgetDatabase.getInstance(context).widgetDao().getAll().map { it.widgetId }
+            appWidgetIds.subtract(allWidgetIds).forEach { widgetId ->
+                setConfigure(context, widgetId)
+            }
+        }
         WidgetUpdater.updateDisplays(context)
+    }
+
+    private fun setConfigure(context: Context, appWidgetId: Int) {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        RemoteViews(context.packageName, R.layout.widget_empty).apply {
+            val pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            setOnClickPendingIntent(R.id.parent, pendingIntent)
+            AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, this)
+        }
     }
 
     override fun onDeleted(context: Context, widgetIds: IntArray) {
