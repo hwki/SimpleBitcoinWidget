@@ -2,8 +2,8 @@ package com.brentpanther.bitcoinwidget.ui.home
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,7 +27,7 @@ fun AdditionalSettings() {
             try {
                 val uri = "http://play.google.com/store/apps/details?id=${context.packageName}".toUri()
                 ContextCompat.startActivity(context, Intent(Intent.ACTION_VIEW, uri), null)
-            } catch (ignored: ActivityNotFoundException) {
+            } catch (_: ActivityNotFoundException) {
             }
         }
     )

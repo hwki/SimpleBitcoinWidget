@@ -1,0 +1,5 @@
+Material 3 upgrade.
+Updated for Android 15.
+Improved compatibility with certain launchers.
+Better error handling.
+Update Bibox API.
