@@ -31,7 +31,7 @@
     <string name="summary_currency">Использовать %s как валюту</string>
     <string name="summary_exchange">Получить данные из %s</string>
     <string name="summary_units">Показывать %1$s как %2$s</string>
-    <string name="summary_inverse">Показывать цену %1$s в %1$s</string>
+    <string name="summary_inverse">Показывать цену %1$s в %2$s</string>
     <string name="summary_decimals_auto">Автоматически</string>
     <string name="error_restricted_battery_saver">Невозможно обновить, включен режим энергосбережения</string>
     <string name="error_restricted_data_saver">Невозможно обновить, включен режим экономии трафика</string>
@@ -43,7 +43,6 @@
     <string name="settings_update">Обновить</string>
     <string name="settings_create">Создать</string>
     <string name="version">Версия %s</string>
-    <string name="coin_icon">Значок</string>
     <string name="nav_title_manage_widgets">Управление виджетами</string>
     <string name="nav_title_settings">Настройки</string>
     <string name="manage_widgets_empty">У вас пока нет виджетов!</string>

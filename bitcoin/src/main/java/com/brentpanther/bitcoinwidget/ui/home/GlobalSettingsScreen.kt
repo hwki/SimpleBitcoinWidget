@@ -67,7 +67,7 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
             subtitle = {
                 Text(stringResource(R.string.summary_fixed_size))
             },
-            value = settings?.consistentSize ?: false,
+            value = settings?.consistentSize == true,
             onChange = {
                 viewModel.setFixedSize(it)
             }

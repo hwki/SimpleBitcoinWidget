@@ -96,7 +96,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Wed, 11 Sep 2024 01:13:42 GMT</string>
+    <string name="json_last_modified" translatable="false">Tue, 29 Oct 2024 22:23:30 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
@@ -111,7 +111,6 @@
     <string name="settings_update">Update</string>
     <string name="settings_create">Create</string>
     <string name="version">Version %s</string>
-    <string name="coin_icon">Icon</string>
     <string name="nav_title_manage_widgets">Manage Widgets</string>
     <string name="nav_title_settings">Settings</string>
     <string name="manage_widgets_empty">You don\'t have any widgets yet!</string>

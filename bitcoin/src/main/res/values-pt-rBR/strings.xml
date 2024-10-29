@@ -72,7 +72,6 @@
     <string name="settings_update">Atualizo</string>
     <string name="settings_create">Crio</string>
     <string name="version">Versão %s</string>
-    <string name="coin_icon">Icone</string>
     <string name="nav_title_manage_widgets">Gerenciar Widgets</string>
     <string name="nav_title_settings">Configurações</string>
     <string name="manage_widgets_empty">Você ainda não criou nenhum widget!</string>

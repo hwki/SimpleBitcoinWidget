@@ -20,10 +20,9 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
         }
     },
     BIBOX("Bibox") {
-
         override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.bibox.com/v3/mdata/market?pair=${coin}_$currency"
-            return getJsonObject(url)["result"]?.jsonObject?.get("last").asString
+            val url = "https://api.bibox.com/api/v4/marketdata/ticker?symbol=${coin}_$currency"
+            return getJsonArray(url)[0].jsonObject["p"].asString
         }
     },
     BIGONE("BigONE") {

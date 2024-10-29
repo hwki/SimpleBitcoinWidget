@@ -277,7 +277,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bibox(): List<String> {
-        return parse("https://api.bibox.com/v3/mdata/pairList", "$.result[*].pair")
+        return parse("https://api.bibox.com/api/v4/marketdata/pairs", "$[*].symbol")
     }
 
     private fun bigone(): List<String> {
@@ -313,8 +313,10 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bitfinex(): List<String> {
-        return parse("https://api-pub.bitfinex.com/v2/tickers?symbols=ALL", "$[*][0]").map {
-            it.removePrefix("t")
+        return parse("https://api-pub.bitfinex.com/v2/conf/pub:list:pair:exchange", "$[0][*]").filterNot {
+            it.endsWith("UST")
+        }.filterNot {
+            it.contains(":")
         }
     }
 

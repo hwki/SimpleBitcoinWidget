@@ -32,7 +32,7 @@ abstract class WidgetDataStrategy(val widgetId: Int) {
     fun shouldRefresh(): Boolean {
         return widget?.let {
             it.state == WidgetState.DRAFT || System.currentTimeMillis() - it.lastUpdated > 30000
-        } ?: false
+        } == true
     }
 
     companion object {

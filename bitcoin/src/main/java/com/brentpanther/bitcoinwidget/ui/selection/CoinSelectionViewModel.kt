@@ -58,9 +58,9 @@ class CoinSelectionViewModel : ViewModel() {
             coinCustomId = if (coinEntry.coin == Coin.CUSTOM) coinEntry.id else null,
             coinCustomName = if (coinEntry.coin == Coin.CUSTOM) coinEntry.name else null,
             currencyCustomName = null,
-            showExchangeLabel = lastWidget?.showExchangeLabel ?: false,
-            showCoinLabel = lastWidget?.showCoinLabel ?: false,
-            showIcon = lastWidget?.showIcon ?: true,
+            showExchangeLabel = lastWidget?.showExchangeLabel == true,
+            showCoinLabel = lastWidget?.showCoinLabel == true,
+            showIcon = lastWidget?.showIcon != false,
             numDecimals = lastWidget?.numDecimals ?: -1,
             currencySymbol = lastWidget?.currencySymbol,
             theme = lastWidget?.theme ?: if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MATERIAL else Theme.SOLID,
@@ -126,7 +126,7 @@ class CoinSelectionViewModel : ViewModel() {
                     return null
                 }
             }
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             error.tryEmit(R.string.search_error)
             return null
         }
