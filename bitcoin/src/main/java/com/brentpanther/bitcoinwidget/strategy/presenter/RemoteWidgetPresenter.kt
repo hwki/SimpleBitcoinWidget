@@ -12,11 +12,11 @@ import android.net.Uri
 import android.util.TypedValue
 import android.view.View
 import android.widget.RemoteViews
-import androidx.annotation.StringRes
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.WidgetApplication.Companion.dpToPx
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.receiver.WidgetBroadcastReceiver
+import com.brentpanther.bitcoinwidget.ui.MainActivity
 
 class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter {
 
@@ -58,13 +58,17 @@ class RemoteWidgetPresenter(context: Context, widget: Widget) : WidgetPresenter 
         AppWidgetManager.getInstance(context).updateAppWidget(widgetId, remoteViews)
     }
 
-    override fun setOnClickMessage(context: Context, @StringRes message: Int) {
-        val messageIntent = Intent(context, WidgetBroadcastReceiver::class.java)
-        messageIntent.action = "message"
-        messageIntent.putExtra("message", message)
-        val alertPendingIntent = PendingIntent.getBroadcast(context, 96854, messageIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        remoteViews.setOnClickPendingIntent(R.id.state, alertPendingIntent)
+    override fun setOnClickError(context: Context, widgetId: Int) {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        remoteViews.apply {
+            val pendingIntent = PendingIntent.getActivity(context, widgetId, intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            setOnClickPendingIntent(R.id.state, pendingIntent)
+            AppWidgetManager.getInstance(context).updateAppWidget(widgetId, this)
+        }
     }
 
     fun loading(context: Context, widgetId: Int) {

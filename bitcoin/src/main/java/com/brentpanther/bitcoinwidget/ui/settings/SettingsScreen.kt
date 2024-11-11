@@ -154,9 +154,7 @@ fun BaseSettingsScreen(
                         .padding(paddingValues)
                         .fillMaxWidth()
                 ) {
-                    if (widget.state != WidgetState.DRAFT) {
-                        WarningBanner(bannersViewModel)
-                    }
+                    WarningBanner(bannersViewModel, widget.state)
                     Text(
                         text = stringResource(widget.widgetType.widgetSummary, widget.coinName()),
                         fontSize = 14.sp,
@@ -190,8 +188,11 @@ fun BaseSettingsScreen(
 @Composable
 fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
     DataSection(settingsPriceViewModel, widget)
-    val numberInstance = DecimalFormat.getNumberInstance()
-    numberInstance.maximumFractionDigits = 40
+    val numberInstance = DecimalFormat.getNumberInstance().apply { maximumFractionDigits = 40 }
+
+    SettingsHeader(title = if (widget.coin == Coin.BTC) R.string.title_wallet_bitcoin else R.string.title_wallet)
+
+    val amountHeldValue = if (widget.amountHeld == null) "" else numberInstance.format(widget.amountHeld)
     SettingsEditText(
         icon = {
             Icon(painterResource(R.drawable.ic_outline_account_balance_wallet_24), null)
@@ -200,26 +201,27 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
             Text(stringResource(id = R.string.title_amount_held))
         },
         subtitle = {
-            Text(numberInstance.format(widget.amountHeld))
+            Text(amountHeldValue)
         },
         dialogText = {
             Text(stringResource(R.string.dialog_amount_held, widget.coinName(), numberInstance.format(1.23)))
         },
-        value = numberInstance.format(widget.amountHeld),
-        onChange = {
+        value = amountHeldValue,
+        onChange = { value ->
             try {
+                var value = value ?: "1"
                 // do not assume numbers are being input in the current system locale.
                 val groupingSeparator = DecimalFormatSymbols.getInstance().groupingSeparator
                 val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
-                val parsed = if (it.contains(groupingSeparator) && it.contains(decimalSeparator)) {
+                val parsed = if (value.contains(groupingSeparator) && value.contains(decimalSeparator)) {
                     // parse in system locale
-                    numberInstance.parse(it)?.toDouble()
-                } else if (it.contains(".")) {
+                    numberInstance.parse(value)?.toDouble()
+                } else if (value.contains(".")) {
                     // parse in english
-                    DecimalFormat.getNumberInstance(Locale.ENGLISH).parse(it)?.toDouble()
+                    DecimalFormat.getNumberInstance(Locale.ENGLISH).parse(value)?.toDouble()
                 } else {
                     // parse in system locale
-                    numberInstance.parse(it)?.toDouble()
+                    numberInstance.parse(value)?.toDouble()
                 }
                 parsed?.apply {
                     settingsPriceViewModel.setAmountHeld(this)
@@ -229,6 +231,26 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
 
         }
     )
+    if (widget.coin == Coin.BTC) {
+        SettingsEditText(
+            icon = {
+                Icon(painterResource(R.drawable.ic_outline_account_balance_wallet_24), null)
+            },
+            title = {
+                Text(stringResource(R.string.title_bitcoin_address))
+            },
+            subtitle = {
+                Text(widget.address.orEmpty())
+            },
+            dialogText = {
+                Text(stringResource(R.string.dialog_wallet_address))
+            },
+            value = widget.address,
+            onChange = { value ->
+                settingsPriceViewModel.setAddress(value)
+            }
+        )
+    }
     FormatSection(settingsPriceViewModel, widget)
     StyleSection(settingsPriceViewModel, widget)
     DisplaySection(settingsPriceViewModel, widget)

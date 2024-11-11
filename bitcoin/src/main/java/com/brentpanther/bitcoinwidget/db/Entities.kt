@@ -31,6 +31,7 @@ data class Widget(
     var landscapeTextSize: Int? = null,
     var lastValue: String? = null,
     var amountHeld: Double? = null,
+    var address: String? = null,
     var showAmountLabel: Boolean,
     var useInverse: Boolean,
     var lastUpdated: Long,

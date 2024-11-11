@@ -112,7 +112,7 @@ open class SolidPriceWidgetDisplayStrategy(context: Context, widget: Widget, wid
         } else {
             try {
                 formatPriceString(widget.lastValue)
-            } catch (e: NumberFormatException) {
+            } catch (_: NumberFormatException) {
                 Log.e(TAG, "Error formatting price: ${widget.lastValue}")
                 widget.lastValue ?: ""
             }

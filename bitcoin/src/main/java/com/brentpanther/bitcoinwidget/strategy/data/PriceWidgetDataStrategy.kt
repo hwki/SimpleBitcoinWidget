@@ -37,7 +37,7 @@ open class PriceWidgetDataStrategy(widgetId: Int) : WidgetDataStrategy(widgetId)
                 if (widget.state != WidgetState.DRAFT)  widget.state = WidgetState.STALE
             }
             Log.w(TAG, "Error getting value from exchange: ${widget.exchange}.", e)
-        } catch (e: RateLimitedException) {
+        } catch (_: RateLimitedException) {
             widget.state = WidgetState.RATE_LIMITED
             Log.w(TAG, "Exchange is rate limited: ${widget.exchange}.")
         } catch (e: Exception) {

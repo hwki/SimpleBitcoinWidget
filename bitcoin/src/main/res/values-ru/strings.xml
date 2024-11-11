@@ -26,6 +26,7 @@
     <string name="title_inverse">Инверсия</string>
     <string name="title_amount_held">Количество во владении</string>
     <string name="title_coin_select">Выберите криптовалюту</string>
+    <string name="title_wallet_bitcoin">Данные кошелька (введите сумму или адрес)</string>
     <string name="summary_fixed_size">Одинаковый размер шрифта среди всех виджетов</string>
     <string name="summary_refresh_interval">Каждые %s</string>
     <string name="summary_currency">Использовать %s как валюту</string>
@@ -92,4 +93,8 @@
     <string name="pin_widget_failure_title">Невозможно создать виджет</string>
     <string name="pin_widget_failure_text">Ваш лаунчер не поддерживает создание виджетов таким образом.\nПопробуйте создать его с домашнего экрана.</string>
     <string name="tap_to_configure">Нажмите, чтобы настроить</string>
+    <string name="state_invalid_address">Невозможно найти адрес биткойнов.</string>
+    <string name="title_bitcoin_address">Биткойн-адрес</string>
+    <string name="dialog_wallet_address">Введите адрес биткойн-кошелька</string>
+    <string name="title_wallet">Данные кошелька</string>
 </resources>

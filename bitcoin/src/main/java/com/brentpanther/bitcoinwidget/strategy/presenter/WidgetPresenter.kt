@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.net.Uri
-import androidx.annotation.StringRes
 
 
 interface WidgetPresenter {
@@ -31,7 +30,7 @@ interface WidgetPresenter {
 
     fun setOnClickRefresh(context: Context, widgetId: Int)
 
-    fun setOnClickMessage(context: Context, @StringRes message : Int)
+    fun setOnClickError(context: Context, widgetId: Int)
 
     fun getWidgetSize(context: Context, widgetId: Int): RectF
 

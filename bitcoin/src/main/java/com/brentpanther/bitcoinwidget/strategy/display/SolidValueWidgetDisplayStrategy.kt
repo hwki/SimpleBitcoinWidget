@@ -62,7 +62,9 @@ class SolidValueWidgetDisplayStrategy(context: Context, widget: Widget, widgetPr
                 DecimalFormat.getNumberInstance(Locale.getDefault()).run {
                     minimumFractionDigits = 0
                     maximumFractionDigits = 8
-                    format(widget.amountHeld)
+                    widget.amountHeld?.let {
+                        format(it)
+                    } ?: ""
                 }
             } catch (e : Exception) {
                 Log.e(TAG, "Error formatting amount: ${widget.amountHeld}", e)

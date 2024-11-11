@@ -1,0 +1,2 @@
+For bitcoin only: Option to show value of a given wallet address.
+Changed the way error messages are displayed when tapping on the error icon.

@@ -27,6 +27,7 @@
     <string name="title_amount_held">Montante retido</string>
     <string name="title_coin_select">Selecionar moeda</string>
 
+    <string name="title_wallet_bitcoin">Dados da carteira (insira o valor ou o endereço)</string>
     <string name="summary_fixed_size">Manter o texto consistente em todos os widgets</string>
     <string name="summary_refresh_interval">A cada %s</string>
     <string name="summary_currency">Usar %s como moeda</string>
@@ -98,5 +99,9 @@
     <string name="pin_widget_failure_title">Não é possível criar o widget</string>
     <string name="pin_widget_failure_text">Seu launcher não suporta a criação de widgets dessa forma.\nPor favor, tente criar um na sua tela inicial.</string>
     <string name="tap_to_configure">Toque para configurar</string>
+    <string name="state_invalid_address">Não é possível consultar o endereço bitcoin.</string>
+    <string name="title_bitcoin_address">Endereço Bitcoin</string>
+    <string name="dialog_wallet_address">Insira um endereço de carteira bitcoin</string>
+    <string name="title_wallet">Dados da carteira</string>
 
 </resources>

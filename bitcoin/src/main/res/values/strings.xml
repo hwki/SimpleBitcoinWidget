@@ -27,6 +27,8 @@
     <string name="title_inverse">Use Inverse</string>
     <string name="title_amount_held">Amount Held</string>
     <string name="title_coin_select">Select Coin</string>
+    <string name="title_wallet">Wallet Data</string>
+    <string name="title_wallet_bitcoin">Wallet Data (Enter either amount or address)</string>
 
     <string name="summary_fixed_size">Keep text size consistent across all widgets</string>
     <string name="summary_refresh_interval">Every %s</string>
@@ -96,7 +98,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Tue, 29 Oct 2024 22:23:30 GMT</string>
+    <string name="json_last_modified" translatable="false">Mon, 11 Nov 2024 22:24:26 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
@@ -122,6 +124,7 @@
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
     <string name="state_error">Unable to update price. This may be an issue with the exchange.</string>
     <string name="state_rate_limited">Rate limited by exchange.</string>
+    <string name="state_invalid_address">Unable to lookup bitcoin address.</string>
     <string name="placeholder_price" translatable="false">$-,---</string>
     <string name="widget_price_name">Current Price</string>
     <string name="widget_value_name">Wallet Value</string>
@@ -137,5 +140,7 @@
     <string name="pin_widget_failure_title">Unable to create widget</string>
     <string name="pin_widget_failure_text">Your launcher does not support creating widgets this way.\nPlease try to create one from your home screen.</string>
     <string name="tap_to_configure">Tap to configure</string>
+    <string name="title_bitcoin_address">Bitcoin Address</string>
+    <string name="dialog_wallet_address">Enter a bitcoin wallet address</string>
 
 </resources>

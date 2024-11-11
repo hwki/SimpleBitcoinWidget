@@ -28,7 +28,7 @@ object ExchangeHelper {
 
     fun getStream(url: String): InputStream? = get(url)?.body?.byteStream()
 
-    private fun getString(url: String, headers: Headers? = null) = get(url, headers)?.body?.string() ?: ""
+    fun getString(url: String, headers: Headers? = null) = get(url, headers)?.body?.string() ?: ""
 
     private fun get(url: String, headers: Headers? = null): Response? {
         return try {
@@ -43,7 +43,7 @@ object ExchangeHelper {
                 throw RateLimitedException()
             }
             return response
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             null
         }
     }

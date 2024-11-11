@@ -19,7 +19,6 @@ class WidgetBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             Intent.ACTION_CONFIGURATION_CHANGED -> refreshAllWidgets(context)
-            "message" -> postMessage(context, intent.getIntExtra("message", 0))
             "refresh" -> refreshWidget(context, intent)
         }
     }
@@ -47,7 +46,4 @@ class WidgetBroadcastReceiver : BroadcastReceiver() {
             WidgetUpdater.update(context, intArrayOf(widgetId), manual = true)
         }
     }
-
-    private fun postMessage(context: Context, message: Int) =
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 }

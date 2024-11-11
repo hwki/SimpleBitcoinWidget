@@ -57,7 +57,7 @@ enum class NightMode {
 }
 
 enum class WidgetState {
-    DRAFT, CURRENT, STALE, RATE_LIMITED, ERROR
+    DRAFT, CURRENT, STALE, RATE_LIMITED, ERROR, INVALID_ADDRESS
 }
 
 enum class WidgetType(@StringRes val widgetName: Int, @StringRes val widgetSummary: Int) {

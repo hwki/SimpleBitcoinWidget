@@ -67,7 +67,7 @@ class ComposePreviewWidgetPresenter(widget: Widget, private val view: View) : Wi
     override fun setOnClickRefresh(context: Context, widgetId: Int) {
     }
 
-    override fun setOnClickMessage(context: Context, message: Int) {
+    override fun setOnClickError(context: Context, widgetId: Int) {
     }
 
     override fun getWidgetSize(context: Context, widgetId: Int): RectF {

@@ -3,6 +3,7 @@ package com.brentpanther.bitcoinwidget.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,7 +12,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import java.io.File
 
-@Database(version = 5, entities = [Widget::class, Configuration::class], exportSchema = true)
+@Database(
+    version = 6,
+    entities = [Widget::class, Configuration::class],
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration (from = 5, to = 6)
+    ]
+)
 abstract class WidgetDatabase : RoomDatabase() {
 
     abstract fun widgetDao(): WidgetDao

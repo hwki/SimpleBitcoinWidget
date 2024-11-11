@@ -109,14 +109,18 @@ fun SettingsHeader(@StringRes title: Int, modifier: Modifier = Modifier, withDiv
             HorizontalDivider()
         }
         Row(
-            modifier
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier
                 .fillMaxWidth()
-                .height(36.dp)
-                .padding(top = 16.dp, start = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .heightIn(36.dp)
+                .padding(top = 16.dp, start = 16.dp)
         ) {
             ProvideTextStyle(value = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondary)) {
-                Text(stringResource(id = title), Modifier.padding(start = 56.dp))
+                Text(
+                    text = stringResource(id = title),
+                    modifier = Modifier.padding(start = 56.dp),
+                    maxLines = 2
+                )
             }
         }
     }
@@ -155,7 +159,7 @@ fun SettingsEditText(
     subtitle: (@Composable () -> Unit)? = null,
     dialogText: (@Composable () -> Unit)? = null,
     value: String? = null,
-    onChange: (String) -> Unit
+    onChange: (String?) -> Unit
 ) {
     var dialogVisible by remember { mutableStateOf(false) }
     Setting(
@@ -176,8 +180,7 @@ fun SettingsEditText(
                 Card(
                     modifier = Modifier
                         .wrapContentSize()
-                        .safeContentPadding()
-                        .padding(vertical = 36.dp, horizontal = 20.dp),
+                        .safeContentPadding(),
                     shape = RoundedCornerShape(16.dp),
                 ) {
                     Column(
@@ -215,7 +218,7 @@ fun SettingsEditText(
                         ) {
                             TextButton(
                                 onClick = {
-                                    onChange(tempValue ?: "1")
+                                    onChange(tempValue)
                                     dialogVisible = false
                                 }
                             ) {
@@ -272,8 +275,7 @@ fun SettingsList(
             Card(
                 modifier = Modifier
                     .wrapContentSize()
-                    .safeContentPadding()
-                    .padding(vertical = 36.dp, horizontal = 20.dp),
+                    .safeContentPadding(),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(

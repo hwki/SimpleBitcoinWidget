@@ -11,6 +11,7 @@ import androidx.annotation.IdRes
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.WidgetState.ERROR
+import com.brentpanther.bitcoinwidget.WidgetState.INVALID_ADDRESS
 import com.brentpanther.bitcoinwidget.WidgetState.RATE_LIMITED
 import com.brentpanther.bitcoinwidget.WidgetState.STALE
 import com.brentpanther.bitcoinwidget.db.Widget
@@ -58,23 +59,18 @@ abstract class PriceWidgetDisplayStrategy(context: Context, widget: Widget, widg
 
     protected fun updateState() {
         with(widgetPresenter) {
-            when(widget.state) {
-                STALE -> {
-                    show(R.id.state)
-                    setImageViewResource(R.id.state, R.drawable.ic_outline_stale)
-                    setOnClickMessage(appContext, R.string.state_stale)
+            if (widget.state in listOf(STALE, ERROR, RATE_LIMITED, INVALID_ADDRESS)) {
+                show(R.id.state)
+                setOnClickError(appContext, widget.widgetId)
+                when (widget.state) {
+                    STALE -> R.drawable.ic_outline_stale
+                    RATE_LIMITED -> R.drawable.ic_outline_do_not_disturb_alt_24
+                    else -> R.drawable.ic_outline_warning_amber_24
+                }.let {
+                    setImageViewResource(R.id.state, it)
                 }
-                ERROR -> {
-                    show(R.id.state)
-                    setImageViewResource(R.id.state, R.drawable.ic_outline_warning_amber_24)
-                    setOnClickMessage(appContext, R.string.state_error)
-                }
-                RATE_LIMITED -> {
-                    show(R.id.state)
-                    setImageViewResource(R.id.state, R.drawable.ic_outline_do_not_disturb_alt_24)
-                    setOnClickMessage(appContext, R.string.state_rate_limited)
-                }
-                else -> gone(R.id.state)
+            } else {
+                widgetPresenter.gone(R.id.state)
             }
         }
     }

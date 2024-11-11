@@ -109,7 +109,7 @@ class SettingsViewModel : ViewModel() {
             // find all locales that match this currency code
             try {
                 Currency.getInstance(it).currencyCode == currencyCode
-            } catch (ignored: Exception) {
+            } catch (_: Exception) {
                 false
             }
         }.minByOrNull {
@@ -152,8 +152,16 @@ class SettingsViewModel : ViewModel() {
         widget.showExchangeLabel = showExchangeLabel
     }
 
-    fun setAmountHeld(amount: Double) = emit {
+    fun setAmountHeld(amount: Double?) = emit {
         widget.amountHeld = amount
+        widget.address = null
+        updateData()
+    }
+
+    fun setAddress(address: String?) = emit {
+        widget.address = address
+        widget.amountHeld = null
+        widget.showAmountLabel = false
         updateData()
     }
 
@@ -162,7 +170,9 @@ class SettingsViewModel : ViewModel() {
     }
 
     fun save() = viewModelScope.launch(Dispatchers.IO) {
-        widget.state = WidgetState.CURRENT
+        if (widget.state == WidgetState.DRAFT) {
+            widget.state = WidgetState.CURRENT
+        }
         dao.update(widget)
         WidgetProvider.refreshWidgets(WidgetApplication.instance, widget.widgetId)
     }
