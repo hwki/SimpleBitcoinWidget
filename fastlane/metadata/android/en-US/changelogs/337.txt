@@ -1,0 +1,4 @@
+Removed Bittrex and Coinsbit.
+Fixed Kuna by updating API version.
+Migrate Coinbase Pro to Coinbase.
+Migrate OkCoin to OKX.

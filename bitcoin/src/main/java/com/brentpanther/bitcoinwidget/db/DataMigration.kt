@@ -14,6 +14,8 @@ object DataMigration {
         migrateBithumbProToBitGlobal(db)
         migrateKaspaToKas(db)
         migrateBitcludeToEgera(db)
+        migrateCoinbaseProToCoinbase(db)
+        migrateOkCoinToOkx(db)
         fixRemovedExchanges(db)
     }
 
@@ -53,5 +55,13 @@ object DataMigration {
         for (id in errored) {
             db.execSQL("UPDATE Widget SET exchange = 'COINGECKO' WHERE id = $id")
         }
+    }
+
+    private fun migrateCoinbaseProToCoinbase(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET exchange = 'COINBASE' WHERE exchange = 'COINBASEPRO'")
+    }
+
+    private fun migrateOkCoinToOkx(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET exchange = 'OKX' WHERE exchange = 'OKCOIN'")
     }
 }

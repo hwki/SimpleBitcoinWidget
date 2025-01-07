@@ -58,7 +58,7 @@ class ExchangeTest {
 
     @Test
     fun testPair() {
-        val exchange = Exchange.COINSBIT
+        val exchange = Exchange.COINBASE
         val coin = Coin.WBTC
         val currency = "USD"
         val data = ExchangeData(coin, loadJSON())

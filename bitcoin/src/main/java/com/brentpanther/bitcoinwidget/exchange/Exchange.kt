@@ -147,13 +147,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["last"].asString
         }
     },
-    BITTREX("Bittrex") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.bittrex.com/v3/markets/$coin-$currency/ticker"
-            return getJsonObject(url)["lastTradeRate"].asString
-        }
-    },
     BITRUE("Bitrue") {
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://openapi.bitrue.com/api/v1/ticker/price?symbol=$coin$currency"
@@ -215,13 +208,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return obj["data"]?.jsonObject?.get("amount").asString
         }
     },
-    COINBASEPRO("Coinbase Pro") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.pro.coinbase.com/products/$coin-$currency/ticker"
-            return getJsonObject(url)["price"].asString
-        }
-    },
     COINDESK("Coindesk") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -271,13 +257,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["quotes"]?.jsonObject?.get(currency)?.jsonObject?.get("price").asString
         }
 
-    },
-    COINSBIT("Coinsbit") {
-        override fun getValue(coin: String, currency: String): String? {
-            val coinName = if (coin == "WBTC") "wBTC" else coin
-            val url = "https://coinsbit.io/api/v1/public/ticker?market=${coinName}_$currency"
-            return getJsonObject(url)["result"]?.jsonObject?.get("last").asString
-        }
     },
     COINSPH("Coins.ph") {
 
@@ -429,9 +408,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     KUNA("KunaBTC") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val pair = "$coin$currency".lowercase()
-            val url = "https://api.kuna.io/v3/tickers?symbols=$pair"
-            return getJsonArray(url)[0].jsonArray[1].asString
+            val url = "https://api.kuna.io/v4/markets/public/tickers?pairs=${coin}_$currency"
+            return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("price").asString
         }
     },
     LBANK("LBank") {
@@ -478,13 +456,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             val ask = ticker["ask"]?.jsonPrimitive.asString?.toDouble() ?: return null
             val bid = ticker["bid"]?.jsonPrimitive.asString?.toDouble() ?: return null
             return ((ask + bid) / 2).toString()
-        }
-    },
-    OKCOIN("OK Coin") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://www.okcoin.com/api/spot/v3/instruments/$coin-$currency/ticker"
-            return getJsonObject(url)["last"].asString
         }
     },
     OKX("OKX") {

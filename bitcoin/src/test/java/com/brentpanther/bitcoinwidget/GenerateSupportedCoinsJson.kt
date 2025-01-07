@@ -38,14 +38,14 @@ class GenerateSupportedCoinsJson {
     private val allExchanges =
         listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bingx, this::bit2c,
             this::bitbank, this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitmart,
-            this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bittrex, this::bitrue,
+            this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bitrue,
             this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
-            this::chilebit, this::coinbase, this::coinbasepro, this::coindesk, this::coingecko,
-            this::coinjar, this::coinmate, this::coinone, this::coinpaprika, this::coinsbit, this::coinsph, this::cointree,
+            this::chilebit, this::coinbase,this::coindesk, this::coingecko,
+            this::coinjar, this::coinmate, this::coinone, this::coinpaprika, this::coinsph, this::cointree,
             this::cryptocom, this::deversifi, this::digifinex, this::egera, this::exmo, this::foxbit, this::gateio, this::gemini,
             this::hashkey, this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit,
             this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::luno,
-            this::mercado, this::mexc, this::ndax, this::nexchange, this::okcoin, this::okx, this::p2pb2b,
+            this::mercado, this::mexc, this::ndax, this::nexchange, this::okx, this::p2pb2b,
             this::paribu, this::paymium, this::phemex, this::poloniex, this::probit,
             this::tradeogre, this::uphold, this::vbtc, this::whitebit, this::xt, this::yadio,
             this::yobit, this::zonda
@@ -361,10 +361,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://www.bitstamp.net/api/v2/trading-pairs-info", "$[*].name")
     }
 
-    private fun bittrex(): List<String> {
-        return parse("https://api.bittrex.com/v3/markets", "$[*].symbol")
-    }
-
     private fun bitrue(): List<String> {
         val pairs = parse("https://openapi.bitrue.com/api/v1/exchangeInfo", "$.symbols[*].symbol")
         return pairs.filterNot { it.contains("USDC") }
@@ -412,10 +408,6 @@ class GenerateSupportedCoinsJson {
         }
     }
 
-    private fun coinbasepro(): List<String> {
-        return parse("https://api.pro.coinbase.com/products", "$[*].id")
-    }
-
     private fun coindesk(): List<String> {
         val currencies = parse("https://api.coindesk.com/v1/bpi/supported-currencies.json", "$[*].currency")
         return currencies.map { "BTC_$it" }
@@ -447,10 +439,6 @@ class GenerateSupportedCoinsJson {
         val coins = parse("https://api.coinpaprika.com/v1/coins", "$[*][?(@.is_active==true)].symbol")
             .filterNot { it == "XBT" }
         return coins.flatMap { coin -> currencies.filterNot { it == coin }.map { currency -> "$coin-$currency" } }
-    }
-
-    private fun coinsbit(): List<String> {
-        return parse("https://coinsbit.io/api/v1/public/products", "$.result[*].id")
     }
 
     private fun coinsph(): List<String> {
@@ -538,7 +526,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun kuna(): List<String> {
-        return parse("https://api.kuna.io/v3/markets", "$[*].id")
+        return parse("https://api.kuna.io/v4/markets/public/getAll", "$.data[*].pair")
     }
 
     private fun lbank(): List<String> {
@@ -564,10 +552,6 @@ class GenerateSupportedCoinsJson {
 
     private fun nexchange(): List<String> {
         return parse("https://api.n.exchange/en/api/v1/pair/?format=json", "$[?(@.disabled==false)].name")
-    }
-
-    private fun okcoin(): List<String> {
-        return parse("https://www.okcoin.com/api/spot/v3/instruments", "$[*].instrument_id")
     }
 
     private fun okx(): List<String> {
