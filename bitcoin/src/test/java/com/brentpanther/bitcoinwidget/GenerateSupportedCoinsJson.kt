@@ -7,7 +7,6 @@ import com.brentpanther.bitcoinwidget.exchange.ExchangeData.JsonExchangeObject
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.asString
 import com.jayway.jsonpath.JsonPath
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromStream
@@ -409,8 +408,25 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun coindesk(): List<String> {
-        val currencies = parse("https://api.coindesk.com/v1/bpi/supported-currencies.json", "$[*].currency")
-        return currencies.map { "BTC_$it" }
+        val coinLists = Coin.entries.map { it.name }.chunked(50)
+        val coins = mutableListOf<String>()
+        val currencies = mutableListOf<String>()
+        coinLists.forEach { coinList ->
+            val url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinList.joinToString(",")}&tsyms=USD"
+            val response = parseKeys(url, "$")
+            coins.addAll(response)
+        }
+        val currencyLists = Currency.getAvailableCurrencies().map { it.currencyCode }.sorted().chunked(25)
+        currencyLists.forEach { currencyList ->
+            val url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=${currencyList.joinToString(",")}"
+            val response = parseKeys(url, "$.BTC")
+            currencies.addAll(response)
+        }
+        return coins.flatMap { coin ->
+            currencies.map { currency ->
+                "${coin}_$currency"
+            }
+        }
     }
 
     private fun coingecko(): List<String> {

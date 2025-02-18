@@ -16,7 +16,12 @@ object DataMigration {
         migrateBitcludeToEgera(db)
         migrateCoinbaseProToCoinbase(db)
         migrateOkCoinToOkx(db)
+        migrateFtmToSonic(db)
         fixRemovedExchanges(db)
+    }
+
+    private fun migrateFtmToSonic(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET coin = 'S' WHERE coin = 'FTM'")
     }
 
     private fun migrateKaspaToKas(db: SupportSQLiteDatabase) {

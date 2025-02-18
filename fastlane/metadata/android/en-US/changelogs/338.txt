@@ -1,0 +1,2 @@
+Fixed Coindesk.
+Migrated Fantom (FTM) to Sonic (S).

@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsButton
@@ -31,8 +30,8 @@ fun AdditionalSettings() {
         },
         onClick = {
             try {
-                ContextCompat.startActivity(context, Intent(Intent.ACTION_VIEW, address), null)
-            } catch (e: ActivityNotFoundException) {
+                context.startActivity(Intent(Intent.ACTION_VIEW, address))
+            } catch (_: ActivityNotFoundException) {
                 Toast.makeText(context, donateError, Toast.LENGTH_SHORT).show()
             }
         }

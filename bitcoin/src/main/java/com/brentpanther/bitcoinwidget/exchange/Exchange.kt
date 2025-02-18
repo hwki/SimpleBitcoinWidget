@@ -211,8 +211,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     COINDESK("Coindesk") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.coindesk.com/v1/bpi/currentprice/$currency.json"
-            return getJsonObject(url)["bpi"]?.jsonObject?.get(currency)?.jsonObject?.get("rate_float").asString
+            val url = "https://min-api.cryptocompare.com/data/price?fsym=$coin&tsyms=$currency"
+            return getJsonObject(url)[currency]?.asString
         }
     },
     COINGECKO("CoinGecko") {

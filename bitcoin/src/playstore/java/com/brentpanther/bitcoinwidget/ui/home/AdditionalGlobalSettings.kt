@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsButton
@@ -26,7 +25,7 @@ fun AdditionalSettings() {
         onClick = {
             try {
                 val uri = "http://play.google.com/store/apps/details?id=${context.packageName}".toUri()
-                ContextCompat.startActivity(context, Intent(Intent.ACTION_VIEW, uri), null)
+                context.startActivity(Intent(Intent.ACTION_VIEW, uri))
             } catch (_: ActivityNotFoundException) {
             }
         }

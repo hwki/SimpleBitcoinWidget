@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.compose.runtime.mutableStateListOf
 import androidx.core.content.edit
-import androidx.core.net.ConnectivityManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brentpanther.bitcoinwidget.WidgetApplication
@@ -28,7 +27,7 @@ class BannersViewModel : ViewModel() {
             val connectivityManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val restrictBackgroundStatus = connectivityManager.restrictBackgroundStatus
             if (restrictBackgroundStatus == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED &&
-                ConnectivityManagerCompat.isActiveNetworkMetered(connectivityManager) &&
+                connectivityManager.isActiveNetworkMetered &&
                 !isDismissed(application, "data")) {
                 visibleBanners.add("data")
             }
