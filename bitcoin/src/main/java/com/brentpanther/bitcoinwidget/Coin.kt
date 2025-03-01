@@ -114,6 +114,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     PAX("Paxos Standard", "paxos-standard", IconTheme(SOLID, ic_pax)),
     PAXG("PAX Gold", "pax-gold", IconTheme(SOLID, ic_paxg_color)),
     PEPE("Pepe", "pepe", IconTheme(SOLID, ic_pepe)),
+    PI("Pi", "picoin", IconTheme(SOLID, ic_pi)),
     POWR("Power Ledger", "power-ledger", IconTheme(SOLID, ic_powr_color)),
     PPC("Peercoin", "peercoin", IconTheme(SOLID, ic_ppc)),
     QNT("Quant", "quant-network", IconTheme(SOLID, ic_qnt)),
