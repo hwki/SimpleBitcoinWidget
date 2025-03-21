@@ -1,0 +1,3 @@
+Added rounded corners to CoinGecko icons for new widgets.
+Fixed Crypto.com.
+Removed DeversiFi.

@@ -3,8 +3,14 @@ package com.brentpanther.bitcoinwidget
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.BitmapShader
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Shader.TileMode.CLAMP
 import android.util.Log
 import androidx.core.content.edit
+import androidx.core.graphics.createBitmap
 import androidx.preference.PreferenceManager
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.exchange.CustomExchangeData
@@ -56,7 +62,7 @@ object Repository {
                         it.copyTo(os)
                         os.closeQuietly()
                     }
-                    prefs.edit().putString(LAST_MODIFIED, response.header("Last-Modified")).apply()
+                    prefs.edit{ putString(LAST_MODIFIED, response.header("Last-Modified")) }
                     Log.d(TAG, "JSON downloaded.")
                 }
                 else -> Log.d(TAG, "Retrieved status code: " + response.code)
@@ -75,14 +81,22 @@ object Repository {
             }
             val id = widget.coinCustomId ?: return@let
             val file = File(dir, id)
-            if (file.exists()) {
-                return
-            }
 
             ExchangeHelper.getStream(url)?.use { stream ->
                 ByteArrayOutputStream().use { os ->
                     BitmapFactory.decodeStream(stream)?.let { image ->
-                        image.compress(Bitmap.CompressFormat.PNG, 100, os)
+                        var bitmap = createBitmap(image.width, image.height)
+
+                        // apply rounded corners
+                        val canvas = Canvas(bitmap)
+                        var paint = Paint().apply {
+                            isAntiAlias = true
+                            shader = BitmapShader(image, CLAMP, CLAMP)
+                        }
+                        var rect = RectF(0f, 0f, image.width.toFloat(), image.height.toFloat())
+                        canvas.drawRoundRect(rect, 60f, 60f, paint)
+
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)
                         file.writeBytes(os.toByteArray())
                     }
                 }

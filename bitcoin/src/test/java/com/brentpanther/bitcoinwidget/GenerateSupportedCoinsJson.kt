@@ -41,7 +41,7 @@ class GenerateSupportedCoinsJson {
             this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
             this::chilebit, this::coinbase,this::coindesk, this::coingecko,
             this::coinjar, this::coinmate, this::coinone, this::coinpaprika, this::coinsph, this::cointree,
-            this::cryptocom, this::deversifi, this::digifinex, this::egera, this::exmo, this::foxbit, this::gateio, this::gemini,
+            this::cryptocom, this::digifinex, this::egera, this::exmo, this::foxbit, this::gateio, this::gemini,
             this::hashkey, this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit,
             this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::luno,
             this::mercado, this::mexc, this::ndax, this::nexchange, this::okx, this::p2pb2b,
@@ -93,11 +93,16 @@ class GenerateSupportedCoinsJson {
                 allExchangeData.exchanges.add(this)
             }
             try {
+                var pairs = func()
+                if (pairs.isEmpty()) {
+                    System.err.println("$exchange returned no pairs.")
+                    exchangeData.coins = listOf()
+                    continue
+                }
                 loadExchange(exchangeData, exchange, func(), potentialCoinAdds)
             } catch (e: Exception) {
-                System.err.println("$exchange: " + e.message)
+                System.err.println("$exchange: ${e.message}")
                 exchangeData.coins = listOf()
-
             }
         }
         allExchangeData.exchanges.sortBy { it.name }
@@ -468,13 +473,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun cryptocom(): List<String> {
-        return parse("https://api.crypto.com/v2/public/get-instruments", "$.result.instruments[*].instrument_name")
-    }
-
-    private fun deversifi(): List<String> {
-        return parse("https://api.deversifi.com/bfx/v2/tickers?symbols=ALL", "$[*].[0]").map {
-            it.removePrefix("t")
-        }
+        return parse("https://api.crypto.com/exchange/v1/public/get-instruments", "$.result.data[*].symbol")
     }
 
     private fun digifinex(): List<String> {

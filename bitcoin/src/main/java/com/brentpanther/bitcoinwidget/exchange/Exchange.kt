@@ -1,6 +1,7 @@
 package com.brentpanther.bitcoinwidget.exchange
 
 import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.exchange.Exchange.entries
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.asString
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonArray
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonObject
@@ -275,15 +276,8 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     CRYPTO("Crypto.com") {
 
         override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.crypto.com/v2/public/get-ticker?instrument_name=${coin}_$currency"
+            val url = "https://api.crypto.com/exchange/v1/public/get-tickers?instrument_name=${coin}_$currency"
             return getJsonObject(url)["result"]?.jsonObject?.get("data")?.jsonArray?.get(0)?.jsonObject?.get("a").asString
-        }
-    },
-    DEVERSIFI("DeversiFi") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.deversifi.com/bfx/v2/tickers?symbols=t${coin}$currency"
-            return getJsonArray(url)[0].jsonArray[7].asString
         }
     },
     DIGIFINEX("Digifinex") {

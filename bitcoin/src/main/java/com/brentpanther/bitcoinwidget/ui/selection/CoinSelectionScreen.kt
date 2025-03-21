@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
@@ -46,6 +47,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -59,7 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.Theme
@@ -268,7 +270,7 @@ private fun CoinRow(
                 AsyncImage(
                     model = item.thumb,
                     contentDescription = null,
-                    modifier = modifier,
+                    modifier = modifier.clip(RoundedCornerShape(8.dp)),
                     placeholder = painterResource(id = R.drawable.ic_baseline_circle_24)
                 )
             } else {
