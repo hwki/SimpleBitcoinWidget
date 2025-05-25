@@ -41,9 +41,8 @@
     <string name="licenses" translatable="false"><![CDATA[
       Licenses:<br/><br/>
         • AndroidX - Apache 2.0<br/>
-        • Android Material Components - Apache 2.0<br/>
-        • Gson - Apache 2.0<br/>
         • JsonPath - Apache 2.0<br/>
+        • Coil - Apache 2.0<br/>
         • OkHttp - Apache 2.0<br/><br/>
         Partial coin data provided by <a href="https://www.coingecko.com">CoinGecko</a>
     ]]>
@@ -98,7 +97,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Fri, 21 Mar 2025 14:01:52 GMT</string>
+    <string name="json_last_modified" translatable="false">Sun, 25 May 2025 15:25:47 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>

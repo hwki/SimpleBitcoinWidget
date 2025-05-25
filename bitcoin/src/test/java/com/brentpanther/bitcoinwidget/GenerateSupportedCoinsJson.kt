@@ -35,19 +35,83 @@ class GenerateSupportedCoinsJson {
     private val allCurrencyOverrides = mapOf("USDT" to "USD", "TUSD" to "USD", "USDC" to "USD", "TL" to "TRY", "NIS" to "ILS").plus(allCoinOverrides)
 
     private val allExchanges =
-        listOf(this::ascendex, this::bibox, this::bigone, this::binance, this::binance_us, this::bingx, this::bit2c,
-            this::bitbank, this::bitcoinde, this::bitfinex, this::bitflyer, this::bithumb, this::bitmart,
-            this::bitpanda, this::bitpay, this::bitso, this::bitstamp, this::bitrue,
-            this::bitvavo, this::btcbox, this::btcmarkets, this::btcturk, this::bybit, this::cexio,
-            this::chilebit, this::coinbase,this::coindesk, this::coingecko,
-            this::coinjar, this::coinmate, this::coinone, this::coinpaprika, this::coinsph, this::cointree,
-            this::cryptocom, this::digifinex, this::egera, this::exmo, this::foxbit, this::gateio, this::gemini,
-            this::hashkey, this::hitbtc, this::huobi, this::independent_reserve, this::indodax, this::itbit,
-            this::korbit, this::kraken, this::kucoin, this::kuna, this::lbank, this::luno,
-            this::mercado, this::mexc, this::ndax, this::nexchange, this::okx, this::p2pb2b,
-            this::paribu, this::paymium, this::phemex, this::poloniex, this::probit,
-            this::tradeogre, this::uphold, this::vbtc, this::whitebit, this::xt, this::yadio,
-            this::yobit, this::zonda
+        listOf(
+            this::ascendex,
+            this::bibox,
+            this::bigone,
+            this::binance,
+            this::binancep2p,
+            this::binance_us,
+            this::bingx,
+            this::bit2c,
+            this::bitbank,
+            this::bitcoinde,
+            this::bitfinex,
+            this::bitflyer,
+            this::bithumb,
+            this::bitmart,
+            this::bitpanda,
+            this::bitpay,
+            this::bitso,
+            this::bitsoalpha,
+            this::bitstamp,
+            this::bitrue,
+            this::bitvavo,
+            this::btcbox,
+            this::btcmarkets,
+            this::btcturk,
+            this::bybit,
+            this::cexio,
+            this::chilebit,
+            this::coinbase,
+            this::coindesk,
+            this::coingecko,
+            this::coinjar,
+            this::coinmate,
+            this::coinone,
+            this::coinpaprika,
+            this::coinsph,
+            this::cointree,
+            this::cryptocom,
+            this::digifinex,
+            this::egera,
+            this::exmo,
+            this::fiwind,
+            this::foxbit,
+            this::gateio,
+            this::gemini,
+            this::hashkey,
+            this::hitbtc,
+            this::huobi,
+            this::independent_reserve,
+            this::indodax,
+            this::itbit,
+            this::korbit,
+            this::kraken,
+            this::kucoin,
+            this::lbank,
+            this::lemoncash,
+            this::luno,
+            this::mercado,
+            this::mexc,
+            this::ndax,
+            this::nexchange,
+            this::okx,
+            this::p2pb2b,
+            this::paribu,
+            this::paymium,
+            this::phemex,
+            this::poloniex,
+            this::probit,
+            this::satoshitango,
+            this::tradeogre,
+            this::uphold,
+            this::vbtc,
+            this::whitebit,
+            this::xt,
+            this::yadio,
+            this::yobit,
+            this::zonda
         ).zip(Exchange.entries.toTypedArray()).associate {
             Pair(it.second) { it.first.invoke() }
         }
@@ -292,6 +356,10 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.binance.com/api/v3/exchangeInfo", "$.symbols[*].symbol")
     }
 
+    private fun binancep2p(): List<String> {
+        return cryptoya()
+    }
+
     private fun binance_us(): List<String> {
         return parse("https://api.binance.us/api/v3/exchangeInfo", "$.symbols[*].symbol")
             .filterNot { it.endsWith("USD") }
@@ -359,6 +427,10 @@ class GenerateSupportedCoinsJson {
 
     private fun bitso(): List<String> {
         return parse("https://api.bitso.com/v3/available_books", "$.payload[*].book")
+    }
+
+    private fun bitsoalpha(): List<String> {
+        return cryptoya()
     }
 
     private fun bitstamp(): List<String> {
@@ -488,6 +560,10 @@ class GenerateSupportedCoinsJson {
         return parseKeys("https://api.exmo.com/v1.1/ticker", "$")
     }
 
+    private fun fiwind(): List<String> {
+        return cryptoya()
+    }
+
     private fun foxbit(): List<String> {
         return parse("https://watcher.foxbit.com.br/api/Ticker/", "$[?(@.exchange == 'Foxbit')].currency").map {
             it.replaceFirst("X", "_").split("_").reversed().joinToString("_")
@@ -540,12 +616,12 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.kucoin.com/api/v1/symbols", "$.data[*].symbol")
     }
 
-    private fun kuna(): List<String> {
-        return parse("https://api.kuna.io/v4/markets/public/getAll", "$.data[*].pair")
-    }
-
     private fun lbank(): List<String> {
         return parse("https://api.lbkex.com/v2/currencyPairs.do", "$.data[*]")
+    }
+
+    private fun lemoncash(): List<String> {
+        return cryptoya()
     }
 
     private fun luno(): List<String> {
@@ -600,6 +676,10 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.probit.com/api/exchange/v1/market", "$.data[*].id")
     }
 
+    private fun satoshitango(): List<String> {
+        return cryptoya()
+    }
+
     private fun tradeogre(): List<String> {
         val path = "$[*]"
         val list = JsonPath.read(get("https://tradeogre.com/api/v1/markets"), path) as List<Map<String, *>>
@@ -639,4 +719,16 @@ class GenerateSupportedCoinsJson {
 
     //endregion
 
+    private fun cryptoya(): List<String> {
+        val allCoins = listOf("BTC", "ETH", "USDT", "USDC", "DAI", "UXD", "USDP", "WLD", "BNB", "SOL", "XRP", "ADA",
+            "AVAX", "DOGE", "TRX", "LINK", "DOT", "MATIC", "SHIB", "LTC", "BCH", "EOS", "XLM", "FTM", "AAVE", "UNI",
+            "ALGO", "BAT", "PAXG", "CAKE", "AXS", "SLP", "MANA", "SAND", "CHZ") 
+        val supportedCoins = allCoins.intersect(Coin.entries.map { it.name })
+        val allCurrencies = listOf("ARS", "BRL", "CLP", "COP", "MXN", "PEN", "VES", "BOB", "UYU", "DOP", "PYG", "USD", "EUR")
+        return supportedCoins.flatMap { coin ->
+            allCurrencies.map { currency ->
+                "${coin}_${currency}"
+            }
+        }
+    }
 }

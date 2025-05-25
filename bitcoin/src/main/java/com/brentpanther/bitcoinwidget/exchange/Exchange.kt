@@ -1,7 +1,6 @@
 package com.brentpanther.bitcoinwidget.exchange
 
 import com.brentpanther.bitcoinwidget.Coin
-import com.brentpanther.bitcoinwidget.exchange.Exchange.entries
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.asString
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonArray
 import com.brentpanther.bitcoinwidget.exchange.ExchangeHelper.getJsonObject
@@ -40,6 +39,11 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://api.binance.com/api/v3/ticker/price?symbol=$coin$currency"
             return getJsonObject(url)["price"].asString
+        }
+    },
+    BINANCE_P2P("Binancep2p") {
+        override fun getValue(coin: String, currency: String): String? {
+            return getCryptoYaValue("binancep2p", coin, currency)
         }
     },
     BINANCE_US("Binance.us") {
@@ -137,6 +141,11 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 }
             }
             return null
+        }
+    },
+    BITSO_ALPHA("Bitso Alpha") {
+        override fun getValue(coin: String, currency: String): String? {
+            return getCryptoYaValue("bitsoalpha", coin, currency)
         }
     },
     BITSTAMP("Bitstamp") {
@@ -301,6 +310,11 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)[pair]?.jsonObject?.get("last_trade").asString
         }
     },
+    FIWIND("Fiwind") {
+        override fun getValue(coin: String, currency: String): String? {
+            return getCryptoYaValue("fiwind", coin, currency)
+        }
+    },
     FOXBIT("FoxBit") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -399,13 +413,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["data"]?.jsonObject?.get("price").asString
         }
     },
-    KUNA("KunaBTC") {
-
-        override fun getValue(coin: String, currency: String): String? {
-            val url = "https://api.kuna.io/v4/markets/public/tickers?pairs=${coin}_$currency"
-            return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("price").asString
-        }
-    },
     LBANK("LBank") {
 
         override fun getValue(coin: String, currency: String): String? {
@@ -413,6 +420,11 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             val url = "https://api.lbkex.com/v2/ticker.do?symbol=$pair"
             return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("ticker")
                 ?.jsonObject?.get("latest").asString
+        }
+    },
+    LEMONCASH("Lemon Cash") {
+        override fun getValue(coin: String, currency: String): String? {
+            return getCryptoYaValue("lemoncashp2p", coin, currency)
         }
     },
     LUNO("Luno") {
@@ -501,6 +513,11 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("last").asString
         }
     },
+    SATOSHI_TANGO("Satoshi Tango") {
+        override fun getValue(coin: String, currency: String): String? {
+            return getCryptoYaValue("satoshitango", coin, currency)
+        }
+    },
     TRADEOGRE("TradeOgre") {
         override fun getValue(coin: String, currency: String): String? {
             val url = "https://tradeogre.com/api/v1/ticker/$currency-$coin"
@@ -563,6 +580,15 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     fun getBlinkTradeValue(coin: String, currency: String): String? {
         val url = "https://api.blinktrade.com/api/v1/$currency/ticker?crypto_currency=$coin"
         return getJsonObject(url).jsonObject["last"].asString
+    }
+
+    fun getCryptoYaValue(exchange: String, coin: String, currency: String): String? {
+        val url = "https://criptoya.com/api/$exchange/$coin/$currency/1"
+        return getJsonObject(url).let {
+            val bid = it["bid"].asString?.toDoubleOrNull() ?: return null
+            val ask = it["ask"].asString?.toDoubleOrNull() ?: return null
+            ((bid + ask) / 2).toString()
+        }
     }
 
     abstract fun getValue(coin: String, currency: String): String?
