@@ -122,7 +122,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     RDD("Reddcoin", "reddcoin", IconTheme(SOLID, ic_rdd)),
     REN("REN", "republic-protocol", IconTheme(SOLID, ic_ren)),
     REP("Augur", "augur", IconTheme(SOLID, ic_rep)),
-    RNDR("Render", "render-token", IconTheme(SOLID, ic_rndr)),
+    RENDER("Render", "render-token", IconTheme(SOLID, ic_rndr)),
     RPL("Rocket Pool", "rocket-pool", IconTheme(SOLID, ic_rpl)),
     RUNE("THORChain", "thorchain", IconTheme(SOLID, ic_rune)),
     RVN("Ravencoin", "ravencoin", IconTheme(SOLID, ic_rvn)),

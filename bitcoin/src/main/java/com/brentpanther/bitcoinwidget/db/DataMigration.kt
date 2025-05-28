@@ -17,7 +17,12 @@ object DataMigration {
         migrateCoinbaseProToCoinbase(db)
         migrateOkCoinToOkx(db)
         migrateFtmToSonic(db)
+        migrateRndrToRender(db)
         fixRemovedExchanges(db)
+    }
+
+    private fun migrateRndrToRender(db: SupportSQLiteDatabase) {
+        db.execSQL("UPDATE Widget SET coin = 'RENDER' WHERE coin = 'RNDR'")
     }
 
     private fun migrateFtmToSonic(db: SupportSQLiteDatabase) {
