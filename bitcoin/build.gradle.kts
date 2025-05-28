@@ -15,8 +15,8 @@ android {
         applicationId = "com.brentpanther.bitcoinwidget"
         minSdk = 23
         targetSdk = 35
-        versionCode = 340
-        versionName = "8.6.5"
+        versionCode = 341
+        versionName = "8.7.0"
     }
 
     buildFeatures {
@@ -82,6 +82,8 @@ dependencies {
     implementation(libs.coil.okhttp)
     implementation(libs.okhttp)
     implementation(libs.serialization)
+
+    implementation(libs.androidx.compose.tooling)
 
     testImplementation(libs.json.path)
     testImplementation(libs.junit)

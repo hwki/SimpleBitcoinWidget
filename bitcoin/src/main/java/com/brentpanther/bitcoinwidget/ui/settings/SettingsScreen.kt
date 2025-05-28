@@ -3,12 +3,13 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
-import android.graphics.Typeface
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.create
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -32,12 +34,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,11 +47,11 @@ import androidx.navigation.NavController
 import com.brentpanther.bitcoinwidget.Coin
 import com.brentpanther.bitcoinwidget.NightMode
 import com.brentpanther.bitcoinwidget.R
+import com.brentpanther.bitcoinwidget.R.string.title_preview
 import com.brentpanther.bitcoinwidget.Theme
-import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.WidgetType
-import com.brentpanther.bitcoinwidget.db.ConfigurationWithSizes
+import com.brentpanther.bitcoinwidget.db.PriceType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.ui.BannersViewModel
@@ -64,36 +66,52 @@ import kotlin.math.roundToInt
 @Composable
 fun SettingsScreen(
     navController: NavController, widgetId: Int,
-    viewModel: SettingsViewModel = viewModel(),
+    settingsViewModel: SettingsViewModel = viewModel(),
     bannersViewModel: BannersViewModel = viewModel()
 ) {
-    BaseSettingsScreen(navController, viewModel, bannersViewModel, widgetId) {
-        when (WidgetApplication.instance.getWidgetType(widgetId)) {
-            WidgetType.PRICE -> PriceSettings(it, viewModel)
-            WidgetType.VALUE -> ValueSettings(it, viewModel)
+    settingsViewModel.loadData(widgetId)
+    val widget by settingsViewModel.widgetFlow.collectAsState(null)
+    val fixedSize by settingsViewModel.fixedSizeFlow.collectAsState(true)
+    val navEntries by navController.visibleEntries.collectAsState()
+    val activity = LocalActivity.current
+    val currencies = settingsViewModel.getCurrencies()
+    val exchanges = settingsViewModel.exchanges
+
+    SettingScreenContent(
+        widget = widget,
+        fixedSize = fixedSize,
+        currencies = currencies,
+        exchanges = exchanges,
+        banner = {
+            WarningBanner(bannersViewModel, widget?.state)
+        },
+        actions = settingsViewModel,
+        onSave = {
+            settingsViewModel.save()
+            if (navEntries.any { it.destination.route == "home" }) {
+                navController.navigateUp()
+            } else {
+                activity?.apply {
+                    val resultIntent = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                    setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
+                }
+            }
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BaseSettingsScreen(
-    navController: NavController,
-    viewModel: SettingsViewModel,
-    bannersViewModel: BannersViewModel,
-    widgetId: Int, content: @Composable (Widget) -> Unit
+fun SettingScreenContent(
+    widget: Widget?,
+    fixedSize: Boolean,
+    currencies: List<String>,
+    exchanges: List<Exchange>,
+    actions: SettingsActions,
+    onSave: () -> Unit = {},
+    banner: @Composable () -> Unit = {}
 ) {
-    viewModel.loadData(widgetId)
-    val widgetState by viewModel.widgetFlow.collectAsState(null)
-    val widget = widgetState
-    val config by viewModel.configFlow.collectAsState(
-        ConfigurationWithSizes(15, false, 0, 0)
-    )
-    val context = LocalContext.current
-    val navEntries by navController.visibleEntries.collectAsState()
-    val fromHome = remember(Unit) {
-        navEntries.any { it.destination.route == "home" }
-    }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -113,16 +131,7 @@ fun BaseSettingsScreen(
             widget?.let {
                 ExtendedFloatingActionButton(
                     onClick = {
-                        viewModel.save()
-                        if (fromHome) {
-                            navController.navigateUp()
-                        } else {
-                            (context as Activity).apply {
-                                val resultIntent = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-                                setResult(Activity.RESULT_OK, resultIntent)
-                                finish()
-                            }
-                        }
+                        onSave()
                     },
                     icon = {
                         Icon(painterResource(R.drawable.ic_outline_check_24), null)
@@ -141,53 +150,59 @@ fun BaseSettingsScreen(
             }
         },
         floatingActionButtonPosition = FabPosition.Center
-    ) { paddingValues ->
-        when (widget) {
-            null -> {
-                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(strokeWidth = 6.dp, modifier = Modifier.size(80.dp))
-                }
+    ) { innerPadding ->
+        val modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+        if (widget == null) {
+            Box(contentAlignment = Alignment.Center, modifier = modifier) {
+                CircularProgressIndicator(strokeWidth = 6.dp, modifier = Modifier.size(80.dp))
             }
-            else -> {
-                Column(
-                    Modifier
-                        .padding(paddingValues)
-                        .fillMaxWidth()
-                ) {
-                    WarningBanner(bannersViewModel, widget.state)
-                    Text(
-                        text = stringResource(widget.widgetType.widgetSummary, widget.coinName()),
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Typeface.create("sans-serif-light", Typeface.BOLD)),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .padding(horizontal = 16.dp)
-                    )
-                    SettingsHeader(
-                        title = R.string.title_preview,
-                        modifier = Modifier.padding(bottom = 16.dp),
-                        withDivider = false
-                    )
-                    WidgetPreview(
-                        widget = widget,
-                        fixedSize = config.consistentSize,
-                        modifier = Modifier.height(96.dp)
-                    )
-                    Column(Modifier.verticalScroll(rememberScrollState())) {
-                        content(widget)
-                        Spacer(Modifier.height(80.dp))
+        }
+        else {
+            Column(
+                modifier = modifier
+            ) {
+                banner()
+                Text(
+                    text = stringResource(widget.widgetType.widgetSummary, widget.coinName()),
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(create("sans-serif-light", BOLD)),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 16.dp)
+                )
+                SettingsHeader(
+                    title = title_preview,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    withDivider = false
+                )
+                WidgetPreview(
+                    widget = widget,
+                    fixedSize = fixedSize,
+                    modifier = Modifier.height(96.dp)
+                )
+                Column(Modifier.verticalScroll(rememberScrollState())) {
+                    when (widget.widgetType) {
+                        WidgetType.PRICE -> PriceSettings(widget, currencies, exchanges, actions)
+                        WidgetType.VALUE -> ValueSettings(widget, currencies, exchanges, actions)
                     }
+                    Spacer(Modifier.height(80.dp))
                 }
             }
         }
     }
 }
 
-
 @Composable
-fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
-    DataSection(settingsPriceViewModel, widget)
+fun ValueSettings(
+    widget: Widget,
+    currencies: List<String>,
+    exchanges: List<Exchange>,
+    actions: SettingsActions
+) {
+    DataSection(currencies, exchanges, actions, widget)
     val numberInstance = DecimalFormat.getNumberInstance().apply { maximumFractionDigits = 40 }
 
     SettingsHeader(title = if (widget.coin == Coin.BTC) R.string.title_wallet_bitcoin else R.string.title_wallet)
@@ -224,7 +239,7 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
                     numberInstance.parse(value)?.toDouble()
                 }
                 parsed?.apply {
-                    settingsPriceViewModel.setAmountHeld(this)
+                    actions.setAmountHeld(this)
                 }
             } catch (_: ParseException) {
             }
@@ -247,13 +262,13 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
             },
             value = widget.address,
             onChange = { value ->
-                settingsPriceViewModel.setAddress(value)
+                actions.setAddress(value)
             }
         )
     }
-    FormatSection(settingsPriceViewModel, widget)
-    StyleSection(settingsPriceViewModel, widget)
-    DisplaySection(settingsPriceViewModel, widget)
+    FormatSection(actions, widget)
+    StyleSection(actions, widget)
+    DisplaySection(actions, widget)
     SettingsSwitch(
         icon = {
             Icon(painterResource(R.drawable.ic_outline_numbers_24), null)
@@ -263,14 +278,18 @@ fun ValueSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
         },
         value = widget.showAmountLabel,
         onChange = {
-            settingsPriceViewModel.setShowAmountLabel(it)
+            actions.setShowAmountLabel(it)
         }
     )
 }
 
 @Composable
-fun PriceSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
-    DataSection(settingsPriceViewModel, widget)
+fun PriceSettings(
+    widget: Widget,
+    currencies: List<String>,
+    exchanges: List<Exchange>,
+    actions: SettingsActions) {
+    DataSection(currencies, exchanges, actions, widget)
     SettingsSwitch(
         icon = {
             Icon(painterResource(R.drawable.ic_outline_change_24), null)
@@ -287,10 +306,10 @@ fun PriceSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
         },
         value = widget.useInverse,
         onChange = {
-            settingsPriceViewModel.setInverse(it)
+            actions.setInverse(it)
         }
     )
-    FormatSection(settingsPriceViewModel, widget)
+    FormatSection(actions, widget)
     if (widget.coinUnit != null) {
         SettingsList(
             icon = {
@@ -305,7 +324,7 @@ fun PriceSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
             value = widget.coinUnit,
             items = widget.coin.getUnits().map { it.text },
             onChange = {
-                settingsPriceViewModel.setCoinUnit(it)
+                actions.setCoinUnit(it)
             }
         )
     }
@@ -324,17 +343,19 @@ fun PriceSettings(widget: Widget, settingsPriceViewModel: SettingsViewModel) {
             value = widget.currencyUnit ?: widget.currency,
             items = currencyUnits.map { it.text },
             onChange = {
-                settingsPriceViewModel.setCurrencyUnit(it)
+                actions.setCurrencyUnit(it)
             }
         )
     }
-    StyleSection(settingsPriceViewModel, widget)
-    DisplaySection(settingsPriceViewModel, widget)
+    StyleSection(actions, widget)
+    DisplaySection(actions, widget)
 }
 
 @Composable
 private fun DataSection(
-    settingsPriceViewModel: SettingsViewModel,
+    currencies: List<String>,
+    exchanges: List<Exchange>,
+    actions: SettingsActions,
     widget: Widget
 ) {
     SettingsHeader(title = R.string.title_data)
@@ -349,9 +370,9 @@ private fun DataSection(
             Text(stringResource(R.string.summary_currency, widget.currency))
         },
         value = widget.currency,
-        items = settingsPriceViewModel.getCurrencies(),
+        items = currencies,
         onChange = {
-            settingsPriceViewModel.setCurrency(it)
+            actions.setCurrency(it)
         }
     )
     SettingsList(
@@ -365,17 +386,36 @@ private fun DataSection(
             Text(stringResource(R.string.summary_exchange, widget.exchange.exchangeName))
         },
         value = widget.exchange.toString(),
-        items = settingsPriceViewModel.exchanges.map { it.exchangeName },
-        itemValues = settingsPriceViewModel.exchanges.map { it.name },
+        items = exchanges.map { it.exchangeName },
+        itemValues = exchanges.map { it.name },
         onChange = {
-            settingsPriceViewModel.setExchange(Exchange.valueOf(it))
+            actions.setExchange(Exchange.valueOf(it))
         }
     )
+    if (!widget.exchange.hasSpotPriceOnly) {
+        SettingsList(
+            icon = {
+                Icon(painterResource(R.drawable.ic_outline_gavel_24), null)
+            },
+            title = {
+                Text(stringResource(R.string.title_price_type))
+            },
+            subtitle = {
+                Text(it.orEmpty())
+            },
+            value = widget.priceType.name,
+            items = stringArrayResource(R.array.priceTypes).toList(),
+            itemValues = stringArrayResource(R.array.priceTypeValues).toList(),
+            onChange = {
+                actions.setPriceType(PriceType.valueOf(it))
+            }
+        )
+    }
 }
 
 @Composable
 private fun FormatSection(
-    settingsPriceViewModel: SettingsViewModel,
+    actions: SettingsActions,
     widget: Widget
 ) {
     SettingsHeader(
@@ -400,14 +440,14 @@ private fun FormatSection(
         items = stringArrayResource(R.array.symbols).toList(),
         itemValues = stringArrayResource(R.array.symbolValues).toList(),
         onChange = {
-            settingsPriceViewModel.setCurrencySymbol(it)
+            actions.setCurrencySymbol(it)
         }
     )
 }
 
 @Composable
 private fun StyleSection(
-    settingsPriceViewModel: SettingsViewModel,
+    actions: SettingsActions,
     widget: Widget
 ) {
     SettingsHeader(title = R.string.title_style)
@@ -425,7 +465,7 @@ private fun StyleSection(
         items = stringArrayResource(R.array.themes).toList(),
         itemValues = stringArrayResource(R.array.themeValues).toList(),
         onChange = {
-            settingsPriceViewModel.setTheme(Theme.valueOf(it))
+            actions.setTheme(Theme.valueOf(it))
         }
     )
     SettingsList(
@@ -442,14 +482,14 @@ private fun StyleSection(
         items = stringArrayResource(R.array.nightModes).toList(),
         itemValues = stringArrayResource(R.array.nightModeValues).toList(),
         onChange = {
-            settingsPriceViewModel.setNightMode(NightMode.valueOf(it))
+            actions.setNightMode(NightMode.valueOf(it))
         }
     )
 }
 
 @Composable
 private fun DisplaySection(
-    settingsViewModel: SettingsViewModel,
+    actions: SettingsActions,
     widget: Widget
 ) {
     SettingsHeader(title = R.string.title_display)
@@ -473,7 +513,7 @@ private fun DisplaySection(
         range = -1..10,
         onChange = {
             numDecimals = it
-            settingsViewModel.setNumDecimals(it.roundToInt())
+            actions.setNumDecimals(it.roundToInt())
         }
     )
     SettingsSwitch(
@@ -485,7 +525,7 @@ private fun DisplaySection(
         },
         value = widget.showIcon,
         onChange = {
-            settingsViewModel.setShowIcon(it)
+            actions.setShowIcon(it)
         }
     )
     SettingsSwitch(
@@ -497,7 +537,7 @@ private fun DisplaySection(
         },
         value = widget.showCoinLabel,
         onChange = {
-            settingsViewModel.setShowCoinLabel(it)
+            actions.setShowCoinLabel(it)
         }
     )
     SettingsSwitch(
@@ -509,8 +549,99 @@ private fun DisplaySection(
         },
         value = widget.showExchangeLabel,
         onChange = {
-            settingsViewModel.setShowExchangeLabel(it)
+            actions.setShowExchangeLabel(it)
         }
     )
 }
 
+
+@Preview
+@Composable
+fun PriceWidgetPreview() {
+    val widget = Widget(
+        id = 1,
+        widgetId = 1,
+        widgetType = WidgetType.PRICE,
+        exchange = Exchange.COINGECKO,
+        coin = Coin.BTC,
+        currency = "USD",
+        coinCustomId = null,
+        coinCustomName = null,
+        currencyCustomName = null,
+        showExchangeLabel = false,
+        showCoinLabel = false,
+        showIcon = true,
+        numDecimals = -1,
+        currencySymbol = null,
+        theme = Theme.SOLID,
+        nightMode = NightMode.SYSTEM,
+        coinUnit = null,
+        currencyUnit = null,
+        customIcon = null,
+        portraitTextSize = null,
+        landscapeTextSize = 0,
+        lastValue = "1234.56",
+        amountHeld = null,
+        showAmountLabel = false,
+        useInverse = false,
+        priceType = PriceType.SPOT,
+        lastUpdated = 0,
+        state = WidgetState.DRAFT,
+        address = null
+    )
+    MaterialTheme {
+        SettingScreenContent(
+            widget = widget,
+            fixedSize = false,
+            currencies = emptyList(),
+            exchanges = emptyList(),
+            actions = object: SettingsActions {}
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun ValueWidgetPreview() {
+    val widget = Widget(
+        id = 1,
+        widgetId = 1,
+        widgetType = WidgetType.VALUE,
+        exchange = Exchange.COINGECKO,
+        coin = Coin.BTC,
+        currency = "USD",
+        coinCustomId = null,
+        coinCustomName = null,
+        currencyCustomName = null,
+        showExchangeLabel = false,
+        showCoinLabel = false,
+        showIcon = true,
+        numDecimals = -1,
+        currencySymbol = null,
+        theme = Theme.SOLID,
+        nightMode = NightMode.SYSTEM,
+        coinUnit = null,
+        currencyUnit = null,
+        customIcon = null,
+        portraitTextSize = null,
+        landscapeTextSize = 0,
+        lastValue = "1234.56",
+        amountHeld = null,
+        showAmountLabel = false,
+        useInverse = false,
+        priceType = PriceType.SPOT,
+        lastUpdated = 0,
+        state = WidgetState.DRAFT,
+        address = null
+    )
+    MaterialTheme {
+        SettingScreenContent(
+            widget = widget,
+            fixedSize = false,
+            currencies = emptyList(),
+            exchanges = emptyList(),
+            actions = object: SettingsActions {}
+        )
+    }
+}

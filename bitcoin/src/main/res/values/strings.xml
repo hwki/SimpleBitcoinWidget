@@ -67,6 +67,16 @@
         <item>DARK</item>
         <item>SYSTEM</item>
     </string-array>
+    <string-array name="priceTypes">
+        <item>Ask</item>
+        <item>Bid</item>
+        <item>Spot</item>
+    </string-array>
+    <string-array name="priceTypeValues">
+        <item>ASK</item>
+        <item>BID</item>
+        <item>SPOT</item>
+    </string-array>
     <string-array name="intervals">
         <item>5 minutes</item>
         <item>10 minutes</item>
@@ -97,7 +107,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Sun, 25 May 2025 15:25:47 GMT</string>
+    <string name="json_last_modified" translatable="false">Wed, 28 May 2025 21:21:53 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>
@@ -119,6 +129,7 @@
     <string name="widget_list_title">%1$s / %2$s</string>
     <string name="warning_data_saver">The app will not refresh because data usage is currently restricted. Please enable the setting to allow unrestricted data usage.</string>
     <string name="warning_battery_saver">The app will not refresh because battery saver is currently restricted.</string>
+    <string name="warning_background">The app will not refresh because background usage is currently disabled.</string>
 
     <string name="state_stale">Price is outdated. Check your internet connection.</string>
     <string name="state_error">Unable to update price. This may be an issue with the exchange.</string>
@@ -141,5 +152,6 @@
     <string name="tap_to_configure">Tap to configure</string>
     <string name="title_bitcoin_address">Bitcoin Address</string>
     <string name="dialog_wallet_address">Enter a bitcoin wallet address</string>
+    <string name="title_price_type">Price Type</string>
 
 </resources>

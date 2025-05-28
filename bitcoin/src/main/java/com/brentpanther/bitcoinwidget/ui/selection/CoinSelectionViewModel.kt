@@ -12,6 +12,7 @@ import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetState
 import com.brentpanther.bitcoinwidget.WidgetType
+import com.brentpanther.bitcoinwidget.db.PriceType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
 import com.brentpanther.bitcoinwidget.exchange.Exchange
@@ -72,6 +73,7 @@ class CoinSelectionViewModel : ViewModel() {
             showAmountLabel = lastWidget?.showAmountLabel ?: (widgetType == WidgetType.VALUE),
             amountHeld = if (widgetType == WidgetType.VALUE) 1.0 else null,
             useInverse = false,
+            priceType = lastWidget?.priceType ?: PriceType.SPOT,
             state = WidgetState.DRAFT
         )
         dao.insert(widget)

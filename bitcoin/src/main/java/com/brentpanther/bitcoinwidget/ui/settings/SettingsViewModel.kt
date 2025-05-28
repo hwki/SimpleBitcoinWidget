@@ -11,6 +11,7 @@ import com.brentpanther.bitcoinwidget.Theme
 import com.brentpanther.bitcoinwidget.WidgetApplication
 import com.brentpanther.bitcoinwidget.WidgetProvider
 import com.brentpanther.bitcoinwidget.WidgetState
+import com.brentpanther.bitcoinwidget.db.PriceType
 import com.brentpanther.bitcoinwidget.db.Widget
 import com.brentpanther.bitcoinwidget.db.WidgetDao
 import com.brentpanther.bitcoinwidget.db.WidgetDatabase
@@ -19,16 +20,17 @@ import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import com.brentpanther.bitcoinwidget.strategy.data.WidgetDataStrategy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.util.Currency
 import java.util.Locale
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel : ViewModel(), SettingsActions {
 
     private var dao: WidgetDao = WidgetDatabase.getInstance(WidgetApplication.instance).widgetDao()
 
-    val configFlow = dao.configWithSizesAsFlow()
+    val fixedSizeFlow = dao.configWithSizesAsFlow().map { it.consistentSize }
     private var exchangeData: ExchangeData? = null
 
     val exchanges = mutableStateListOf<Exchange>()
@@ -62,13 +64,13 @@ class SettingsViewModel : ViewModel() {
         widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))
     }
 
-    fun setCurrency(currency: String) {
+    override fun setCurrency(currency: String) {
         widget.currency = currency
         updateData()
         loadExchanges()
     }
 
-    fun setExchange(exchange: Exchange) {
+    override fun setExchange(exchange: Exchange) {
         widget.exchange = exchange
         updateData()
     }
@@ -91,11 +93,11 @@ class SettingsViewModel : ViewModel() {
         widgetFlow.tryEmit(widget.copy(lastUpdated = System.currentTimeMillis()))
     }
 
-    fun setInverse(inverse: Boolean) = emit {
-        widget.useInverse = inverse
+    override fun setInverse(isInverse: Boolean) = emit {
+        widget.useInverse = isInverse
     }
 
-    fun setCurrencySymbol(symbol: String) = emit {
+    override fun setCurrencySymbol(symbol: String) = emit {
         val currencySymbol = when(symbol) {
             "ISO" -> null
             "NONE" -> "none"
@@ -120,53 +122,58 @@ class SettingsViewModel : ViewModel() {
         return (DecimalFormat.getCurrencyInstance(locale) as DecimalFormat).decimalFormatSymbols.currencySymbol
     }
 
-    fun setCoinUnit(unit: String) = emit {
+    override fun setCoinUnit(unit: String) = emit {
         widget.coinUnit = unit
     }
 
-    fun setCurrencyUnit(unit: String?) = emit {
+    override fun setCurrencyUnit(unit: String?) = emit {
         widget.currencyUnit = unit
     }
 
-    fun setTheme(theme: Theme) = emit {
+    override fun setTheme(theme: Theme) = emit {
         widget.theme = theme
     }
 
-    fun setNightMode(nightMode: NightMode) = emit {
-        widget.nightMode = nightMode
+    override fun setNightMode(mode: NightMode) = emit {
+        widget.nightMode = mode
     }
 
-    fun setNumDecimals(numDecimals: Int) = emit {
-        widget.numDecimals = numDecimals
+    override fun setNumDecimals(amount: Int) = emit {
+        widget.numDecimals = amount
     }
 
-    fun setShowIcon(showIcon: Boolean) = emit {
-        widget.showIcon = showIcon
+    override fun setShowIcon(isShown: Boolean) = emit {
+        widget.showIcon = isShown
     }
 
-    fun setShowCoinLabel(showCoinLabel: Boolean) = emit {
-        widget.showCoinLabel = showCoinLabel
+    override fun setShowCoinLabel(isShown: Boolean) = emit {
+        widget.showCoinLabel = isShown
     }
 
-    fun setShowExchangeLabel(showExchangeLabel: Boolean) = emit {
-        widget.showExchangeLabel = showExchangeLabel
+    override fun setShowExchangeLabel(isShown: Boolean) = emit {
+        widget.showExchangeLabel = isShown
     }
 
-    fun setAmountHeld(amount: Double?) = emit {
+    override fun setAmountHeld(amount: Double?) = emit {
         widget.amountHeld = amount
         widget.address = null
         updateData()
     }
 
-    fun setAddress(address: String?) = emit {
+    override fun setAddress(address: String?) = emit {
         widget.address = address
         widget.amountHeld = null
         widget.showAmountLabel = false
         updateData()
     }
 
-    fun setShowAmountLabel(showAmountLabel: Boolean) = emit {
-        widget.showAmountLabel = showAmountLabel
+    override fun setShowAmountLabel(isShown: Boolean) = emit {
+        widget.showAmountLabel = isShown
+    }
+
+    override fun setPriceType(type: PriceType) = emit {
+        widget.priceType = type
+        updateData()
     }
 
     fun save() = viewModelScope.launch(Dispatchers.IO) {
@@ -178,4 +185,23 @@ class SettingsViewModel : ViewModel() {
     }
 
 
+}
+
+interface SettingsActions {
+    fun setCurrency(currency: String) {}
+    fun setExchange(exchange: Exchange) {}
+    fun setCurrencySymbol(symbol: String) {}
+    fun setInverse(isInverse: Boolean) {}
+    fun setAddress(address: String?) {}
+    fun setAmountHeld(amount: Double?) {}
+    fun setNightMode(mode: NightMode) {}
+    fun setShowAmountLabel(isShown: Boolean) {}
+    fun setNumDecimals(amount: Int) {}
+    fun setCoinUnit(unit: String) {}
+    fun setCurrencyUnit(unit: String?) {}
+    fun setTheme(theme: Theme) {}
+    fun setShowIcon(isShown: Boolean) {}
+    fun setShowCoinLabel(isShown: Boolean) {}
+    fun setShowExchangeLabel(isShown: Boolean) {}
+    fun setPriceType(type: PriceType) {}
 }

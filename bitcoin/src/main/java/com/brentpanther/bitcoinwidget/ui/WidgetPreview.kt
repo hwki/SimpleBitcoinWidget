@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -33,27 +34,29 @@ fun WidgetPreview(widget: Widget, fixedSize: Boolean, modifier: Modifier = Modif
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth().height(110.dp)
             )
-            AndroidView(
-                factory = { context ->
-                    LayoutInflater.from(context).inflate(R.layout.layout_widget_preview, null)
-                },
-                update = {
-                    val widgetPresenter = ComposePreviewWidgetPresenter(widget, it)
-                    val strategy = WidgetDisplayStrategy.getStrategy(it.context, widget, widgetPresenter)
-                    strategy.refresh()
-                    it.findViewById<View>(R.id.parent).isClickable = false
-                    if (!fixedSize) {
-                        val price = it.findViewById<TextView>(R.id.price)
-                        TextViewCompat.setAutoSizeTextTypeWithDefaults(
-                            price, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .height(dimensionResource(R.dimen.widget_preview_height))
-                    .width(dimensionResource(R.dimen.widget_preview_width))
-            )
+            if (!LocalInspectionMode.current) {
+                AndroidView(
+                    factory = { context ->
+                        LayoutInflater.from(context).inflate(R.layout.layout_widget_preview, null)
+                    },
+                    update = {
+                        val widgetPresenter = ComposePreviewWidgetPresenter(widget, it)
+                        val strategy = WidgetDisplayStrategy.getStrategy(it.context, widget, widgetPresenter)
+                        strategy.refresh()
+                        it.findViewById<View>(R.id.parent).isClickable = false
+                        if (!fixedSize) {
+                            val price = it.findViewById<TextView>(R.id.price)
+                            TextViewCompat.setAutoSizeTextTypeWithDefaults(
+                                price, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .height(dimensionResource(R.dimen.widget_preview_height))
+                        .width(dimensionResource(R.dimen.widget_preview_width))
+                )
+            }
         }
     }
 

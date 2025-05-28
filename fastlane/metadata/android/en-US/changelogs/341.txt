@@ -1,0 +1,5 @@
+Added option for using the ask, bid, or spot price for each widget.
+Added BinanceP2P, Bitso Alpha, Fiwind, Lemon Cash, and Satoshi Tango via the CriptoYa API.
+Removed KunaBTC.
+Updated dependencies.
+Updated licenses.

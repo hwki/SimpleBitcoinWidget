@@ -3,7 +3,11 @@ package com.brentpanther.bitcoinwidget.db
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.brentpanther.bitcoinwidget.*
+import com.brentpanther.bitcoinwidget.Coin
+import com.brentpanther.bitcoinwidget.NightMode
+import com.brentpanther.bitcoinwidget.Theme
+import com.brentpanther.bitcoinwidget.WidgetState
+import com.brentpanther.bitcoinwidget.WidgetType
 import com.brentpanther.bitcoinwidget.exchange.Exchange
 
 @Entity(indices = [Index(value=["widgetId"], unique=true)])
@@ -34,6 +38,7 @@ data class Widget(
     var address: String? = null,
     var showAmountLabel: Boolean,
     var useInverse: Boolean,
+    var priceType: PriceType,
     var lastUpdated: Long,
     var state: WidgetState
 ) {
@@ -41,6 +46,10 @@ data class Widget(
     fun coinName() = if (coinCustomId != null) coinCustomName ?: coin.coinName else coin.coinName
 
     fun isOld(refresh: Int) = System.currentTimeMillis() - lastUpdated > (60000 * refresh * 1.5)
+}
+
+enum class PriceType {
+    SPOT, BID, ASK
 }
 
 @Entity

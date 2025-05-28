@@ -172,7 +172,7 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
 
     companion object {
 
-        internal var COIN_NAMES: SortedSet<String> = entries.map { it.name }.toSortedSet(String.CASE_INSENSITIVE_ORDER)
+        var COIN_NAMES: SortedSet<String> = entries.map { it.name }.toSortedSet(String.CASE_INSENSITIVE_ORDER)
 
         fun getByName(name: String): Coin? {
             if (name == "1INCH") return ONE_INCH

@@ -1,5 +1,6 @@
 package com.brentpanther.bitcoinwidget.ui
 
+import android.app.ActivityManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
@@ -15,10 +16,6 @@ import kotlinx.coroutines.launch
 class BannersViewModel : ViewModel() {
 
     val visibleBanners = mutableStateListOf<String>()
-
-    init {
-        loadBanners()
-    }
 
     fun loadBanners() = viewModelScope.launch {
         val application = WidgetApplication.instance
@@ -36,6 +33,12 @@ class BannersViewModel : ViewModel() {
         if (powerManager.isPowerSaveMode && !powerManager.isIgnoringBatteryOptimizations(application.packageName) &&
             !isDismissed(application, "battery")) {
             visibleBanners.add("battery")
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val activityManager = application.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            if (activityManager.isBackgroundRestricted && !isDismissed(application, "background")) {
+                visibleBanners.add("background")
+            }
         }
     }
 

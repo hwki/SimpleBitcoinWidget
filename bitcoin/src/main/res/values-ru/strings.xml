@@ -51,6 +51,7 @@
     <string name="widget_list_title">%1$s / %2$s</string>
     <string name="warning_data_saver">Приложение не будет обновлять данные, так как использование трафика ограничено. Включите настройку для неограниченного использования трафика для этого приложения.</string>
     <string name="warning_battery_saver">Приложение не будет обновлять данные, так как сейчас включен режим энергосбережения.</string>
+    <string name="warning_background">Приложение не обновится, поскольку в настоящее время отключено использование фонового режима.</string>
     <string name="state_stale">Цена устарело. Проверьте интернет-соединение.</string>
     <string name="state_error">Невозможно обновить цену. Возможно, это проблема с биржей.</string>
     <string name="state_rate_limited">Запросы были ограничены биржей.</string>
@@ -97,4 +98,5 @@
     <string name="title_bitcoin_address">Биткойн-адрес</string>
     <string name="dialog_wallet_address">Введите адрес биткойн-кошелька</string>
     <string name="title_wallet">Данные кошелька</string>
+    <string name="title_price_type">Тип цены</string>
 </resources>

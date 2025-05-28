@@ -82,6 +82,7 @@
     <string name="warning_data_saver">O aplicativo não será atualizado porque o uso de dados está restrito no momento. Por favor, ative a configuração para permitir o uso de dados irrestrito.</string>
     <string name="warning_battery_saver">O aplicativo não será atualizada porque economizador de bateria atualmente é restrito.</string>
 
+    <string name="warning_background">O aplicativo não será atualizado porque o uso em segundo plano está desativado no momento.</string>
     <string name="state_stale">O preço está desatualizado. Verifique sua conexão com a internet.</string>
     <string name="state_error">Não foi possível atualizar o preço. Isso pode ser um problema com a exchange.</string>
     <string name="state_rate_limited">Taxa limitada pelo câmbio.</string>
@@ -103,5 +104,6 @@
     <string name="title_bitcoin_address">Endereço Bitcoin</string>
     <string name="dialog_wallet_address">Insira um endereço de carteira bitcoin</string>
     <string name="title_wallet">Dados da carteira</string>
+    <string name="title_price_type">Tipo de Preço</string>
 
 </resources>

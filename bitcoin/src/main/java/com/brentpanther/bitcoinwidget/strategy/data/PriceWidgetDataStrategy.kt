@@ -22,7 +22,8 @@ open class PriceWidgetDataStrategy(widgetId: Int) : WidgetDataStrategy(widgetId)
         try {
             val currency = widget.currencyCustomName ?: widget.currency
             val coin = widget.coinCustomId ?: widget.coinCustomName ?: widget.coin.getSymbol()
-            val value = widget.exchange.getValue(coin, currency)
+            val priceType = widget.priceType
+            val value = widget.exchange.getValue(coin, currency, priceType)
             if (widget.state != WidgetState.DRAFT) widget.state = WidgetState.CURRENT
             if (value == null) {
                 throw IllegalArgumentException()

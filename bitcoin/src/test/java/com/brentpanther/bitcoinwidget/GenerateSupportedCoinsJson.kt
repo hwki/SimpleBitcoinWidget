@@ -64,7 +64,6 @@ class GenerateSupportedCoinsJson {
             this::cexio,
             this::chilebit,
             this::coinbase,
-            this::coindesk,
             this::coingecko,
             this::coinjar,
             this::coinmate,
@@ -117,7 +116,7 @@ class GenerateSupportedCoinsJson {
         }
 
     // these exchanges do not allow API requests from the united states
-    private val nonUSExchanges = listOf(Exchange.BYBIT, Exchange.BINANCE)
+    private val nonUSExchanges = listOf(Exchange.BYBIT, Exchange.BINANCE, Exchange.BINGX, Exchange.KUCOIN)
 
     @Test
     fun generateAll() = generate(allExchanges)
@@ -341,7 +340,7 @@ class GenerateSupportedCoinsJson {
     // region exchange methods
 
     private fun ascendex(): List<String> {
-        return parse("https://ascendex.com/api/pro/v1/products", "$.data[?(@.status=='Normal')].symbol")
+        return parse("https://ascendex.com/api/pro/v1/products", "$.data[?(@.status=='Normal' && @.marginTradable == true)].symbol")
     }
 
     private fun bibox(): List<String> {
@@ -357,7 +356,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun binancep2p(): List<String> {
-        return cryptoya()
+        return criptoya()
     }
 
     private fun binance_us(): List<String> {
@@ -401,7 +400,9 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bithumb(): List<String> {
-        return parseKeys("https://api.bithumb.com/public/ticker/ALL", "$.data").map { "${it}_KRW" }
+        return parse("https://api.bithumb.com/v1/market/all", "$[*].market").map {
+            it.substringAfter("-") + "_" + it.substringBefore("-")
+        }
     }
 
     private fun bitmart(): List<String> {
@@ -430,7 +431,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun bitsoalpha(): List<String> {
-        return cryptoya()
+        return criptoya()
     }
 
     private fun bitstamp(): List<String> {
@@ -481,28 +482,6 @@ class GenerateSupportedCoinsJson {
             it == "XRP"
         }.flatMap {
             coin -> currencies.map { "${coin}_$it" }
-        }
-    }
-
-    private fun coindesk(): List<String> {
-        val coinLists = Coin.entries.map { it.name }.chunked(50)
-        val coins = mutableListOf<String>()
-        val currencies = mutableListOf<String>()
-        coinLists.forEach { coinList ->
-            val url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinList.joinToString(",")}&tsyms=USD"
-            val response = parseKeys(url, "$")
-            coins.addAll(response)
-        }
-        val currencyLists = Currency.getAvailableCurrencies().map { it.currencyCode }.sorted().chunked(25)
-        currencyLists.forEach { currencyList ->
-            val url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC&tsyms=${currencyList.joinToString(",")}"
-            val response = parseKeys(url, "$.BTC")
-            currencies.addAll(response)
-        }
-        return coins.flatMap { coin ->
-            currencies.map { currency ->
-                "${coin}_$currency"
-            }
         }
     }
 
@@ -561,13 +540,11 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun fiwind(): List<String> {
-        return cryptoya()
+        return criptoya()
     }
 
     private fun foxbit(): List<String> {
-        return parse("https://watcher.foxbit.com.br/api/Ticker/", "$[?(@.exchange == 'Foxbit')].currency").map {
-            it.replaceFirst("X", "_").split("_").reversed().joinToString("_")
-        }
+        return parse("https://api.foxbit.com.br/rest/v3/markets", "$.data.[*].symbol")
     }
 
     private fun gateio(): List<String> {
@@ -605,7 +582,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun korbit(): List<String> {
-        return parseKeys("https://api.korbit.co.kr/v1/ticker/detailed/all", "$")
+        return parse("https://api.korbit.co.kr/v2/currencyPairs", "$.data[*].symbol")
     }
 
     private fun kraken(): List<String> {
@@ -621,7 +598,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun lemoncash(): List<String> {
-        return cryptoya()
+        return criptoya()
     }
 
     private fun luno(): List<String> {
@@ -633,7 +610,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun mexc(): List<String> {
-        val pairs = parse("https://www.mexc.com/open/api/v2/market/symbols", "$.data.[*].symbol")
+        val pairs = parse("https://api.mexc.com/api/v3/exchangeInfo", "$.symbols.[*].symbol")
         return pairs.filterNot { it.contains("USDC") }
     }
 
@@ -642,7 +619,10 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun nexchange(): List<String> {
-        return parse("https://api.n.exchange/en/api/v1/pair/?format=json", "$[?(@.disabled==false)].name")
+        return parse("https://api.n.exchange/en/api/v1/pair/?format=json", "$[?(@.disabled==false)].name").filterNot {
+            // for some reason 1INCH is not supported by the api despite being listed
+            it.startsWith("1INCH")
+        }
     }
 
     private fun okx(): List<String> {
@@ -677,7 +657,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun satoshitango(): List<String> {
-        return cryptoya()
+        return criptoya()
     }
 
     private fun tradeogre(): List<String> {
@@ -719,7 +699,7 @@ class GenerateSupportedCoinsJson {
 
     //endregion
 
-    private fun cryptoya(): List<String> {
+    private fun criptoya(): List<String> {
         val allCoins = listOf("BTC", "ETH", "USDT", "USDC", "DAI", "UXD", "USDP", "WLD", "BNB", "SOL", "XRP", "ADA",
             "AVAX", "DOGE", "TRX", "LINK", "DOT", "MATIC", "SHIB", "LTC", "BCH", "EOS", "XLM", "FTM", "AAVE", "UNI",
             "ALGO", "BAT", "PAXG", "CAKE", "AXS", "SLP", "MANA", "SAND", "CHZ") 
