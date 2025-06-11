@@ -349,7 +349,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
             val url = "https://coinmate.io/api/ticker?currencyPair=${coin}_$currency"
-            val data = getJsonObject(url)
+            val data = getJsonObject(url)["data"]?.jsonObject ?: return null
             return when (priceType) {
                 SPOT -> data["last"]
                 BID -> data["bid"]
