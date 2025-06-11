@@ -107,7 +107,7 @@
         <item>ISO</item>
         <item>NONE</item>
     </string-array>
-    <string name="json_last_modified" translatable="false">Wed, 28 May 2025 21:28:16 GMT</string>
+    <string name="json_last_modified" translatable="false">Wed, 11 Jun 2025 14:04:18 GMT</string>
     <string name="json_url" translatable="false">https://www.brentpanther.com/cryptowidgetcoins_v2.json</string>
 
     <string name="error_restricted_battery_saver">Unable to refresh, Battery Saver is on</string>

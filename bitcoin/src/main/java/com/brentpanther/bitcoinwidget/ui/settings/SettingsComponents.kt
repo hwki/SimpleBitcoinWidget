@@ -281,7 +281,7 @@ fun SettingsList(
                 Column(
                     Modifier.padding(16.dp)
                 ) {
-                    Row {
+                    Row(Modifier.padding(bottom = 8.dp)) {
                         ProvideTextStyle(value = MaterialTheme.typography.titleLarge) {
                             title()
                         }

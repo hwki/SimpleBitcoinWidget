@@ -376,7 +376,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             val id = getJsonObject(searchUrl)["currencies"]?.jsonArray?.firstOrNull {
                 it.jsonObject["symbol"].asString == coin
             }?.jsonObject?.get("id").asString ?: return null
-            val url = "https://api.coinpaprika.com/v1/tickers/$id"
+            val url = "https://api.coinpaprika.com/v1/tickers/$id?quotes=$currency"
             return getJsonObject(url)["quotes"]?.jsonObject?.get(currency)?.jsonObject?.get("price").asString
         }
 
