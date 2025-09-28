@@ -16,12 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.junit.Test
 import java.nio.file.Paths
-import java.security.SecureRandom
-import java.security.cert.X509Certificate
 import java.util.Currency
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
-import javax.net.ssl.X509TrustManager
 import kotlin.io.path.writeText
 
 class GenerateSupportedCoinsJson {
@@ -103,7 +98,6 @@ class GenerateSupportedCoinsJson {
             this::poloniex,
             this::probit,
             this::satoshitango,
-            this::tradeogre,
             this::uphold,
             this::vbtc,
             this::whitebit,
@@ -156,7 +150,7 @@ class GenerateSupportedCoinsJson {
                 allExchangeData.exchanges.add(this)
             }
             try {
-                var pairs = func()
+                val pairs = func()
                 if (pairs.isEmpty()) {
                     System.err.println("$exchange returned no pairs.")
                     exchangeData.coins = listOf()
@@ -310,30 +304,12 @@ class GenerateSupportedCoinsJson {
     private fun parseKeys(url: String, path: String) = (JsonPath.read(get(url), path) as Map<String, *>).keys.map { it }
     private fun parse(url: String, path: String) = JsonPath.read(get(url), path) as List<String>
     private fun get(value: String): String = OkHttpClient.Builder()
-        .ignoreAllSSLErrors()
         .build()
         .newCall(Request.Builder()
             .url(value)
             .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0")
             .build()
-        ).execute().body!!.string()
-
-    private fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
-        val naiveTrustManager = object : X509TrustManager {
-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) = Unit
-            override fun checkServerTrusted(certs: Array<X509Certificate>, authType: String) = Unit
-        }
-
-        val insecureSocketFactory = SSLContext.getInstance("TLSv1.2").apply {
-            val trustAllCerts = arrayOf<TrustManager>(naiveTrustManager)
-            init(null, trustAllCerts, SecureRandom())
-        }.socketFactory
-
-        sslSocketFactory(insecureSocketFactory, naiveTrustManager)
-        hostnameVerifier { _, _ -> true }
-        return this
-    }
+        ).execute().body.string()
 
     //endregion
 
@@ -631,7 +607,7 @@ class GenerateSupportedCoinsJson {
     }
 
     private fun p2pb2b(): List<String> {
-        return parse("https://api.p2pb2b.io/api/v2/public/markets", "$.result[*].name")
+        return parse("https://api.p2pb2b.com/api/v2/public/markets", "$.result[*].name")
     }
 
     private fun paribu(): List<String> {
@@ -658,12 +634,6 @@ class GenerateSupportedCoinsJson {
 
     private fun satoshitango(): List<String> {
         return criptoya()
-    }
-
-    private fun tradeogre(): List<String> {
-        val path = "$[*]"
-        val list = JsonPath.read(get("https://tradeogre.com/api/v1/markets"), path) as List<Map<String, *>>
-        return list.map { it.keys.first().split("-").reversed().joinToString("_") }
     }
 
     private fun uphold(): List<String> {

@@ -701,7 +701,7 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     },
     P2PB2B("P2PB2B") {
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
-            val url = "https://api.p2pb2b.io/api/v2/public/ticker?market=${coin}_$currency"
+            val url = "https://api.p2pb2b.com/api/v2/public/ticker?market=${coin}_$currency"
             val data = getJsonObject(url)["result"]?.jsonObject ?: return null
             return when (priceType) {
                 SPOT -> data["last"]
@@ -770,17 +770,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
     SATOSHI_TANGO("Satoshi Tango") {
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
             return getCriptoYaValue("satoshitango", coin, currency, priceType)
-        }
-    },
-    TRADEOGRE("TradeOgre") {
-        override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
-            val url = "https://tradeogre.com/api/v1/ticker/$currency-$coin"
-            val data = getJsonObject(url)
-            return when (priceType) {
-                SPOT -> data["price"]
-                BID -> data["bid"]
-                ASK -> data["ask"]
-            }.asString
         }
     },
     UPHOLD("Uphold") {
