@@ -106,4 +106,8 @@
     <string name="title_wallet">Dados da carteira</string>
     <string name="title_price_type">Tipo de Preço</string>
 
+    <string name="title_donate">Dica</string>
+    <string name="label_donate">Doar Bitcoin</string>
+    <string name="summary_donate">Gostou do aplicativo? Doe alguns bitcoins para apoiar o desenvolvedor.</string>
+
 </resources>

@@ -394,18 +394,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             }.asString
         }
     },
-    COINTREE("Cointree") {
-
-        override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
-            val url = "https://trade.cointree.com/api/prices/AUD/change/24h?symbols=$coin"
-            val data = getJsonArray(url)[0].jsonObject
-            return when (priceType) {
-                SPOT -> data["spot"]
-                BID -> data["bid"]
-                ASK -> data["ask"]
-            }.asString
-        }
-    },
     CRYPTO("Crypto.com") {
 
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
@@ -758,14 +746,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 ASK -> data["ask"]
             }.asString
         }
-    },
-    PROBIT("ProBit") {
-
-        override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
-            val url = "https://api.probit.com/api/exchange/v1/ticker?market_ids=$coin-$currency"
-            return getJsonObject(url)["data"]?.jsonArray?.get(0)?.jsonObject?.get("last").asString
-        }
-        override val hasSpotPriceOnly = true
     },
     SATOSHI_TANGO("Satoshi Tango") {
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {

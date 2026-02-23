@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
@@ -15,8 +14,8 @@ android {
         applicationId = "com.brentpanther.bitcoinwidget"
         minSdk = 23
         targetSdk = 36
-        versionCode = 344
-        versionName = "8.7.3"
+        versionCode = 345
+        versionName = "8.8.0"
     }
 
     buildFeatures {
@@ -34,7 +33,7 @@ android {
     }
     sourceSets {
         getByName("test") {
-            resources.srcDir("src/main/res")
+            resources.directories += "src/main/res"
         }
     }
     flavorDimensions += listOf("distribution")
@@ -46,21 +45,17 @@ android {
             dimension = "distribution"
         }
     }
-    ksp {
-        arg("room.generateKotlin", "true")
-    }
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
+
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
 }
-kotlin {
-    jvmToolchain(21)
-    compilerOptions {
-        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
-    }
+
+ksp {
+    arg("room.generateKotlin", "true")
+}
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {

@@ -1,20 +1,20 @@
 [versions]
-agp = "8.13.0"
-activityKtx = "1.11.0"
+agp = "9.0.1"
+activityKtx = "1.12.4"
 coil = "3.3.0"
-compose = "2025.09.01"
+compose = "2026.02.00"
 coreKtx = "1.17.0"
-jsonPath = "2.9.0"
+jsonPath = "3.0.0"
 junit = "4.13.2"
-kotlin = "2.2.20"
-ksp = "2.2.20-2.0.3"
-lifecycle = "2.9.4"
-navigation = "2.9.5"
-okhttp = "5.1.0"
+kotlin = "2.3.10"
+ksp = "2.3.6"
+lifecycle = "2.10.0"
+navigation = "2.9.7"
+okhttp = "5.3.2"
 preferences = "1.2.1"
-room = "2.8.1"
-serialization = "1.9.0"
-work = "2.10.5"
+room = "2.8.4"
+serialization = "1.10.0"
+work = "2.11.1"
 
 [libraries]
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx"}
@@ -40,7 +40,6 @@ serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin"}
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}

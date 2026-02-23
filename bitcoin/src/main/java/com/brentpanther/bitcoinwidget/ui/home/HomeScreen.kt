@@ -42,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,7 +64,7 @@ import com.brentpanther.bitcoinwidget.ui.MainActivity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: ManageWidgetsViewModel = viewModel()) {
-    var index by remember { mutableIntStateOf(0) }
+    var index by rememberSaveable { mutableIntStateOf(0) }
     val context = LocalContext.current
     val supportsPin = remember {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
@@ -128,10 +129,10 @@ private fun <T : WidgetProvider> pinWidget(context: Context, className: Class<T>
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PinWidgetFAB() {
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
-    var failureDialogVisible by remember { mutableStateOf(false) }
+    var failureDialogVisible by rememberSaveable { mutableStateOf(false) }
 
     if (failureDialogVisible) {
         BasicAlertDialog(

@@ -65,7 +65,6 @@ class GenerateSupportedCoinsJson {
             this::coinone,
             this::coinpaprika,
             this::coinsph,
-            this::cointree,
             this::cryptocom,
             this::digifinex,
             this::egera,
@@ -96,7 +95,6 @@ class GenerateSupportedCoinsJson {
             this::paymium,
             this::phemex,
             this::poloniex,
-            this::probit,
             this::satoshitango,
             this::uphold,
             this::vbtc,
@@ -493,12 +491,6 @@ class GenerateSupportedCoinsJson {
         return parse("https://api.pro.coins.ph/openapi/v1/pairs", "$[*].symbol")
     }
 
-    private fun cointree(): List<String> {
-        return parse("https://trade.cointree.com/api/prices/AUD/change/24h", "$[*].symbol").map {
-            "${it}_AUD"
-        }
-    }
-
     private fun cryptocom(): List<String> {
         return parse("https://api.crypto.com/exchange/v1/public/get-instruments", "$.result.data[*].symbol")
     }
@@ -626,10 +618,6 @@ class GenerateSupportedCoinsJson {
 
     private fun poloniex(): List<String> {
         return parse("https://api.poloniex.com/markets", "$[*].symbol")
-    }
-
-    private fun probit(): List<String> {
-        return parse("https://api.probit.com/api/exchange/v1/market", "$.data[*].id")
     }
 
     private fun satoshitango(): List<String> {

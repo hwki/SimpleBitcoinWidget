@@ -3,13 +3,16 @@ package com.brentpanther.bitcoinwidget.ui.settings
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.create
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -160,39 +164,69 @@ fun SettingScreenContent(
             }
         }
         else {
-            Column(
-                modifier = modifier
-            ) {
-                banner()
-                Text(
-                    text = stringResource(widget.widgetType.widgetSummary, widget.coinName()),
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(create("sans-serif-light", BOLD)),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .padding(horizontal = 16.dp)
-                )
-                SettingsHeader(
-                    title = title_preview,
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    withDivider = false
-                )
-                WidgetPreview(
-                    widget = widget,
-                    fixedSize = fixedSize,
-                    modifier = Modifier.height(96.dp)
-                )
-                Column(Modifier.verticalScroll(rememberScrollState())) {
-                    when (widget.widgetType) {
-                        WidgetType.PRICE -> PriceSettings(widget, currencies, exchanges, actions)
-                        WidgetType.VALUE -> ValueSettings(widget, currencies, exchanges, actions)
+            val configuration = LocalConfiguration.current
+            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                Row(
+                    modifier = modifier
+                ) {
+                    Column(
+                        Modifier.fillMaxWidth(.4f)
+                    ) {
+                        SettingsScreenHeader(banner, widget, fixedSize)
                     }
-                    Spacer(Modifier.height(80.dp))
+                    Column {
+                        SettingsScreenContent(widget, currencies, exchanges, actions)
+                    }
+                }
+            } else {
+                Column(
+                    modifier = modifier
+                ) {
+                    SettingsScreenHeader(banner, widget, fixedSize)
+                    SettingsScreenContent(widget, currencies, exchanges, actions)
                 }
             }
         }
     }
+}
+
+@Composable
+fun SettingsScreenContent(widget: Widget, currencies: List<String>, exchanges: List<Exchange>, actions: SettingsActions) {
+    Column(Modifier.verticalScroll(rememberScrollState())) {
+        when (widget.widgetType) {
+            WidgetType.PRICE -> PriceSettings(widget, currencies, exchanges, actions)
+            WidgetType.VALUE -> ValueSettings(widget, currencies, exchanges, actions)
+        }
+        Spacer(Modifier.height(80.dp))
+    }
+}
+
+@Composable
+fun SettingsScreenHeader(
+    banner: @Composable () -> Unit,
+    widget: Widget,
+    fixedSize: Boolean
+) {
+    banner()
+    Text(
+        text = stringResource(widget.widgetType.widgetSummary, widget.coinName()),
+        fontSize = 14.sp,
+        fontFamily = FontFamily(create("sans-serif-light", BOLD)),
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .padding(horizontal = 16.dp)
+    )
+    SettingsHeader(
+        title = title_preview,
+        modifier = Modifier.padding(bottom = 16.dp),
+        withDivider = false
+    )
+    WidgetPreview(
+        widget = widget,
+        fixedSize = fixedSize,
+        modifier = Modifier.height(96.dp)
+    )
 }
 
 @Composable
@@ -224,7 +258,7 @@ fun ValueSettings(
         value = amountHeldValue,
         onChange = { value ->
             try {
-                var value = value ?: "1"
+                val value = value ?: "1"
                 // do not assume numbers are being input in the current system locale.
                 val groupingSeparator = DecimalFormatSymbols.getInstance().groupingSeparator
                 val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator

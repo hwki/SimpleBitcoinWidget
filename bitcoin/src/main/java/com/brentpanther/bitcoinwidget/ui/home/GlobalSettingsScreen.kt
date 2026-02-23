@@ -1,10 +1,12 @@
 package com.brentpanther.bitcoinwidget.ui.home
 
-import android.text.method.LinkMovementMethod
-import android.view.LayoutInflater
-import android.widget.TextView
+import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,15 +18,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import androidx.core.text.HtmlCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.brentpanther.bitcoinwidget.R
 import com.brentpanther.bitcoinwidget.ui.settings.SettingsButton
@@ -35,9 +37,10 @@ import com.brentpanther.bitcoinwidget.ui.settings.SettingsSwitch
 @Composable
 fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
     val settings by viewModel.globalSettings.collectAsState(null)
-    val context = LocalContext.current
     if (settings == null) return
-    Column {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
         SettingsHeader(title = R.string.nav_title_settings, withDivider = false)
         SettingsList(
             icon = {
@@ -73,6 +76,35 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
             }
         )
         SettingsHeader(title = R.string.title_other)
+        val context = LocalContext.current
+        val address = stringResource(R.string.btc_address)
+        val title = stringResource(R.string.label_donate)
+        SettingsButton(
+            icon = {
+                Icon(painterResource(R.drawable.ic_bitcoin), null)
+            },
+            title = {
+                Text(stringResource(id = R.string.title_donate))
+            },
+            subtitle = {
+                Text(stringResource(id = R.string.summary_donate))
+            },
+            onClick = {
+                try {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, address.toUri()))
+                } catch (_: ActivityNotFoundException) {
+                    val share = Intent.createChooser(Intent().apply {
+                        action = Intent.ACTION_SEND
+                        type = "text/plain"
+                        clipData = ClipData.newPlainText(title, address)
+                        putExtra(Intent.EXTRA_TEXT, address)
+                        putExtra(Intent.EXTRA_TITLE, title)
+
+                    }, null)
+                    context.startActivity(share)
+                }
+            }
+        )
         AdditionalSettings()
         var dialogVisible by remember { mutableStateOf(false) }
         SettingsButton(
@@ -92,7 +124,6 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
         )
         if (dialogVisible) {
             val licenseString = stringResource(R.string.licenses)
-            val textColor = MaterialTheme.colorScheme.onSurface
             Dialog(
                 onDismissRequest = { dialogVisible = false }
             ) {
@@ -100,19 +131,10 @@ fun GlobalSettings(viewModel: ManageWidgetsViewModel = viewModel()) {
                     modifier = Modifier,
                     shape = MaterialTheme.shapes.medium,
                 ) {
-                    AndroidView(
-                        modifier = Modifier.padding(8.dp),
-                        factory = { context ->
-                            LayoutInflater.from(context).inflate(R.layout.layout_license, null) as TextView
-                        },
-                        update = {
-                            it.setText(
-                                HtmlCompat.fromHtml(licenseString, HtmlCompat.FROM_HTML_MODE_COMPACT),
-                                TextView.BufferType.SPANNABLE
-                            )
-                            it.movementMethod = LinkMovementMethod.getInstance()
-                            it.setTextColor(textColor.toArgb())
-                        }
+                    Text(
+                        modifier = Modifier.padding(16.dp),
+                        text = AnnotatedString.fromHtml(licenseString),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }

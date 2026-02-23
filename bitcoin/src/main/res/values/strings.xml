@@ -154,4 +154,9 @@
     <string name="dialog_wallet_address">Enter a bitcoin wallet address</string>
     <string name="title_price_type">Price Type</string>
 
+    <string name="title_donate">Tip</string>
+    <string name="label_donate">Donate Bitcoin</string>
+    <string name="summary_donate">Like the app? Tip some bitcoin to support the developer.</string>
+    <string name="btc_address" translatable="false">bitcoin:194QqhXirp21F5fJVaqviMeHkzZzkZKyi8</string>
+
 </resources>

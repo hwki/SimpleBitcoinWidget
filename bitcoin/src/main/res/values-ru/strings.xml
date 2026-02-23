@@ -99,4 +99,10 @@
     <string name="dialog_wallet_address">Введите адрес биткойн-кошелька</string>
     <string name="title_wallet">Данные кошелька</string>
     <string name="title_price_type">Тип цены</string>
+
+    <string name="title_donate">чаевые</string>
+    <string name="label_donate">Пожертвовать Bitcoin</string>
+    <string name="summary_donate">Вам понравилось приложение? Поддержите разработчика, отправив ему биткоины.</string>
+
+
 </resources>

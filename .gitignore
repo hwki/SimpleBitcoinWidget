@@ -84,6 +84,8 @@ obj/
 .idea/deploymentTargetDropDown.xml
 .idea/deploymentTargetSelector.xml
 .idea/other.xml
+.idea/deviceManager.xml
+
 
 # Gradle:
 .idea/gradle.xml
