@@ -675,6 +675,20 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
             }.asString
         }
     },
+
+    NONKYC("NonKYC") {
+
+         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
+            val url = "https://api.nonkyc.io/api/v2/ticker/$coin/$currency"
+            val data = getJsonObject(url)
+            return when (priceType) {
+                SPOT -> data["last_price"]
+                BID -> data["bid"]
+                ASK -> data["ask"]
+            }.asString
+        }
+    },
+
     OKX("OKX") {
 
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
