@@ -89,6 +89,7 @@ class GenerateSupportedCoinsJson {
             this::mexc,
             this::ndax,
             this::nexchange,
+            this::nonkyc,
             this::okx,
             this::p2pb2b,
             this::paribu,
@@ -591,6 +592,9 @@ class GenerateSupportedCoinsJson {
             // for some reason 1INCH is not supported by the api despite being listed
             it.startsWith("1INCH")
         }
+    }
+    private fun nonkyc(): List<String> {
+        return parse("https://api.nonkyc.io/api/v2/pairs", "$[*].ticker_id")
     }
 
     private fun okx(): List<String> {
