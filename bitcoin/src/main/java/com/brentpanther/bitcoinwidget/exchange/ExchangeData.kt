@@ -91,8 +91,9 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
 
     //TODO: change to use exchange
     fun getDefaultExchange(currency: String): String {
-        val exchanges = currencyExchange[currency]
-        return exchanges?.get(0) ?: Exchange.COINGECKO.name
+        val exchanges = currencyExchange[currency] ?: return Exchange.COINGECKO.name
+        val knownExchanges = Exchange.getAllExchangeNames()
+        return exchanges.firstOrNull { it in knownExchanges } ?: Exchange.COINGECKO.name
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
