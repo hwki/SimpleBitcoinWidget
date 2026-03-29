@@ -124,7 +124,6 @@ class GenerateSupportedCoinsJson {
         generate(allExchanges.filter { it.key in nonUSExchanges })
     }
 
-    @OptIn(ExperimentalSerializationApi::class)
     private val json = Json { encodeDefaults = true; explicitNulls = false }
 
     @OptIn(ExperimentalSerializationApi::class)
@@ -462,7 +461,7 @@ class GenerateSupportedCoinsJson {
 
     private fun coingecko(): List<String> {
         val currencies = parse("https://api.coingecko.com/api/v3/simple/supported_vs_currencies", "[*]")
-        return Coin.entries.map { coin -> currencies.map { coin.getSymbol() + "_" + it } }.flatten()
+        return Coin.entries.flatMap { coin -> currencies.map { coin.getSymbol() + "_" + it } }
     }
 
     private fun coinjar(): List<String> {
@@ -539,7 +538,7 @@ class GenerateSupportedCoinsJson {
     private fun independent_reserve(): List<String> {
         val coins = parse("https://api.independentreserve.com/Public/GetValidPrimaryCurrencyCodes", "$[*]")
         val currencies = parse("https://api.independentreserve.com/Public/GetValidSecondaryCurrencyCodes", "$[*]")
-        return coins.map { coin -> currencies.map { "${coin.uppercase()}_${it.uppercase()}" } }.flatten()
+        return coins.flatMap { coin -> currencies.map { "${coin.uppercase()}_${it.uppercase()}" } }
     }
 
     private fun indodax(): List<String> {
@@ -665,7 +664,7 @@ class GenerateSupportedCoinsJson {
         val allCoins = listOf("BTC", "ETH", "USDT", "USDC", "DAI", "UXD", "USDP", "WLD", "BNB", "SOL", "XRP", "ADA",
             "AVAX", "DOGE", "TRX", "LINK", "DOT", "MATIC", "SHIB", "LTC", "BCH", "EOS", "XLM", "FTM", "AAVE", "UNI",
             "ALGO", "BAT", "PAXG", "CAKE", "AXS", "SLP", "MANA", "SAND", "CHZ") 
-        val supportedCoins = allCoins.intersect(Coin.entries.map { it.name })
+        val supportedCoins = allCoins.intersect(Coin.entries.map { it.name }.toSet())
         val allCurrencies = listOf("ARS", "BRL", "CLP", "COP", "MXN", "PEN", "VES", "BOB", "UYU", "DOP", "PYG", "USD", "EUR")
         return supportedCoins.flatMap { coin ->
             allCurrencies.map { currency ->

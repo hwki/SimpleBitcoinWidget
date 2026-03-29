@@ -57,7 +57,7 @@ object Repository {
                 304 -> Log.d(TAG, "No changes found in JSON file.")
                 200 -> {
                     Log.d(TAG, "Updated JSON file found.")
-                    response.body?.byteStream()?.use {
+                    response.body.byteStream().use {
                         val os = context.openFileOutput(CURRENCY_FILE_NAME, Context.MODE_PRIVATE)
                         it.copyTo(os)
                         os.closeQuietly()
@@ -85,15 +85,15 @@ object Repository {
             ExchangeHelper.getStream(url)?.use { stream ->
                 ByteArrayOutputStream().use { os ->
                     BitmapFactory.decodeStream(stream)?.let { image ->
-                        var bitmap = createBitmap(image.width, image.height)
+                        val bitmap = createBitmap(image.width, image.height)
 
                         // apply rounded corners
                         val canvas = Canvas(bitmap)
-                        var paint = Paint().apply {
+                        val paint = Paint().apply {
                             isAntiAlias = true
                             shader = BitmapShader(image, CLAMP, CLAMP)
                         }
-                        var rect = RectF(0f, 0f, image.width.toFloat(), image.height.toFloat())
+                        val rect = RectF(0f, 0f, image.width.toFloat(), image.height.toFloat())
                         canvas.drawRoundRect(rect, 60f, 60f, paint)
 
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)

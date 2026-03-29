@@ -14,8 +14,8 @@ android {
         applicationId = "com.brentpanther.bitcoinwidget"
         minSdk = 23
         targetSdk = 36
-        versionCode = 345
-        versionName = "8.8.0"
+        versionCode = 346
+        versionName = "8.8.1"
     }
 
     buildFeatures {
@@ -48,6 +48,12 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
 }
 

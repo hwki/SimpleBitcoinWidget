@@ -1,0 +1,4 @@
+Add NonKYC exchange.
+Update ReddCoin logo.
+Fix crash when adding certain coins.
+Update dependencies.

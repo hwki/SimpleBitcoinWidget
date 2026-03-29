@@ -122,7 +122,7 @@ class CoinSelectionViewModel : ViewModel() {
             client.newCall(request).execute().use { response ->
                 if (response.isSuccessful) {
                     error.tryEmit(null)
-                    return json.decodeFromString(response.body!!.string())
+                    return json.decodeFromString(response.body.string())
                 } else {
                     error.tryEmit(R.string.search_error)
                     return null
