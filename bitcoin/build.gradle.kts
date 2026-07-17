@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.brentpanther.bitcoinwidget"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.brentpanther.bitcoinwidget"
         minSdk = 23
-        targetSdk = 36
-        versionCode = 346
-        versionName = "8.8.1"
+        targetSdk = 37
+        versionCode = 347
+        versionName = "8.8.2"
     }
 
     buildFeatures {
@@ -28,6 +28,7 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -48,12 +49,6 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
-    }
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
 }
 

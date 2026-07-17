@@ -31,7 +31,6 @@ class GenerateSupportedCoinsJson {
 
     private val allExchanges =
         listOf(
-            this::ascendex,
             this::bibox,
             this::bigone,
             this::binance,
@@ -102,8 +101,7 @@ class GenerateSupportedCoinsJson {
             this::whitebit,
             this::xt,
             this::yadio,
-            this::yobit,
-            this::zonda
+            this::yobit
         ).zip(Exchange.entries.toTypedArray()).associate {
             Pair(it.second) { it.first.invoke() }
         }
@@ -312,10 +310,6 @@ class GenerateSupportedCoinsJson {
     //endregion
 
     // region exchange methods
-
-    private fun ascendex(): List<String> {
-        return parse("https://ascendex.com/api/pro/v1/products", "$.data[?(@.status=='Normal' && @.marginTradable == true)].symbol")
-    }
 
     private fun bibox(): List<String> {
         return parse("https://api.bibox.com/api/v4/marketdata/pairs", "$[*].symbol")
@@ -652,10 +646,6 @@ class GenerateSupportedCoinsJson {
 
     private fun yobit(): List<String> {
         return parseKeys("https://yobit.net/api/3/info", "$.pairs")
-    }
-
-    private fun zonda(): List<String> {
-        return parseKeys("https://api.zondacrypto.exchange/rest/trading/ticker", "$.items")
     }
 
     //endregion

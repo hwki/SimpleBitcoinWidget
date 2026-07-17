@@ -14,17 +14,6 @@ import kotlin.math.pow
 
 enum class Exchange(val exchangeName: String, shortName: String? = null) {
 
-    ASCENDEX("AscendEX") {
-        override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
-            val obj = getJsonObject("https://ascendex.com/api/pro/v1/ticker?symbol=$coin/$currency")
-            val data = obj["data"]?.jsonObject
-            return when (priceType) {
-                SPOT -> data?.get("close")
-                BID -> data?.get("bid")?.jsonArray[0]
-                ASK -> data?.get("ask")?.jsonArray[0]
-            }.asString
-        }
-    },
     BIBOX("Bibox") {
         override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
             val url = "https://api.bibox.com/api/v4/marketdata/ticker?symbol=${coin}_$currency"
@@ -827,17 +816,6 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
                 SPOT -> data["last"]
                 BID -> data["buy"]
                 ASK -> data["sell"]
-            }.asString
-        }
-    },
-    ZONDA("Zonda") {
-        override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
-            val url = "https://api.zondacrypto.exchange/rest/trading/ticker/$coin-$currency"
-            val data = getJsonObject(url)["ticker"]?.jsonObject ?: return null
-            return when (priceType) {
-                SPOT -> data["rate"]
-                BID -> data["highestBid"]
-                ASK -> data["lowestAsk"]
             }.asString
         }
     };
