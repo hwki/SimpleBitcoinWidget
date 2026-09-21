@@ -18,7 +18,14 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
 
     init {
         this.obj = Json.decodeFromStream(json)
-        loadCurrencies(coin.getSymbol())
+        if (coin == Coin.XBT) {
+            // The upstream exchange list does not know about the BLAKE2b fork.
+            // Present its USDC market as USD, consistent with the app's existing
+            // stablecoin-to-fiat normalization.
+            currencyExchange["USD"] = mutableListOf(Exchange.NEOXEX.name)
+        } else {
+            loadCurrencies(coin.getSymbol())
+        }
     }
 
     // only return currencies that we know about
@@ -97,10 +104,12 @@ open class ExchangeData(val coin: Coin, json: InputStream) {
     }
 
     open fun getExchangeCoinName(exchange: String): String? {
+        if (coin == Coin.XBT && exchange == Exchange.NEOXEX.name) return "BTCB2"
         return obj?.getExchangeCoinName(exchange, coin.getSymbol())
     }
 
     open fun getExchangeCurrencyName(exchange: String, currency: String): String? {
+        if (coin == Coin.XBT && exchange == Exchange.NEOXEX.name && currency == "USD") return "USDC"
         return obj?.getExchangeCurrencyName(exchange, currency)
     }
 

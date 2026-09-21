@@ -23,7 +23,7 @@ class GenerateSupportedCoinsJson {
 
     private lateinit var allCurrencies: Set<String>
     private val allCoins = Coin.entries.filterNot { it == Coin.CUSTOM }.map { it.getSymbol() }
-    private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC",
+    private val allCoinOverrides = mapOf("BCHABC" to "BCH", "BCC" to "BCH", "BCHSV" to "BSV", "XBT" to "BTC", "BTCB2" to "XBT",
             "XDG" to "DOGE", "MIOTA" to "IOTA", "STR" to "XLM", "DSH" to "DASH", "IOT" to "IOTA",
             "BAB" to "BCH", "ALG" to "ALGO", "ATO" to "ATOM", "QTM" to "QTUM", "DRK" to "DASH", "NEM" to "XEM",
             "XZC" to "FIRO")
@@ -88,6 +88,7 @@ class GenerateSupportedCoinsJson {
             this::mexc,
             this::ndax,
             this::nexchange,
+            this::neoxex,
             this::nonkyc,
             this::okx,
             this::p2pb2b,
@@ -585,6 +586,9 @@ class GenerateSupportedCoinsJson {
             // for some reason 1INCH is not supported by the api despite being listed
             it.startsWith("1INCH")
         }
+    }
+    private fun neoxex(): List<String> {
+        return parse("https://neoxa.exchange/api/exchange/tickers", "$.tickers[*].pair")
     }
     private fun nonkyc(): List<String> {
         return parse("https://api.nonkyc.io/api/v2/pairs", "$[*].ticker_id")

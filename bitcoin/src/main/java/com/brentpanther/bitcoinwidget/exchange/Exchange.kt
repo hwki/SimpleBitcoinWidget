@@ -665,6 +665,19 @@ enum class Exchange(val exchangeName: String, shortName: String? = null) {
         }
     },
 
+    NEOXEX("NeoxEX") {
+
+        override fun getValue(coin: String, currency: String, priceType: PriceType): String? {
+            val url = "https://neoxa.exchange/api/exchange/ticker/${coin}_$currency"
+            val data = getJsonObject(url)["ticker"]?.jsonObject ?: return null
+            return when (priceType) {
+                SPOT -> data["lastPrice"]
+                BID -> data["bestBid"]
+                ASK -> data["bestAsk"]
+            }.asString
+        }
+    },
+
     NONKYC("NonKYC") {
 
          override fun getValue(coin: String, currency: String, priceType: PriceType): String? {

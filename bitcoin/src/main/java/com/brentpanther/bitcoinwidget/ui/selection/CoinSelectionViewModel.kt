@@ -103,6 +103,18 @@ class CoinSelectionViewModel : ViewModel() {
                     }
                 }
             }
+            val xbt = Coin.XBT
+            if (coinResults.none { it.coin == xbt } &&
+                (xbt.coinName.contains(query, ignoreCase = true) || xbt.getSymbol().contains(query, ignoreCase = true))) {
+                coinResults = coinResults + CoinResponse(
+                    xbt.name,
+                    xbt.coinName,
+                    xbt.getSymbol(),
+                    null,
+                    null,
+                    xbt
+                )
+            }
             coinResults = coinResults.sortedWith(
                 compareBy(
                     { it.coin == Coin.CUSTOM },

@@ -5,6 +5,8 @@ import com.brentpanther.bitcoinwidget.exchange.Exchange
 import com.brentpanther.bitcoinwidget.exchange.Exchange.valueOf
 import com.brentpanther.bitcoinwidget.exchange.ExchangeData
 import org.junit.Test
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import java.io.InputStream
 import java.util.EnumSet
 
@@ -77,6 +79,15 @@ class ExchangeTest {
         val data = ExchangeData(coin, loadJSON())
         val value = tryGetValue(data, exchange.name, currency, coin, PriceType.SPOT)
         println("Got value: $value")
+    }
+
+    @Test
+    fun xbtUsesNeoxExMarketAliases() {
+        val data = ExchangeData(Coin.XBT, "{\"exchanges\":[]}".byteInputStream())
+
+        assertArrayEquals(arrayOf(Exchange.NEOXEX.name), data.getExchanges("USD"))
+        assertEquals("BTCB2", data.getExchangeCoinName(Exchange.NEOXEX.name))
+        assertEquals("USDC", data.getExchangeCurrencyName(Exchange.NEOXEX.name, "USD"))
     }
 
 }

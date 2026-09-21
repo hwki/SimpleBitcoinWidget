@@ -147,6 +147,10 @@ enum class Coin(val coinName: String, val coinGeckoId: String, private vararg va
     WAVES("Waves", "waves", IconTheme(SOLID, ic_waves)),
     WBTC("Wrapped Bitcoin", "wrapped-bitcoin", IconTheme(SOLID, ic_wbtc)),
     XAUT("Tether Gold", "tether-gold", IconTheme(SOLID, ic_xaut_color)),
+    XBT("Bitcoin (BLAKE2b)", "bitcoin-blake2b", IconTheme(SOLID, ic_btc, ic_btc_dark)) {
+        override fun getUnits() =
+            listOf(CoinUnit("XBT", 1.0), CoinUnit("mXBT", .001), CoinUnit("Bit", .000001), CoinUnit("Sat", .00000001))
+    },
     XEM("NEM", "nem", IconTheme(SOLID, ic_xem, ic_xem_dark_gray)),
     XLM("Stellar", "stellar", IconTheme(SOLID, ic_xlm, ic_xlm_white)),
     XMR("Monero", "monero", IconTheme(SOLID, ic_xmr), IconTheme(TRANSPARENT, ic_xmr, dark = ic_xmr_dark)),
